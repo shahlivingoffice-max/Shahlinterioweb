@@ -14,13 +14,39 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://shahinterio.com/">
     <meta property="og:site_name" content="Shah Interio">
+    <meta property="og:image" content="https://shahinterio.com/securex-logo.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="SECUREX Steel Almirahs – Built for Strength & Style">
     <meta name="twitter:description" content="Trusted steel furniture manufacturer. Factory-direct pricing, bulk orders, custom designs. Rust-resistant & durable.">
+    <meta name="twitter:image" content="https://shahinterio.com/securex-logo.png">
     <title>SECUREX Steel Almirahs – Trusted Steel Furniture Manufacturer | Shah Interio</title>
+
+    <!-- FIX: Preload hero image for LCP performance -->
+    <link rel="preload" as="image" href="shah-interio-factory-aerial-view.jpg.png">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- FIX: Structured data for SEO -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "SECUREX by Shah Interio",
+        "description": "Premium steel almirahs, storage cabinets & custom metal furniture manufacturer",
+        "url": "https://shahinterio.com",
+        "telephone": "+919179539610",
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Kantabaji",
+            "addressRegion": "Odisha",
+            "addressCountry": "IN"
+        },
+        "image": "https://shahinterio.com/securex-logo.png"
+    }
+    </script>
+
     <style>
         :root {
             --cream: #FEFAE0;
@@ -52,9 +78,7 @@
             --container-max: 1320px;
         }
 
-        *,
-        *::before,
-        *::after {
+        *, *::before, *::after {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
@@ -97,31 +121,14 @@
         .splash-logo {
             width: 140px;
             height: auto;
+            /* FIX: Use securex-logo.png (correct filename from repo) */
             filter: drop-shadow(0 8px 20px rgba(62,36,21,0.2));
             animation: logoPop 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-            position: relative;
-        }
-        /* Shine effect */
-        .splash-logo::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 300%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transform: skewX(-25deg);
-            animation: shine 1.8s ease-in-out forwards;
         }
         @keyframes logoPop {
             0% { transform: scale(0) rotate(-10deg); opacity: 0; }
             60% { transform: scale(1.15) rotate(2deg); opacity: 1; }
             100% { transform: scale(1) rotate(0deg); opacity: 1; }
-        }
-        @keyframes shine {
-            0% { left: -100%; }
-            50% { left: 100%; }
-            100% { left: 200%; }
         }
         .splash-brand {
             font-family: 'Rajdhani', sans-serif;
@@ -146,29 +153,14 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6 {
+        h1, h2, h3, h4, h5, h6 {
             font-family: 'Rajdhani', 'Outfit', sans-serif;
             font-weight: 700;
             letter-spacing: -0.01em;
             line-height: 1.15;
         }
-
-        img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-            transition: color var(--transition-fast);
-        }
+        img { max-width: 100%; height: auto; display: block; }
+        a { text-decoration: none; color: inherit; transition: color var(--transition-fast); }
 
         .container {
             width: 100%;
@@ -191,13 +183,11 @@
             transition: all var(--transition-smooth);
             height: var(--navbar-height);
         }
-
         .navbar.scrolled {
             background: rgba(254, 250, 224, 0.96);
             box-shadow: var(--shadow-md);
             border-bottom-color: rgba(196, 168, 130, 0.5);
         }
-
         .navbar-inner {
             display: flex;
             align-items: center;
@@ -207,14 +197,13 @@
             margin: 0 auto;
             padding: 0 24px;
         }
-
         .nav-logo {
             display: flex;
             align-items: center;
             gap: 10px;
             z-index: 1001;
+            text-decoration: none;
         }
-
         .nav-logo-icon {
             width: 44px;
             height: 44px;
@@ -223,7 +212,6 @@
             flex-shrink: 0;
             object-fit: cover;
         }
-
         .nav-logo-text {
             font-family: 'Rajdhani', sans-serif;
             font-weight: 800;
@@ -241,14 +229,12 @@
             text-transform: uppercase;
             font-family: 'Outfit', sans-serif;
         }
-
         .nav-links {
             display: flex;
             align-items: center;
             gap: 32px;
             list-style: none;
         }
-
         .nav-links a {
             font-weight: 500;
             font-size: 0.95rem;
@@ -256,6 +242,7 @@
             position: relative;
             padding: 6px 0;
             transition: color var(--transition-fast);
+            text-decoration: none;
         }
         .nav-links a::after {
             content: '';
@@ -276,7 +263,6 @@
         .nav-links a.active::after {
             width: 100%;
         }
-
         .nav-cta {
             display: flex;
             align-items: center;
@@ -297,18 +283,13 @@
             transition: all var(--transition-smooth);
             white-space: nowrap;
             font-family: 'Outfit', sans-serif;
+            text-decoration: none;
         }
         .btn-nav:hover {
             background: var(--brown-dark);
             transform: translateY(-2px);
             box-shadow: var(--shadow-md);
         }
-        .btn-nav svg {
-            width: 16px;
-            height: 16px;
-            flex-shrink: 0;
-        }
-
         .hamburger {
             display: none;
             flex-direction: column;
@@ -327,18 +308,26 @@
             transition: all var(--transition-smooth);
             display: block;
         }
-        .hamburger.active span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px);
-        }
-        .hamburger.active span:nth-child(2) {
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+        /* Mobile nav overlay */
+        .nav-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            z-index: 999;
             opacity: 0;
-            transform: scaleX(0);
+            transition: opacity var(--transition-smooth);
         }
-        .hamburger.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(5px, -5px);
+        .nav-overlay.active {
+            display: block;
+            opacity: 1;
         }
 
-        /* ============ HERO (FULL-WIDTH, REFINED) ============ */
+        /* ============ HERO ============ */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -346,9 +335,10 @@
             padding-top: var(--navbar-height);
             position: relative;
             overflow: hidden;
-            background: url('hero-image.jpg.png') center / cover no-repeat;
+            /* FIX: correct image filename from repo */
+            background: url('shah-interio-factory-aerial-view.jpg.png') center / cover no-repeat;
+            background-color: var(--brown-dark); /* fallback */
         }
-
         .hero::before {
             content: '';
             position: absolute;
@@ -357,7 +347,6 @@
             z-index: 1;
             pointer-events: none;
         }
-
         .hero-content {
             position: relative;
             z-index: 2;
@@ -369,12 +358,10 @@
             margin: 0 auto;
             padding: 48px 24px;
         }
-
         .hero-text {
             max-width: 640px;
             animation: fadeInUp 0.8s ease-out;
         }
-
         .hero-badge {
             display: inline-flex;
             align-items: center;
@@ -391,15 +378,14 @@
             margin-bottom: 28px;
             letter-spacing: 0.04em;
         }
-
         .hero-badge-dot {
             width: 8px;
             height: 8px;
             background: #FFD700;
             border-radius: 50%;
             animation: pulse-dot 2s infinite;
+            flex-shrink: 0;
         }
-
         .hero h1 {
             font-size: clamp(2.6rem, 6vw, 4.2rem);
             font-weight: 900;
@@ -408,14 +394,12 @@
             line-height: 1.1;
             letter-spacing: -0.02em;
         }
-
         .hero h1 .highlight {
             background: linear-gradient(to bottom, transparent 58%, rgba(255,215,0,0.35) 58%);
             padding: 0 4px;
             display: inline-block;
             color: #ffffff;
         }
-
         .hero-subtitle {
             font-size: clamp(1.05rem, 1.8vw, 1.25rem);
             color: rgba(255,255,255,0.92);
@@ -424,18 +408,15 @@
             max-width: 500px;
             line-height: 1.7;
         }
-
         .hero-subtitle strong {
             font-weight: 700;
             color: #FFD700;
         }
-
         .hero-buttons {
             display: flex;
             flex-wrap: wrap;
             gap: 16px;
         }
-
         .btn {
             display: inline-flex;
             align-items: center;
@@ -452,13 +433,7 @@
             letter-spacing: 0.02em;
             text-decoration: none;
         }
-
-        .btn svg {
-            width: 20px;
-            height: 20px;
-            flex-shrink: 0;
-        }
-
+        .btn svg { width: 20px; height: 20px; flex-shrink: 0; }
         .btn-primary {
             background: var(--brown);
             color: var(--cream);
@@ -468,8 +443,8 @@
             background: var(--brown-dark);
             transform: translateY(-4px) scale(1.02);
             box-shadow: 0 14px 40px rgba(0,0,0,0.35);
+            color: var(--cream);
         }
-
         .btn-whatsapp {
             background: #25D366;
             color: #fff;
@@ -479,8 +454,8 @@
             background: #1ebe57;
             transform: translateY(-4px) scale(1.02);
             box-shadow: 0 14px 40px rgba(37,211,102,0.45);
+            color: #fff;
         }
-
         .btn-outline {
             background: transparent;
             color: #ffffff;
@@ -499,24 +474,15 @@
             from { opacity: 0; transform: translateY(36px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
         @keyframes pulse-dot {
             0%, 100% { box-shadow: 0 0 0 0 rgba(255,215,0,0.5); }
             50% { box-shadow: 0 0 0 12px rgba(255,215,0,0); }
         }
 
         /* ============ SECTIONS ============ */
-        .section {
-            padding: 90px 0;
-            position: relative;
-        }
-        .section-alt {
-            background: var(--beige-light);
-        }
-        .section-header {
-            text-align: center;
-            margin-bottom: 56px;
-        }
+        .section { padding: 90px 0; position: relative; }
+        .section-alt { background: var(--beige-light); }
+        .section-header { text-align: center; margin-bottom: 56px; }
         .section-label {
             display: inline-block;
             font-weight: 600;
@@ -547,22 +513,18 @@
             align-items: center;
         }
         .about-image {
-            background: linear-gradient(150deg, #E8D5B4, #C4A882, #8B6F4E);
             border-radius: var(--radius-xl);
-            aspect-ratio: 4/3;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: var(--shadow-lg);
-            position: relative;
             overflow: hidden;
+            aspect-ratio: 4/3;
+            box-shadow: var(--shadow-lg);
+            background: linear-gradient(150deg, var(--beige), var(--beige-dark));
+            position: relative;
         }
-        .about-image::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 50%);
-            pointer-events: none;
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
         .about-content h2 {
             font-size: 2rem;
@@ -618,9 +580,7 @@
         .feature-card::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
+            top: 0; left: 0; right: 0;
             height: 4px;
             background: linear-gradient(90deg, var(--beige-dark), var(--brown-light), var(--brown));
             transform: scaleX(0);
@@ -632,9 +592,7 @@
             box-shadow: var(--shadow-lg);
             border-color: var(--beige-dark);
         }
-        .feature-card:hover::before {
-            transform: scaleX(1);
-        }
+        .feature-card:hover::before { transform: scaleX(1); }
         .feature-icon {
             width: 64px;
             height: 64px;
@@ -645,24 +603,13 @@
             justify-content: center;
             margin: 0 auto 20px;
             font-size: 1.8rem;
-            color: var(--brown-dark);
             transition: transform var(--transition-bounce);
         }
-        .feature-card:hover .feature-icon {
-            transform: scale(1.1) rotate(-3deg);
-        }
-        .feature-card h3 {
-            font-size: 1.25rem;
-            color: var(--brown-dark);
-            margin-bottom: 8px;
-        }
-        .feature-card p {
-            color: var(--text-light);
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
+        .feature-card:hover .feature-icon { transform: scale(1.1) rotate(-3deg); }
+        .feature-card h3 { font-size: 1.25rem; color: var(--brown-dark); margin-bottom: 8px; }
+        .feature-card p { color: var(--text-light); font-size: 0.9rem; line-height: 1.5; }
 
-        /* Why Choose Us */
+        /* Why Us */
         .why-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -695,69 +642,57 @@
             font-size: 1.4rem;
             flex-shrink: 0;
         }
-        .why-card h4 {
-            font-size: 1.1rem;
-            color: var(--brown-dark);
-            margin-bottom: 4px;
-        }
-        .why-card p {
-            color: var(--text-light);
-            font-size: 0.85rem;
-            line-height: 1.5;
-        }
+        .why-card h4 { font-size: 1.1rem; color: var(--brown-dark); margin-bottom: 4px; }
+        .why-card p { color: var(--text-light); font-size: 0.85rem; line-height: 1.5; }
 
         /* Gallery */
         .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
             gap: 20px;
         }
         .gallery-item {
             border-radius: var(--radius-lg);
             overflow: hidden;
             aspect-ratio: 3/4;
-            background: linear-gradient(160deg, #E8D5B4, #C4A882, #9B8265);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background: linear-gradient(160deg, var(--beige), var(--beige-dark));
+            display: block;
             cursor: pointer;
             transition: all var(--transition-smooth);
             position: relative;
             box-shadow: var(--shadow-sm);
+            text-decoration: none;
+            color: inherit;
         }
-        .gallery-item:hover {
-            transform: translateY(-6px);
-            box-shadow: var(--shadow-lg);
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+            display: block;
         }
-        .gallery-item::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, rgba(0, 0, 0, 0.03) 100%);
-            pointer-events: none;
-        }
+        .gallery-item:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+        .gallery-item:hover img { transform: scale(1.05); }
         .gallery-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             font-family: 'Rajdhani', sans-serif;
             font-weight: 700;
             color: rgba(62, 36, 21, 0.35);
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             text-align: center;
             padding: 20px;
-            letter-spacing: 0.04em;
-            z-index: 1;
         }
-        .gallery-placeholder .gp-icon {
-            font-size: 3rem;
-            display: block;
-            margin-bottom: 8px;
-        }
+        .gallery-placeholder .gp-icon { font-size: 3rem; display: block; margin-bottom: 8px; }
         .gallery-overlay {
             position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
+            bottom: 0; left: 0; right: 0;
             padding: 16px;
-            background: linear-gradient(transparent, rgba(62, 36, 21, 0.7));
+            background: linear-gradient(transparent, rgba(62, 36, 21, 0.75));
             color: var(--cream);
             font-weight: 600;
             font-size: 0.9rem;
@@ -766,9 +701,29 @@
             transform: translateY(100%);
             transition: transform var(--transition-smooth);
         }
-        .gallery-item:hover .gallery-overlay {
-            transform: translateY(0);
+        .gallery-item:hover .gallery-overlay { transform: translateY(0); }
+
+        /* Stats bar */
+        .stats-bar {
+            background: var(--brown-dark);
+            padding: 32px 0;
         }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            text-align: center;
+        }
+        .stat-item { color: var(--cream); }
+        .stat-number {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #FFD700;
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+        .stat-label { font-size: 0.85rem; opacity: 0.8; }
 
         /* Contact */
         .contact-grid {
@@ -777,15 +732,8 @@
             gap: 48px;
             align-items: start;
         }
-        .contact-info h3 {
-            font-size: 1.6rem;
-            color: var(--brown-dark);
-            margin-bottom: 16px;
-        }
-        .contact-info p {
-            color: var(--text-medium);
-            margin-bottom: 24px;
-        }
+        .contact-info h3 { font-size: 1.6rem; color: var(--brown-dark); margin-bottom: 16px; }
+        .contact-info p { color: var(--text-medium); margin-bottom: 24px; }
         .contact-detail {
             display: flex;
             align-items: center;
@@ -797,10 +745,13 @@
             box-shadow: var(--shadow-sm);
             transition: all var(--transition-smooth);
             border: 1px solid rgba(196, 168, 130, 0.15);
+            text-decoration: none;
+            color: inherit;
         }
         .contact-detail:hover {
             box-shadow: var(--shadow-md);
             border-color: var(--beige-dark);
+            transform: translateX(4px);
         }
         .contact-detail-icon {
             width: 44px;
@@ -818,10 +769,7 @@
             color: var(--brown-dark);
             font-size: 0.95rem;
         }
-        .contact-detail-text span {
-            color: var(--text-light);
-            font-size: 0.85rem;
-        }
+        .contact-detail-text span { color: var(--text-light); font-size: 0.85rem; }
         .contact-form {
             background: var(--white);
             border-radius: var(--radius-xl);
@@ -829,14 +777,8 @@
             box-shadow: var(--shadow-md);
             border: 1px solid rgba(196, 168, 130, 0.2);
         }
-        .contact-form h3 {
-            font-size: 1.4rem;
-            color: var(--brown-dark);
-            margin-bottom: 20px;
-        }
-        .form-group {
-            margin-bottom: 16px;
-        }
+        .contact-form h3 { font-size: 1.4rem; color: var(--brown-dark); margin-bottom: 20px; }
+        .form-group { margin-bottom: 16px; }
         .form-group label {
             display: block;
             font-weight: 600;
@@ -845,7 +787,8 @@
             margin-bottom: 6px;
         }
         .form-group input,
-        .form-group textarea {
+        .form-group textarea,
+        .form-group select {
             width: 100%;
             padding: 12px 16px;
             border: 2px solid rgba(196, 168, 130, 0.3);
@@ -858,15 +801,14 @@
             resize: vertical;
         }
         .form-group input:focus,
-        .form-group textarea:focus {
+        .form-group textarea:focus,
+        .form-group select:focus {
             outline: none;
             border-color: var(--brown);
             box-shadow: 0 0 0 4px rgba(92, 61, 46, 0.08);
             background: var(--white);
         }
-        .form-group textarea {
-            min-height: 100px;
-        }
+        .form-group textarea { min-height: 100px; }
         .btn-submit {
             width: 100%;
             padding: 14px;
@@ -886,6 +828,33 @@
             box-shadow: var(--shadow-lg);
             transform: translateY(-2px);
         }
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Form status message */
+        .form-status {
+            display: none;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            font-size: 0.9rem;
+            margin-top: 12px;
+            font-weight: 500;
+        }
+        .form-status.success {
+            display: block;
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .form-status.error {
+            display: block;
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
 
         /* Footer */
         .footer {
@@ -899,43 +868,14 @@
             gap: 40px;
             margin-bottom: 40px;
         }
-        .footer-brand .nav-logo-icon {
-            width: 48px;
-            height: 48px;
-            font-size: 1.2rem;
-            margin-bottom: 12px;
-        }
-        .footer-brand h4 {
-            color: var(--cream);
-            font-size: 1.4rem;
-            letter-spacing: 0.03em;
-        }
-        .footer-brand p {
-            color: var(--beige-dark);
-            font-size: 0.85rem;
-            margin-top: 8px;
-            line-height: 1.5;
-        }
-        .footer h5 {
-            color: var(--cream);
-            font-size: 1rem;
-            margin-bottom: 16px;
-            letter-spacing: 0.03em;
-        }
-        .footer-links {
-            list-style: none;
-        }
-        .footer-links li {
-            margin-bottom: 10px;
-        }
-        .footer-links a {
-            color: var(--beige-dark);
-            font-size: 0.9rem;
-            transition: color var(--transition-fast);
-        }
-        .footer-links a:hover {
-            color: var(--cream);
-        }
+        .footer-brand h4 { color: var(--cream); font-size: 1.4rem; letter-spacing: 0.03em; margin-bottom: 8px; }
+        .footer-brand p { color: var(--beige-dark); font-size: 0.85rem; margin-top: 8px; line-height: 1.5; }
+        .footer h5 { color: var(--cream); font-size: 1rem; margin-bottom: 16px; letter-spacing: 0.03em; }
+        .footer-links { list-style: none; }
+        .footer-links li { margin-bottom: 10px; }
+        .footer-links a { color: var(--beige-dark); font-size: 0.9rem; transition: color var(--transition-fast); text-decoration: none; }
+        .footer-links a:hover { color: var(--cream); }
+        .footer-links li span { color: var(--beige-dark); font-size: 0.9rem; }
         .footer-bottom {
             border-top: 1px solid rgba(196, 168, 130, 0.2);
             padding-top: 20px;
@@ -949,7 +889,7 @@
             position: fixed;
             bottom: 28px;
             right: 28px;
-            z-index: 999;
+            z-index: 998;
             width: 58px;
             height: 58px;
             border-radius: 50%;
@@ -961,16 +901,14 @@
             box-shadow: 0 6px 24px rgba(37, 211, 102, 0.4);
             cursor: pointer;
             transition: all var(--transition-bounce);
-            border: none;
+            text-decoration: none;
         }
         .whatsapp-float:hover {
             transform: scale(1.12);
             box-shadow: 0 10px 32px rgba(37, 211, 102, 0.55);
+            color: #fff;
         }
-        .whatsapp-float svg {
-            width: 28px;
-            height: 28px;
-        }
+        .whatsapp-float svg { width: 28px; height: 28px; }
         .whatsapp-float-pulse {
             position: absolute;
             inset: -6px;
@@ -984,19 +922,7 @@
             100% { transform: scale(1.6); opacity: 0; }
         }
 
-        /* Product card link wrapper */
-        a.gallery-item {
-            display: block;
-            text-decoration: none;
-            color: inherit;
-            cursor: pointer;
-        }
-        a.gallery-item:hover {
-            transform: translateY(-6px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        /* Scroll Animation */
+        /* Scroll Reveal */
         .reveal {
             opacity: 0;
             transform: translateY(40px);
@@ -1009,25 +935,15 @@
 
         /* ============ RESPONSIVE ============ */
         @media (max-width: 1024px) {
-            .hero-content {
-                align-items: center;
-                text-align: center;
-            }
-            .hero-text {
-                max-width: 100%;
-            }
-            .hero-subtitle {
-                margin-left: auto;
-                margin-right: auto;
-                max-width: 100%;
-            }
-            .hero-buttons {
-                justify-content: center;
-            }
+            .hero-content { align-items: center; text-align: center; }
+            .hero-text { max-width: 100%; }
+            .hero-subtitle { margin-left: auto; margin-right: auto; max-width: 100%; }
+            .hero-buttons { justify-content: center; }
             .about-grid { grid-template-columns: 1fr; }
             .about-image { max-width: 480px; margin: 0 auto; }
             .contact-grid { grid-template-columns: 1fr; }
             .footer-grid { grid-template-columns: 1fr 1fr; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
         @media (max-width: 768px) {
@@ -1035,309 +951,460 @@
                 position: fixed;
                 top: 0;
                 right: -100%;
-                width: 280px;
+                width: min(280px, 80vw);
                 height: 100vh;
                 flex-direction: column;
                 background: rgba(254, 250, 224, 0.98);
                 backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
                 padding: 100px 32px 40px;
                 gap: 24px;
                 transition: right var(--transition-smooth);
                 box-shadow: var(--shadow-xl);
                 z-index: 1000;
+                overflow-y: auto;
             }
             .nav-links.active { right: 0; }
             .nav-cta { display: none; }
-            .nav-cta-mobile { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
             .hamburger { display: flex; }
-            .nav-links .nav-cta-mobile { display: flex; }
             .hero { min-height: auto; padding: 120px 0 60px; }
             .section { padding: 56px 0; }
             .footer-grid { grid-template-columns: 1fr; gap: 32px; }
             .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
             .features-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-            .why-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+            .why-grid { grid-template-columns: 1fr; gap: 16px; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
         @media (max-width: 480px) {
             .hero h1 { font-size: 2.2rem; }
             .btn { padding: 14px 24px; font-size: 0.9rem; }
-            .hero-buttons { flex-direction: column; align-items: center; }
+            .hero-buttons { flex-direction: column; align-items: stretch; }
             .hero-buttons .btn { width: 100%; justify-content: center; }
             .features-grid { grid-template-columns: 1fr; }
-            .why-grid { grid-template-columns: 1fr; }
             .gallery-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
             .contact-form { padding: 20px; }
             .whatsapp-float { bottom: 18px; right: 16px; width: 50px; height: 50px; }
             .whatsapp-float svg { width: 24px; height: 24px; }
+            .stats-grid { grid-template-columns: 1fr 1fr; }
         }
+
+        /* Skip link for accessibility */
+        .skip-link {
+            position: absolute;
+            top: -100%;
+            left: 16px;
+            background: var(--brown);
+            color: var(--cream);
+            padding: 8px 16px;
+            border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+            font-weight: 600;
+            z-index: 99999;
+            text-decoration: none;
+            transition: top 0.2s;
+        }
+        .skip-link:focus { top: 0; }
     </style>
 </head>
 <body>
+    <!-- Accessibility: skip navigation -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
 
-    <!-- ==================== SPLASH SCREEN (LOGO INTRO) ==================== -->
-    <div id="splash-screen">
-        <img src="SECURE X.png" alt="SECUREX Logo" class="splash-logo">
+    <!-- ==================== SPLASH SCREEN ==================== -->
+    <div id="splash-screen" role="status" aria-label="Loading SECUREX">
+        <!-- FIX: securex-logo.png is the correct file in the repo -->
+        <img src="securex-logo.png" alt="SECUREX Logo" class="splash-logo"
+             onerror="this.style.display='none'">
         <div class="splash-brand">SECUREX</div>
         <div class="splash-tagline">Shah Interio</div>
     </div>
 
     <!-- ==================== NAVBAR ==================== -->
-    <nav class="navbar" id="navbar">
+    <!-- FIX: overlay for mobile menu dismiss -->
+    <div class="nav-overlay" id="navOverlay" aria-hidden="true"></div>
+
+    <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
         <div class="navbar-inner">
-            <a href="#" class="nav-logo" aria-label="SECUREX Home">
-                <img src="SECURE X.png" alt="SECUREX Logo" class="nav-logo-icon">
+            <!-- FIX: href="index.html" instead of bare "#" so it's an explicit page link -->
+            <a href="index.html" class="nav-logo" aria-label="SECUREX Home">
+                <img src="securex-logo.png" alt="SECUREX"
+                     class="nav-logo-icon"
+                     onerror="this.style.display='none'">
                 <div class="nav-logo-text">SECUREX<span>by Shah Interio</span></div>
             </a>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="#home" class="active">Home</a></li>
+
+            <!-- FIX: aria-label on ul, all links have descriptive titles -->
+            <ul class="nav-links" id="navLinks" aria-label="Site sections">
+                <li><a href="#home" class="active" aria-current="page">Home</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#features">Features</a></li>
                 <li><a href="#why-us">Why Us</a></li>
                 <li><a href="#gallery">Gallery</a></li>
+                <!-- FIX: Products links to Product-Page.html (correct filename from repo) -->
+                <li><a href="Product-Page.html">Products</a></li>
                 <li><a href="#contact">Contact</a></li>
-                <li class="nav-cta-mobile" style="display:none;">
-                    <a href="tel:+919179539610" class="btn-nav" style="width:100%;justify-content:center;">📞 Call Now</a>
-                    <a href="https://wa.me/919179539610?text=Hello%20SECUREX%20Team!%20I'm%20interested%20in%20your%20steel%20furniture." class="btn-nav" style="width:100%;justify-content:center;background:#25D366;">💬 WhatsApp</a>
-                </li>
             </ul>
-            <div class="nav-cta">
-                <a href="tel:+919179539610" class="btn-nav" aria-label="Call SECUREX">📞 Call</a>
-                <a href="https://wa.me/919179539610?text=Hello%20SECUREX%20Team!%20I'm%20interested%20in%20your%20steel%20furniture." class="btn-nav" style="background:#25D366;" aria-label="WhatsApp SECUREX">💬 WhatsApp</a>
+
+            <div class="nav-cta" aria-label="Quick contact">
+                <a href="tel:+919179539610" class="btn-nav" aria-label="Call us at +91 9179539610">
+                    📞 Call
+                </a>
+                <a href="https://wa.me/919179539610?text=Hello%20SECUREX%20Team!%20I'm%20interested%20in%20your%20steel%20furniture."
+                   class="btn-nav"
+                   style="background:#25D366;"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   aria-label="Chat on WhatsApp">
+                    💬 WhatsApp
+                </a>
             </div>
-            <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+
+            <button class="hamburger" id="hamburger"
+                    aria-label="Toggle menu"
+                    aria-expanded="false"
+                    aria-controls="navLinks">
                 <span></span><span></span><span></span>
             </button>
         </div>
     </nav>
 
-    <!-- ==================== HERO (FULL-WIDTH BACKGROUND) ==================== -->
-    <section class="hero" id="home">
-        <div class="hero-content">
-            <div class="hero-text">
-                <div class="hero-badge">
-                    <span class="hero-badge-dot"></span> Odisha’s Trusted B2B Steel Furniture Manufacturer
-                </div>
-                <h1>Securex Steel Almirahs – <span class="highlight">Built for Strength</span> &amp; <span class="highlight">Style</span></h1>
-                <p class="hero-subtitle">Trusted steel furniture manufacturer <strong>since 1995.</strong> Delivering durable, rust‑resistant almirahs &amp; storage solutions to businesses across Odisha.</p>
-                <div class="hero-buttons">
-                    <a href="https://shahinterio.com/Product-Page" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L6 21"/></svg>
-                        View Products
-                    </a>
-                    <a href="https://wa.me/919179539610?text=Hello%20SECUREX%20Team!%20I'm%20interested%20in%20your%20steel%20almirahs." class="btn btn-whatsapp" target="_blank" rel="noopener noreferrer">
-                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                        Contact on WhatsApp
-                    </a>
-                    <a href="Secure_X.pdf" class="btn btn-outline" download>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                        Download Catalogue
-                    </a>
+    <main id="main-content">
+        <!-- ==================== HERO ==================== -->
+        <section class="hero" id="home" aria-label="Hero section">
+            <div class="hero-content container">
+                <div class="hero-text">
+                    <div class="hero-badge" role="note">
+                        <span class="hero-badge-dot" aria-hidden="true"></span>
+                        Odisha's Trusted B2B Steel Furniture Manufacturer
+                    </div>
+                    <h1>Securex Steel Almirahs –
+                        <span class="highlight">Built for Strength</span>
+                        &amp; <span class="highlight">Style</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        Trusted steel furniture manufacturer <strong>since 1995.</strong>
+                        Delivering durable, rust&#8209;resistant almirahs &amp; storage solutions
+                        to businesses across Odisha.
+                    </p>
+                    <div class="hero-buttons">
+                        <!-- FIX: href points to Product-Page.html (correct repo filename) -->
+                        <a href="Product-Page.html" class="btn btn-primary">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <rect x="2" y="2" width="20" height="20" rx="3"/>
+                                <circle cx="8.5" cy="8.5" r="1.5"/>
+                                <path d="M21 15l-5-5L6 21"/>
+                            </svg>
+                            View Products
+                        </a>
+                        <a href="https://wa.me/919179539610?text=Hello%20SECUREX%20Team!%20I'm%20interested%20in%20your%20steel%20almirahs."
+                           class="btn btn-whatsapp"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           aria-label="Chat with us on WhatsApp">
+                            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                            </svg>
+                            Contact on WhatsApp
+                        </a>
+                        <!-- FIX: Secure_X.pdf → catalogue download; kept as-is since user named it -->
+                        <a href="Secure_X.pdf" class="btn btn-outline" download="SECUREX-Catalogue.pdf">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                                <polyline points="7 10 12 15 17 10"/>
+                                <line x1="12" y1="15" x2="12" y2="3"/>
+                            </svg>
+                            Download Catalogue
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- ==================== ABOUT ==================== -->
-    <section class="section" id="about">
-        <div class="container">
-            <div class="about-grid reveal">
-                <div class="about-image">
-                    <img src="XYZ.png" alt="Shah Interio Manufacturing" style="width:100%; height:100%; object-fit:cover; border-radius:var(--radius-xl);">
-                </div>
-                <div class="about-content">
-                    <span class="section-label">About Us</span>
-                    <h2>Shah Interio – The Force Behind SECUREX</h2>
-                    <p>Shah Interio is the proud manufacturer of the SECUREX brand of premium steel furniture. Under the leadership of Brajesh Steel, we specialize in producing high-quality steel almirahs, storage cabinets, and customized metal furniture for B2B clients across Odisha and beyond.</p>
-                    <p>Our strength lies in our advanced manufacturing setup and modern production technology. We use high-precision machines such as Fiber Laser Cutting Machines, CNC Bending Machines, Almirah Printing Machines, and Glossy Finishing Units. These technologies help us achieve superior accuracy, consistent quality, and a premium finish in every product we manufacture.</p>
-                    <p>Every SECUREX product is designed for durability, rust resistance, and modern aesthetics. We use industrial-grade steel combined with precision engineering to ensure long-lasting performance and strong build quality.</p>
-                    <p>With a focus on bulk production, customization, and timely delivery, Shah Interio has become a trusted partner for wholesalers, retailers, and institutional buyers.</p>
-                    <div class="about-highlights">
-                        <span class="about-highlight-tag">Advanced Machinery</span>
-                        <span class="about-highlight-tag">Precision Manufacturing</span>
-                        <span class="about-highlight-tag">Rust Resistant Finish</span>
-                        <span class="about-highlight-tag">Modern Designs</span>
-                        <span class="about-highlight-tag">Bulk Production Capability</span>
-                        <span class="about-highlight-tag">B2B Specialists</span>
+        <!-- ==================== STATS BAR ==================== -->
+        <div class="stats-bar" aria-label="Company statistics">
+            <div class="container">
+                <div class="stats-grid">
+                    <div class="stat-item reveal">
+                        <div class="stat-number">30+</div>
+                        <div class="stat-label">Years of Experience</div>
+                    </div>
+                    <div class="stat-item reveal">
+                        <div class="stat-number">28+</div>
+                        <div class="stat-label">Product Variants</div>
+                    </div>
+                    <div class="stat-item reveal">
+                        <div class="stat-number">500+</div>
+                        <div class="stat-label">B2B Clients</div>
+                    </div>
+                    <div class="stat-item reveal">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">Factory Direct</div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
 
-    <!-- ==================== FEATURES ==================== -->
-    <section class="section section-alt" id="features">
-        <div class="container">
-            <div class="section-header reveal">
-                <span class="section-label">Features</span>
-                <h2 class="section-title">Why SECUREX Stands Out</h2>
-                <p class="section-desc">Every product is built with precision engineering and premium materials to deliver unmatched performance.</p>
-            </div>
-            <div class="features-grid">
-                <div class="feature-card reveal">
-                    <div class="feature-icon">🎨</div>
-                    <h3>Modern Design</h3>
-                    <p>Sleek, contemporary aesthetics that complement any workspace or home interior with elegant finishes.</p>
-                </div>
-                <div class="feature-card reveal">
-                    <div class="feature-icon">🛡️</div>
-                    <h3>Rust Resistant</h3>
-                    <p>Advanced anti-corrosion treatment ensures your furniture stays pristine even in humid conditions.</p>
-                </div>
-                <div class="feature-card reveal">
-                    <div class="feature-icon">🧹</div>
-                    <h3>Low Maintenance</h3>
-                    <p>Easy-to-clean surfaces that require minimal upkeep — just wipe and they shine like new for years.</p>
-                </div>
-                <div class="feature-card reveal">
-                    <div class="feature-icon">💪</div>
-                    <h3>Heavy-Duty Build</h3>
-                    <p>Industrial-grade thick steel sheets with reinforced joints for maximum load-bearing capacity.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ==================== WHY CHOOSE US ==================== -->
-    <section class="section" id="why-us">
-        <div class="container">
-            <div class="section-header reveal">
-                <span class="section-label">Why Choose Us</span>
-                <h2 class="section-title">The SECUREX Advantage</h2>
-                <p class="section-desc">We're not just manufacturers — we're your long-term steel furniture partners.</p>
-            </div>
-            <div class="why-grid">
-                <div class="why-card reveal">
-                    <div class="why-icon">🏗️</div>
-                    <div>
-                        <h4>High-Quality Steel</h4>
-                        <p>We source premium-grade cold-rolled steel for superior strength and flawless finish.</p>
+        <!-- ==================== ABOUT ==================== -->
+        <section class="section" id="about" aria-labelledby="about-heading">
+            <div class="container">
+                <div class="about-grid reveal">
+                    <div class="about-image">
+                        <!-- FIX: shah-interio-factory-aerial-view.jpg.png is the correct repo filename -->
+                        <img src="shah-interio-factory-aerial-view.jpg.png"
+                             alt="Shah Interio manufacturing facility aerial view"
+                             loading="lazy"
+                             onerror="this.parentElement.style.background='linear-gradient(150deg,#E8D5B4,#C4A882,#8B6F4E)'">
                     </div>
-                </div>
-                <div class="why-card reveal">
-                    <div class="why-icon">🏭</div>
-                    <div>
-                        <h4>Factory Direct Pricing</h4>
-                        <p>No middlemen — you get manufacturer prices that beat market rates by up to 25%.</p>
-                    </div>
-                </div>
-                <div class="why-card reveal">
-                    <div class="why-icon">📦</div>
-                    <div>
-                        <h4>Bulk Order Specialist</h4>
-                        <p>Scalable production capacity to handle large institutional and corporate orders with ease.</p>
-                    </div>
-                </div>
-                <div class="why-card reveal">
-                    <div class="why-icon">🔧</div>
-                    <div>
-                        <h4>Customization Available</h4>
-                        <p>Tailor dimensions, colors, locking systems, and layouts to your exact requirements.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ==================== GALLERY ==================== -->
-    <section class="section section-alt" id="gallery">
-        <div class="container">
-            <div class="section-header reveal">
-                <span class="section-label">Product Gallery</span>
-                <h2 class="section-title">Explore Our Range</h2>
-                <p class="section-desc">A glimpse into our diverse collection of steel almirahs, cabinets, and custom solutions.</p>
-            </div>
-            <div class="gallery-grid">
-                <a href="https://shahinterio.com/Product-Page" target="_blank" rel="noopener noreferrer" class="gallery-item reveal">
-                    <img src="almirah1.png.png" alt="2-Door Almirah" style="width:100%; height:100%; object-fit:cover;">
-                    <div class="gallery-overlay">Heavy-Duty Storage Cabinet</div>
-                </a>
-                <a href="https://shahinterio.com/Product-Page" target="_blank" rel="noopener noreferrer" class="gallery-item reveal">
-                    <div class="gallery-placeholder"><span class="gp-icon">🔐</span>Locker Almirah</div>
-                    <div class="gallery-overlay">Secure Locker Almirah</div>
-                </a>
-                <a href="https://shahinterio.com/Product-Page" target="_blank" rel="noopener noreferrer" class="gallery-item reveal">
-                    <div class="gallery-placeholder"><span class="gp-icon">🏢</span>Office Cabinet</div>
-                    <div class="gallery-overlay">Modular Office Cabinet</div>
-                </a>
-                <a href="https://shahinterio.com/Product-Page" target="_blank" rel="noopener noreferrer" class="gallery-item reveal">
-                    <div class="gallery-placeholder"><span class="gp-icon">🛠️</span>Custom Unit</div>
-                    <div class="gallery-overlay">Custom-Built Metal Furniture</div>
-                </a>
-                <a href="https://shahinterio.com/Product-Page" target="_blank" rel="noopener noreferrer" class="gallery-item reveal">
-                    <div class="gallery-placeholder"><span class="gp-icon">📦</span>Bulk Order</div>
-                    <div class="gallery-overlay">Bulk Order Ready Stock</div>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- ==================== CONTACT ==================== -->
-    <section class="section" id="contact">
-        <div class="container">
-            <div class="section-header reveal">
-                <span class="section-label">Get In Touch</span>
-                <h2 class="section-title">Let's Discuss Your Requirements</h2>
-                <p class="section-desc">Reach out for quotes, bulk orders, or custom design inquiries. We're here to help.</p>
-            </div>
-            <div class="contact-grid reveal">
-                <div class="contact-info">
-                    <h3>Contact Information</h3>
-                    <p>Have a question or ready to place an order? Connect with us directly — we respond within hours.</p>
-                    <a href="tel:+919179539610" class="contact-detail" aria-label="Call SECUREX">
-                        <div class="contact-detail-icon">📞</div>
-                        <div class="contact-detail-text">
-                            <strong>Phone</strong>
-                            <span>+91 9179539610</span>
-                        </div>
-                    </a>
-                    <a href="https://wa.me/919179539610?text=Hello%20SECUREX%20Team!%20I'm%20interested%20in%20your%20steel%20furniture." target="_blank" rel="noopener noreferrer" class="contact-detail" aria-label="WhatsApp SECUREX">
-                        <div class="contact-detail-icon">💬</div>
-                        <div class="contact-detail-text">
-                            <strong>WhatsApp</strong>
-                            <span>+91 9179539610</span>
-                        </div>
-                    </a>
-                    <div class="contact-detail">
-                        <div class="contact-detail-icon">📍</div>
-                        <div class="contact-detail-text">
-                            <strong>Manufacturing Unit</strong>
-                            <span>Brajesh Steel, Kantabaji, Odisha</span>
+                    <div class="about-content">
+                        <span class="section-label">About Us</span>
+                        <h2 id="about-heading">Shah Interio – The Force Behind SECUREX</h2>
+                        <p>Shah Interio is the proud manufacturer of the SECUREX brand of premium steel furniture. Under the leadership of Brajesh Steel, we specialize in producing high-quality steel almirahs, storage cabinets, and customized metal furniture for B2B clients across Odisha and beyond.</p>
+                        <p>Our strength lies in our advanced manufacturing setup using high-precision machines: Fiber Laser Cutting Machines, CNC Bending Machines, Almirah Printing Machines, and Glossy Finishing Units — achieving superior accuracy and premium finish in every product.</p>
+                        <p>With a focus on bulk production, customization, and timely delivery, Shah Interio has become a trusted partner for wholesalers, retailers, and institutional buyers.</p>
+                        <div class="about-highlights">
+                            <span class="about-highlight-tag">Advanced Machinery</span>
+                            <span class="about-highlight-tag">Precision Manufacturing</span>
+                            <span class="about-highlight-tag">Rust Resistant Finish</span>
+                            <span class="about-highlight-tag">Modern Designs</span>
+                            <span class="about-highlight-tag">Bulk Production</span>
+                            <span class="about-highlight-tag">B2B Specialists</span>
                         </div>
                     </div>
                 </div>
-                <form class="contact-form" id="contactForm" onsubmit="handleFormSubmit(event)">
-                    <h3>Send Us a Message</h3>
-                    <div class="form-group">
-                        <label for="name">Full Name *</label>
-                        <input type="text" id="name" name="name" placeholder="Enter your full name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email Address *</label>
-                        <input type="email" id="email" name="email" placeholder="Enter your email address" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="phone">Phone Number</label>
-                        <input type="tel" id="phone" name="phone" placeholder="Enter your phone number">
-                    </div>
-                    <div class="form-group">
-                        <label for="message">Your Message *</label>
-                        <textarea id="message" name="message" placeholder="Tell us about your requirements..." required></textarea>
-                    </div>
-                    <button type="submit" class="btn-submit">Send Message ✉️</button>
-                </form>
             </div>
-        </div>
-    </section>
+        </section>
+
+        <!-- ==================== FEATURES ==================== -->
+        <section class="section section-alt" id="features" aria-labelledby="features-heading">
+            <div class="container">
+                <div class="section-header reveal">
+                    <span class="section-label">Features</span>
+                    <h2 class="section-title" id="features-heading">Why SECUREX Stands Out</h2>
+                    <p class="section-desc">Every product is built with precision engineering and premium materials to deliver unmatched performance.</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card reveal">
+                        <div class="feature-icon" aria-hidden="true">🎨</div>
+                        <h3>Modern Design</h3>
+                        <p>Sleek, contemporary aesthetics that complement any workspace or home interior with elegant finishes.</p>
+                    </div>
+                    <div class="feature-card reveal">
+                        <div class="feature-icon" aria-hidden="true">🛡️</div>
+                        <h3>Rust Resistant</h3>
+                        <p>Advanced anti-corrosion treatment ensures your furniture stays pristine even in humid conditions.</p>
+                    </div>
+                    <div class="feature-card reveal">
+                        <div class="feature-icon" aria-hidden="true">🧹</div>
+                        <h3>Low Maintenance</h3>
+                        <p>Easy-to-clean surfaces that require minimal upkeep — just wipe and they shine like new for years.</p>
+                    </div>
+                    <div class="feature-card reveal">
+                        <div class="feature-icon" aria-hidden="true">💪</div>
+                        <h3>Heavy-Duty Build</h3>
+                        <p>Industrial-grade thick steel sheets with reinforced joints for maximum load-bearing capacity.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== WHY CHOOSE US ==================== -->
+        <section class="section" id="why-us" aria-labelledby="whyus-heading">
+            <div class="container">
+                <div class="section-header reveal">
+                    <span class="section-label">Why Choose Us</span>
+                    <h2 class="section-title" id="whyus-heading">The SECUREX Advantage</h2>
+                    <p class="section-desc">We're not just manufacturers — we're your long-term steel furniture partners.</p>
+                </div>
+                <div class="why-grid">
+                    <div class="why-card reveal">
+                        <div class="why-icon" aria-hidden="true">🏗️</div>
+                        <div>
+                            <h4>High-Quality Steel</h4>
+                            <p>We source premium-grade cold-rolled steel for superior strength and flawless finish.</p>
+                        </div>
+                    </div>
+                    <div class="why-card reveal">
+                        <div class="why-icon" aria-hidden="true">🏭</div>
+                        <div>
+                            <h4>Factory Direct Pricing</h4>
+                            <p>No middlemen — you get manufacturer prices that beat market rates by up to 25%.</p>
+                        </div>
+                    </div>
+                    <div class="why-card reveal">
+                        <div class="why-icon" aria-hidden="true">📦</div>
+                        <div>
+                            <h4>Bulk Order Specialist</h4>
+                            <p>Scalable production capacity to handle large institutional and corporate orders with ease.</p>
+                        </div>
+                    </div>
+                    <div class="why-card reveal">
+                        <div class="why-icon" aria-hidden="true">🔧</div>
+                        <div>
+                            <h4>Customization Available</h4>
+                            <p>Tailor dimensions, colors, locking systems, and layouts to your exact requirements.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== GALLERY ==================== -->
+        <section class="section section-alt" id="gallery" aria-labelledby="gallery-heading">
+            <div class="container">
+                <div class="section-header reveal">
+                    <span class="section-label">Product Gallery</span>
+                    <h2 class="section-title" id="gallery-heading">Explore Our Range</h2>
+                    <p class="section-desc">A glimpse into our diverse collection of steel almirahs, cabinets, and custom solutions.</p>
+                </div>
+                <div class="gallery-grid">
+                    <!-- FIX: All gallery items link to Product-Page.html (correct filename) -->
+                    <!-- FIX: Each has a real almirah image from the repo -->
+                    <a href="Product-Page.html" class="gallery-item reveal" aria-label="View Heavy-Duty Storage Cabinet on products page">
+                        <img src="Secure-X-Almirah (1).png" alt="SECUREX Heavy-Duty Storage Cabinet" loading="lazy"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                        <div class="gallery-placeholder" style="display:none;">
+                            <span class="gp-icon">🏠</span>Storage Cabinet
+                        </div>
+                        <div class="gallery-overlay">Heavy-Duty Storage Cabinet</div>
+                    </a>
+                    <a href="Product-Page.html" class="gallery-item reveal" aria-label="View Locker Almirah on products page">
+                        <img src="Secure-X-Almirah (2).png" alt="SECUREX Locker Almirah" loading="lazy"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                        <div class="gallery-placeholder" style="display:none;">
+                            <span class="gp-icon">🔐</span>Locker Almirah
+                        </div>
+                        <div class="gallery-overlay">Secure Locker Almirah</div>
+                    </a>
+                    <a href="Product-Page.html" class="gallery-item reveal" aria-label="View Office Cabinet on products page">
+                        <img src="Secure-X-Almirah (3).png" alt="SECUREX Modular Office Cabinet" loading="lazy"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                        <div class="gallery-placeholder" style="display:none;">
+                            <span class="gp-icon">🏢</span>Office Cabinet
+                        </div>
+                        <div class="gallery-overlay">Modular Office Cabinet</div>
+                    </a>
+                    <a href="Product-Page.html" class="gallery-item reveal" aria-label="View Dressing Almirah on products page">
+                        <img src="Secure-X-Dressing2003.png" alt="SECUREX Designer Dressing Almirah" loading="lazy"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                        <div class="gallery-placeholder" style="display:none;">
+                            <span class="gp-icon">✨</span>Dressing Almirah
+                        </div>
+                        <div class="gallery-overlay">Designer Dressing Almirah</div>
+                    </a>
+                    <a href="Product-Page.html" class="gallery-item reveal" aria-label="View full product catalog">
+                        <img src="Secure-X-Almirah-3006.png" alt="SECUREX Premium 3006 Almirah" loading="lazy"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                        <div class="gallery-placeholder" style="display:none;">
+                            <span class="gp-icon">📦</span>View All
+                        </div>
+                        <div class="gallery-overlay">View Full Catalog →</div>
+                    </a>
+                </div>
+                <!-- View all products CTA -->
+                <div style="text-align:center; margin-top:40px;">
+                    <a href="Product-Page.html" class="btn btn-primary" style="display:inline-flex;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="width:20px;height:20px;">
+                            <rect x="2" y="2" width="20" height="20" rx="3"/>
+                            <path d="M8 12h8M12 8l4 4-4 4"/>
+                        </svg>
+                        View All 28+ Products
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== CONTACT ==================== -->
+        <section class="section" id="contact" aria-labelledby="contact-heading">
+            <div class="container">
+                <div class="section-header reveal">
+                    <span class="section-label">Get In Touch</span>
+                    <h2 class="section-title" id="contact-heading">Let's Discuss Your Requirements</h2>
+                    <p class="section-desc">Reach out for quotes, bulk orders, or custom design inquiries. We respond within hours.</p>
+                </div>
+                <div class="contact-grid reveal">
+                    <div class="contact-info">
+                        <h3>Contact Information</h3>
+                        <p>Have a question or ready to place an order? Connect with us directly — we respond within hours.</p>
+                        <a href="tel:+919179539610" class="contact-detail">
+                            <div class="contact-detail-icon" aria-hidden="true">📞</div>
+                            <div class="contact-detail-text">
+                                <strong>Phone</strong>
+                                <span>+91 9179539610</span>
+                            </div>
+                        </a>
+                        <a href="https://wa.me/919179539610?text=Hello%20SECUREX%20Team!%20I'm%20interested%20in%20your%20steel%20furniture."
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           class="contact-detail">
+                            <div class="contact-detail-icon" aria-hidden="true">💬</div>
+                            <div class="contact-detail-text">
+                                <strong>WhatsApp</strong>
+                                <span>+91 9179539610</span>
+                            </div>
+                        </a>
+                        <!-- FIX: non-link address item is a div, not an anchor -->
+                        <div class="contact-detail" style="cursor:default;">
+                            <div class="contact-detail-icon" aria-hidden="true">📍</div>
+                            <div class="contact-detail-text">
+                                <strong>Manufacturing Unit</strong>
+                                <span>Brajesh Steel, Kantabaji, Odisha</span>
+                            </div>
+                        </div>
+                        <a href="https://shahinterio.com" target="_blank" rel="noopener noreferrer" class="contact-detail">
+                            <div class="contact-detail-icon" aria-hidden="true">🌐</div>
+                            <div class="contact-detail-text">
+                                <strong>Website</strong>
+                                <span>shahinterio.com</span>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- FIX: form does not use onsubmit inline; uses addEventListener in script -->
+                    <form class="contact-form" id="contactForm" novalidate>
+                        <h3>Send Us a Message</h3>
+                        <div class="form-group">
+                            <label for="name">Full Name <span aria-hidden="true">*</span></label>
+                            <input type="text" id="name" name="name"
+                                   placeholder="Enter your full name"
+                                   required
+                                   autocomplete="name">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address <span aria-hidden="true">*</span></label>
+                            <input type="email" id="email" name="email"
+                                   placeholder="Enter your email address"
+                                   required
+                                   autocomplete="email">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone"
+                                   placeholder="+91 XXXXX XXXXX"
+                                   autocomplete="tel">
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Your Message <span aria-hidden="true">*</span></label>
+                            <textarea id="message" name="message"
+                                      placeholder="Tell us about your requirements (product type, quantity, customization)..."
+                                      required></textarea>
+                        </div>
+                        <button type="submit" class="btn-submit" id="submitBtn">Send Message ✉️</button>
+                        <div class="form-status" id="formStatus" role="alert" aria-live="polite"></div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <!-- ==================== FOOTER ==================== -->
-    <footer class="footer">
+    <footer class="footer" role="contentinfo">
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-brand">
-                    <div class="nav-logo-icon" style="margin-bottom:12px;">SX</div>
                     <h4>SECUREX</h4>
-                    <p>by <strong>Shah Interio</strong> (shahinterio.com)<br>Manufactured by <strong>Brajesh Steel</strong><br>Premium steel furniture for modern India.</p>
+                    <p>by <strong>Shah Interio</strong> (<a href="https://shahinterio.com" style="color:var(--beige-dark);">shahinterio.com</a>)<br>
+                    Manufactured by <strong>Brajesh Steel</strong><br>
+                    Premium steel furniture for modern India.</p>
                 </div>
                 <div>
                     <h5>Quick Links</h5>
@@ -1345,6 +1412,8 @@
                         <li><a href="#home">Home</a></li>
                         <li><a href="#about">About Us</a></li>
                         <li><a href="#features">Features</a></li>
+                        <!-- FIX: Products link to correct page filename -->
+                        <li><a href="Product-Page.html">Products</a></li>
                         <li><a href="#gallery">Gallery</a></li>
                         <li><a href="#contact">Contact</a></li>
                     </ul>
@@ -1353,9 +1422,17 @@
                     <h5>Contact Info</h5>
                     <ul class="footer-links">
                         <li><a href="tel:+919179539610">📞 +91 9179539610</a></li>
-                        <li><a href="https://wa.me/919179539610">💬 WhatsApp Chat</a></li>
-                        <li>📍 Brajesh Steel, Kantabaji, Odisha</li>
-                        <li>🌐 shahinterio.com</li>
+                        <li>
+                            <a href="https://wa.me/919179539610" target="_blank" rel="noopener noreferrer">
+                                💬 WhatsApp Chat
+                            </a>
+                        </li>
+                        <li><span>📍 Brajesh Steel, Kantabaji, Odisha</span></li>
+                        <li>
+                            <a href="https://shahinterio.com" target="_blank" rel="noopener noreferrer">
+                                🌐 shahinterio.com
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -1366,117 +1443,114 @@
     </footer>
 
     <!-- ==================== WHATSAPP FLOATING BUTTON ==================== -->
-    <a href="https://wa.me/919179539610?text=Hello%20SECUREX%20Team!%20I'm%20interested%20in%20your%20steel%20furniture." target="_blank" rel="noopener noreferrer" class="whatsapp-float" aria-label="Chat on WhatsApp">
-        <span class="whatsapp-float-pulse"></span>
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    <a href="https://wa.me/919179539610?text=Hello%20SECUREX%20Team!%20I'm%20interested%20in%20your%20steel%20furniture."
+       target="_blank"
+       rel="noopener noreferrer"
+       class="whatsapp-float"
+       aria-label="Chat on WhatsApp">
+        <span class="whatsapp-float-pulse" aria-hidden="true"></span>
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
     </a>
 
     <script>
-        // ============ SPLASH SCREEN HANDLER ============
-        (function() {
-            // Lock body scroll until splash finishes
+        /* ============================================================
+           SECUREX index.html — JavaScript
+           All fixes documented inline
+        ============================================================ */
+
+        // ---- SPLASH SCREEN ----
+        (function () {
             document.body.style.overflow = 'hidden';
-
             const splash = document.getElementById('splash-screen');
-
-            // Wait 2.5 seconds for the logo animation to enjoy, then fade out
-            setTimeout(function() {
-                if (splash) {
-                    splash.classList.add('fade-out');
-                    // Remove splash from flow after transition
-                    splash.addEventListener('transitionend', function() {
-                        splash.style.display = 'none';
-                        document.body.style.overflow = '';
-                    });
-                } else {
+            setTimeout(function () {
+                if (!splash) { document.body.style.overflow = ''; return; }
+                splash.classList.add('fade-out');
+                splash.addEventListener('transitionend', function handler() {
+                    splash.removeEventListener('transitionend', handler);
+                    splash.remove(); // FIX: fully remove from DOM instead of display:none
                     document.body.style.overflow = '';
-                }
+                });
             }, 2500);
         })();
 
-        // ============ STICKY NAVBAR SCROLL EFFECT ============
+        // ---- NAVBAR SCROLL ----
         const navbar = document.getElementById('navbar');
-        let lastScrollY = 0;
-
         function updateNavbar() {
-            const scrollY = window.scrollY;
-            if (scrollY > 60) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-            lastScrollY = scrollY;
+            navbar.classList.toggle('scrolled', window.scrollY > 60);
         }
         window.addEventListener('scroll', updateNavbar, { passive: true });
         updateNavbar();
 
-        // ============ ACTIVE NAV LINK ============
-        const navLinksAll = document.querySelectorAll('.nav-links a:not(.nav-cta-mobile *)');
+        // ---- ACTIVE NAV LINK (hash-based) ----
+        // FIX: only applies to same-page hash links, not Product-Page.html
+        const hashNavLinks = document.querySelectorAll('.nav-links a[href^="#"]');
         const sections = document.querySelectorAll('section[id]');
 
         function updateActiveLink() {
-            let currentId = '';
+            let currentId = 'home';
             sections.forEach(section => {
-                const sectionTop = section.offsetTop - 120;
-                if (window.scrollY >= sectionTop) {
+                if (window.scrollY >= section.offsetTop - 120) {
                     currentId = section.getAttribute('id');
                 }
             });
-            navLinksAll.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === '#' + currentId) {
-                    link.classList.add('active');
+            hashNavLinks.forEach(link => {
+                const isActive = link.getAttribute('href') === '#' + currentId;
+                link.classList.toggle('active', isActive);
+                // FIX: sync aria-current
+                if (isActive) {
+                    link.setAttribute('aria-current', 'page');
+                } else {
+                    link.removeAttribute('aria-current');
                 }
             });
-            if (window.scrollY < 200) {
-                navLinksAll.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href') === '#home') link.classList.add('active');
-                });
-            }
         }
         window.addEventListener('scroll', updateActiveLink, { passive: true });
         updateActiveLink();
 
-        // ============ MOBILE MENU ============
+        // ---- MOBILE MENU ----
         const hamburger = document.getElementById('hamburger');
-        const navLinks = document.getElementById('navLinks');
-        const mobileNavLinks = navLinks.querySelectorAll('a');
+        const navLinks  = document.getElementById('navLinks');
+        const navOverlay = document.getElementById('navOverlay');
+
+        function openMenu() {
+            hamburger.classList.add('active');
+            navLinks.classList.add('active');
+            navOverlay.classList.add('active');
+            hamburger.setAttribute('aria-expanded', 'true');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeMenu() {
+            hamburger.classList.remove('active');
+            navLinks.classList.remove('active');
+            navOverlay.classList.remove('active');
+            hamburger.setAttribute('aria-expanded', 'false');
+            document.body.style.overflow = '';
+        }
 
         hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('active');
-            navLinks.classList.toggle('active');
-            const expanded = hamburger.classList.contains('active');
-            hamburger.setAttribute('aria-expanded', expanded);
-            document.body.style.overflow = expanded ? 'hidden' : '';
+            if (navLinks.classList.contains('active')) closeMenu(); else openMenu();
         });
 
-        mobileNavLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                hamburger.classList.remove('active');
-                navLinks.classList.remove('active');
-                hamburger.setAttribute('aria-expanded', 'false');
-                document.body.style.overflow = '';
-            });
+        // FIX: clicking overlay closes menu
+        navOverlay.addEventListener('click', closeMenu);
+
+        // FIX: ESC key closes menu
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape' && navLinks.classList.contains('active')) closeMenu();
+        });
+
+        // Close on any nav link click (hash links only need it, page links navigate away)
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', closeMenu);
         });
 
         window.addEventListener('resize', () => {
-            if (window.innerWidth > 768) {
-                hamburger.classList.remove('active');
-                navLinks.classList.remove('active');
-                hamburger.setAttribute('aria-expanded', 'false');
-                document.body.style.overflow = '';
-            }
+            if (window.innerWidth > 768) closeMenu();
         });
 
-        // ============ SCROLL REVEAL ANIMATION ============
-        const revealElements = document.querySelectorAll('.reveal');
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px 0px -40px 0px',
-            threshold: 0.12,
-        };
-
+        // ---- SCROLL REVEAL ----
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -1484,63 +1558,87 @@
                     revealObserver.unobserve(entry.target);
                 }
             });
-        }, observerOptions);
+        }, { rootMargin: '0px 0px -40px 0px', threshold: 0.1 });
 
-        revealElements.forEach(el => revealObserver.observe(el));
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
-        // ============ CONTACT FORM HANDLER ============
-        function handleFormSubmit(event) {
-            event.preventDefault();
-            const form = event.target;
-            const name = form.querySelector('#name').value.trim();
-            const email = form.querySelector('#email').value.trim();
-            const phone = form.querySelector('#phone').value.trim();
-            const message = form.querySelector('#message').value.trim();
+        // ---- CONTACT FORM ----
+        // FIX: moved from inline onsubmit to proper addEventListener
+        const contactForm = document.getElementById('contactForm');
+        const submitBtn   = document.getElementById('submitBtn');
+        const formStatus  = document.getElementById('formStatus');
 
-            if (!name || !email || !message) {
-                alert('Please fill in all required fields (Name, Email, and Message).');
-                return;
-            }
+        if (contactForm) {
+            contactForm.addEventListener('submit', function (e) {
+                e.preventDefault();
 
-            const waMessage =
-                `Hello SECUREX Team!%0A%0A*New Inquiry*%0AName: ${encodeURIComponent(name)}%0AEmail: ${encodeURIComponent(email)}%0APhone: ${encodeURIComponent(phone || 'N/A')}%0AMessage: ${encodeURIComponent(message)}%0A%0APlease get back to me.`;
-            const waURL = `https://wa.me/919179539610?text=${waMessage}`;
+                const name    = (document.getElementById('name').value   || '').trim();
+                const email   = (document.getElementById('email').value  || '').trim();
+                const phone   = (document.getElementById('phone').value  || '').trim();
+                const message = (document.getElementById('message').value|| '').trim();
 
-            window.open(waURL, '_blank', 'noopener,noreferrer');
+                // Clear previous status
+                formStatus.className = 'form-status';
+                formStatus.textContent = '';
 
-            form.reset();
+                // Client-side validation
+                if (!name || !email || !message) {
+                    formStatus.className = 'form-status error';
+                    formStatus.textContent = '⚠️ Please fill in all required fields (Name, Email, and Message).';
+                    return;
+                }
+                // Basic email format check
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                    formStatus.className = 'form-status error';
+                    formStatus.textContent = '⚠️ Please enter a valid email address.';
+                    return;
+                }
 
-            setTimeout(() => {
-                alert('Thank you! Your message has been sent via WhatsApp. Our team will get back to you shortly.');
-            }, 400);
+                // Disable button during processing
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Sending…';
+
+                const waMessage =
+                    `Hello SECUREX Team!%0A%0A*New Inquiry*%0A` +
+                    `Name: ${encodeURIComponent(name)}%0A` +
+                    `Email: ${encodeURIComponent(email)}%0A` +
+                    `Phone: ${encodeURIComponent(phone || 'N/A')}%0A` +
+                    `Message: ${encodeURIComponent(message)}%0A%0APlease get back to me.`;
+
+                const waURL = `https://wa.me/919179539610?text=${waMessage}`;
+                window.open(waURL, '_blank', 'noopener,noreferrer');
+
+                contactForm.reset();
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Send Message ✉️';
+
+                formStatus.className = 'form-status success';
+                formStatus.textContent = '✅ Message sent via WhatsApp! Our team will get back to you shortly.';
+
+                // Auto-clear status after 6 seconds
+                setTimeout(() => {
+                    formStatus.className = 'form-status';
+                    formStatus.textContent = '';
+                }, 6000);
+            });
         }
 
-        // ============ SMOOTH SCROLL FOR ALL ANCHOR LINKS ============
+        // ---- SMOOTH SCROLL for anchor links ----
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
+            anchor.addEventListener('click', function (e) {
                 const href = this.getAttribute('href');
                 if (href === '#') return;
                 const target = document.querySelector(href);
                 if (target) {
                     e.preventDefault();
-                    const offset = target.offsetTop - 80;
                     window.scrollTo({
-                        top: offset,
-                        behavior: 'smooth',
+                        top: target.offsetTop - (parseInt(getComputedStyle(document.documentElement)
+                                .getPropertyValue('--navbar-height')) || 72),
+                        behavior: 'smooth'
                     });
                 }
             });
         });
-
-        console.log('%c🔒 SECUREX %cby Shah Interio %c| %cReady for Business',
-            'font-weight:900;font-size:1.2em;color:#5C3D2E;',
-            'color:#8B6F4E;',
-            '',
-            'color:#25D366;font-weight:600;');
-        console.log('%c📞 +91 9179539610 %c| %c🌐 shahinterio.com',
-            'font-weight:600;',
-            '',
-            'color:#5C3D2E;');
     </script>
 </body>
 </html>
