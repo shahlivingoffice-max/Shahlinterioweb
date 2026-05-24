@@ -363,7 +363,7 @@
 <nav class="navbar" id="navbar">
     <div class="navbar-inner">
         <a href="#" class="nav-logo" aria-label="SECUREX Home">
-            <img src="SECURE X.png" alt="SECUREX Logo" class="nav-logo-icon">
+            <img src="SECURE X.png" alt="SECUREX Logo" class="nav-logo-icon" onerror="this.src='https://placehold.co/44x44/E8D5B4/5C3D2E?text=SX'">
             <div class="nav-logo-text">SECUREX<span>by Shah Interio</span></div>
         </a>
         <ul class="nav-links" id="navLinks">
@@ -447,7 +447,25 @@
 </a>
 
 <script>
-    // ========== COMPLETE PRODUCT DATABASE: 16 ALMIRAHS + 4 LOCKERS + 4 TABLES + 4 CABINETS ==========
+    // ========== PRODUCT DATABASE ==========
+    // All provided SECUREX almirah images (exactly as per file list)
+    const ALMIRAH_IMAGES = [
+        "Secure-X-Almirah (1).png",
+        "Secure-X-Almirah (2).png",
+        "Secure-X-Almirah (3).png",
+        "Secure-X-Almirah (4).png",
+        "Secure-X-Almirah (5).png",
+        "Secure-X-Almirah (6).png",
+        "Secure-X-Almirah (7).png",
+        "Secure-X-Almirah (8).png",
+        "Secure-X-Almirah (9).png",
+        "Secure-X-Almirah 01.png",
+        "Secure-X-Almirah-3006.png",
+        "Secure-X-Almirah.png",
+        "Secure-X-Dressing2003.png"
+    ];
+    
+    // Detailed product data: 16 Almirahs, 4 Lockers, 4 Tables, 4 Cabinets
     const almirahs = [
         { name: "SECUREX Classic 2-Door Almirah", desc: "Traditional design with robust locking, ideal for homes and offices.", features: ["1.0mm CRCA steel", "Powder coated finish", "3 adjustable shelves", "Anti-rust treatment"], badge: "Bestseller" },
         { name: "SECUREX Heavy-Duty 3-Door Almirah", desc: "Extra storage capacity with reinforced frame, perfect for bulk storage.", features: ["1.2mm steel gauge", "5 shelves + hanging rod", "Central locking system", "Durable handles"], badge: "Industrial" },
@@ -466,18 +484,21 @@
         { name: "SECUREX Military Grade Almirah", desc: "Highest security and durability for sensitive documents.", features: ["3mm thick door", "Biometric lock option", "Fire resistant up to 2hrs", "Vault-style build"], badge: "Military" },
         { name: "SECUREX Modular Almirah", desc: "Fully customizable internal configuration.", features: ["Adjustable partitions", "Mix of shelves & drawers", "Custom color available", "Tool-less assembly"], badge: "Custom" }
     ];
+    
     const lockers = [
         { name: "SECUREX Personal Locker", desc: "Compact personal security locker for offices & gyms.", features: ["Electronic keypad", "Emergency key override", "20cm depth", "Powder coated"], badge: "Digital" },
         { name: "SECUREX 12-Door Locker Bank", desc: "Multi-compartment locker ideal for schools and staff rooms.", features: ["12 separate lockers", "Master key access", "Durable numbering plate", "Ventilated doors"], badge: "Multi-Unit" },
         { name: "SECUREX Heavy-Duty Safe Locker", desc: "High-security cash/document locker.", features: ["Double-walled door", "Re-lockable bolts", "Carpeted interior", "Drill-resistant"], badge: "High Security" },
         { name: "SECUREX Biometric Locker", desc: "Fingerprint-enabled locker for modern offices.", features: ["Fingerprint scanner", "USB backup power", "Silent alarm", "60 user capacity"], badge: "Biometric" }
     ];
+    
     const tables = [
         { name: "SECUREX Steel Office Table", desc: "Ergonomic work desk with sturdy steel frame.", features: ["1.2mm steel legs", "Laminate top option", "Cable management tray", "Adjustable feet"], badge: "Workstation" },
         { name: "SECUREX Computer Desk", desc: "Modern computer table with CPU stand.", features: ["Under-desk CPU holder", "Keyboard tray", "Mesh back panel", "Scratch-proof top"], badge: "Ergonomic" },
         { name: "SECUREX Industrial Workbench", desc: "Heavy-duty work table for workshops.", features: ["150kg load capacity", "Steel top with lip", "Tool drawer", "Powder coated finish"], badge: "Workshop" },
         { name: "SECUREX Conference Table", desc: "Large meeting table with steel base.", features: ["6-8 seater", "Modular steel legs", "Wooden finish top", "Cable ports"], badge: "Conference" }
     ];
+    
     const cabinets = [
         { name: "SECUREX 4-Drawer Filing Cabinet", desc: "Vertical filing cabinet for organized storage.", features: ["Full extension drawers", "Lockable top drawer", "Anti-tilt mechanism", "Label holders"], badge: "Filing" },
         { name: "SECUREX Open Shelf Cabinet", desc: "Industrial open storage for warehouses.", features: ["5 adjustable shelves", "200kg per shelf", "Easy assembly", "Reinforced frame"], badge: "Warehouse" },
@@ -485,22 +506,44 @@
         { name: "SECUREX Glass Display Cabinet", desc: "Showcase cabinet for retail or office display.", features: ["Toughened glass sides", "LED light ready", "Adjustable glass shelves", "Locking glass door"], badge: "Display" }
     ];
     
-    // Build full product array with images & IDs
+    // Build final products array with image assignment
     let products = [];
     let id = 1;
+    
+    // Almirahs: assign each almirah an image from the provided list (cycle through)
     almirahs.forEach((item, idx) => {
-        products.push({ id: id++, name: item.name, category: "almirah", shortDesc: item.desc, features: item.features, badge: item.badge, img: idx % 2 === 0 ? "almirah1.png.png" : "XYZ.png" });
-    });
-    lockers.forEach((item, idx) => {
-        products.push({ id: id++, name: item.name, category: "locker", shortDesc: item.desc, features: item.features, badge: item.badge, img: idx % 2 === 0 ? "SECURE X.png" : "hero-image.jpg.png" });
-    });
-    tables.forEach((item, idx) => {
-        products.push({ id: id++, name: item.name, category: "table", shortDesc: item.desc, features: item.features, badge: item.badge, img: idx % 2 === 0 ? "XYZ.png" : "almirah1.png.png" });
-    });
-    cabinets.forEach((item, idx) => {
-        products.push({ id: id++, name: item.name, category: "cabinet", shortDesc: item.desc, features: item.features, badge: item.badge, img: idx % 2 === 0 ? "hero-image.jpg.png" : "SECURE X.png" });
+        const imageName = ALMIRAH_IMAGES[idx % ALMIRAH_IMAGES.length];
+        products.push({
+            id: id++, name: item.name, category: "almirah", shortDesc: item.desc,
+            features: item.features, badge: item.badge, img: imageName
+        });
     });
     
+    // Lockers, Tables, Cabinets: use branded placeholder images (clean and professional)
+    // They will show fallback to text on error but maintain visual harmony
+    lockers.forEach((item, idx) => {
+        products.push({
+            id: id++, name: item.name, category: "locker", shortDesc: item.desc,
+            features: item.features, badge: item.badge,
+            img: `https://placehold.co/400x400/E8D5B4/5C3D2E?text=SECUREX+Locker&font=rajdhani`
+        });
+    });
+    tables.forEach((item, idx) => {
+        products.push({
+            id: id++, name: item.name, category: "table", shortDesc: item.desc,
+            features: item.features, badge: item.badge,
+            img: `https://placehold.co/400x400/E8D5B4/5C3D2E?text=SECUREX+Table&font=rajdhani`
+        });
+    });
+    cabinets.forEach((item, idx) => {
+        products.push({
+            id: id++, name: item.name, category: "cabinet", shortDesc: item.desc,
+            features: item.features, badge: item.badge,
+            img: `https://placehold.co/400x400/E8D5B4/5C3D2E?text=SECUREX+Cabinet&font=rajdhani`
+        });
+    });
+    
+    // DOM elements
     const productGrid = document.getElementById('productGrid');
     const filterBtns = document.querySelectorAll('.filter-btn');
     const productCountSpan = document.getElementById('productCount');
@@ -513,20 +556,19 @@
         productCountSpan.innerText = filtered.length;
         if (filtered.length === 0) {
             productGrid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:60px; background: var(--white); border-radius: var(--radius-lg);">No products in this category. <button data-filter="all" class="filter-btn" style="margin-left:10px;">View All</button></div>`;
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const f = btn.getAttribute('data-filter');
-                    filterBtns.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    renderProducts(f);
-                });
+            const viewAllBtn = productGrid.querySelector('button');
+            if (viewAllBtn) viewAllBtn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                document.querySelector('.filter-btn[data-filter="all"]').classList.add('active');
+                renderProducts('all');
             });
             return;
         }
+        
         productGrid.innerHTML = filtered.map(product => `
             <div class="product-card reveal" data-category="${product.category}">
                 <div class="product-img">
-                    <img src="${product.img}" alt="${product.name}" onerror="this.src='https://placehold.co/400x400/E8D5B4/5C3D2E?text=SECUREX'">
+                    <img src="${product.img}" alt="${product.name}" loading="lazy" onerror="this.src='https://placehold.co/400x400/E8D5B4/5C3D2E?text=SECUREX+${product.category.toUpperCase()}'">
                     ${product.badge ? `<div class="product-badge">${product.badge}</div>` : ''}
                 </div>
                 <div class="product-info">
@@ -538,7 +580,7 @@
                     </ul>
                     <div class="product-footer">
                         <div class="product-price">Factory Price <small>| B2B Direct</small></div>
-                        <button class="product-enquiry" data-product="${product.name}">📩 Enquire</button>
+                        <button class="product-enquiry" data-product="${product.name.replace(/[^a-zA-Z0-9 ]/g, '')}">📩 Enquire</button>
                     </div>
                 </div>
             </div>
@@ -550,7 +592,7 @@
     function attachEnquiryEvents() {
         document.querySelectorAll('.product-enquiry').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const productName = btn.getAttribute('data-product');
+                const productName = btn.getAttribute('data-product') || 'SECUREX product';
                 const waMsg = `Hello SECUREX! I am interested in *${encodeURIComponent(productName)}*. Please share price and bulk order details.`;
                 window.open(`https://wa.me/919179539610?text=${waMsg}`, '_blank');
             });
@@ -565,16 +607,19 @@
         newReveals.forEach(el => obs.observe(el));
     }
     
+    // Filter Event Listeners
     filterBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             filterBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            renderProducts(btn.getAttribute('data-filter'));
-            window.scrollTo({ top: document.querySelector('.filter-bar').offsetTop - 90, behavior: 'smooth' });
+            const filterValue = btn.getAttribute('data-filter');
+            renderProducts(filterValue);
+            const filterBar = document.querySelector('.filter-bar');
+            if (filterBar) window.scrollTo({ top: filterBar.offsetTop - 90, behavior: 'smooth' });
         });
     });
     
-    // Navbar scroll & mobile menu
+    // Navbar scroll & mobile menu logic
     const navbar = document.getElementById('navbar');
     window.addEventListener('scroll', () => { if (window.scrollY > 60) navbar.classList.add('scrolled'); else navbar.classList.remove('scrolled'); });
     const hamburger = document.getElementById('hamburger');
