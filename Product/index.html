@@ -8,12 +8,11 @@
     <meta name="keywords" content="steel almirah, locker, office table, steel cabinet, SECUREX product catalog, Shah Interio, B2B steel furniture, bulk order, Odisha">
     <meta name="robots" content="index, follow">
     <meta name="author" content="Shah Interio">
-    <!-- FIX: canonical points to correct URL matching actual filename -->
-    <link rel="canonical" href="https://shahinterio.com/Product-Page.html">
+    <link rel="canonical" href="https://shahinterio.com/product/">
     <meta property="og:title" content="SECUREX Complete Steel Furniture Catalog – 28+ Premium Products">
     <meta property="og:description" content="Industrial-grade steel almirahs, lockers, tables, and cabinets. Factory-direct pricing for businesses.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://shahinterio.com/Product-Page.html">
+    <meta property="og:url" content="https://shahinterio.com/product/">
     <meta property="og:image" content="https://shahinterio.com/securex-logo.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="SECUREX Complete Steel Furniture Catalog – 28+ Premium Products">
@@ -24,14 +23,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Structured data for product catalog -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "ItemList",
         "name": "SECUREX Steel Furniture Catalog",
         "description": "Complete catalog of SECUREX steel almirahs, lockers, tables, and cabinets",
-        "url": "https://shahinterio.com/Product-Page.html",
+        "url": "https://shahinterio.com/product/",
         "numberOfItems": 28
     }
     </script>
@@ -67,13 +65,7 @@
         }
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; scroll-padding-top: var(--navbar-height); -webkit-font-smoothing: antialiased; }
-        body {
-            font-family: 'Outfit', sans-serif;
-            background-color: var(--cream);
-            color: var(--text-dark);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
+        body { font-family: 'Outfit', sans-serif; background-color: var(--cream); color: var(--text-dark); line-height: 1.6; overflow-x: hidden; }
         h1,h2,h3,h4 { font-family: 'Rajdhani', 'Outfit', sans-serif; font-weight: 700; letter-spacing: -0.01em; }
         a { text-decoration: none; color: inherit; }
         img { max-width: 100%; height: auto; display: block; }
@@ -81,10 +73,8 @@
 
         /* ---- Navbar ---- */
         .navbar {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%;
-            z-index: 1000;
+            position: fixed; top: 0; left: 0;
+            width: 100%; z-index: 1000;
             background: rgba(254, 250, 224, 0.85);
             backdrop-filter: blur(18px);
             -webkit-backdrop-filter: blur(18px);
@@ -94,53 +84,27 @@
         }
         .navbar.scrolled { background: rgba(254, 250, 224, 0.96); box-shadow: var(--shadow-md); }
         .navbar-inner {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            display: flex; align-items: center; justify-content: space-between;
             height: var(--navbar-height);
-            max-width: var(--container-max);
-            margin: 0 auto;
-            padding: 0 24px;
+            max-width: var(--container-max); margin: 0 auto; padding: 0 24px;
         }
-        /* FIX: nav-logo is proper anchor */
-        .nav-logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-            z-index: 1001;
-        }
+        .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; z-index: 1001; }
         .nav-logo-icon { width: 44px; height: 44px; border-radius: var(--radius-sm); box-shadow: var(--shadow-sm); object-fit: cover; }
         .nav-logo-text { font-family: 'Rajdhani', sans-serif; font-weight: 800; font-size: 1.45rem; color: var(--brown-dark); line-height: 1; }
         .nav-logo-text span { display: block; font-size: 0.55rem; font-weight: 500; color: var(--brown-light); text-transform: uppercase; font-family: 'Outfit', sans-serif; letter-spacing: 0.08em; }
         .nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
         .nav-links a {
-            font-weight: 500;
-            font-size: 0.95rem;
-            color: var(--text-medium);
-            transition: color var(--transition-fast);
-            position: relative;
-            padding: 6px 0;
-            text-decoration: none;
+            font-weight: 500; font-size: 0.95rem; color: var(--text-medium);
+            transition: color var(--transition-fast); position: relative; padding: 6px 0; text-decoration: none;
         }
         .nav-links a::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background: var(--brown); transition: width var(--transition-smooth); border-radius: 2px; }
         .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
         .nav-links a:hover, .nav-links a.active { color: var(--brown-dark); }
         .btn-nav {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            padding: 10px 18px;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            background: var(--brown);
-            color: var(--cream);
-            border: none;
-            cursor: pointer;
-            transition: all var(--transition-smooth);
-            text-decoration: none;
-            font-family: 'Outfit', sans-serif;
+            display: inline-flex; align-items: center; gap: 7px; padding: 10px 18px;
+            border-radius: 50px; font-weight: 600; font-size: 0.9rem;
+            background: var(--brown); color: var(--cream); border: none; cursor: pointer;
+            transition: all var(--transition-smooth); text-decoration: none; font-family: 'Outfit', sans-serif;
         }
         .btn-nav:hover { background: var(--brown-dark); transform: translateY(-2px); box-shadow: var(--shadow-md); color: var(--cream); }
         .nav-cta { display: flex; align-items: center; gap: 10px; }
@@ -149,15 +113,7 @@
         .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
         .hamburger.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
         .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
-        .nav-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.4);
-            z-index: 999;
-            opacity: 0;
-            transition: opacity var(--transition-smooth);
-        }
+        .nav-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 999; opacity: 0; transition: opacity var(--transition-smooth); }
         .nav-overlay.active { display: block; opacity: 1; }
 
         /* ---- Page Header ---- */
@@ -171,49 +127,25 @@
         }
         .page-header::before {
             content: '';
-            position: absolute;
-            inset: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="none"/><path d="M0 50 Q25 30 50 50 Q75 70 100 50" stroke="rgba(255,255,255,0.04)" stroke-width="1" fill="none"/></svg>');
+            position: absolute; inset: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0 50 Q25 30 50 50 Q75 70 100 50" stroke="rgba(255,255,255,0.04)" stroke-width="1" fill="none"/></svg>');
             background-size: 200px;
             pointer-events: none;
         }
         .page-header h1 { font-size: clamp(2rem, 4vw, 3.5rem); margin-bottom: 16px; position: relative; }
         .page-header p { font-size: 1.05rem; opacity: 0.88; max-width: 700px; margin: 0 auto; position: relative; }
         .page-header-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(255,255,255,0.12);
-            border: 1px solid rgba(255,255,255,0.2);
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            letter-spacing: 0.06em;
-            text-transform: uppercase;
-            color: #FFD700;
-            margin-bottom: 20px;
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+            padding: 8px 20px; border-radius: 50px;
+            font-size: 0.8rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+            color: #FFD700; margin-bottom: 20px;
         }
 
         /* ---- Breadcrumb ---- */
-        .breadcrumb {
-            padding: 14px 0;
-            background: var(--beige-light);
-            border-bottom: 1px solid rgba(196, 168, 130, 0.2);
-        }
-        .breadcrumb-inner {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.85rem;
-            color: var(--text-light);
-        }
-        .breadcrumb a {
-            color: var(--brown);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
+        .breadcrumb { padding: 14px 0; background: var(--beige-light); border-bottom: 1px solid rgba(196, 168, 130, 0.2); }
+        .breadcrumb-inner { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--text-light); }
+        .breadcrumb a { color: var(--brown); text-decoration: none; font-weight: 500; transition: color 0.2s; }
         .breadcrumb a:hover { color: var(--brown-dark); }
         .breadcrumb-sep { color: var(--beige-dark); }
         .breadcrumb-current { color: var(--text-medium); font-weight: 600; }
@@ -221,261 +153,105 @@
         /* ---- Filter Bar ---- */
         .filter-section { padding: 24px 0 0; }
         .filter-bar {
-            background: var(--white);
-            border-radius: var(--radius-lg);
-            padding: 20px 24px;
-            box-shadow: var(--shadow-md);
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            gap: 16px;
-            border: 1px solid rgba(196, 168, 130, 0.15);
+            background: var(--white); border-radius: var(--radius-lg);
+            padding: 20px 24px; box-shadow: var(--shadow-md);
+            display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
+            gap: 16px; border: 1px solid rgba(196, 168, 130, 0.15);
         }
         .filter-group { display: flex; gap: 10px; flex-wrap: wrap; }
         .filter-btn {
-            padding: 10px 22px;
-            border-radius: 50px;
-            background: var(--beige-light);
-            border: 2px solid transparent;
-            font-weight: 600;
-            font-size: 0.85rem;
-            color: var(--brown);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-family: 'Outfit', sans-serif;
+            padding: 10px 22px; border-radius: 50px;
+            background: var(--beige-light); border: 2px solid transparent;
+            font-weight: 600; font-size: 0.85rem; color: var(--brown);
+            cursor: pointer; transition: all 0.2s ease; font-family: 'Outfit', sans-serif;
         }
         .filter-btn:hover { background: var(--beige); border-color: var(--beige-dark); }
-        .filter-btn.active {
-            background: var(--brown);
-            color: var(--cream);
-            border-color: var(--brown);
-            box-shadow: var(--shadow-sm);
-        }
-        .filter-stats {
-            font-weight: 600;
-            color: var(--brown);
-            background: var(--beige-light);
-            padding: 8px 18px;
-            border-radius: 40px;
-            font-size: 0.9rem;
-        }
+        .filter-btn.active { background: var(--brown); color: var(--cream); border-color: var(--brown); box-shadow: var(--shadow-sm); }
+        .filter-stats { font-weight: 600; color: var(--brown); background: var(--beige-light); padding: 8px 18px; border-radius: 40px; font-size: 0.9rem; }
         .filter-stats span { color: var(--gold-accent); }
 
-        /* ---- Product Grid ---- */
-        .product-section { padding: 36px 0 80px; }
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 28px;
-        }
-        .product-card {
-            background: var(--white);
-            border-radius: var(--radius-xl);
-            overflow: hidden;
-            box-shadow: var(--shadow-sm);
-            transition: all var(--transition-smooth);
-            border: 1px solid rgba(196, 168, 130, 0.2);
-            display: flex;
-            flex-direction: column;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: cardIn 0.5s ease forwards;
-        }
-        @keyframes cardIn {
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .product-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-xl);
-            border-color: var(--beige-dark);
-        }
-        .product-img {
-            background: linear-gradient(145deg, var(--beige), var(--beige-dark));
-            aspect-ratio: 1 / 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-        .product-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-            display: block;
-        }
-        .product-card:hover .product-img img { transform: scale(1.05); }
-
-        /* Placeholder shown when no image is available */
-        .product-img-placeholder {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            color: rgba(92, 61, 46, 0.4);
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 700;
-            font-size: 1.1rem;
-            text-align: center;
-            padding: 20px;
-        }
-        .product-img-placeholder .ph-icon { font-size: 3.5rem; }
-
-        .product-badge {
-            position: absolute;
-            top: 14px;
-            right: 14px;
-            background: var(--brown-dark);
-            color: white;
-            padding: 5px 12px;
-            border-radius: 30px;
-            font-size: 0.68rem;
-            font-weight: 700;
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
-            z-index: 2;
-        }
-        .product-badge.badge-best { background: var(--gold-accent); }
-        .product-badge.badge-new { background: #2e7d32; }
-        .product-badge.badge-hot { background: #c62828; }
-
-        .product-info { padding: 22px; flex: 1; display: flex; flex-direction: column; }
-        .product-category {
-            font-size: 0.68rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--gold-accent);
-            font-weight: 700;
-            margin-bottom: 6px;
-        }
-        .product-title {
-            font-size: 1.2rem;
-            font-weight: 800;
-            color: var(--brown-dark);
-            margin-bottom: 8px;
-            line-height: 1.3;
-        }
-        .product-desc {
-            color: var(--text-light);
-            font-size: 0.85rem;
-            margin-bottom: 14px;
-            line-height: 1.55;
-            flex: 1;
-        }
-        .product-features {
-            list-style: none;
-            margin: 0 0 16px;
-        }
-        .product-features li {
-            font-size: 0.8rem;
-            color: var(--text-medium);
-            margin-bottom: 5px;
-            display: flex;
-            align-items: flex-start;
-            gap: 7px;
-            line-height: 1.4;
-        }
-        .product-features li::before {
-            content: "✓";
-            color: var(--gold-accent);
-            font-weight: 700;
-            flex-shrink: 0;
-            margin-top: 1px;
-        }
-        .product-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 14px;
-            border-top: 1px solid rgba(196, 168, 130, 0.2);
-            margin-top: auto;
-            gap: 10px;
-        }
-        .product-price {
-            font-weight: 700;
-            font-size: 0.88rem;
-            color: var(--brown);
-            line-height: 1.3;
-        }
-        .product-price small {
-            display: block;
-            font-size: 0.68rem;
-            font-weight: 400;
-            color: var(--text-light);
-        }
-        /* FIX: enquiry button — no inline onclick, JS handles it */
-        .product-enquiry {
-            background: var(--brown);
-            color: white;
-            border: none;
-            padding: 9px 18px;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 0.82rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-family: 'Outfit', sans-serif;
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-        .product-enquiry:hover {
-            background: var(--brown-dark);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-
-        /* No results state */
-        .no-results {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 80px 24px;
-            background: var(--white);
-            border-radius: var(--radius-lg);
-            border: 1px solid rgba(196, 168, 130, 0.2);
-        }
-        .no-results p { color: var(--text-light); margin-top: 8px; }
-
-        /* Back to top */
+        /* ---- Back to Home ---- */
         .back-to-home {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--beige-light);
-            color: var(--brown);
-            border: 1px solid var(--beige-dark);
-            padding: 10px 20px;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            text-decoration: none;
-            transition: all 0.2s;
-            margin-bottom: 24px;
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--beige-light); color: var(--brown);
+            border: 1px solid var(--beige-dark); padding: 10px 20px;
+            border-radius: 50px; font-weight: 600; font-size: 0.9rem;
+            text-decoration: none; transition: all 0.2s;
         }
         .back-to-home:hover { background: var(--beige); transform: translateX(-4px); }
 
+        /* ---- Product Grid ---- */
+        .product-section { padding: 36px 0 80px; }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 28px; }
+        .product-card {
+            background: var(--white); border-radius: var(--radius-xl);
+            overflow: hidden; box-shadow: var(--shadow-sm);
+            transition: all var(--transition-smooth);
+            border: 1px solid rgba(196, 168, 130, 0.2);
+            display: flex; flex-direction: column;
+            opacity: 0; transform: translateY(20px);
+            animation: cardIn 0.5s ease forwards;
+        }
+        @keyframes cardIn { to { opacity: 1; transform: translateY(0); } }
+        .product-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-xl); border-color: var(--beige-dark); }
+        .product-img {
+            background: linear-gradient(145deg, var(--beige), var(--beige-dark));
+            aspect-ratio: 1 / 1;
+            display: flex; align-items: center; justify-content: center;
+            position: relative; overflow: hidden;
+        }
+        .product-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; display: block; }
+        .product-card:hover .product-img img { transform: scale(1.05); }
+        .product-img-placeholder {
+            width: 100%; height: 100%;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 12px; color: rgba(92, 61, 46, 0.4);
+            font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1.1rem;
+            text-align: center; padding: 20px;
+        }
+        .product-img-placeholder .ph-icon { font-size: 3.5rem; }
+        .product-badge {
+            position: absolute; top: 14px; right: 14px;
+            background: var(--brown-dark); color: white;
+            padding: 5px 12px; border-radius: 30px;
+            font-size: 0.68rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; z-index: 2;
+        }
+        .product-badge.badge-best { background: var(--gold-accent); }
+        .product-badge.badge-new  { background: #2e7d32; }
+        .product-badge.badge-hot  { background: #c62828; }
+        .product-info { padding: 22px; flex: 1; display: flex; flex-direction: column; }
+        .product-category { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gold-accent); font-weight: 700; margin-bottom: 6px; }
+        .product-title { font-size: 1.2rem; font-weight: 800; color: var(--brown-dark); margin-bottom: 8px; line-height: 1.3; }
+        .product-desc { color: var(--text-light); font-size: 0.85rem; margin-bottom: 14px; line-height: 1.55; flex: 1; }
+        .product-features { list-style: none; margin: 0 0 16px; }
+        .product-features li {
+            font-size: 0.8rem; color: var(--text-medium); margin-bottom: 5px;
+            display: flex; align-items: flex-start; gap: 7px; line-height: 1.4;
+        }
+        .product-features li::before { content: "✓"; color: var(--gold-accent); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+        .product-footer {
+            display: flex; justify-content: space-between; align-items: center;
+            padding-top: 14px; border-top: 1px solid rgba(196, 168, 130, 0.2);
+            margin-top: auto; gap: 10px;
+        }
+        .product-price { font-weight: 700; font-size: 0.88rem; color: var(--brown); line-height: 1.3; }
+        .product-price small { display: block; font-size: 0.68rem; font-weight: 400; color: var(--text-light); }
+        .product-enquiry {
+            background: var(--brown); color: white; border: none;
+            padding: 9px 18px; border-radius: 40px; font-weight: 600; font-size: 0.82rem;
+            cursor: pointer; transition: all 0.2s; text-decoration: none;
+            display: inline-flex; align-items: center; gap: 6px;
+            font-family: 'Outfit', sans-serif; white-space: nowrap; flex-shrink: 0;
+        }
+        .product-enquiry:hover { background: var(--brown-dark); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+        .no-results { grid-column: 1 / -1; text-align: center; padding: 80px 24px; background: var(--white); border-radius: var(--radius-lg); border: 1px solid rgba(196, 168, 130, 0.2); }
+        .no-results p { color: var(--text-light); margin-top: 8px; }
+
         /* ---- Footer ---- */
-        .footer {
-            background: var(--brown-deep);
-            color: var(--beige);
-            padding: 56px 0 24px;
-        }
-        .footer-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
-            gap: 40px;
-            margin-bottom: 40px;
-        }
+        .footer { background: var(--brown-deep); color: var(--beige); padding: 56px 0 24px; }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
         .footer-brand h4 { color: var(--cream); font-size: 1.4rem; margin-bottom: 8px; }
-        .footer-brand p { color: var(--beige-dark); font-size: 0.85rem; line-height: 1.5; }
+        .footer-brand p  { color: var(--beige-dark); font-size: 0.85rem; line-height: 1.5; }
         .footer h5 { color: var(--cream); margin-bottom: 16px; font-size: 1rem; }
         .footer-links { list-style: none; }
         .footer-links li { margin-bottom: 10px; }
@@ -486,69 +262,33 @@
 
         /* ---- WhatsApp Float ---- */
         .whatsapp-float {
-            position: fixed;
-            bottom: 28px; right: 28px;
-            z-index: 998;
-            width: 58px; height: 58px;
-            border-radius: 50%;
-            background: #25D366;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            position: fixed; bottom: 28px; right: 28px; z-index: 998;
+            width: 58px; height: 58px; border-radius: 50%;
+            background: #25D366; color: #fff;
+            display: flex; align-items: center; justify-content: center;
             box-shadow: 0 6px 24px rgba(37, 211, 102, 0.4);
-            text-decoration: none;
-            transition: transform 0.3s ease, box-shadow 0.3s;
+            text-decoration: none; transition: transform 0.3s ease, box-shadow 0.3s;
         }
         .whatsapp-float:hover { transform: scale(1.12); box-shadow: 0 10px 32px rgba(37, 211, 102, 0.55); color: #fff; }
-        .whatsapp-float-pulse {
-            position: absolute;
-            inset: -6px;
-            border-radius: 50%;
-            border: 2px solid #25D366;
-            animation: pulse-ring 2s infinite;
-            pointer-events: none;
-        }
-        @keyframes pulse-ring {
-            0% { transform: scale(1); opacity: 0.7; }
-            100% { transform: scale(1.6); opacity: 0; }
-        }
+        .whatsapp-float-pulse { position: absolute; inset: -6px; border-radius: 50%; border: 2px solid #25D366; animation: pulse-ring 2s infinite; pointer-events: none; }
+        @keyframes pulse-ring { 0% { transform: scale(1); opacity: 0.7; } 100% { transform: scale(1.6); opacity: 0; } }
 
-        /* ---- Accessibility ---- */
-        .skip-link {
-            position: absolute;
-            top: -100%; left: 16px;
-            background: var(--brown);
-            color: var(--cream);
-            padding: 8px 16px;
-            border-radius: 0 0 var(--radius-sm) var(--radius-sm);
-            font-weight: 600;
-            z-index: 99999;
-            text-decoration: none;
-            transition: top 0.2s;
-        }
+        /* ---- Skip link ---- */
+        .skip-link { position: absolute; top: -100%; left: 16px; background: var(--brown); color: var(--cream); padding: 8px 16px; border-radius: 0 0 var(--radius-sm) var(--radius-sm); font-weight: 600; z-index: 99999; text-decoration: none; transition: top 0.2s; }
         .skip-link:focus { top: 0; }
 
         /* ---- Responsive ---- */
-        @media (max-width: 1024px) {
-            .footer-grid { grid-template-columns: 1fr 1fr; }
-        }
+        @media (max-width: 1024px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
         @media (max-width: 768px) {
             .nav-links {
-                position: fixed;
-                top: 0; right: -100%;
-                width: min(280px, 80vw);
-                height: 100vh;
+                position: fixed; top: 0; right: -100%;
+                width: min(280px, 80vw); height: 100vh;
                 flex-direction: column;
                 background: rgba(254, 250, 224, 0.98);
-                backdrop-filter: blur(20px);
-                -webkit-backdrop-filter: blur(20px);
-                padding: 100px 32px 40px;
-                gap: 24px;
+                backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+                padding: 100px 32px 40px; gap: 24px;
                 transition: right var(--transition-smooth);
-                box-shadow: var(--shadow-xl);
-                z-index: 1000;
-                overflow-y: auto;
+                box-shadow: var(--shadow-xl); z-index: 1000; overflow-y: auto;
             }
             .nav-links.active { right: 0; }
             .hamburger { display: flex; }
@@ -563,59 +303,50 @@
             .product-grid { grid-template-columns: 1fr; }
             .whatsapp-float { bottom: 18px; right: 16px; width: 50px; height: 50px; }
         }
-        @media (min-width: 640px) {
-            .product-grid { grid-template-columns: repeat(2, 1fr); }
-        }
-        @media (min-width: 1024px) {
-            .product-grid { grid-template-columns: repeat(3, 1fr); }
-        }
-        @media (min-width: 1280px) {
-            .product-grid { grid-template-columns: repeat(4, 1fr); }
-        }
+        @media (min-width: 640px)  { .product-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (min-width: 1024px) { .product-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (min-width: 1280px) { .product-grid { grid-template-columns: repeat(4, 1fr); } }
     </style>
 </head>
 <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
-    <!-- Nav overlay for mobile -->
     <div class="nav-overlay" id="navOverlay" aria-hidden="true"></div>
 
-    <!-- ==================== NAVBAR ==================== -->
+    <!-- NAVBAR -->
     <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
         <div class="navbar-inner">
-            <!-- FIX: back to index.html (correct homepage filename) -->
-            <a href="index.html" class="nav-logo" aria-label="SECUREX – Back to Home">
-                <img src="securex-logo.png" alt="SECUREX"
-                     class="nav-logo-icon"
-                     onerror="this.style.display='none'">
+            <!-- ✅ FIXED: ../ goes up one level back to root -->
+            <a href="../" class="nav-logo" aria-label="SECUREX – Back to Home">
+                <img src="../securex-logo.png" alt="SECUREX" class="nav-logo-icon" onerror="this.style.display='none'">
                 <div class="nav-logo-text">SECUREX<span>by Shah Interio</span></div>
             </a>
+
             <ul class="nav-links" id="navLinks" aria-label="Site sections">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="index.html#about">About</a></li>
-                <!-- FIX: current page marked active + aria-current -->
-                <li><a href="Product-Page.html" class="active" aria-current="page">Products</a></li>
-                <li><a href="index.html#why-us">Why Us</a></li>
-                <li><a href="index.html#gallery">Gallery</a></li>
-                <li><a href="index.html#contact">Contact</a></li>
+                <!-- ✅ FIXED: all links use ../ to go back to root -->
+                <li><a href="../">Home</a></li>
+                <li><a href="../#about">About</a></li>
+                <li><a href="./" class="active" aria-current="page">Products</a></li>
+                <li><a href="../#why-us">Why Us</a></li>
+                <li><a href="../#gallery">Gallery</a></li>
+                <li><a href="../#contact">Contact</a></li>
             </ul>
+
             <div class="nav-cta">
                 <a href="tel:+919179539610" class="btn-nav" aria-label="Call us">📞 Call</a>
                 <a href="https://wa.me/919179539610?text=Hello%20SECUREX%20Team!%20I'm%20interested%20in%20your%20steel%20furniture%20catalog."
                    class="btn-nav" style="background:#25D366;"
-                   target="_blank" rel="noopener noreferrer"
-                   aria-label="Chat on WhatsApp">💬 WhatsApp</a>
+                   target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">💬 WhatsApp</a>
             </div>
+
             <button class="hamburger" id="hamburger"
-                    aria-label="Toggle menu"
-                    aria-expanded="false"
-                    aria-controls="navLinks">
+                    aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
                 <span></span><span></span><span></span>
             </button>
         </div>
     </nav>
 
-    <!-- ==================== PAGE HEADER ==================== -->
+    <!-- PAGE HEADER -->
     <header class="page-header" role="banner">
         <div class="container">
             <div class="page-header-badge">🏆 B2B Manufacturer Direct</div>
@@ -625,30 +356,28 @@
         </div>
     </header>
 
-    <!-- FIX: Breadcrumb navigation for SEO + UX -->
+    <!-- ✅ FIXED: breadcrumb uses ../ to go back to root -->
     <nav class="breadcrumb" aria-label="Breadcrumb">
         <div class="container breadcrumb-inner">
-            <a href="index.html">🏠 Home</a>
+            <a href="../">🏠 Home</a>
             <span class="breadcrumb-sep" aria-hidden="true">›</span>
             <span class="breadcrumb-current" aria-current="page">Products</span>
         </div>
     </nav>
 
     <main id="main-content">
-        <!-- ==================== FILTER ==================== -->
+        <!-- FILTER -->
         <section class="filter-section" aria-label="Filter products">
             <div class="container">
                 <div class="filter-bar">
-                    <!-- FIX: back-to-home link included -->
-                    <a href="index.html" class="back-to-home" aria-label="Back to homepage">
-                        ← Back to Home
-                    </a>
+                    <!-- ✅ FIXED: back to home uses ../ -->
+                    <a href="../" class="back-to-home" aria-label="Back to homepage">← Back to Home</a>
                     <div class="filter-group" id="filterGroup" role="group" aria-label="Filter by category">
-                        <button class="filter-btn active" data-filter="all" aria-pressed="true">All Products</button>
-                        <button class="filter-btn" data-filter="almirah" aria-pressed="false">Almirahs (16)</button>
-                        <button class="filter-btn" data-filter="locker" aria-pressed="false">Lockers (4)</button>
-                        <button class="filter-btn" data-filter="table" aria-pressed="false">Tables (4)</button>
-                        <button class="filter-btn" data-filter="cabinet" aria-pressed="false">Cabinets (4)</button>
+                        <button class="filter-btn active" data-filter="all"     aria-pressed="true">All Products</button>
+                        <button class="filter-btn" data-filter="almirah"        aria-pressed="false">Almirahs (16)</button>
+                        <button class="filter-btn" data-filter="locker"         aria-pressed="false">Lockers (4)</button>
+                        <button class="filter-btn" data-filter="table"          aria-pressed="false">Tables (4)</button>
+                        <button class="filter-btn" data-filter="cabinet"        aria-pressed="false">Cabinets (4)</button>
                     </div>
                     <div class="filter-stats" role="status" aria-live="polite">
                         Showing <span id="productCount">28</span> products
@@ -657,7 +386,7 @@
             </div>
         </section>
 
-        <!-- ==================== PRODUCT GRID ==================== -->
+        <!-- PRODUCT GRID -->
         <section class="product-section" aria-label="Product catalog">
             <div class="container">
                 <div class="product-grid" id="productGrid" aria-label="Products list"></div>
@@ -665,7 +394,7 @@
         </section>
     </main>
 
-    <!-- ==================== FOOTER ==================== -->
+    <!-- FOOTER -->
     <footer class="footer" role="contentinfo">
         <div class="container">
             <div class="footer-grid">
@@ -679,28 +408,20 @@
                 <div>
                     <h5>Quick Links</h5>
                     <ul class="footer-links">
-                        <!-- FIX: all cross-page links use correct filenames -->
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="index.html#about">About</a></li>
-                        <li><a href="Product-Page.html">Products</a></li>
-                        <li><a href="index.html#contact">Contact</a></li>
+                        <!-- ✅ FIXED: all footer links use ../ -->
+                        <li><a href="../">Home</a></li>
+                        <li><a href="../#about">About</a></li>
+                        <li><a href="./">Products</a></li>
+                        <li><a href="../#contact">Contact</a></li>
                     </ul>
                 </div>
                 <div>
                     <h5>Contact Info</h5>
                     <ul class="footer-links">
                         <li><a href="tel:+919179539610">📞 +91 9179539610</a></li>
-                        <li>
-                            <a href="https://wa.me/919179539610" target="_blank" rel="noopener noreferrer">
-                                💬 WhatsApp Chat
-                            </a>
-                        </li>
+                        <li><a href="https://wa.me/919179539610" target="_blank" rel="noopener noreferrer">💬 WhatsApp Chat</a></li>
                         <li><span>📍 Brajesh Steel, Kantabaji, Odisha</span></li>
-                        <li>
-                            <a href="https://shahinterio.com" target="_blank" rel="noopener noreferrer">
-                                🌐 shahinterio.com
-                            </a>
-                        </li>
+                        <li><a href="https://shahinterio.com" target="_blank" rel="noopener noreferrer">🌐 shahinterio.com</a></li>
                     </ul>
                 </div>
             </div>
@@ -711,11 +432,10 @@
         </div>
     </footer>
 
-    <!-- ==================== WHATSAPP FLOAT ==================== -->
+    <!-- WHATSAPP FLOAT -->
     <a href="https://wa.me/919179539610?text=Hello%20SECUREX%20Team!%20I%20want%20to%20enquire%20about%20your%20steel%20furniture%20catalog."
        target="_blank" rel="noopener noreferrer"
-       class="whatsapp-float"
-       aria-label="Chat on WhatsApp">
+       class="whatsapp-float" aria-label="Chat on WhatsApp">
         <span class="whatsapp-float-pulse" aria-hidden="true"></span>
         <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
@@ -723,112 +443,107 @@
     </a>
 
     <script>
-        /* ============================================================
-           SECUREX Product-Page.html — JavaScript
-        ============================================================ */
-
         // ---- PRODUCT DATABASE ----
-        // FIX: all almirah image filenames exactly match repo
+        // ✅ FIXED: image paths use ../ since this file is inside product/ folder
         const ALMIRAH_IMAGES = [
-            "Secure-X-Almirah (1).png",
-            "Secure-X-Almirah (2).png",
-            "Secure-X-Almirah (3).png",
-            "Secure-X-Almirah (4).png",
-            "Secure-X-Almirah (5).png",
-            "Secure-X-Almirah (6).png",
-            "Secure-X-Almirah (7).png",
-            "Secure-X-Almirah (8).png",
-            "Secure-X-Almirah (9).png",
-            "Secure-X-Almirah 01.png",
-            "Secure-X-Almirah-3006.png",
-            "Secure-X-Almirah.png",
-            "Secure-X-Dressing2003.png"
+            "../Secure-X-Almirah (1).png",
+            "../Secure-X-Almirah (2).png",
+            "../Secure-X-Almirah (3).png",
+            "../Secure-X-Almirah (4).png",
+            "../Secure-X-Almirah (5).png",
+            "../Secure-X-Almirah (6).png",
+            "../Secure-X-Almirah (7).png",
+            "../Secure-X-Almirah (8).png",
+            "../Secure-X-Almirah (9).png",
+            "../Secure-X-Almirah 01.png",
+            "../Secure-X-Almirah-3006.png",
+            "../Secure-X-Almirah.png",
+            "../Secure-X-Dressing2003.png"
         ];
 
-        // Category icon placeholders for non-almirah products
         const CATEGORY_ICONS = {
-            locker:  { icon: '🔐', label: 'Steel Locker' },
-            table:   { icon: '🖥️', label: 'Steel Table'  },
-            cabinet: { icon: '🗄️', label: 'Steel Cabinet'}
+            locker:  { icon: '🔐', label: 'Steel Locker'  },
+            table:   { icon: '🖥️', label: 'Steel Table'   },
+            cabinet: { icon: '🗄️', label: 'Steel Cabinet' }
         };
 
         const almirahs = [
-            { name: "SECUREX Classic 2-Door Almirah",       badge: "Bestseller", badgeClass: "badge-best",
+            { name: "SECUREX Classic 2-Door Almirah",      badge: "Bestseller",   badgeClass: "badge-best",
               desc: "Traditional design with robust locking, ideal for homes and offices.",
               features: ["1.0mm CRCA steel", "Powder coated finish", "3 adjustable shelves", "Anti-rust treatment"] },
-            { name: "SECUREX Heavy-Duty 3-Door Almirah",    badge: "Industrial", badgeClass: "",
+            { name: "SECUREX Heavy-Duty 3-Door Almirah",   badge: "Industrial",   badgeClass: "",
               desc: "Extra storage capacity with reinforced frame, perfect for bulk storage.",
               features: ["1.2mm steel gauge", "5 shelves + hanging rod", "Central locking system", "Durable handles"] },
-            { name: "SECUREX Designer Wardrobe Almirah",    badge: "Premium",    badgeClass: "",
+            { name: "SECUREX Designer Wardrobe Almirah",   badge: "Premium",      badgeClass: "",
               desc: "Modern glossy finish with mirror attachment option.",
               features: ["Premium gloss coating", "Full-length mirror option", "Soft-close hinges", "Ventilated design"] },
-            { name: "SECUREX 4-Door Office Almirah",        badge: "Office Pro", badgeClass: "",
+            { name: "SECUREX 4-Door Office Almirah",       badge: "Office Pro",   badgeClass: "",
               desc: "Spacious steel cupboard for office document storage.",
               features: ["4 independent compartments", "Label holders", "Heavy-duty castors", "Fire-resistant paint"] },
-            { name: "SECUREX Compact Single Door Almirah",  badge: "Compact",    badgeClass: "",
+            { name: "SECUREX Compact Single Door Almirah", badge: "Compact",      badgeClass: "",
               desc: "Space-saving design for small rooms and dorms.",
               features: ["Slim profile 45cm depth", "Single lock with 2 keys", "One internal shelf", "Lightweight yet strong"] },
-            { name: "SECUREX Double Security Almirah",      badge: "Security+",  badgeClass: "badge-hot",
+            { name: "SECUREX Double Security Almirah",     badge: "Security+",    badgeClass: "badge-hot",
               desc: "Enhanced protection with dual locking mechanism.",
               features: ["Double lock system", "Hidden hinge design", "Secret drawer inside", "Anti-drill plate"] },
-            { name: "SECUREX Sliding Door Almirah",         badge: "Modern",     badgeClass: "badge-new",
+            { name: "SECUREX Sliding Door Almirah",        badge: "Modern",       badgeClass: "badge-new",
               desc: "Contemporary sliding doors for modern interiors.",
               features: ["Smooth sliding channels", "Full aluminium handle", "Ample hanging space", "Scratch-resistant"] },
-            { name: "SECUREX Institutional Almirah",        badge: "Institutional", badgeClass: "",
+            { name: "SECUREX Institutional Almirah",       badge: "Institutional", badgeClass: "",
               desc: "Built for schools, colleges, and large organizations.",
               features: ["Extra thick 1.5mm steel", "Reinforced shelves", "Industrial powder coating", "10-year frame warranty"] },
-            { name: "SECUREX 5-Drawer Chest Almirah",       badge: "Filing",     badgeClass: "",
+            { name: "SECUREX 5-Drawer Chest Almirah",      badge: "Filing",       badgeClass: "",
               desc: "Multi-drawer steel unit for filing and organisation.",
               features: ["5 deep drawers", "Ball-bearing slides", "Central key lock", "Stable base"] },
-            { name: "SECUREX Executive Almirah",            badge: "Luxury",     badgeClass: "badge-best",
+            { name: "SECUREX Executive Almirah",           badge: "Luxury",       badgeClass: "badge-best",
               desc: "Premium wooden-finish steel almirah for executives.",
               features: ["Wood grain laminate", "Soft-close mechanism", "Integrated mirror", "Jewellery tray inside"] },
-            { name: "SECUREX Warehouse Cupboard",           badge: "Industrial+", badgeClass: "",
+            { name: "SECUREX Warehouse Cupboard",          badge: "Industrial+",  badgeClass: "",
               desc: "Heavy-duty almirah for industrial storage needs.",
               features: ["2.0mm frame thickness", "Forklift-compatible base", "Anti-corrosion coating", "Stackable design"] },
-            { name: "SECUREX Corner Almirah",               badge: "Space Saver", badgeClass: "",
+            { name: "SECUREX Corner Almirah",              badge: "Space Saver",  badgeClass: "",
               desc: "Space-optimised triangular design for corner placement.",
               features: ["Angle-specific fit", "90° swing doors", "2 adjustable shelves", "Elegant curved handles"] },
-            { name: "SECUREX 6-Door Almirah",               badge: "Max Storage", badgeClass: "badge-hot",
+            { name: "SECUREX 6-Door Almirah",              badge: "Max Storage",  badgeClass: "badge-hot",
               desc: "Massive storage for large families or offices.",
               features: ["6 separate locking doors", "12 shelves total", "Central pillar support", "Heavy gauge steel"] },
-            { name: "SECUREX Glass Door Almirah",           badge: "Showcase",   badgeClass: "badge-new",
+            { name: "SECUREX Glass Door Almirah",          badge: "Showcase",     badgeClass: "badge-new",
               desc: "Display cabinet cum almirah with toughened glass.",
               features: ["Tempered glass doors", "LED strip ready", "Lockable display section", "Anti-dust gasket"] },
-            { name: "SECUREX Military Grade Almirah",       badge: "Military",   badgeClass: "badge-hot",
+            { name: "SECUREX Military Grade Almirah",      badge: "Military",     badgeClass: "badge-hot",
               desc: "Highest security and durability for sensitive documents.",
               features: ["3mm thick door", "Biometric lock option", "Fire resistant up to 2 hrs", "Vault-style build"] },
-            { name: "SECUREX Modular Almirah",              badge: "Custom",     badgeClass: "badge-new",
+            { name: "SECUREX Modular Almirah",             badge: "Custom",       badgeClass: "badge-new",
               desc: "Fully customisable internal configuration.",
               features: ["Adjustable partitions", "Mix of shelves & drawers", "Custom colour available", "Tool-less assembly"] }
         ];
 
         const lockers = [
-            { name: "SECUREX Personal Locker",      badge: "Digital",       badgeClass: "badge-new",
+            { name: "SECUREX Personal Locker",       badge: "Digital",       badgeClass: "badge-new",
               desc: "Compact personal security locker for offices & gyms.",
               features: ["Electronic keypad", "Emergency key override", "20cm depth", "Powder coated"] },
-            { name: "SECUREX 12-Door Locker Bank",  badge: "Multi-Unit",    badgeClass: "",
+            { name: "SECUREX 12-Door Locker Bank",   badge: "Multi-Unit",    badgeClass: "",
               desc: "Multi-compartment locker ideal for schools and staff rooms.",
               features: ["12 separate lockers", "Master key access", "Durable numbering plate", "Ventilated doors"] },
             { name: "SECUREX Heavy-Duty Safe Locker", badge: "High Security", badgeClass: "badge-hot",
               desc: "High-security cash/document locker.",
               features: ["Double-walled door", "Re-lockable bolts", "Carpeted interior", "Drill-resistant"] },
-            { name: "SECUREX Biometric Locker",     badge: "Biometric",     badgeClass: "badge-best",
+            { name: "SECUREX Biometric Locker",      badge: "Biometric",     badgeClass: "badge-best",
               desc: "Fingerprint-enabled locker for modern offices.",
               features: ["Fingerprint scanner", "USB backup power", "Silent alarm", "60 user capacity"] }
         ];
 
         const tables = [
-            { name: "SECUREX Steel Office Table",   badge: "Workstation",   badgeClass: "",
+            { name: "SECUREX Steel Office Table",    badge: "Workstation",  badgeClass: "",
               desc: "Ergonomic work desk with sturdy steel frame.",
               features: ["1.2mm steel legs", "Laminate top option", "Cable management tray", "Adjustable feet"] },
-            { name: "SECUREX Computer Desk",        badge: "Ergonomic",     badgeClass: "badge-new",
+            { name: "SECUREX Computer Desk",         badge: "Ergonomic",    badgeClass: "badge-new",
               desc: "Modern computer table with CPU stand.",
               features: ["Under-desk CPU holder", "Keyboard tray", "Mesh back panel", "Scratch-proof top"] },
-            { name: "SECUREX Industrial Workbench", badge: "Workshop",      badgeClass: "badge-hot",
+            { name: "SECUREX Industrial Workbench",  badge: "Workshop",     badgeClass: "badge-hot",
               desc: "Heavy-duty work table for workshops.",
               features: ["150kg load capacity", "Steel top with lip", "Tool drawer", "Powder coated finish"] },
-            { name: "SECUREX Conference Table",     badge: "Conference",    badgeClass: "",
+            { name: "SECUREX Conference Table",      badge: "Conference",   badgeClass: "",
               desc: "Large meeting table with steel base.",
               features: ["6–8 seater", "Modular steel legs", "Wooden finish top", "Cable ports"] }
         ];
@@ -837,7 +552,7 @@
             { name: "SECUREX 4-Drawer Filing Cabinet", badge: "Filing",     badgeClass: "",
               desc: "Vertical filing cabinet for organised storage.",
               features: ["Full extension drawers", "Lockable top drawer", "Anti-tilt mechanism", "Label holders"] },
-            { name: "SECUREX Open Shelf Cabinet",   badge: "Warehouse",     badgeClass: "badge-hot",
+            { name: "SECUREX Open Shelf Cabinet",    badge: "Warehouse",    badgeClass: "badge-hot",
               desc: "Industrial open storage for warehouses.",
               features: ["5 adjustable shelves", "200kg per shelf", "Easy assembly", "Reinforced frame"] },
             { name: "SECUREX Mobile Storage Cabinet", badge: "Mobile",      badgeClass: "badge-new",
@@ -851,34 +566,22 @@
         // Build full products array
         let products = [];
         let id = 1;
-
         almirahs.forEach((item, idx) => {
-            products.push({
-                id: id++, category: 'almirah',
-                name: item.name, desc: item.desc,
-                features: item.features,
-                badge: item.badge, badgeClass: item.badgeClass,
-                // FIX: cycle through actual almirah images; no placeholder for almirahs
-                img: ALMIRAH_IMAGES[idx % ALMIRAH_IMAGES.length],
-                hasImg: true
-            });
+            products.push({ id: id++, category: 'almirah', name: item.name, desc: item.desc,
+                features: item.features, badge: item.badge, badgeClass: item.badgeClass,
+                img: ALMIRAH_IMAGES[idx % ALMIRAH_IMAGES.length], hasImg: true });
         });
-
-        // FIX: non-almirah categories use built-in HTML placeholder (no broken external URL)
         lockers.forEach(item => {
             products.push({ id: id++, category: 'locker', name: item.name, desc: item.desc,
-                features: item.features, badge: item.badge, badgeClass: item.badgeClass,
-                img: null, hasImg: false });
+                features: item.features, badge: item.badge, badgeClass: item.badgeClass, img: null, hasImg: false });
         });
         tables.forEach(item => {
             products.push({ id: id++, category: 'table', name: item.name, desc: item.desc,
-                features: item.features, badge: item.badge, badgeClass: item.badgeClass,
-                img: null, hasImg: false });
+                features: item.features, badge: item.badge, badgeClass: item.badgeClass, img: null, hasImg: false });
         });
         cabinets.forEach(item => {
             products.push({ id: id++, category: 'cabinet', name: item.name, desc: item.desc,
-                features: item.features, badge: item.badge, badgeClass: item.badgeClass,
-                img: null, hasImg: false });
+                features: item.features, badge: item.badge, badgeClass: item.badgeClass, img: null, hasImg: false });
         });
 
         const productGrid      = document.getElementById('productGrid');
@@ -886,31 +589,20 @@
         const productCountSpan = document.getElementById('productCount');
 
         function renderProducts(filter) {
-            const filtered = filter === 'all'
-                ? products
-                : products.filter(p => p.category === filter);
-
+            const filtered = filter === 'all' ? products : products.filter(p => p.category === filter);
             productCountSpan.textContent = filtered.length;
 
             if (filtered.length === 0) {
-                productGrid.innerHTML = `
-                    <div class="no-results">
-                        <div style="font-size:3rem;margin-bottom:12px;">🔍</div>
-                        <h3 style="color:var(--brown-dark);">No products found</h3>
-                        <p>Try selecting a different category.</p>
-                    </div>`;
+                productGrid.innerHTML = `<div class="no-results"><div style="font-size:3rem;margin-bottom:12px;">🔍</div><h3 style="color:var(--brown-dark);">No products found</h3><p>Try selecting a different category.</p></div>`;
                 return;
             }
 
             productGrid.innerHTML = filtered.map((product, i) => {
                 const catInfo = CATEGORY_ICONS[product.category] || {};
-
-                // Build image HTML
                 let imgHTML;
                 if (product.hasImg) {
                     imgHTML = `
-                        <img src="${product.img}"
-                             alt="${product.name}"
+                        <img src="${product.img}" alt="${product.name}"
                              loading="${i < 4 ? 'eager' : 'lazy'}"
                              onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
                         <div class="product-img-placeholder" style="display:none;">
@@ -918,25 +610,17 @@
                             ${catInfo.label || product.category.toUpperCase()}
                         </div>`;
                 } else {
-                    imgHTML = `
-                        <div class="product-img-placeholder">
-                            <span class="ph-icon">${catInfo.icon || '📦'}</span>
-                            ${catInfo.label || product.category.toUpperCase()}
-                        </div>`;
+                    imgHTML = `<div class="product-img-placeholder">
+                        <span class="ph-icon">${catInfo.icon || '📦'}</span>
+                        ${catInfo.label || product.category.toUpperCase()}
+                    </div>`;
                 }
-
-                const badgeHTML = product.badge
-                    ? `<div class="product-badge ${product.badgeClass || ''}">${product.badge}</div>`
-                    : '';
+                const badgeHTML = product.badge ? `<div class="product-badge ${product.badgeClass || ''}">${product.badge}</div>` : '';
 
                 return `
                     <article class="product-card" data-category="${product.category}"
-                             style="animation-delay:${(i % 12) * 0.05}s"
-                             aria-label="${product.name}">
-                        <div class="product-img">
-                            ${imgHTML}
-                            ${badgeHTML}
-                        </div>
+                             style="animation-delay:${(i % 12) * 0.05}s" aria-label="${product.name}">
+                        <div class="product-img">${imgHTML}${badgeHTML}</div>
                         <div class="product-info">
                             <div class="product-category">${product.category.toUpperCase()}</div>
                             <h3 class="product-title">${product.name}</h3>
@@ -945,10 +629,7 @@
                                 ${product.features.slice(0, 3).map(f => `<li>${f}</li>`).join('')}
                             </ul>
                             <div class="product-footer">
-                                <div class="product-price">
-                                    Factory Price
-                                    <small>B2B Direct · MOQ Flexible</small>
-                                </div>
+                                <div class="product-price">Factory Price<small>B2B Direct · MOQ Flexible</small></div>
                                 <button class="product-enquiry"
                                         data-product="${product.name.replace(/"/g, '&quot;')}"
                                         aria-label="Enquire about ${product.name}">
@@ -959,7 +640,7 @@
                     </article>`;
             }).join('');
 
-            // FIX: attach enquiry events after render (no inline onclick)
+            // Attach enquiry button events after render
             productGrid.querySelectorAll('.product-enquiry').forEach(btn => {
                 btn.addEventListener('click', function () {
                     const productName = this.getAttribute('data-product') || 'SECUREX product';
@@ -970,24 +651,16 @@
         }
 
         // ---- FILTER BUTTONS ----
-        // FIX: track current active filter; update aria-pressed properly
         let currentFilter = 'all';
-
         filterBtns.forEach(btn => {
             btn.addEventListener('click', function () {
                 const newFilter = this.getAttribute('data-filter');
-                if (newFilter === currentFilter) return; // no-op if same filter
-
-                filterBtns.forEach(b => {
-                    b.classList.remove('active');
-                    b.setAttribute('aria-pressed', 'false');
-                });
+                if (newFilter === currentFilter) return;
+                filterBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
                 this.classList.add('active');
                 this.setAttribute('aria-pressed', 'true');
                 currentFilter = newFilter;
                 renderProducts(newFilter);
-
-                // FIX: scroll to product grid, not filter bar, on mobile
                 const gridTop = document.querySelector('.product-section').offsetTop - 90;
                 window.scrollTo({ top: gridTop, behavior: 'smooth' });
             });
@@ -995,37 +668,17 @@
 
         // ---- NAVBAR SCROLL ----
         const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            navbar.classList.toggle('scrolled', window.scrollY > 60);
-        }, { passive: true });
+        window.addEventListener('scroll', () => { navbar.classList.toggle('scrolled', window.scrollY > 60); }, { passive: true });
 
         // ---- MOBILE MENU ----
         const hamburger  = document.getElementById('hamburger');
         const navLinks   = document.getElementById('navLinks');
         const navOverlay = document.getElementById('navOverlay');
-
-        function openMenu()  {
-            hamburger.classList.add('active');
-            navLinks.classList.add('active');
-            navOverlay.classList.add('active');
-            hamburger.setAttribute('aria-expanded', 'true');
-            document.body.style.overflow = 'hidden';
-        }
-        function closeMenu() {
-            hamburger.classList.remove('active');
-            navLinks.classList.remove('active');
-            navOverlay.classList.remove('active');
-            hamburger.setAttribute('aria-expanded', 'false');
-            document.body.style.overflow = '';
-        }
-
-        hamburger.addEventListener('click', () => {
-            navLinks.classList.contains('active') ? closeMenu() : openMenu();
-        });
+        function openMenu()  { hamburger.classList.add('active'); navLinks.classList.add('active'); navOverlay.classList.add('active'); hamburger.setAttribute('aria-expanded', 'true'); document.body.style.overflow = 'hidden'; }
+        function closeMenu() { hamburger.classList.remove('active'); navLinks.classList.remove('active'); navOverlay.classList.remove('active'); hamburger.setAttribute('aria-expanded', 'false'); document.body.style.overflow = ''; }
+        hamburger.addEventListener('click', () => { navLinks.classList.contains('active') ? closeMenu() : openMenu(); });
         navOverlay.addEventListener('click', closeMenu);
-        document.addEventListener('keydown', e => {
-            if (e.key === 'Escape') closeMenu();
-        });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
         navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
         window.addEventListener('resize', () => { if (window.innerWidth > 768) closeMenu(); });
 
