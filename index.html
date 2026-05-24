@@ -21,14 +21,11 @@
     <meta name="twitter:image" content="https://shahinterio.com/securex-logo.png">
     <title>SECUREX Steel Almirahs – Trusted Steel Furniture Manufacturer | Shah Interio</title>
 
-    <!-- FIX: Preload hero image for LCP performance -->
     <link rel="preload" as="image" href="shah-interio-factory-aerial-view.jpg.png">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- FIX: Structured data for SEO -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -78,11 +75,7 @@
             --container-max: 1320px;
         }
 
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         html {
             scroll-behavior: smooth;
@@ -121,13 +114,12 @@
         .splash-logo {
             width: 140px;
             height: auto;
-            /* FIX: Use securex-logo.png (correct filename from repo) */
             filter: drop-shadow(0 8px 20px rgba(62,36,21,0.2));
             animation: logoPop 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
         }
         @keyframes logoPop {
-            0% { transform: scale(0) rotate(-10deg); opacity: 0; }
-            60% { transform: scale(1.15) rotate(2deg); opacity: 1; }
+            0%   { transform: scale(0) rotate(-10deg); opacity: 0; }
+            60%  { transform: scale(1.15) rotate(2deg); opacity: 1; }
             100% { transform: scale(1) rotate(0deg); opacity: 1; }
         }
         .splash-brand {
@@ -150,7 +142,7 @@
         }
         @keyframes fadeSlideUp {
             from { opacity: 0; transform: translateY(24px); }
-            to { opacity: 1; transform: translateY(0); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
         h1, h2, h3, h4, h5, h6 {
@@ -160,7 +152,7 @@
             line-height: 1.15;
         }
         img { max-width: 100%; height: auto; display: block; }
-        a { text-decoration: none; color: inherit; transition: color var(--transition-fast); }
+        a   { text-decoration: none; color: inherit; transition: color var(--transition-fast); }
 
         .container {
             width: 100%;
@@ -172,8 +164,7 @@
         /* ============ NAVBAR ============ */
         .navbar {
             position: fixed;
-            top: 0;
-            left: 0;
+            top: 0; left: 0;
             width: 100%;
             z-index: 1000;
             background: rgba(254, 250, 224, 0.85);
@@ -205,8 +196,7 @@
             text-decoration: none;
         }
         .nav-logo-icon {
-            width: 44px;
-            height: 44px;
+            width: 44px; height: 44px;
             border-radius: var(--radius-sm);
             box-shadow: var(--shadow-sm);
             flex-shrink: 0;
@@ -247,27 +237,18 @@
         .nav-links a::after {
             content: '';
             position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 0;
-            height: 2px;
+            bottom: -2px; left: 0;
+            width: 0; height: 2px;
             background: var(--brown);
             border-radius: 2px;
             transition: width var(--transition-smooth);
         }
         .nav-links a:hover,
-        .nav-links a.active {
-            color: var(--brown-dark);
-        }
+        .nav-links a.active { color: var(--brown-dark); }
         .nav-links a:hover::after,
-        .nav-links a.active::after {
-            width: 100%;
-        }
-        .nav-cta {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+        .nav-links a.active::after { width: 100%; }
+
+        .nav-cta { display: flex; align-items: center; gap: 10px; }
         .btn-nav {
             display: inline-flex;
             align-items: center;
@@ -289,6 +270,7 @@
             background: var(--brown-dark);
             transform: translateY(-2px);
             box-shadow: var(--shadow-md);
+            color: var(--cream);
         }
         .hamburger {
             display: none;
@@ -301,8 +283,7 @@
             border: none;
         }
         .hamburger span {
-            width: 26px;
-            height: 2.5px;
+            width: 26px; height: 2.5px;
             background: var(--brown-dark);
             border-radius: 3px;
             transition: all var(--transition-smooth);
@@ -312,7 +293,6 @@
         .hamburger.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
         .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
 
-        /* Mobile nav overlay */
         .nav-overlay {
             display: none;
             position: fixed;
@@ -322,10 +302,7 @@
             opacity: 0;
             transition: opacity var(--transition-smooth);
         }
-        .nav-overlay.active {
-            display: block;
-            opacity: 1;
-        }
+        .nav-overlay.active { display: block; opacity: 1; }
 
         /* ============ HERO ============ */
         .hero {
@@ -335,9 +312,8 @@
             padding-top: var(--navbar-height);
             position: relative;
             overflow: hidden;
-            /* FIX: correct image filename from repo */
             background: url('shah-interio-factory-aerial-view.jpg.png') center / cover no-repeat;
-            background-color: var(--brown-dark); /* fallback */
+            background-color: var(--brown-dark);
         }
         .hero::before {
             content: '';
@@ -379,8 +355,7 @@
             letter-spacing: 0.04em;
         }
         .hero-badge-dot {
-            width: 8px;
-            height: 8px;
+            width: 8px; height: 8px;
             background: #FFD700;
             border-radius: 50%;
             animation: pulse-dot 2s infinite;
@@ -408,15 +383,9 @@
             max-width: 500px;
             line-height: 1.7;
         }
-        .hero-subtitle strong {
-            font-weight: 700;
-            color: #FFD700;
-        }
-        .hero-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 16px;
-        }
+        .hero-subtitle strong { font-weight: 700; color: #FFD700; }
+        .hero-buttons { display: flex; flex-wrap: wrap; gap: 16px; }
+
         .btn {
             display: inline-flex;
             align-items: center;
@@ -472,11 +441,11 @@
 
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(36px); }
-            to { opacity: 1; transform: translateY(0); }
+            to   { opacity: 1; transform: translateY(0); }
         }
         @keyframes pulse-dot {
             0%, 100% { box-shadow: 0 0 0 0 rgba(255,215,0,0.5); }
-            50% { box-shadow: 0 0 0 12px rgba(255,215,0,0); }
+            50%       { box-shadow: 0 0 0 12px rgba(255,215,0,0); }
         }
 
         /* ============ SECTIONS ============ */
@@ -520,28 +489,10 @@
             background: linear-gradient(150deg, var(--beige), var(--beige-dark));
             position: relative;
         }
-        .about-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-        .about-content h2 {
-            font-size: 2rem;
-            color: var(--brown-dark);
-            margin-bottom: 16px;
-        }
-        .about-content p {
-            color: var(--text-medium);
-            margin-bottom: 16px;
-            line-height: 1.7;
-        }
-        .about-highlights {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-top: 20px;
-        }
+        .about-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .about-content h2 { font-size: 2rem; color: var(--brown-dark); margin-bottom: 16px; }
+        .about-content p { color: var(--text-medium); margin-bottom: 16px; line-height: 1.7; }
+        .about-highlights { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
         .about-highlight-tag {
             background: rgba(139, 111, 78, 0.1);
             border: 1px solid rgba(139, 111, 78, 0.25);
@@ -554,11 +505,7 @@
             align-items: center;
             gap: 6px;
         }
-        .about-highlight-tag::before {
-            content: '✓';
-            font-weight: 700;
-            color: var(--gold-accent);
-        }
+        .about-highlight-tag::before { content: '✓'; font-weight: 700; color: var(--gold-accent); }
 
         /* Features */
         .features-grid {
@@ -587,15 +534,10 @@
             transform-origin: left;
             transition: transform var(--transition-smooth);
         }
-        .feature-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-lg);
-            border-color: var(--beige-dark);
-        }
+        .feature-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); border-color: var(--beige-dark); }
         .feature-card:hover::before { transform: scaleX(1); }
         .feature-icon {
-            width: 64px;
-            height: 64px;
+            width: 64px; height: 64px;
             border-radius: var(--radius-md);
             background: linear-gradient(145deg, var(--beige), var(--beige-dark));
             display: flex;
@@ -607,7 +549,7 @@
         }
         .feature-card:hover .feature-icon { transform: scale(1.1) rotate(-3deg); }
         .feature-card h3 { font-size: 1.25rem; color: var(--brown-dark); margin-bottom: 8px; }
-        .feature-card p { color: var(--text-light); font-size: 0.9rem; line-height: 1.5; }
+        .feature-card p  { color: var(--text-light); font-size: 0.9rem; line-height: 1.5; }
 
         /* Why Us */
         .why-grid {
@@ -626,14 +568,9 @@
             gap: 16px;
             align-items: flex-start;
         }
-        .why-card:hover {
-            box-shadow: var(--shadow-lg);
-            border-color: var(--beige-dark);
-            transform: translateY(-4px);
-        }
+        .why-card:hover { box-shadow: var(--shadow-lg); border-color: var(--beige-dark); transform: translateY(-4px); }
         .why-icon {
-            width: 50px;
-            height: 50px;
+            width: 50px; height: 50px;
             border-radius: var(--radius-sm);
             background: rgba(139, 111, 78, 0.1);
             display: flex;
@@ -643,7 +580,7 @@
             flex-shrink: 0;
         }
         .why-card h4 { font-size: 1.1rem; color: var(--brown-dark); margin-bottom: 4px; }
-        .why-card p { color: var(--text-light); font-size: 0.85rem; line-height: 1.5; }
+        .why-card p  { color: var(--text-light); font-size: 0.85rem; line-height: 1.5; }
 
         /* Gallery */
         .gallery-grid {
@@ -664,18 +601,11 @@
             text-decoration: none;
             color: inherit;
         }
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-            display: block;
-        }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; display: block; }
         .gallery-item:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
         .gallery-item:hover img { transform: scale(1.05); }
         .gallery-placeholder {
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -704,16 +634,8 @@
         .gallery-item:hover .gallery-overlay { transform: translateY(0); }
 
         /* Stats bar */
-        .stats-bar {
-            background: var(--brown-dark);
-            padding: 32px 0;
-        }
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
-            text-align: center;
-        }
+        .stats-bar { background: var(--brown-dark); padding: 32px 0; }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; text-align: center; }
         .stat-item { color: var(--cream); }
         .stat-number {
             font-family: 'Rajdhani', sans-serif;
@@ -726,14 +648,9 @@
         .stat-label { font-size: 0.85rem; opacity: 0.8; }
 
         /* Contact */
-        .contact-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 48px;
-            align-items: start;
-        }
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
         .contact-info h3 { font-size: 1.6rem; color: var(--brown-dark); margin-bottom: 16px; }
-        .contact-info p { color: var(--text-medium); margin-bottom: 24px; }
+        .contact-info p  { color: var(--text-medium); margin-bottom: 24px; }
         .contact-detail {
             display: flex;
             align-items: center;
@@ -748,14 +665,9 @@
             text-decoration: none;
             color: inherit;
         }
-        .contact-detail:hover {
-            box-shadow: var(--shadow-md);
-            border-color: var(--beige-dark);
-            transform: translateX(4px);
-        }
+        .contact-detail:hover { box-shadow: var(--shadow-md); border-color: var(--beige-dark); transform: translateX(4px); }
         .contact-detail-icon {
-            width: 44px;
-            height: 44px;
+            width: 44px; height: 44px;
             border-radius: 50%;
             background: rgba(139, 111, 78, 0.1);
             display: flex;
@@ -764,12 +676,8 @@
             font-size: 1.2rem;
             flex-shrink: 0;
         }
-        .contact-detail-text strong {
-            display: block;
-            color: var(--brown-dark);
-            font-size: 0.95rem;
-        }
-        .contact-detail-text span { color: var(--text-light); font-size: 0.85rem; }
+        .contact-detail-text strong { display: block; color: var(--brown-dark); font-size: 0.95rem; }
+        .contact-detail-text span  { color: var(--text-light); font-size: 0.85rem; }
         .contact-form {
             background: var(--white);
             border-radius: var(--radius-xl);
@@ -779,13 +687,7 @@
         }
         .contact-form h3 { font-size: 1.4rem; color: var(--brown-dark); margin-bottom: 20px; }
         .form-group { margin-bottom: 16px; }
-        .form-group label {
-            display: block;
-            font-weight: 600;
-            font-size: 0.85rem;
-            color: var(--text-medium);
-            margin-bottom: 6px;
-        }
+        .form-group label { display: block; font-weight: 600; font-size: 0.85rem; color: var(--text-medium); margin-bottom: 6px; }
         .form-group input,
         .form-group textarea,
         .form-group select {
@@ -823,18 +725,8 @@
             font-family: 'Outfit', sans-serif;
             letter-spacing: 0.02em;
         }
-        .btn-submit:hover {
-            background: var(--brown-dark);
-            box-shadow: var(--shadow-lg);
-            transform: translateY(-2px);
-        }
-        .btn-submit:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* Form status message */
+        .btn-submit:hover { background: var(--brown-dark); box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+        .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
         .form-status {
             display: none;
             padding: 12px 16px;
@@ -843,55 +735,28 @@
             margin-top: 12px;
             font-weight: 500;
         }
-        .form-status.success {
-            display: block;
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        .form-status.error {
-            display: block;
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
+        .form-status.success { display: block; background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .form-status.error   { display: block; background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
 
         /* Footer */
-        .footer {
-            background: var(--brown-deep);
-            color: var(--beige);
-            padding: 56px 0 24px;
-        }
-        .footer-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
-            gap: 40px;
-            margin-bottom: 40px;
-        }
+        .footer { background: var(--brown-deep); color: var(--beige); padding: 56px 0 24px; }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
         .footer-brand h4 { color: var(--cream); font-size: 1.4rem; letter-spacing: 0.03em; margin-bottom: 8px; }
-        .footer-brand p { color: var(--beige-dark); font-size: 0.85rem; margin-top: 8px; line-height: 1.5; }
+        .footer-brand p  { color: var(--beige-dark); font-size: 0.85rem; margin-top: 8px; line-height: 1.5; }
         .footer h5 { color: var(--cream); font-size: 1rem; margin-bottom: 16px; letter-spacing: 0.03em; }
         .footer-links { list-style: none; }
         .footer-links li { margin-bottom: 10px; }
-        .footer-links a { color: var(--beige-dark); font-size: 0.9rem; transition: color var(--transition-fast); text-decoration: none; }
+        .footer-links a   { color: var(--beige-dark); font-size: 0.9rem; transition: color var(--transition-fast); text-decoration: none; }
         .footer-links a:hover { color: var(--cream); }
         .footer-links li span { color: var(--beige-dark); font-size: 0.9rem; }
-        .footer-bottom {
-            border-top: 1px solid rgba(196, 168, 130, 0.2);
-            padding-top: 20px;
-            text-align: center;
-            font-size: 0.8rem;
-            color: var(--beige-dark);
-        }
+        .footer-bottom { border-top: 1px solid rgba(196, 168, 130, 0.2); padding-top: 20px; text-align: center; font-size: 0.8rem; color: var(--beige-dark); }
 
         /* WhatsApp Float */
         .whatsapp-float {
             position: fixed;
-            bottom: 28px;
-            right: 28px;
+            bottom: 28px; right: 28px;
             z-index: 998;
-            width: 58px;
-            height: 58px;
+            width: 58px; height: 58px;
             border-radius: 50%;
             background: #25D366;
             color: #fff;
@@ -903,11 +768,7 @@
             transition: all var(--transition-bounce);
             text-decoration: none;
         }
-        .whatsapp-float:hover {
-            transform: scale(1.12);
-            box-shadow: 0 10px 32px rgba(37, 211, 102, 0.55);
-            color: #fff;
-        }
+        .whatsapp-float:hover { transform: scale(1.12); box-shadow: 0 10px 32px rgba(37, 211, 102, 0.55); color: #fff; }
         .whatsapp-float svg { width: 28px; height: 28px; }
         .whatsapp-float-pulse {
             position: absolute;
@@ -918,20 +779,28 @@
             pointer-events: none;
         }
         @keyframes pulse-ring {
-            0% { transform: scale(1); opacity: 0.7; }
+            0%   { transform: scale(1);   opacity: 0.7; }
             100% { transform: scale(1.6); opacity: 0; }
         }
 
         /* Scroll Reveal */
-        .reveal {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+        .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease-out, transform 0.7s ease-out; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        /* Skip link */
+        .skip-link {
+            position: absolute;
+            top: -100%; left: 16px;
+            background: var(--brown);
+            color: var(--cream);
+            padding: 8px 16px;
+            border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+            font-weight: 600;
+            z-index: 99999;
+            text-decoration: none;
+            transition: top 0.2s;
         }
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .skip-link:focus { top: 0; }
 
         /* ============ RESPONSIVE ============ */
         @media (max-width: 1024px) {
@@ -945,12 +814,10 @@
             .footer-grid { grid-template-columns: 1fr 1fr; }
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
         }
-
         @media (max-width: 768px) {
             .nav-links {
                 position: fixed;
-                top: 0;
-                right: -100%;
+                top: 0; right: -100%;
                 width: min(280px, 80vw);
                 height: 100vh;
                 flex-direction: column;
@@ -975,7 +842,6 @@
             .why-grid { grid-template-columns: 1fr; gap: 16px; }
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
         }
-
         @media (max-width: 480px) {
             .hero h1 { font-size: 2.2rem; }
             .btn { padding: 14px 24px; font-size: 0.9rem; }
@@ -988,88 +854,55 @@
             .whatsapp-float svg { width: 24px; height: 24px; }
             .stats-grid { grid-template-columns: 1fr 1fr; }
         }
-
-        /* Skip link for accessibility */
-        .skip-link {
-            position: absolute;
-            top: -100%;
-            left: 16px;
-            background: var(--brown);
-            color: var(--cream);
-            padding: 8px 16px;
-            border-radius: 0 0 var(--radius-sm) var(--radius-sm);
-            font-weight: 600;
-            z-index: 99999;
-            text-decoration: none;
-            transition: top 0.2s;
-        }
-        .skip-link:focus { top: 0; }
     </style>
 </head>
 <body>
-    <!-- Accessibility: skip navigation -->
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
-    <!-- ==================== SPLASH SCREEN ==================== -->
+    <!-- SPLASH SCREEN -->
     <div id="splash-screen" role="status" aria-label="Loading SECUREX">
-        <!-- FIX: securex-logo.png is the correct file in the repo -->
         <img src="securex-logo.png" alt="SECUREX Logo" class="splash-logo"
              onerror="this.style.display='none'">
         <div class="splash-brand">SECUREX</div>
         <div class="splash-tagline">Shah Interio</div>
     </div>
 
-    <!-- ==================== NAVBAR ==================== -->
-    <!-- FIX: overlay for mobile menu dismiss -->
+    <!-- NAVBAR -->
     <div class="nav-overlay" id="navOverlay" aria-hidden="true"></div>
-
     <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
         <div class="navbar-inner">
-            <!-- FIX: href="index.html" instead of bare "#" so it's an explicit page link -->
             <a href="index.html" class="nav-logo" aria-label="SECUREX Home">
-                <img src="securex-logo.png" alt="SECUREX"
-                     class="nav-logo-icon"
-                     onerror="this.style.display='none'">
+                <img src="securex-logo.png" alt="SECUREX" class="nav-logo-icon" onerror="this.style.display='none'">
                 <div class="nav-logo-text">SECUREX<span>by Shah Interio</span></div>
             </a>
 
-            <!-- FIX: aria-label on ul, all links have descriptive titles -->
             <ul class="nav-links" id="navLinks" aria-label="Site sections">
                 <li><a href="#home" class="active" aria-current="page">Home</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#features">Features</a></li>
                 <li><a href="#why-us">Why Us</a></li>
                 <li><a href="#gallery">Gallery</a></li>
-                <!-- FIX: Products links to Product-Page.html (correct filename from repo) -->
-                <li><a href="Product-Page.html">Products</a></li>
+                <!-- ✅ FIXED: points to product/ folder -->
+                <li><a href="product/">Products</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
 
             <div class="nav-cta" aria-label="Quick contact">
-                <a href="tel:+919179539610" class="btn-nav" aria-label="Call us at +91 9179539610">
-                    📞 Call
-                </a>
+                <a href="tel:+919179539610" class="btn-nav" aria-label="Call us at +91 9179539610">📞 Call</a>
                 <a href="https://wa.me/919179539610?text=Hello%20SECUREX%20Team!%20I'm%20interested%20in%20your%20steel%20furniture."
-                   class="btn-nav"
-                   style="background:#25D366;"
-                   target="_blank"
-                   rel="noopener noreferrer"
-                   aria-label="Chat on WhatsApp">
-                    💬 WhatsApp
-                </a>
+                   class="btn-nav" style="background:#25D366;"
+                   target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">💬 WhatsApp</a>
             </div>
 
             <button class="hamburger" id="hamburger"
-                    aria-label="Toggle menu"
-                    aria-expanded="false"
-                    aria-controls="navLinks">
+                    aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
                 <span></span><span></span><span></span>
             </button>
         </div>
     </nav>
 
     <main id="main-content">
-        <!-- ==================== HERO ==================== -->
+        <!-- HERO -->
         <section class="hero" id="home" aria-label="Hero section">
             <div class="hero-content container">
                 <div class="hero-text">
@@ -1087,8 +920,8 @@
                         to businesses across Odisha.
                     </p>
                     <div class="hero-buttons">
-                        <!-- FIX: href points to Product-Page.html (correct repo filename) -->
-                        <a href="Product-Page.html" class="btn btn-primary">
+                        <!-- ✅ FIXED: points to product/ folder -->
+                        <a href="product/" class="btn btn-primary">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                                 <rect x="2" y="2" width="20" height="20" rx="3"/>
                                 <circle cx="8.5" cy="8.5" r="1.5"/>
@@ -1098,15 +931,12 @@
                         </a>
                         <a href="https://wa.me/919179539610?text=Hello%20SECUREX%20Team!%20I'm%20interested%20in%20your%20steel%20almirahs."
                            class="btn btn-whatsapp"
-                           target="_blank"
-                           rel="noopener noreferrer"
-                           aria-label="Chat with us on WhatsApp">
+                           target="_blank" rel="noopener noreferrer" aria-label="Chat with us on WhatsApp">
                             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
                             </svg>
                             Contact on WhatsApp
                         </a>
-                        <!-- FIX: Secure_X.pdf → catalogue download; kept as-is since user named it -->
                         <a href="Secure_X.pdf" class="btn btn-outline" download="SECUREX-Catalogue.pdf">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                                 <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
@@ -1120,36 +950,23 @@
             </div>
         </section>
 
-        <!-- ==================== STATS BAR ==================== -->
+        <!-- STATS BAR -->
         <div class="stats-bar" aria-label="Company statistics">
             <div class="container">
                 <div class="stats-grid">
-                    <div class="stat-item reveal">
-                        <div class="stat-number">30+</div>
-                        <div class="stat-label">Years of Experience</div>
-                    </div>
-                    <div class="stat-item reveal">
-                        <div class="stat-number">28+</div>
-                        <div class="stat-label">Product Variants</div>
-                    </div>
-                    <div class="stat-item reveal">
-                        <div class="stat-number">500+</div>
-                        <div class="stat-label">B2B Clients</div>
-                    </div>
-                    <div class="stat-item reveal">
-                        <div class="stat-number">100%</div>
-                        <div class="stat-label">Factory Direct</div>
-                    </div>
+                    <div class="stat-item reveal"><div class="stat-number">30+</div><div class="stat-label">Years of Experience</div></div>
+                    <div class="stat-item reveal"><div class="stat-number">28+</div><div class="stat-label">Product Variants</div></div>
+                    <div class="stat-item reveal"><div class="stat-number">500+</div><div class="stat-label">B2B Clients</div></div>
+                    <div class="stat-item reveal"><div class="stat-number">100%</div><div class="stat-label">Factory Direct</div></div>
                 </div>
             </div>
         </div>
 
-        <!-- ==================== ABOUT ==================== -->
+        <!-- ABOUT -->
         <section class="section" id="about" aria-labelledby="about-heading">
             <div class="container">
                 <div class="about-grid reveal">
                     <div class="about-image">
-                        <!-- FIX: shah-interio-factory-aerial-view.jpg.png is the correct repo filename -->
                         <img src="shah-interio-factory-aerial-view.jpg.png"
                              alt="Shah Interio manufacturing facility aerial view"
                              loading="lazy"
@@ -1174,7 +991,7 @@
             </div>
         </section>
 
-        <!-- ==================== FEATURES ==================== -->
+        <!-- FEATURES -->
         <section class="section section-alt" id="features" aria-labelledby="features-heading">
             <div class="container">
                 <div class="section-header reveal">
@@ -1207,7 +1024,7 @@
             </div>
         </section>
 
-        <!-- ==================== WHY CHOOSE US ==================== -->
+        <!-- WHY CHOOSE US -->
         <section class="section" id="why-us" aria-labelledby="whyus-heading">
             <div class="container">
                 <div class="section-header reveal">
@@ -1218,37 +1035,25 @@
                 <div class="why-grid">
                     <div class="why-card reveal">
                         <div class="why-icon" aria-hidden="true">🏗️</div>
-                        <div>
-                            <h4>High-Quality Steel</h4>
-                            <p>We source premium-grade cold-rolled steel for superior strength and flawless finish.</p>
-                        </div>
+                        <div><h4>High-Quality Steel</h4><p>We source premium-grade cold-rolled steel for superior strength and flawless finish.</p></div>
                     </div>
                     <div class="why-card reveal">
                         <div class="why-icon" aria-hidden="true">🏭</div>
-                        <div>
-                            <h4>Factory Direct Pricing</h4>
-                            <p>No middlemen — you get manufacturer prices that beat market rates by up to 25%.</p>
-                        </div>
+                        <div><h4>Factory Direct Pricing</h4><p>No middlemen — you get manufacturer prices that beat market rates by up to 25%.</p></div>
                     </div>
                     <div class="why-card reveal">
                         <div class="why-icon" aria-hidden="true">📦</div>
-                        <div>
-                            <h4>Bulk Order Specialist</h4>
-                            <p>Scalable production capacity to handle large institutional and corporate orders with ease.</p>
-                        </div>
+                        <div><h4>Bulk Order Specialist</h4><p>Scalable production capacity to handle large institutional and corporate orders with ease.</p></div>
                     </div>
                     <div class="why-card reveal">
                         <div class="why-icon" aria-hidden="true">🔧</div>
-                        <div>
-                            <h4>Customization Available</h4>
-                            <p>Tailor dimensions, colors, locking systems, and layouts to your exact requirements.</p>
-                        </div>
+                        <div><h4>Customization Available</h4><p>Tailor dimensions, colors, locking systems, and layouts to your exact requirements.</p></div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- ==================== GALLERY ==================== -->
+        <!-- GALLERY -->
         <section class="section section-alt" id="gallery" aria-labelledby="gallery-heading">
             <div class="container">
                 <div class="section-header reveal">
@@ -1257,52 +1062,41 @@
                     <p class="section-desc">A glimpse into our diverse collection of steel almirahs, cabinets, and custom solutions.</p>
                 </div>
                 <div class="gallery-grid">
-                    <!-- FIX: All gallery items link to Product-Page.html (correct filename) -->
-                    <!-- FIX: Each has a real almirah image from the repo -->
-                    <a href="/product/">Products" class="gallery-item reveal" aria-label="View Heavy-Duty Storage Cabinet on products page">
+                    <!-- ✅ FIXED: all gallery items now correctly point to product/ folder -->
+                    <a href="product/" class="gallery-item reveal" aria-label="View Heavy-Duty Storage Cabinet">
                         <img src="Secure-X-Almirah (1).png" alt="SECUREX Heavy-Duty Storage Cabinet" loading="lazy"
                              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
-                        <div class="gallery-placeholder" style="display:none;">
-                            <span class="gp-icon">🏠</span>Storage Cabinet
-                        </div>
+                        <div class="gallery-placeholder" style="display:none;"><span class="gp-icon">🏠</span>Storage Cabinet</div>
                         <div class="gallery-overlay">Heavy-Duty Storage Cabinet</div>
                     </a>
-                    <a href="Product-Page.html" class="gallery-item reveal" aria-label="View Locker Almirah on products page">
+                    <a href="product/" class="gallery-item reveal" aria-label="View Locker Almirah">
                         <img src="Secure-X-Almirah (2).png" alt="SECUREX Locker Almirah" loading="lazy"
                              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
-                        <div class="gallery-placeholder" style="display:none;">
-                            <span class="gp-icon">🔐</span>Locker Almirah
-                        </div>
+                        <div class="gallery-placeholder" style="display:none;"><span class="gp-icon">🔐</span>Locker Almirah</div>
                         <div class="gallery-overlay">Secure Locker Almirah</div>
                     </a>
-                    <a href="Product-Page.html" class="gallery-item reveal" aria-label="View Office Cabinet on products page">
+                    <a href="product/" class="gallery-item reveal" aria-label="View Office Cabinet">
                         <img src="Secure-X-Almirah (3).png" alt="SECUREX Modular Office Cabinet" loading="lazy"
                              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
-                        <div class="gallery-placeholder" style="display:none;">
-                            <span class="gp-icon">🏢</span>Office Cabinet
-                        </div>
+                        <div class="gallery-placeholder" style="display:none;"><span class="gp-icon">🏢</span>Office Cabinet</div>
                         <div class="gallery-overlay">Modular Office Cabinet</div>
                     </a>
-                    <a href="Product-Page.html" class="gallery-item reveal" aria-label="View Dressing Almirah on products page">
+                    <a href="product/" class="gallery-item reveal" aria-label="View Dressing Almirah">
                         <img src="Secure-X-Dressing2003.png" alt="SECUREX Designer Dressing Almirah" loading="lazy"
                              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
-                        <div class="gallery-placeholder" style="display:none;">
-                            <span class="gp-icon">✨</span>Dressing Almirah
-                        </div>
+                        <div class="gallery-placeholder" style="display:none;"><span class="gp-icon">✨</span>Dressing Almirah</div>
                         <div class="gallery-overlay">Designer Dressing Almirah</div>
                     </a>
-                    <a href="Product-Page.html" class="gallery-item reveal" aria-label="View full product catalog">
+                    <a href="product/" class="gallery-item reveal" aria-label="View full product catalog">
                         <img src="Secure-X-Almirah-3006.png" alt="SECUREX Premium 3006 Almirah" loading="lazy"
                              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
-                        <div class="gallery-placeholder" style="display:none;">
-                            <span class="gp-icon">📦</span>View All
-                        </div>
+                        <div class="gallery-placeholder" style="display:none;"><span class="gp-icon">📦</span>View All</div>
                         <div class="gallery-overlay">View Full Catalog →</div>
                     </a>
                 </div>
-                <!-- View all products CTA -->
                 <div style="text-align:center; margin-top:40px;">
-                    <a href="Product-Page.html" class="btn btn-primary" style="display:inline-flex;">
+                    <!-- ✅ FIXED: points to product/ folder -->
+                    <a href="product/" class="btn btn-primary" style="display:inline-flex;">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="width:20px;height:20px;">
                             <rect x="2" y="2" width="20" height="20" rx="3"/>
                             <path d="M8 12h8M12 8l4 4-4 4"/>
@@ -1313,7 +1107,7 @@
             </div>
         </section>
 
-        <!-- ==================== CONTACT ==================== -->
+        <!-- CONTACT -->
         <section class="section" id="contact" aria-labelledby="contact-heading">
             <div class="container">
                 <div class="section-header reveal">
@@ -1327,66 +1121,40 @@
                         <p>Have a question or ready to place an order? Connect with us directly — we respond within hours.</p>
                         <a href="tel:+919179539610" class="contact-detail">
                             <div class="contact-detail-icon" aria-hidden="true">📞</div>
-                            <div class="contact-detail-text">
-                                <strong>Phone</strong>
-                                <span>+91 9179539610</span>
-                            </div>
+                            <div class="contact-detail-text"><strong>Phone</strong><span>+91 9179539610</span></div>
                         </a>
                         <a href="https://wa.me/919179539610?text=Hello%20SECUREX%20Team!%20I'm%20interested%20in%20your%20steel%20furniture."
-                           target="_blank"
-                           rel="noopener noreferrer"
-                           class="contact-detail">
+                           target="_blank" rel="noopener noreferrer" class="contact-detail">
                             <div class="contact-detail-icon" aria-hidden="true">💬</div>
-                            <div class="contact-detail-text">
-                                <strong>WhatsApp</strong>
-                                <span>+91 9179539610</span>
-                            </div>
+                            <div class="contact-detail-text"><strong>WhatsApp</strong><span>+91 9179539610</span></div>
                         </a>
-                        <!-- FIX: non-link address item is a div, not an anchor -->
                         <div class="contact-detail" style="cursor:default;">
                             <div class="contact-detail-icon" aria-hidden="true">📍</div>
-                            <div class="contact-detail-text">
-                                <strong>Manufacturing Unit</strong>
-                                <span>Brajesh Steel, Kantabaji, Odisha</span>
-                            </div>
+                            <div class="contact-detail-text"><strong>Manufacturing Unit</strong><span>Brajesh Steel, Kantabaji, Odisha</span></div>
                         </div>
                         <a href="https://shahinterio.com" target="_blank" rel="noopener noreferrer" class="contact-detail">
                             <div class="contact-detail-icon" aria-hidden="true">🌐</div>
-                            <div class="contact-detail-text">
-                                <strong>Website</strong>
-                                <span>shahinterio.com</span>
-                            </div>
+                            <div class="contact-detail-text"><strong>Website</strong><span>shahinterio.com</span></div>
                         </a>
                     </div>
 
-                    <!-- FIX: form does not use onsubmit inline; uses addEventListener in script -->
                     <form class="contact-form" id="contactForm" novalidate>
                         <h3>Send Us a Message</h3>
                         <div class="form-group">
                             <label for="name">Full Name <span aria-hidden="true">*</span></label>
-                            <input type="text" id="name" name="name"
-                                   placeholder="Enter your full name"
-                                   required
-                                   autocomplete="name">
+                            <input type="text" id="name" name="name" placeholder="Enter your full name" required autocomplete="name">
                         </div>
                         <div class="form-group">
                             <label for="email">Email Address <span aria-hidden="true">*</span></label>
-                            <input type="email" id="email" name="email"
-                                   placeholder="Enter your email address"
-                                   required
-                                   autocomplete="email">
+                            <input type="email" id="email" name="email" placeholder="Enter your email address" required autocomplete="email">
                         </div>
                         <div class="form-group">
                             <label for="phone">Phone Number</label>
-                            <input type="tel" id="phone" name="phone"
-                                   placeholder="+91 XXXXX XXXXX"
-                                   autocomplete="tel">
+                            <input type="tel" id="phone" name="phone" placeholder="+91 XXXXX XXXXX" autocomplete="tel">
                         </div>
                         <div class="form-group">
                             <label for="message">Your Message <span aria-hidden="true">*</span></label>
-                            <textarea id="message" name="message"
-                                      placeholder="Tell us about your requirements (product type, quantity, customization)..."
-                                      required></textarea>
+                            <textarea id="message" name="message" placeholder="Tell us about your requirements (product type, quantity, customization)..." required></textarea>
                         </div>
                         <button type="submit" class="btn-submit" id="submitBtn">Send Message ✉️</button>
                         <div class="form-status" id="formStatus" role="alert" aria-live="polite"></div>
@@ -1396,7 +1164,7 @@
         </section>
     </main>
 
-    <!-- ==================== FOOTER ==================== -->
+    <!-- FOOTER -->
     <footer class="footer" role="contentinfo">
         <div class="container">
             <div class="footer-grid">
@@ -1412,8 +1180,8 @@
                         <li><a href="#home">Home</a></li>
                         <li><a href="#about">About Us</a></li>
                         <li><a href="#features">Features</a></li>
-                        <!-- FIX: Products link to correct page filename -->
-                        <li><a href="Product-Page.html">Products</a></li>
+                        <!-- ✅ FIXED: points to product/ folder -->
+                        <li><a href="product/">Products</a></li>
                         <li><a href="#gallery">Gallery</a></li>
                         <li><a href="#contact">Contact</a></li>
                     </ul>
@@ -1422,17 +1190,9 @@
                     <h5>Contact Info</h5>
                     <ul class="footer-links">
                         <li><a href="tel:+919179539610">📞 +91 9179539610</a></li>
-                        <li>
-                            <a href="https://wa.me/919179539610" target="_blank" rel="noopener noreferrer">
-                                💬 WhatsApp Chat
-                            </a>
-                        </li>
+                        <li><a href="https://wa.me/919179539610" target="_blank" rel="noopener noreferrer">💬 WhatsApp Chat</a></li>
                         <li><span>📍 Brajesh Steel, Kantabaji, Odisha</span></li>
-                        <li>
-                            <a href="https://shahinterio.com" target="_blank" rel="noopener noreferrer">
-                                🌐 shahinterio.com
-                            </a>
-                        </li>
+                        <li><a href="https://shahinterio.com" target="_blank" rel="noopener noreferrer">🌐 shahinterio.com</a></li>
                     </ul>
                 </div>
             </div>
@@ -1442,12 +1202,10 @@
         </div>
     </footer>
 
-    <!-- ==================== WHATSAPP FLOATING BUTTON ==================== -->
+    <!-- WHATSAPP FLOATING BUTTON -->
     <a href="https://wa.me/919179539610?text=Hello%20SECUREX%20Team!%20I'm%20interested%20in%20your%20steel%20furniture."
-       target="_blank"
-       rel="noopener noreferrer"
-       class="whatsapp-float"
-       aria-label="Chat on WhatsApp">
+       target="_blank" rel="noopener noreferrer"
+       class="whatsapp-float" aria-label="Chat on WhatsApp">
         <span class="whatsapp-float-pulse" aria-hidden="true"></span>
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
@@ -1455,11 +1213,6 @@
     </a>
 
     <script>
-        /* ============================================================
-           SECUREX index.html — JavaScript
-           All fixes documented inline
-        ============================================================ */
-
         // ---- SPLASH SCREEN ----
         (function () {
             document.body.style.overflow = 'hidden';
@@ -1469,7 +1222,7 @@
                 splash.classList.add('fade-out');
                 splash.addEventListener('transitionend', function handler() {
                     splash.removeEventListener('transitionend', handler);
-                    splash.remove(); // FIX: fully remove from DOM instead of display:none
+                    splash.remove();
                     document.body.style.overflow = '';
                 });
             }, 2500);
@@ -1477,153 +1230,96 @@
 
         // ---- NAVBAR SCROLL ----
         const navbar = document.getElementById('navbar');
-        function updateNavbar() {
-            navbar.classList.toggle('scrolled', window.scrollY > 60);
-        }
+        function updateNavbar() { navbar.classList.toggle('scrolled', window.scrollY > 60); }
         window.addEventListener('scroll', updateNavbar, { passive: true });
         updateNavbar();
 
-        // ---- ACTIVE NAV LINK (hash-based) ----
-        // FIX: only applies to same-page hash links, not Product-Page.html
+        // ---- ACTIVE NAV LINK ----
         const hashNavLinks = document.querySelectorAll('.nav-links a[href^="#"]');
-        const sections = document.querySelectorAll('section[id]');
-
+        const sections     = document.querySelectorAll('section[id]');
         function updateActiveLink() {
             let currentId = 'home';
             sections.forEach(section => {
-                if (window.scrollY >= section.offsetTop - 120) {
-                    currentId = section.getAttribute('id');
-                }
+                if (window.scrollY >= section.offsetTop - 120) currentId = section.getAttribute('id');
             });
             hashNavLinks.forEach(link => {
                 const isActive = link.getAttribute('href') === '#' + currentId;
                 link.classList.toggle('active', isActive);
-                // FIX: sync aria-current
-                if (isActive) {
-                    link.setAttribute('aria-current', 'page');
-                } else {
-                    link.removeAttribute('aria-current');
-                }
+                if (isActive) link.setAttribute('aria-current', 'page');
+                else link.removeAttribute('aria-current');
             });
         }
         window.addEventListener('scroll', updateActiveLink, { passive: true });
         updateActiveLink();
 
         // ---- MOBILE MENU ----
-        const hamburger = document.getElementById('hamburger');
-        const navLinks  = document.getElementById('navLinks');
+        const hamburger  = document.getElementById('hamburger');
+        const navLinks   = document.getElementById('navLinks');
         const navOverlay = document.getElementById('navOverlay');
-
-        function openMenu() {
-            hamburger.classList.add('active');
-            navLinks.classList.add('active');
-            navOverlay.classList.add('active');
-            hamburger.setAttribute('aria-expanded', 'true');
-            document.body.style.overflow = 'hidden';
+        function openMenu()  {
+            hamburger.classList.add('active'); navLinks.classList.add('active'); navOverlay.classList.add('active');
+            hamburger.setAttribute('aria-expanded', 'true'); document.body.style.overflow = 'hidden';
         }
         function closeMenu() {
-            hamburger.classList.remove('active');
-            navLinks.classList.remove('active');
-            navOverlay.classList.remove('active');
-            hamburger.setAttribute('aria-expanded', 'false');
-            document.body.style.overflow = '';
+            hamburger.classList.remove('active'); navLinks.classList.remove('active'); navOverlay.classList.remove('active');
+            hamburger.setAttribute('aria-expanded', 'false'); document.body.style.overflow = '';
         }
-
-        hamburger.addEventListener('click', () => {
-            if (navLinks.classList.contains('active')) closeMenu(); else openMenu();
-        });
-
-        // FIX: clicking overlay closes menu
+        hamburger.addEventListener('click', () => { navLinks.classList.contains('active') ? closeMenu() : openMenu(); });
         navOverlay.addEventListener('click', closeMenu);
-
-        // FIX: ESC key closes menu
-        document.addEventListener('keydown', e => {
-            if (e.key === 'Escape' && navLinks.classList.contains('active')) closeMenu();
-        });
-
-        // Close on any nav link click (hash links only need it, page links navigate away)
-        navLinks.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', closeMenu);
-        });
-
-        window.addEventListener('resize', () => {
-            if (window.innerWidth > 768) closeMenu();
-        });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape' && navLinks.classList.contains('active')) closeMenu(); });
+        navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
+        window.addEventListener('resize', () => { if (window.innerWidth > 768) closeMenu(); });
 
         // ---- SCROLL REVEAL ----
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    revealObserver.unobserve(entry.target);
-                }
+                if (entry.isIntersecting) { entry.target.classList.add('visible'); revealObserver.unobserve(entry.target); }
             });
         }, { rootMargin: '0px 0px -40px 0px', threshold: 0.1 });
-
         document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
         // ---- CONTACT FORM ----
-        // FIX: moved from inline onsubmit to proper addEventListener
         const contactForm = document.getElementById('contactForm');
         const submitBtn   = document.getElementById('submitBtn');
         const formStatus  = document.getElementById('formStatus');
-
         if (contactForm) {
             contactForm.addEventListener('submit', function (e) {
                 e.preventDefault();
-
-                const name    = (document.getElementById('name').value   || '').trim();
-                const email   = (document.getElementById('email').value  || '').trim();
-                const phone   = (document.getElementById('phone').value  || '').trim();
-                const message = (document.getElementById('message').value|| '').trim();
-
-                // Clear previous status
+                const name    = (document.getElementById('name').value    || '').trim();
+                const email   = (document.getElementById('email').value   || '').trim();
+                const phone   = (document.getElementById('phone').value   || '').trim();
+                const message = (document.getElementById('message').value || '').trim();
                 formStatus.className = 'form-status';
                 formStatus.textContent = '';
-
-                // Client-side validation
                 if (!name || !email || !message) {
                     formStatus.className = 'form-status error';
                     formStatus.textContent = '⚠️ Please fill in all required fields (Name, Email, and Message).';
                     return;
                 }
-                // Basic email format check
                 if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
                     formStatus.className = 'form-status error';
                     formStatus.textContent = '⚠️ Please enter a valid email address.';
                     return;
                 }
-
-                // Disable button during processing
                 submitBtn.disabled = true;
                 submitBtn.textContent = 'Sending…';
-
                 const waMessage =
                     `Hello SECUREX Team!%0A%0A*New Inquiry*%0A` +
                     `Name: ${encodeURIComponent(name)}%0A` +
                     `Email: ${encodeURIComponent(email)}%0A` +
                     `Phone: ${encodeURIComponent(phone || 'N/A')}%0A` +
                     `Message: ${encodeURIComponent(message)}%0A%0APlease get back to me.`;
-
-                const waURL = `https://wa.me/919179539610?text=${waMessage}`;
-                window.open(waURL, '_blank', 'noopener,noreferrer');
-
+                window.open(`https://wa.me/919179539610?text=${waMessage}`, '_blank', 'noopener,noreferrer');
                 contactForm.reset();
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Send Message ✉️';
-
                 formStatus.className = 'form-status success';
                 formStatus.textContent = '✅ Message sent via WhatsApp! Our team will get back to you shortly.';
-
-                // Auto-clear status after 6 seconds
-                setTimeout(() => {
-                    formStatus.className = 'form-status';
-                    formStatus.textContent = '';
-                }, 6000);
+                setTimeout(() => { formStatus.className = 'form-status'; formStatus.textContent = ''; }, 6000);
             });
         }
 
-        // ---- SMOOTH SCROLL for anchor links ----
+        // ---- SMOOTH SCROLL ----
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 const href = this.getAttribute('href');
@@ -1632,8 +1328,7 @@
                 if (target) {
                     e.preventDefault();
                     window.scrollTo({
-                        top: target.offsetTop - (parseInt(getComputedStyle(document.documentElement)
-                                .getPropertyValue('--navbar-height')) || 72),
+                        top: target.offsetTop - (parseInt(getComputedStyle(document.documentElement).getPropertyValue('--navbar-height')) || 72),
                         behavior: 'smooth'
                     });
                 }
