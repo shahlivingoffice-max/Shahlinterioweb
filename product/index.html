@@ -15,6 +15,15 @@
     <meta property="og:url" content="https://shahinterio.com/product/">
     <title>SECUREX Product Catalog – Almirahs, Lockers, BookShelves & Showcases | Shah Interio</title>
 
+    <!-- ✅ FAVICON LINKS (using ../ because this page is inside /product/ folder) -->
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="../android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="../android-chrome-512x512.png">
+    <link rel="manifest" href="../site.webmanifest">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -416,19 +425,6 @@
     </a>
 
     <script>
-        // ====================================================================
-        //  PRODUCT DATABASE
-        //  Image paths: all use ../ because this page lives inside /product/
-        //
-        //  Categories:
-        //    almirah-home     – colourful home almirahs (4001–4006, 3007)
-        //    almirah-office   – office-grade almirahs (3006, Office-1, Office-2)
-        //    almirah-dressing – dressing / mirror almirahs (Dressing-2003)
-        //    locker           – 10-door locker bank
-        //    bookshelf        – open BookShelf rack
-        //    showcase         – GlassDoor Showcase
-        // ====================================================================
-
         const CATEGORY_LABELS = {
             'almirah-home':     'Home Almirah',
             'almirah-office':   'Office Almirah',
@@ -439,244 +435,119 @@
         };
 
         const products = [
-
-            // ----------------------------------------------------------------
-            //  HOME ALMIRAHS
-            // ----------------------------------------------------------------
+            // HOME ALMIRAHS
             {
-                id: 1,
-                category: 'almirah-home',
+                id: 1, category: 'almirah-home',
                 name: 'SECUREX 2-Door Steel Almirah – Blue',
                 img: '../Secure-X-Almirah-4001.png',
                 badge: 'Bestseller', badgeClass: 'badge-best',
                 desc: 'A solid 2-door home almirah in a bright blue finish – one of our most popular picks for bedrooms and living rooms. Built tough, looks great. Multiple colour options available. Custom prints also available.',
-                features: [
-                    '1.0 mm CRCA steel body',
-                    'Scratch-resistant powder coat',
-                    '3 adjustable internal shelves',
-                    'Anti-rust inner coating',
-                    'Multiple colour options available',
-                    'Custom prints available'
-                ]
+                features: ['1.0 mm CRCA steel body','Scratch-resistant powder coat','3 adjustable internal shelves','Anti-rust inner coating','Multiple colour options available','Custom prints available']
             },
             {
-                id: 2,
-                category: 'almirah-home',
+                id: 2, category: 'almirah-home',
                 name: 'SECUREX 2-Door Steel Almirah – Rose',
                 img: '../Secure-X-Almirah-4002.png',
                 badge: 'Popular', badgeClass: '',
                 desc: 'Same reliable build as the blue variant, wrapped in a warm rose finish. A household favourite that pairs durability with everyday style. Multiple colour options available. Custom prints also available.',
-                features: [
-                    '1.0 mm CRCA steel body',
-                    'Scratch-resistant powder coat',
-                    '3 shelves + hanging rod',
-                    'Double-key locking system',
-                    'Multiple colour options available',
-                    'Custom prints available'
-                ]
+                features: ['1.0 mm CRCA steel body','Scratch-resistant powder coat','3 shelves + hanging rod','Double-key locking system','Multiple colour options available','Custom prints available']
             },
             {
-                id: 3,
-                category: 'almirah-home',
+                id: 3, category: 'almirah-home',
                 name: 'SECUREX 3-Door Steel Almirah – Bicolour Blue & White',
                 img: '../Secure-X-Almirah-4003.png',
                 badge: 'New', badgeClass: 'badge-new',
                 desc: 'Extra-wide 3-door almirah in a fresh two-tone blue and white finish. Ideal for families who need generous storage without sacrificing style. Multiple colour options available. Custom prints also available.',
-                features: [
-                    '1.2 mm heavy-gauge steel',
-                    'Two-tone powder-coat finish',
-                    '5 shelves + centre hanging section',
-                    'Central locking bar with 3 bolts',
-                    'Multiple colour options available',
-                    'Custom prints available'
-                ]
+                features: ['1.2 mm heavy-gauge steel','Two-tone powder-coat finish','5 shelves + centre hanging section','Central locking bar with 3 bolts','Multiple colour options available','Custom prints available']
             },
             {
-                id: 4,
-                category: 'almirah-home',
+                id: 4, category: 'almirah-home',
                 name: 'SECUREX 3-Door Steel Almirah – Pink',
                 img: '../Secure-X-Almirah-4004.png',
                 badge: 'Hot', badgeClass: 'badge-hot',
                 desc: 'A bold pink 3-door almirah that makes a statement in any modern bedroom. Full-height storage with a dedicated hanging section. Multiple colour options available. Custom prints also available.',
-                features: [
-                    '1.2 mm steel frame',
-                    'Premium pink powder coat',
-                    'Full-length hanging rod + 4 shelves',
-                    'Recessed piano-type handle',
-                    'Multiple colour options available',
-                    'Custom prints available'
-                ]
+                features: ['1.2 mm steel frame','Premium pink powder coat','Full-length hanging rod + 4 shelves','Recessed piano-type handle','Multiple colour options available','Custom prints available']
             },
             {
-                id: 5,
-                category: 'almirah-home',
+                id: 5, category: 'almirah-home',
                 name: 'SECUREX 3-Door Steel Almirah – Black',
                 img: '../Secure-X-Almirah-4006.png',
                 badge: 'Premium', badgeClass: '',
                 desc: 'A sleek matte-black 3-door almirah for anyone who wants a modern, no-nonsense look. Works equally well in bedrooms, study rooms, and offices. Multiple colour options available. Custom prints also available.',
-                features: [
-                    '1.2 mm CRCA steel',
-                    'Matte-black electrostatic coat',
-                    '5 shelves + hanging rod',
-                    'Smooth concealed hinges',
-                    'Multiple colour options available',
-                    'Custom prints available'
-                ]
+                features: ['1.2 mm CRCA steel','Matte-black electrostatic coat','5 shelves + hanging rod','Smooth concealed hinges','Multiple colour options available','Custom prints available']
             },
             {
-                id: 6,
-                category: 'almirah-home',
+                id: 6, category: 'almirah-home',
                 name: 'SECUREX 3-Door Steel Almirah – Maroon',
                 img: '../Secure-X-Almirah-3007.png',
                 badge: 'Classic', badgeClass: '',
                 desc: 'Rich maroon finish on a sturdy 3-door frame. A timeless design that fits both traditional and contemporary interiors with equal ease. Multiple colour options available. Custom prints also available.',
-                features: [
-                    '1.2 mm steel with anti-rust treatment',
-                    'Deep maroon powder coat',
-                    '4 adjustable shelves',
-                    'Heavy-duty chrome handles',
-                    'Multiple colour options available',
-                    'Custom prints available'
-                ]
+                features: ['1.2 mm steel with anti-rust treatment','Deep maroon powder coat','4 adjustable shelves','Heavy-duty chrome handles','Multiple colour options available','Custom prints available']
             },
-
-            // ----------------------------------------------------------------
-            //  OFFICE ALMIRAHS
-            // ----------------------------------------------------------------
+            // OFFICE ALMIRAHS
             {
-                id: 7,
-                category: 'almirah-office',
+                id: 7, category: 'almirah-office',
                 name: 'SECUREX 2-Door Office Almirah – Grey',
                 img: '../Secure-X-Almirah-3006.png',
                 badge: 'Office', badgeClass: '',
                 desc: 'A professional grey almirah built for busy offices. Deep shelves store files, registers, and stationery neatly. No-fuss design, maximum utility. Multiple colour options available.',
-                features: [
-                    '1.2 mm CRCA steel body',
-                    'Neutral grey powder coat',
-                    '4 deep document shelves',
-                    'Label-holder slots on each shelf',
-                    'Double-locking mechanism',
-                    'Multiple colour options available'
-                ]
+                features: ['1.2 mm CRCA steel body','Neutral grey powder coat','4 deep document shelves','Label-holder slots on each shelf','Double-locking mechanism','Multiple colour options available']
             },
             {
-                id: 8,
-                category: 'almirah-office',
+                id: 8, category: 'almirah-office',
                 name: 'SECUREX 2-Door Office Almirah – Pink',
                 img: '../Secure-X-Almirah-2-Door-Office-1.png',
                 badge: 'Office', badgeClass: '',
                 desc: 'A compact 2-door office cupboard in a fresh pink shade. Great for reception areas, HR rooms, or any smaller workspace that still needs proper file storage. Multiple colour options available.',
-                features: [
-                    '1.0 mm CRCA steel',
-                    'Vibrant pink powder coat',
-                    '3 fixed shelves for files',
-                    'Central key lock',
-                    'Anti-tilt base design',
-                    'Multiple colour options available'
-                ]
+                features: ['1.0 mm CRCA steel','Vibrant pink powder coat','3 fixed shelves for files','Central key lock','Anti-tilt base design','Multiple colour options available']
             },
             {
-                id: 9,
-                category: 'almirah-office',
+                id: 9, category: 'almirah-office',
                 name: 'SECUREX 2-Door Office Almirah – Graphite',
                 img: '../Secure-X-Almirah-2-Door-Office-2.png',
                 badge: 'Office', badgeClass: '',
                 desc: 'Graphite-finish office almirah with an industrial no-nonsense look. Built for high-traffic storage environments where reliability matters most. Multiple colour options available.',
-                features: [
-                    '1.2 mm heavy-gauge steel',
-                    'Graphite powder-coat finish',
-                    '4 adjustable shelves',
-                    'Reinforced door hinges',
-                    'Double-key security lock',
-                    'Multiple colour options available'
-                ]
+                features: ['1.2 mm heavy-gauge steel','Graphite powder-coat finish','4 adjustable shelves','Reinforced door hinges','Double-key security lock','Multiple colour options available']
             },
-
-            // ----------------------------------------------------------------
-            //  DRESSING ALMIRAHS
-            // ----------------------------------------------------------------
+            // DRESSING ALMIRAHS
             {
-                id: 10,
-                category: 'almirah-dressing',
+                id: 10, category: 'almirah-dressing',
                 name: 'SECUREX Dressing Almirah with Full-Length Mirror',
                 img: '../Secure-X-Dressing-2003.png',
                 badge: 'Bestseller', badgeClass: 'badge-best',
                 desc: 'A full-height dressing almirah with an integrated full-length mirror on the left door. Hanging space, shelves, and a small drawer section – everything you need in one unit. Multiple colour options available. Custom prints also available.',
-                features: [
-                    '1.0 mm CRCA steel frame',
-                    'Full-length fixed mirror on door',
-                    'Hanging section + 3 shelves + drawers',
-                    'Soft-close door hinges',
-                    'Multiple colour options available',
-                    'Custom prints available'
-                ]
+                features: ['1.0 mm CRCA steel frame','Full-length fixed mirror on door','Hanging section + 3 shelves + drawers','Soft-close door hinges','Multiple colour options available','Custom prints available']
             },
-
-            // ----------------------------------------------------------------
-            //  LOCKERS
-            // ----------------------------------------------------------------
+            // LOCKERS
             {
-                id: 11,
-                category: 'locker',
+                id: 11, category: 'locker',
                 name: 'SECUREX 10-Door Steel Locker Bank',
                 img: '../Secure-X-10-Locker.png',
                 badge: 'Multi-Unit', badgeClass: '',
                 desc: 'Ten individual lockable compartments in a single sturdy unit. Perfect for schools, gyms, offices, factories, and staff rooms. Multiple colour options available.',
-                features: [
-                    '10 independent locking compartments',
-                    'Master-key override access',
-                    'Ventilated door panels',
-                    'Numbered name-plate slots',
-                    'Anti-rust powder-coat finish',
-                    'Multiple colour options available'
-                ]
+                features: ['10 independent locking compartments','Master-key override access','Ventilated door panels','Numbered name-plate slots','Anti-rust powder-coat finish','Multiple colour options available']
             },
-
-            // ----------------------------------------------------------------
-            //  BOOKSHELVES
-            // ----------------------------------------------------------------
+            // BOOKSHELVES
             {
-                id: 12,
-                category: 'bookshelf',
+                id: 12, category: 'bookshelf',
                 name: 'SECUREX Heavy-Duty Steel BookShelf',
                 img: '../Secure-X-BookShelf.png',
                 badge: 'Storage', badgeClass: '',
                 desc: 'An open-frame steel bookshelf with multiple adjustable shelves that handles everything from books to heavy files and workshop parts. A staple for libraries, offices, and warehouses. Multiple colour options available.',
-                features: [
-                    '1.2 mm steel frame',
-                    '5 height-adjustable shelves',
-                    '80 kg load capacity per shelf',
-                    'Open-front for easy access',
-                    'Anti-rust powder-coat finish',
-                    'Multiple colour options available'
-                ]
+                features: ['1.2 mm steel frame','5 height-adjustable shelves','80 kg load capacity per shelf','Open-front for easy access','Anti-rust powder-coat finish','Multiple colour options available']
             },
-
-            // ----------------------------------------------------------------
-            //  GLASS SHOWCASES
-            // ----------------------------------------------------------------
+            // GLASS SHOWCASES
             {
-                id: 13,
-                category: 'showcase',
+                id: 13, category: 'showcase',
                 name: 'SECUREX Glass Door Showcase Cabinet',
                 img: '../Secure-X-GlassDoor-Showcase.png',
                 badge: 'Display', badgeClass: 'badge-best',
                 desc: 'A steel-framed display cabinet with toughened glass doors and interior glass shelves. Ideal for retail shops, reception areas, trophy displays, and anywhere you want to show off what matters. Multiple colour options available.',
-                features: [
-                    'Toughened safety glass doors',
-                    'Powder-coated steel frame',
-                    '3 adjustable glass shelves',
-                    'Key-locking glass door',
-                    'LED strip-light ready interior',
-                    'Multiple colour options available'
-                ]
+                features: ['Toughened safety glass doors','Powder-coated steel frame','3 adjustable glass shelves','Key-locking glass door','LED strip-light ready interior','Multiple colour options available']
             }
-
         ];
 
-        // ====================================================================
-        //  RENDER PRODUCTS
-        // ====================================================================
+        // RENDER PRODUCTS
         const productGrid      = document.getElementById('productGrid');
         const filterBtns       = document.querySelectorAll('.filter-btn');
         const productCountSpan = document.getElementById('productCount');
@@ -744,7 +615,6 @@
                     </article>`;
             }).join('');
 
-            // Wire up enquiry buttons after DOM is ready
             productGrid.querySelectorAll('.product-enquiry').forEach(btn => {
                 btn.addEventListener('click', function () {
                     const name = this.getAttribute('data-product') || 'SECUREX product';
@@ -754,9 +624,7 @@
             });
         }
 
-        // ====================================================================
-        //  FILTER BUTTONS
-        // ====================================================================
+        // FILTER BUTTONS
         let currentFilter = 'all';
 
         filterBtns.forEach(btn => {
@@ -779,17 +647,13 @@
             });
         });
 
-        // ====================================================================
-        //  NAVBAR SCROLL EFFECT
-        // ====================================================================
+        // NAVBAR SCROLL EFFECT
         const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => {
             navbar.classList.toggle('scrolled', window.scrollY > 60);
         }, { passive: true });
 
-        // ====================================================================
-        //  MOBILE MENU
-        // ====================================================================
+        // MOBILE MENU
         const hamburger  = document.getElementById('hamburger');
         const navLinks   = document.getElementById('navLinks');
         const navOverlay = document.getElementById('navOverlay');
@@ -817,9 +681,7 @@
         navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
         window.addEventListener('resize', () => { if (window.innerWidth > 768) closeMenu(); });
 
-        // ====================================================================
-        //  INITIAL RENDER
-        // ====================================================================
+        // INITIAL RENDER
         renderProducts('all');
     </script>
 </body>
