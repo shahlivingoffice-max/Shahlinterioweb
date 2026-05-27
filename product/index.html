@@ -57,6 +57,21 @@
             --container-max: 1320px;
         }
 
+        /* ========== CUSTOM CURSOR ========== */
+        * {
+            cursor: url('../logo-cursor.png') 16 16, auto;
+        }
+        a, button, [role="button"], select,
+        .filter-btn, .btn, .btn-nav,
+        .product-enquiry, .hamburger, .whatsapp-float, .back-to-home {
+            cursor: url('../logo-cursor.png') 16 16, pointer;
+        }
+        @media (max-width: 768px) {
+            * { cursor: auto !important; }
+            a, button { cursor: auto !important; }
+        }
+        /* ========== END CUSTOM CURSOR ========== */
+
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; scroll-padding-top: var(--navbar-height); -webkit-font-smoothing: antialiased; }
         body { font-family: 'Outfit', sans-serif; background-color: var(--cream); color: var(--text-dark); line-height: 1.6; overflow-x: hidden; }
@@ -97,12 +112,12 @@
         .btn-nav {
             display: inline-flex; align-items: center; gap: 7px; padding: 10px 18px;
             border-radius: 50px; font-weight: 600; font-size: 0.9rem;
-            background: var(--brown); color: var(--cream); border: none; cursor: pointer;
+            background: var(--brown); color: var(--cream); border: none;
             transition: all var(--transition-smooth); font-family: 'Outfit', sans-serif;
         }
         .btn-nav:hover { background: var(--brown-dark); transform: translateY(-2px); box-shadow: var(--shadow-md); color: var(--cream); }
         .nav-cta { display: flex; align-items: center; gap: 10px; }
-        .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; z-index: 1001; padding: 8px; }
+        .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; z-index: 1001; padding: 8px; }
         .hamburger span { width: 26px; height: 2.5px; background: var(--brown-dark); border-radius: 3px; transition: all var(--transition-smooth); display: block; }
         .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
         .hamburger.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
@@ -157,7 +172,7 @@
             padding: 10px 22px; border-radius: 50px;
             background: var(--beige-light); border: 2px solid transparent;
             font-weight: 600; font-size: 0.85rem; color: var(--brown);
-            cursor: pointer; transition: all 0.2s ease; font-family: 'Outfit', sans-serif;
+            transition: all 0.2s ease; font-family: 'Outfit', sans-serif;
         }
         .filter-btn:hover { background: var(--beige); border-color: var(--beige-dark); }
         .filter-btn.active { background: var(--brown); color: var(--cream); border-color: var(--brown); box-shadow: var(--shadow-sm); }
@@ -231,7 +246,7 @@
         .product-enquiry {
             background: var(--brown); color: white; border: none;
             padding: 9px 18px; border-radius: 40px; font-weight: 600; font-size: 0.82rem;
-            cursor: pointer; transition: all 0.2s;
+            transition: all 0.2s;
             display: inline-flex; align-items: center; gap: 6px;
             font-family: 'Outfit', sans-serif; white-space: nowrap; flex-shrink: 0;
         }
