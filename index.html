@@ -84,6 +84,21 @@
             --container-max: 1320px;
         }
 
+        /* ========== CUSTOM CURSOR ========== */
+        * {
+            cursor: url('logo-cursor.png') 16 16, auto;
+        }
+        a, button, [role="button"], select,
+        .btn, .btn-nav, .btn-submit,
+        .gallery-item, .hamburger, .whatsapp-float {
+            cursor: url('logo-cursor.png') 16 16, pointer;
+        }
+        @media (max-width: 768px) {
+            * { cursor: auto !important; }
+            a, button { cursor: auto !important; }
+        }
+        /* ========== END CUSTOM CURSOR ========== */
+
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         html {
@@ -269,7 +284,6 @@
             background: var(--brown);
             color: var(--cream);
             border: none;
-            cursor: pointer;
             transition: all var(--transition-smooth);
             white-space: nowrap;
             font-family: 'Outfit', sans-serif;
@@ -285,7 +299,6 @@
             display: none;
             flex-direction: column;
             gap: 5px;
-            cursor: pointer;
             z-index: 1001;
             padding: 8px;
             background: none;
@@ -403,7 +416,6 @@
             border-radius: 50px;
             font-weight: 700;
             font-size: 1rem;
-            cursor: pointer;
             border: none;
             transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             font-family: 'Outfit', sans-serif;
@@ -603,7 +615,6 @@
             aspect-ratio: 3/4;
             background: linear-gradient(160deg, var(--beige), var(--beige-dark));
             display: block;
-            cursor: pointer;
             transition: all var(--transition-smooth);
             position: relative;
             box-shadow: var(--shadow-sm);
@@ -729,13 +740,12 @@
             background: var(--brown);
             color: var(--cream);
             border: none;
-            cursor: pointer;
             transition: all var(--transition-smooth);
             font-family: 'Outfit', sans-serif;
             letter-spacing: 0.02em;
         }
         .btn-submit:hover { background: var(--brown-dark); box-shadow: var(--shadow-lg); transform: translateY(-2px); }
-        .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .btn-submit:disabled { opacity: 0.6; transform: none; }
         .form-status {
             display: none;
             padding: 12px 16px;
@@ -773,7 +783,6 @@
             align-items: center;
             justify-content: center;
             box-shadow: 0 6px 24px rgba(37, 211, 102, 0.4);
-            cursor: pointer;
             transition: all var(--transition-bounce);
             text-decoration: none;
         }
