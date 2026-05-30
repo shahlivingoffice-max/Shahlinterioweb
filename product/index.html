@@ -134,36 +134,12 @@
         @keyframes cardIn { to { opacity: 1; transform: translateY(0); } }
         .product-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-xl); border-color: var(--beige-dark); }
 
-        /* ============================================================
-           PRODUCT IMAGE HOVER — Open/Close Effect
-           ============================================================
-
-           Structure inside .product-img:
-             <div class="product-img">
-               <!-- Closed image (default) -->
-               <img class="prod-img-closed" src="..." alt="...">
-               <!-- Open image (shown on hover, preloaded) -->
-               <img class="prod-img-open"   src="..." alt="..." aria-hidden="true">
-               <!-- fallback placeholder -->
-               <div class="product-img-placeholder" ...>...</div>
-               <!-- badge -->
-               <div class="product-badge ...">...</div>
-             </div>
-
-           Both images are absolutely stacked. The open image has
-           opacity:0 by default and transitions to opacity:1 on hover.
-           A subtle scale-up is applied to add depth.
-           No layout shift: both images fill the same container.
-        ============================================================ */
-
         .product-img {
             background: linear-gradient(145deg, var(--beige), var(--beige-dark));
             aspect-ratio: 1 / 1;
             position: relative;
             overflow: hidden;
         }
-
-        /* Both product images: fill container absolutely */
         .prod-img-closed,
         .prod-img-open {
             position: absolute;
@@ -171,102 +147,34 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            /* GPU-accelerated for buttery transitions */
             will-change: opacity, transform;
             backface-visibility: hidden;
         }
-
-        /* Default (closed) image: visible, slight scale on parent hover */
         .prod-img-closed {
             opacity: 1;
             transform: scale(1) translateZ(0);
-            transition:
-                opacity  0.55s cubic-bezier(0.4, 0, 0.2, 1),
-                transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: opacity 0.55s cubic-bezier(0.4, 0, 0.2, 1), transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 1;
         }
-
-        /* Open image: hidden by default, floats in on hover */
         .prod-img-open {
             opacity: 0;
             transform: scale(1.04) translateZ(0);
-            transition:
-                opacity  0.55s cubic-bezier(0.4, 0, 0.2, 1),
-                transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: opacity 0.55s cubic-bezier(0.4, 0, 0.2, 1), transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 2;
         }
-
-        /* On product card hover: swap visibility with smooth cross-dissolve */
-        .product-card:hover .prod-img-closed {
-            opacity: 0;
-            transform: scale(1.04) translateZ(0);
-        }
-        .product-card:hover .prod-img-open {
-            opacity: 1;
-            transform: scale(1) translateZ(0);
-        }
-
-        /* If open image fails to load → it stays hidden; closed image remains visible */
-        .prod-img-open.load-error {
-            display: none !important;
-        }
-
-        /* Tooltip badge: "View Open" hint on hover */
-        .open-hint {
-            position: absolute;
-            top: 14px; left: 14px;
-            background: rgba(255,255,255,0.92);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
-            color: var(--brown-dark);
-            font-size: 0.68rem;
-            font-weight: 700;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            padding: 5px 10px;
-            border-radius: 20px;
-            z-index: 5;
-            opacity: 0;
-            transform: translateY(-6px);
-            transition: opacity 0.3s ease, transform 0.3s ease;
-            pointer-events: none;
-            white-space: nowrap;
-        }
-        /* Only show hint if product has an open image */
-        .product-card.has-open-img:hover .open-hint {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Shine sweep effect on hover — premium touch */
-        .product-img::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(
-                115deg,
-                transparent 30%,
-                rgba(255,255,255,0.12) 50%,
-                transparent 70%
-            );
-            z-index: 6;
-            transform: translateX(-100%);
-            transition: transform 0s;
-            pointer-events: none;
-        }
-        .product-card:hover .product-img::after {
-            transform: translateX(100%);
-            transition: transform 0.7s ease;
-        }
-
+        .product-card:hover .prod-img-closed { opacity: 0; transform: scale(1.04) translateZ(0); }
+        .product-card:hover .prod-img-open   { opacity: 1; transform: scale(1) translateZ(0); }
+        .prod-img-open.load-error { display: none !important; }
+        .open-hint { position: absolute; top: 14px; left: 14px; background: rgba(255,255,255,0.92); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); color: var(--brown-dark); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; padding: 5px 10px; border-radius: 20px; z-index: 5; opacity: 0; transform: translateY(-6px); transition: opacity 0.3s ease, transform 0.3s ease; pointer-events: none; white-space: nowrap; }
+        .product-card.has-open-img:hover .open-hint { opacity: 1; transform: translateY(0); }
+        .product-img::after { content: ''; position: absolute; inset: 0; background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.12) 50%, transparent 70%); z-index: 6; transform: translateX(-100%); transition: transform 0s; pointer-events: none; }
+        .product-card:hover .product-img::after { transform: translateX(100%); transition: transform 0.7s ease; }
         .product-img-placeholder { width: 100%; height: 100%; position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: rgba(92, 61, 46, 0.4); font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1.1rem; text-align: center; padding: 20px; z-index: 0; }
         .product-img-placeholder .ph-icon { font-size: 3.5rem; }
-
         .product-badge { position: absolute; top: 14px; right: 14px; background: var(--brown-dark); color: white; padding: 5px 12px; border-radius: 30px; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; z-index: 7; }
         .product-badge.badge-best { background: var(--gold-accent); }
         .product-badge.badge-new  { background: #2e7d32; }
         .product-badge.badge-hot  { background: #c62828; }
-
         .product-info { padding: 22px; flex: 1; display: flex; flex-direction: column; }
         .product-category { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gold-accent); font-weight: 700; margin-bottom: 6px; }
         .product-title { font-size: 1.2rem; font-weight: 800; color: var(--brown-dark); margin-bottom: 8px; line-height: 1.3; }
@@ -281,6 +189,9 @@
         .product-enquiry:hover { background: var(--brown-dark); transform: translateY(-2px); box-shadow: var(--shadow-md); }
         .no-results { grid-column: 1 / -1; text-align: center; padding: 80px 24px; background: var(--white); border-radius: var(--radius-lg); border: 1px solid rgba(196, 168, 130, 0.2); }
         .no-results p { color: var(--text-light); margin-top: 8px; }
+
+        /* Custom product indicator */
+        .custom-tag { position: absolute; bottom: 10px; left: 10px; background: rgba(42,24,13,0.75); color: #FFD700; font-size: 0.62rem; font-weight: 700; padding: 3px 9px; border-radius: 20px; z-index: 7; letter-spacing: 0.05em; text-transform: uppercase; }
 
         /* ---- Footer ---- */
         .footer { background: var(--brown-deep); color: var(--beige); padding: 56px 0 24px; }
@@ -316,7 +227,6 @@
             .product-grid { grid-template-columns: 1fr; gap: 20px; }
             .footer-grid { grid-template-columns: 1fr; }
             .page-header { padding: 120px 0 48px; }
-            /* On mobile: disable hover-based open effect (touch devices handle differently) */
             .prod-img-open { display: none; }
         }
         @media (max-width: 480px) {
@@ -455,7 +365,12 @@
 
     <script>
     /* =====================================================================
-       PRODUCT DATA
+       STORAGE KEY — must match admin.html
+       ===================================================================== */
+    var STORAGE_KEY = 'securex_custom_products';
+
+    /* =====================================================================
+       CATEGORY LABELS
        ===================================================================== */
     var CATEGORY_LABELS = {
         'almirah-home':     'Home Almirah',
@@ -466,6 +381,9 @@
         'showcase':         'Glass Showcase'
     };
 
+    /* =====================================================================
+       BUILT-IN PRODUCTS
+       ===================================================================== */
     var products = [
         // HOME ALMIRAHS
         { id: 1,  category: 'almirah-home',     name: 'SECUREX 2-Door Steel Almirah – Blue',                     img: '../Secure-X-Almirah-4001.png',            badge: 'Bestseller', badgeClass: 'badge-best', desc: 'A solid 2-door home almirah in a bright blue finish – one of our most popular picks for bedrooms and living rooms. Built tough, looks great. Multiple colour options available. Custom prints also available.',     features: ['1.0 mm CRCA steel body','Scratch-resistant powder coat','3 adjustable internal shelves','Anti-rust inner coating','Multiple colour options available','Custom prints available'] },
@@ -489,26 +407,28 @@
     ];
 
     /* =====================================================================
-       OPEN-IMAGE NAMING CONVENTION
-       -----------------------------------------------------------------------
-       Given a closed image path like:
-         ../Secure-X-Almirah-4006.png
-       The open image follows this convention:
-         ../Secure-X-Almirah-4006-Open.png   (capital O — your file naming)
+       LOAD CUSTOM PRODUCTS FROM ADMIN PANEL (localStorage)
+       ===================================================================== */
+    (function loadCustomProducts() {
+        try {
+            var custom = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            if (Array.isArray(custom)) {
+                custom.forEach(function(p) { products.push(p); });
+            }
+        } catch(e) { /* localStorage unavailable */ }
+    })();
 
-       The function below derives the open image path automatically.
-       Edge cases handled:
-         - .png / .PNG / .jpg / .jpeg  extensions all work
-         - paths with sub-directories preserved
-         - If the open image fails to load, it hides silently (load-error class)
+    /* =====================================================================
+       OPEN-IMAGE PATH HELPER
        ===================================================================== */
     function getOpenImagePath(closedSrc) {
-        // Match the last dot + extension
+        // Base64 images (from admin panel) have no open variant
+        if (closedSrc && closedSrc.startsWith('data:')) return null;
         var extMatch = closedSrc.match(/(\.[a-zA-Z]+)$/);
         if (!extMatch) return null;
-        var ext  = extMatch[1];                            // e.g. ".png"
-        var base = closedSrc.slice(0, -ext.length);       // path without extension
-        return base + '-Open' + ext;                       // e.g. "../Secure-X-Almirah-4006-Open.png"
+        var ext  = extMatch[1];
+        var base = closedSrc.slice(0, -ext.length);
+        return base + '-Open' + ext;
     }
 
     /* =====================================================================
@@ -521,7 +441,7 @@
     function renderProducts(filter) {
         var filtered = filter === 'all'
             ? products
-            : products.filter(function (p) { return p.category === filter; });
+            : products.filter(function(p) { return p.category === filter; });
 
         productCountSpan.textContent = filtered.length;
 
@@ -530,83 +450,81 @@
             return;
         }
 
-        productGrid.innerHTML = filtered.map(function (product, i) {
+        productGrid.innerHTML = filtered.map(function(product, i) {
             var catLabel  = CATEGORY_LABELS[product.category] || product.category;
             var badgeHTML = product.badge
                 ? '<div class="product-badge ' + (product.badgeClass || '') + '">' + product.badge + '</div>'
                 : '';
-            var openSrc   = getOpenImagePath(product.img);
+            var openSrc = getOpenImagePath(product.img);
 
-            /* Build the dual-image markup for the hover effect.
-               Both images are stacked absolutely inside .product-img.
-               The open image is loaded lazily; if it 404s, the error handler
-               adds .load-error so it stays invisible and the closed image shows. */
-            var imgHTML = ''
-                + '<img class="prod-img-closed"'
-                +      ' src="' + product.img + '"'
-                +      ' alt="' + product.name + '"'
-                +      ' loading="' + (i < 4 ? 'eager' : 'lazy') + '"'
-                +      ' onerror="this.style.display=\'none\'">'
-                /* Open image — note: aria-hidden since it's purely decorative on hover */
-                + '<img class="prod-img-open"'
-                +      ' src="' + openSrc + '"'
-                +      ' alt="' + product.name + ' – open view" aria-hidden="true"'
-                +      ' loading="lazy"'
-                +      ' onerror="this.classList.add(\'load-error\')">'
-                /* Fallback placeholder (shown if closed img also fails) */
-                + '<div class="product-img-placeholder" style="display:none;">'
-                +     '<span class="ph-icon">📦</span>' + catLabel
-                + '</div>';
+            var imgHTML = '<img class="prod-img-closed"'
+                        + ' src="' + product.img + '"'
+                        + ' alt="' + product.name + '"'
+                        + ' loading="' + (i < 4 ? 'eager' : 'lazy') + '"'
+                        + ' onerror="this.style.display=\'none\'">';
+
+            // Only add open image tag if we have a path
+            if (openSrc) {
+                imgHTML += '<img class="prod-img-open"'
+                         + ' src="' + openSrc + '"'
+                         + ' alt="' + product.name + ' – open view" aria-hidden="true"'
+                         + ' loading="lazy"'
+                         + ' onerror="this.classList.add(\'load-error\')">';
+            }
+
+            imgHTML += '<div class="product-img-placeholder" style="display:none;">'
+                     + '<span class="ph-icon">📦</span>' + catLabel
+                     + '</div>';
+
+            // Custom product tag
+            var customTag = product._custom
+                ? '<div class="custom-tag">✦ Custom Added</div>'
+                : '';
 
             return '<article class="product-card"'
-                +      ' data-category="' + product.category + '"'
-                +      ' style="animation-delay:' + ((i % 12) * 0.05) + 's"'
-                +      ' aria-label="' + product.name + '">'
-                +    '<div class="product-img">'
-                +        imgHTML
-                +        '<!-- Hover hint badge -->'
-                +        '<div class="open-hint" aria-hidden="true">👁 View Open</div>'
-                +        badgeHTML
-                +    '</div>'
-                +    '<div class="product-info">'
-                +        '<div class="product-category">' + catLabel + '</div>'
-                +        '<h3 class="product-title">' + product.name + '</h3>'
-                +        '<p class="product-desc">' + product.desc + '</p>'
-                +        '<ul class="product-features" aria-label="Key features">'
-                +            product.features.map(function (f) { return '<li>' + f + '</li>'; }).join('')
-                +        '</ul>'
-                +        '<div class="product-footer">'
-                +            '<div class="product-price">Factory Price<small>B2B Direct &nbsp;·&nbsp; MOQ Flexible</small></div>'
-                +            '<button class="product-enquiry"'
-                +                    ' data-product="' + product.name.replace(/"/g, '&quot;') + '"'
-                +                    ' aria-label="Enquire about ' + product.name + '">📩 Enquire</button>'
-                +        '</div>'
-                +    '</div>'
-                + '</article>';
+                 + ' data-category="' + product.category + '"'
+                 + ' style="animation-delay:' + ((i % 12) * 0.05) + 's"'
+                 + ' aria-label="' + product.name + '">'
+                 + '<div class="product-img">'
+                 +     imgHTML
+                 +     '<div class="open-hint" aria-hidden="true">👁 View Open</div>'
+                 +     badgeHTML
+                 +     customTag
+                 + '</div>'
+                 + '<div class="product-info">'
+                 +     '<div class="product-category">' + catLabel + '</div>'
+                 +     '<h3 class="product-title">' + product.name + '</h3>'
+                 +     '<p class="product-desc">' + product.desc + '</p>'
+                 +     '<ul class="product-features" aria-label="Key features">'
+                 +         product.features.map(function(f) { return '<li>' + f + '</li>'; }).join('')
+                 +     '</ul>'
+                 +     '<div class="product-footer">'
+                 +         '<div class="product-price">Factory Price<small>B2B Direct &nbsp;·&nbsp; MOQ Flexible</small></div>'
+                 +         '<button class="product-enquiry"'
+                 +                 ' data-product="' + product.name.replace(/"/g, '&quot;') + '"'
+                 +                 ' aria-label="Enquire about ' + product.name + '">📩 Enquire</button>'
+                 +     '</div>'
+                 + '</div>'
+                 + '</article>';
         }).join('');
 
-        /* ---- Mark cards that have a working open image ----
-           We check after the next paint whether the open image loaded.
-           If it loaded successfully, add .has-open-img so the hint badge appears.
-           This is async — images might still be loading, so we listen for load/error. */
-        productGrid.querySelectorAll('.prod-img-open').forEach(function (openImg) {
+        /* Mark cards that have a working open image */
+        productGrid.querySelectorAll('.prod-img-open').forEach(function(openImg) {
             var card = openImg.closest('.product-card');
             function markHasOpen() {
                 if (!openImg.classList.contains('load-error') && openImg.naturalWidth > 0) {
                     card.classList.add('has-open-img');
                 }
             }
-            if (openImg.complete) {
-                markHasOpen();
-            } else {
-                openImg.addEventListener('load',  markHasOpen);
-                openImg.addEventListener('error', function () { /* already has load-error class */ });
+            if (openImg.complete) { markHasOpen(); }
+            else {
+                openImg.addEventListener('load', markHasOpen);
             }
         });
 
-        /* ---- Enquiry buttons → WhatsApp ---- */
-        productGrid.querySelectorAll('.product-enquiry').forEach(function (btn) {
-            btn.addEventListener('click', function () {
+        /* Enquiry buttons → WhatsApp */
+        productGrid.querySelectorAll('.product-enquiry').forEach(function(btn) {
+            btn.addEventListener('click', function() {
                 var name = this.getAttribute('data-product') || 'SECUREX product';
                 var msg  = 'Hello%20SECUREX%20Team!%0A%0AI%20am%20interested%20in%20*'
                          + encodeURIComponent(name)
@@ -621,19 +539,14 @@
        ===================================================================== */
     var currentFilter = 'all';
 
-    filterBtns.forEach(function (btn) {
-        btn.addEventListener('click', function () {
+    filterBtns.forEach(function(btn) {
+        btn.addEventListener('click', function() {
             var newFilter = this.getAttribute('data-filter');
             if (newFilter === currentFilter) return;
-
-            filterBtns.forEach(function (b) {
-                b.classList.remove('active');
-                b.setAttribute('aria-pressed', 'false');
-            });
+            filterBtns.forEach(function(b) { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
             this.classList.add('active');
             this.setAttribute('aria-pressed', 'true');
             currentFilter = newFilter;
-
             renderProducts(newFilter);
             window.scrollTo({ top: document.querySelector('.product-section').offsetTop - 90, behavior: 'smooth' });
         });
@@ -643,7 +556,7 @@
        NAVBAR SCROLL
        ===================================================================== */
     var navbar = document.getElementById('navbar');
-    window.addEventListener('scroll', function () {
+    window.addEventListener('scroll', function() {
         navbar.classList.toggle('scrolled', window.scrollY > 60);
     }, { passive: true });
 
@@ -657,11 +570,11 @@
     function openMenu()  { hamburger.classList.add('active'); navLinks.classList.add('active'); navOverlay.classList.add('active'); hamburger.setAttribute('aria-expanded', 'true'); document.body.style.overflow = 'hidden'; }
     function closeMenu() { hamburger.classList.remove('active'); navLinks.classList.remove('active'); navOverlay.classList.remove('active'); hamburger.setAttribute('aria-expanded', 'false'); document.body.style.overflow = ''; }
 
-    hamburger.addEventListener('click', function () { navLinks.classList.contains('active') ? closeMenu() : openMenu(); });
+    hamburger.addEventListener('click', function() { navLinks.classList.contains('active') ? closeMenu() : openMenu(); });
     navOverlay.addEventListener('click', closeMenu);
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeMenu(); });
-    navLinks.querySelectorAll('a').forEach(function (link) { link.addEventListener('click', closeMenu); });
-    window.addEventListener('resize', function () { if (window.innerWidth > 768) closeMenu(); });
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeMenu(); });
+    navLinks.querySelectorAll('a').forEach(function(link) { link.addEventListener('click', closeMenu); });
+    window.addEventListener('resize', function() { if (window.innerWidth > 768) closeMenu(); });
 
     /* =====================================================================
        INITIAL RENDER
