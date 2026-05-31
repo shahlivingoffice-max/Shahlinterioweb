@@ -375,9 +375,19 @@
         </svg>
     </a>
 
+    <!-- Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <script>
     /* =====================================================================
-       STORAGE KEYS — must match admin.html
+       SUPABASE CONFIGURATION (same as your admin panel)
+       ===================================================================== */
+    const SUPABASE_URL = "https://ceeezhukizoobknroovq.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_3XHshryDBRniaiW5YEO03w_pUMH6gIG";
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    /* =====================================================================
+       STORAGE KEYS (for backward compatibility, not needed but kept)
        ===================================================================== */
     var STORAGE_KEY  = 'securex_custom_products';
     var GH_CONFIG_KEY = 'securex_gh_config';
@@ -395,9 +405,9 @@
     };
 
     /* =====================================================================
-       BUILT-IN PRODUCTS
+       BUILT-IN PRODUCTS (unchanged)
        ===================================================================== */
-    var products = [
+    var builtinProducts = [
         // HOME ALMIRAHS
         { id: 1,  category: 'almirah-home',     name: 'SECUREX 2-Door Steel Almirah – Blue',                     img: '../Secure-X-Almirah-4001.png',            badge: 'Bestseller', badgeClass: 'badge-best', desc: 'A solid 2-door home almirah in a bright blue finish – one of our most popular picks for bedrooms and living rooms. Built tough, looks great. Multiple colour options available. Custom prints also available.',     features: ['1.0 mm CRCA steel body','Scratch-resistant powder coat','3 adjustable internal shelves','Anti-rust inner coating','Multiple colour options available','Custom prints available'] },
         { id: 2,  category: 'almirah-home',     name: 'SECUREX 2-Door Steel Almirah – Rose',                     img: '../Secure-X-Almirah-4002.png',            badge: 'Popular',    badgeClass: '',           desc: 'Same reliable build as the blue variant, wrapped in a warm rose finish. A household favourite that pairs durability with everyday style. Multiple colour options available. Custom prints also available.',              features: ['1.0 mm CRCA steel body','Scratch-resistant powder coat','3 shelves + hanging rod','Double-key locking system','Multiple colour options available','Custom prints available'] },
@@ -419,118 +429,86 @@
         { id: 13, category: 'showcase',         name: 'SECUREX Glass Door Showcase Cabinet',                      img: '../Secure-X-GlassDoor-Showcase.png',     badge: 'Display',    badgeClass: 'badge-best', desc: 'A steel-framed display cabinet with toughened glass doors and interior glass shelves. Ideal for retail shops, reception areas, trophy displays, and anywhere you want to show off what matters. Multiple colour options available.', features: ['Toughened safety glass doors','Powder-coated steel frame','3 adjustable glass shelves','Key-locking glass door','LED strip-light ready interior','Multiple colour options available'] }
     ];
 
+    // This will hold the final merged product list (built-in + Supabase)
+    var products = [];
+
+    /* =====================================================================
+       HELPER: Convert a Supabase product (row) into the internal format
+       used by the render function.
+       ===================================================================== */
+    function convertSupabaseProduct(row) {
+        return {
+            id:          row.id,
+            category:    row.category || '',
+            name:        row.title || 'Untitled',
+            img:         row.image_closed || '',
+            imgOpen:     row.image_open || null,   // will be used if available
+            badge:       row.badge || '',
+            badgeClass:  row.badge === 'Bestseller' ? 'badge-best' : (row.badge === 'New' ? 'badge-new' : (row.badge === 'Hot' ? 'badge-hot' : '')),
+            desc:        row.description || '',
+            features:    Array.isArray(row.features) ? row.features : [],
+            price_text:  row.price_text || '',
+            _custom:     true   // mark as custom so we can show the "Custom Added" tag
+        };
+    }
+
+    /* =====================================================================
+       FETCH PRODUCTS FROM SUPABASE
+       ===================================================================== */
+    async function fetchSupabaseProducts() {
+        try {
+            const { data, error } = await supabaseClient
+                .from('products')
+                .select('*')
+                .order('created_at', { ascending: false });
+            if (error) throw error;
+            return (data || []).map(convertSupabaseProduct);
+        } catch (err) {
+            console.warn("Supabase fetch failed:", err);
+            return [];
+        }
+    }
+
+    /* =====================================================================
+       MERGE: built‑in products + Supabase products (Supabase overrides by ID)
+       ===================================================================== */
+    function mergeProductLists(supabaseProds) {
+        // Start with a copy of built‑in products
+        var merged = builtinProducts.map(p => ({ ...p })); // shallow copy is enough
+
+        // Override or add Supabase products
+        supabaseProds.forEach(sp => {
+            const existingIndex = merged.findIndex(mp => mp.id === sp.id);
+            if (existingIndex >= 0) {
+                // Replace existing product (e.g. admin edited a built‑in product)
+                merged[existingIndex] = sp;
+            } else {
+                // Completely new product (added via admin)
+                merged.push(sp);
+            }
+        });
+
+        return merged;
+    }
+
     /* =====================================================================
        LOADING BAR HELPER
        ===================================================================== */
     var loadingBar = document.getElementById('loadingBar');
-
-    function setLoadingProgress(pct) {
-        loadingBar.style.width = pct + '%';
-    }
+    function setLoadingProgress(pct) { loadingBar.style.width = pct + '%'; }
     function completeLoading() {
         loadingBar.style.width = '100%';
         setTimeout(function() { loadingBar.classList.add('complete'); }, 300);
     }
 
     /* =====================================================================
-       LOAD CUSTOM PRODUCTS FROM GITHUB
-       — Fetches from raw.githubusercontent.com (works for public repos, no auth needed)
-       — Falls back gracefully if GitHub is not configured or unreachable
-       ===================================================================== */
-    async function loadProductsFromGitHub() {
-        try {
-            var ghCfg = JSON.parse(localStorage.getItem(GH_CONFIG_KEY) || '{}');
-            if (!ghCfg.user || !ghCfg.repo) return null; // GitHub not configured
-
-            var jsonPath = (ghCfg.json_path || 'data/custom-products.json').replace(/^\/|\/$/g, '');
-            var branch   = ghCfg.branch || 'main';
-
-            // raw.githubusercontent.com serves files directly — no auth required for public repos
-            var rawUrl = 'https://raw.githubusercontent.com/'
-                       + ghCfg.user + '/' + ghCfg.repo + '/'
-                       + branch + '/' + jsonPath
-                       + '?t=' + Date.now(); // cache-bust so we always get the latest version
-
-            var res = await fetch(rawUrl);
-            if (!res.ok) return null; // File not found or repo is private — fail silently
-
-            var data = await res.json();
-            return Array.isArray(data) ? data : null;
-        } catch (e) {
-            return null; // Network error or JSON parse error — fail silently
-        }
-    }
-
-    /* =====================================================================
-       MERGE CUSTOM PRODUCTS INTO THE MAIN PRODUCTS ARRAY
-       — Adds new products and overrides existing ones by ID
-       ===================================================================== */
-    function mergeCustomProducts(customList) {
-        if (!Array.isArray(customList) || !customList.length) return;
-
-        customList.forEach(function(p) {
-            var existIdx = products.findIndex(function(x) { return x.id === p.id; });
-            if (existIdx >= 0) {
-                products[existIdx] = p; // override existing entry (e.g. edited built-in)
-            } else {
-                products.push(p);       // add new custom product
-            }
-        });
-    }
-
-    /* =====================================================================
-       INIT — Load products then render
-       Priority: localStorage (fast, instant) → GitHub (latest, cross-browser)
-       ===================================================================== */
-    async function initProducts() {
-        setLoadingProgress(20);
-
-        // Step 1: Load from localStorage immediately for a fast first render
-        try {
-            var localData = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-            mergeCustomProducts(localData);
-        } catch (e) {
-            // localStorage unavailable or corrupt — skip silently
-        }
-
-        setLoadingProgress(50);
-
-        // Step 2: Render with localStorage data so the page isn't blank while GitHub loads
-        renderProducts(currentFilter);
-
-        // Step 3: Try fetching the latest data from GitHub (may override localStorage)
-        var ghData = await loadProductsFromGitHub();
-
-        setLoadingProgress(90);
-
-        if (ghData && ghData.length) {
-            // GitHub returned data — merge it in and re-render to reflect any updates
-            mergeCustomProducts(ghData);
-            renderProducts(currentFilter);
-        }
-
-        completeLoading();
-    }
-
-    /* =====================================================================
-       OPEN-IMAGE PATH HELPER
-       ===================================================================== */
-    function getOpenImagePath(closedSrc) {
-        // Base64 images (from admin panel local uploads) have no open variant
-        if (closedSrc && closedSrc.startsWith('data:')) return null;
-        var extMatch = closedSrc.match(/(\.[a-zA-Z]+)$/);
-        if (!extMatch) return null;
-        var ext  = extMatch[1];
-        var base = closedSrc.slice(0, -ext.length);
-        return base + '-Open' + ext;
-    }
-
-    /* =====================================================================
-       RENDER PRODUCTS
+       RENDER PRODUCTS (exactly the same as before, but now uses products array)
+       Supports both old 'img' and new 'imgOpen' fields.
        ===================================================================== */
     var productGrid      = document.getElementById('productGrid');
     var filterBtns       = document.querySelectorAll('.filter-btn');
     var productCountSpan = document.getElementById('productCount');
+    var currentFilter    = 'all';
 
     function renderProducts(filter) {
         var filtered = (filter === 'all')
@@ -549,16 +527,29 @@
             var badgeHTML = product.badge
                 ? '<div class="product-badge ' + (product.badgeClass || '') + '">' + product.badge + '</div>'
                 : '';
-            var openSrc = getOpenImagePath(product.img);
+
+            // Determine closed image and open image sources
+            var closedSrc = product.img || '';
+            // Prefer explicit imgOpen if available; otherwise try to derive (old style) but only if it's not a base64 image
+            var openSrc = product.imgOpen || null;
+            if (!openSrc && closedSrc && !closedSrc.startsWith('data:')) {
+                // Fallback to old "-Open" derivation (for built‑in products)
+                var extMatch = closedSrc.match(/(\.[a-zA-Z]+)$/);
+                if (extMatch) {
+                    var ext  = extMatch[1];
+                    var base = closedSrc.slice(0, -ext.length);
+                    openSrc = base + '-Open' + ext;
+                }
+            }
 
             var imgHTML = '<img class="prod-img-closed"'
-                        + ' src="' + product.img + '"'
+                        + ' src="' + closedSrc + '"'
                         + ' alt="' + product.name + '"'
                         + ' loading="' + (i < 4 ? 'eager' : 'lazy') + '"'
                         + ' onerror="this.style.display=\'none\'">';
 
-            // Only add open-image tag if we have a path to try
-            if (openSrc) {
+            // Only add open‑image tag if we have a source (and it's not empty)
+            if (openSrc && openSrc.trim() !== '') {
                 imgHTML += '<img class="prod-img-open"'
                          + ' src="' + openSrc + '"'
                          + ' alt="' + product.name + ' – open view" aria-hidden="true"'
@@ -570,10 +561,7 @@
                      + '<span class="ph-icon">📦</span>' + catLabel
                      + '</div>';
 
-            // Tag to identify custom products added via admin panel
-            var customTag = product._custom
-                ? '<div class="custom-tag">✦ Custom Added</div>'
-                : '';
+            var customTag = product._custom ? '<div class="custom-tag">✦ Custom Added</div>' : '';
 
             return '<article class="product-card"'
                  + ' data-category="' + product.category + '"'
@@ -590,10 +578,10 @@
                  +     '<h3 class="product-title">' + product.name + '</h3>'
                  +     '<p class="product-desc">' + product.desc + '</p>'
                  +     '<ul class="product-features" aria-label="Key features">'
-                 +         product.features.map(function(f) { return '<li>' + f + '</li>'; }).join('')
+                 +         (product.features ? product.features.map(function(f) { return '<li>' + f + '</li>'; }).join('') : '')
                  +     '</ul>'
                  +     '<div class="product-footer">'
-                 +         '<div class="product-price">Factory Price<small>B2B Direct &nbsp;·&nbsp; MOQ Flexible</small></div>'
+                 +         '<div class="product-price">' + (product.price_text ? product.price_text : 'Factory Price') + '<small>B2B Direct &nbsp;·&nbsp; MOQ Flexible</small></div>'
                  +         '<button class="product-enquiry"'
                  +                 ' data-product="' + product.name.replace(/"/g, '&quot;') + '"'
                  +                 ' aria-label="Enquire about ' + product.name + '">📩 Enquire</button>'
@@ -627,10 +615,8 @@
     }
 
     /* =====================================================================
-       FILTER BUTTONS
+       FILTER BUTTONS (unchanged)
        ===================================================================== */
-    var currentFilter = 'all';
-
     filterBtns.forEach(function(btn) {
         btn.addEventListener('click', function() {
             var newFilter = this.getAttribute('data-filter');
@@ -642,7 +628,7 @@
             this.classList.add('active');
             this.setAttribute('aria-pressed', 'true');
             currentFilter = newFilter;
-            renderProducts(newFilter);
+            renderProducts(currentFilter);
             window.scrollTo({
                 top: document.querySelector('.product-section').offsetTop - 90,
                 behavior: 'smooth'
@@ -651,16 +637,35 @@
     });
 
     /* =====================================================================
-       NAVBAR SCROLL EFFECT
+       MAIN INITIALISATION: fetch from Supabase, merge, then render
+       ===================================================================== */
+    async function initProducts() {
+        setLoadingProgress(20);
+        // First, we could show built‑ins immediately, but we'll wait for Supabase
+        // because that's the source of truth. However, to avoid empty screen,
+        // we temporarily use only built‑ins.
+        products = builtinProducts.map(p => ({ ...p }));
+        renderProducts(currentFilter);
+        setLoadingProgress(50);
+
+        // Fetch Supabase products (including future admin additions)
+        const supabaseProds = await fetchSupabaseProducts();
+        setLoadingProgress(90);
+
+        // Merge and re‑render
+        products = mergeProductLists(supabaseProds);
+        renderProducts(currentFilter);
+        completeLoading();
+    }
+
+    /* =====================================================================
+       NAVBAR & MOBILE MENU (unchanged)
        ===================================================================== */
     var navbar = document.getElementById('navbar');
     window.addEventListener('scroll', function() {
         navbar.classList.toggle('scrolled', window.scrollY > 60);
     }, { passive: true });
 
-    /* =====================================================================
-       MOBILE MENU
-       ===================================================================== */
     var hamburger  = document.getElementById('hamburger');
     var navLinks   = document.getElementById('navLinks');
     var navOverlay = document.getElementById('navOverlay');
@@ -688,9 +693,7 @@
     navLinks.querySelectorAll('a').forEach(function(link) { link.addEventListener('click', closeMenu); });
     window.addEventListener('resize', function() { if (window.innerWidth > 768) closeMenu(); });
 
-    /* =====================================================================
-       KICK OFF — replaces the old bare renderProducts('all') call
-       ===================================================================== */
+    // Start everything
     initProducts();
     </script>
 </body>
