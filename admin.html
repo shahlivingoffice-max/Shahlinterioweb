@@ -3,764 +3,647 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>SecureX Admin • Supabase Storage</title>
+    <title>SECUREX Admin • Shah Interio</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Playfair Display', serif;
         }
+
         body {
-            background: #f1f5f9;
-            color: #0f172a;
-            padding: 24px 20px;
+            background: #faf7f0;
+            color: #2c2b28;
         }
-        .app-container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        /* header */
-        .top-bar {
+
+        /* premium sidebar layout */
+        .admin-wrapper {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 16px;
-            margin-bottom: 28px;
-            background: white;
-            padding: 16px 24px;
-            border-radius: 32px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.02), 0 1px 2px rgba(0,0,0,0.05);
+            min-height: 100vh;
         }
-        .logo h1 {
-            font-size: 1.6rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #1e293b, #2d4a6e);
+
+        /* SIDEBAR - earthy tones */
+        .sidebar {
+            width: 280px;
+            background: #2e241f;
+            color: #ede7dd;
+            padding: 32px 0 24px 0;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.2s;
+        }
+
+        .logo-area {
+            padding: 0 24px 28px 24px;
+            border-bottom: 1px solid #4a3b32;
+            margin-bottom: 28px;
+        }
+
+        .logo-area h1 {
+            font-size: 1.8rem;
+            letter-spacing: -0.3px;
+            background: linear-gradient(135deg, #e9c891, #c7a55b);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
         }
-        .logo span {
-            font-size: 0.85rem;
-            color: #475569;
-            font-weight: normal;
+
+        .logo-area p {
+            font-size: 0.7rem;
+            color: #bdafa0;
+            margin-top: 6px;
         }
-        .nav-tabs {
+
+        .nav-menu {
             display: flex;
+            flex-direction: column;
             gap: 12px;
-            background: #f8fafc;
-            padding: 6px;
-            border-radius: 60px;
         }
-        .nav-btn {
-            border: none;
+
+        .nav-item {
             background: transparent;
-            padding: 8px 22px;
-            border-radius: 40px;
-            font-weight: 600;
+            border: none;
+            color: #e2dacf;
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 12px 24px;
+            text-align: left;
             cursor: pointer;
             transition: 0.2s;
-            color: #334155;
+            display: flex;
+            align-items: center;
+            gap: 14px;
         }
-        .nav-btn.active {
+
+        .nav-item i { font-style: normal; font-weight: 600; width: 28px; }
+        .nav-item.active {
+            background: #4a362c;
+            color: #f7e9c3;
+            border-left: 4px solid #e2b870;
+        }
+
+        .nav-item:hover:not(.active) {
+            background: #3e2e25;
+        }
+
+        /* main content */
+        .main-content {
+            flex: 1;
+            padding: 28px 36px;
+            overflow-x: auto;
+        }
+
+        /* top bar */
+        .top-status {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             background: white;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            color: #0f172a;
+            padding: 12px 28px;
+            border-radius: 60px;
+            margin-bottom: 32px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+            border: 1px solid #efe3d0;
         }
-        .action-buttons {
+
+        .db-status {
             display: flex;
             gap: 12px;
-            flex-wrap: wrap;
+            align-items: center;
+            font-size: 0.85rem;
         }
-        .btn-primary {
-            background: #0f172a;
-            color: white;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 40px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: 0.2s;
+
+        .green-dot {
+            width: 10px;
+            height: 10px;
+            background: #2b9348;
+            border-radius: 10px;
         }
-        .btn-primary:hover { background: #1e293b; transform: scale(0.97); }
-        .btn-outline {
-            background: transparent;
-            border: 1px solid #cbd5e1;
-            padding: 8px 18px;
-            border-radius: 40px;
-            cursor: pointer;
-            font-weight: 500;
-        }
-        .btn-outline:hover { background: #f1f5f9; }
-        .btn-danger { background: #b91c1c; border: none; color: white; }
-        .btn-danger:hover { background: #991b1b; }
-        .btn-test {
-            background: #4f46e5;
-            color: white;
-            border: none;
-            padding: 8px 18px;
-            border-radius: 40px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: 0.2s;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-        }
-        .btn-test:hover { background: #4338ca; transform: translateY(-1px); }
-        /* pages */
-        .page {
-            display: none;
-            animation: fade 0.2s ease;
-        }
-        .page.active {
-            display: block;
-        }
-        @keyframes fade { from { opacity:0; } to { opacity:1; } }
+
         /* cards */
         .stats-grid {
             display: flex;
             gap: 24px;
             flex-wrap: wrap;
-            margin-bottom: 32px;
+            margin-bottom: 36px;
         }
+
         .stat-card {
             background: white;
-            border-radius: 28px;
+            border-radius: 32px;
             padding: 20px 28px;
             flex: 1;
-            min-width: 160px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
-            border: 1px solid #e2e8f0;
+            min-width: 170px;
+            border: 1px solid #f0e3d4;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.02);
         }
+
         .num {
-            font-size: 2.8rem;
+            font-size: 2.5rem;
             font-weight: 800;
-            color: #0f172a;
+            color: #3b2a21;
         }
-        .lbl { color: #475569; margin-top: 6px; }
-        .trend { font-size: 0.8rem; margin-top: 10px; color: #2b9348; }
-        /* table */
-        .table-container {
-            background: white;
-            border-radius: 24px;
-            overflow-x: auto;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.02);
-            border: 1px solid #eef2f6;
-        }
-        .filters {
+
+        /* filters row */
+        .filters-bar {
             display: flex;
-            gap: 16px;
-            margin-bottom: 20px;
             flex-wrap: wrap;
+            gap: 16px;
+            margin: 20px 0 24px;
             align-items: center;
+            background: white;
+            padding: 12px 24px;
+            border-radius: 60px;
         }
+
         .filter-input {
-            padding: 10px 16px;
+            padding: 10px 18px;
             border-radius: 40px;
-            border: 1px solid #cbd5e1;
+            border: 1px solid #e0cfbc;
             background: white;
-            flex: 1;
-            min-width: 180px;
         }
-        select.filter-input {
-            background: white;
+
+        .btn-primary {
+            background: #c49a6c;
+            border: none;
+            color: white;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-primary:hover { background: #a87b4f; transform: scale(0.97); }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #c5aa87;
+            padding: 8px 20px;
+            border-radius: 40px;
             cursor: pointer;
         }
+
+        .btn-danger {
+            background: #bc6f5c;
+            border: none;
+            color: white;
+        }
+
+        .product-table {
+            background: white;
+            border-radius: 28px;
+            overflow-x: auto;
+            width: 100%;
+            border: 1px solid #f3e9df;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
         }
+
         th {
             text-align: left;
-            padding: 16px 12px;
-            background: #fafcff;
+            padding: 18px 14px;
+            background: #fefaf5;
             font-weight: 600;
-            border-bottom: 1px solid #e2e8f0;
         }
+
         td {
-            padding: 14px 12px;
-            border-bottom: 1px solid #f1f5f9;
+            padding: 16px 14px;
+            border-bottom: 1px solid #f3eadf;
             vertical-align: middle;
         }
+
         .prod-thumb {
-            width: 48px;
-            height: 48px;
+            width: 52px;
+            height: 52px;
             object-fit: cover;
-            border-radius: 12px;
-            background: #f1f5f9;
+            border-radius: 14px;
+            background: #f7ede2;
         }
-        .prod-thumb-ph {
-            width: 48px;
-            height: 48px;
-            background: #eef2ff;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-        }
+
         .badge-chip {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 30px;
+            padding: 4px 12px;
+            border-radius: 40px;
             font-size: 0.7rem;
             font-weight: 600;
+            background: #eee2d4;
         }
-        .badge-chip.best { background: #fef3c7; color: #b45309; }
-        .badge-chip.new { background: #d9f99d; color: #3f6212; }
-        .badge-chip.hot { background: #ffe4e6; color: #b91c1c; }
-        .tbl-actions { display: flex; gap: 8px; }
-        .btn-edit, .btn-del {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 0.9rem;
-            padding: 5px 10px;
-            border-radius: 30px;
-        }
-        .btn-edit { background: #eef2ff; color: #1e40af; }
-        .btn-del { background: #fff1f0; color: #b91c1c; }
-        /* modal */
+
         .modal-backdrop {
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0, 0, 0, 0.5);
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 1000;
+            z-index: 2000;
             visibility: hidden;
             opacity: 0;
             transition: 0.2s;
         }
+
         .modal-backdrop.open {
             visibility: visible;
             opacity: 1;
         }
+
         .modal {
             background: white;
             width: 90%;
-            max-width: 720px;
-            border-radius: 36px;
+            max-width: 760px;
+            border-radius: 40px;
             max-height: 85vh;
             overflow-y: auto;
-            padding: 24px 28px;
+            padding: 28px 32px;
         }
+
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
+
         label {
             font-weight: 600;
             display: block;
             margin-bottom: 6px;
         }
-        .form-control, select.form-control {
+
+        .form-control {
             width: 100%;
             padding: 12px 14px;
-            border-radius: 20px;
-            border: 1px solid #cbd5e1;
+            border-radius: 28px;
+            border: 1px solid #e0cfbc;
         }
+
         .badge-selector {
             display: flex;
-            gap: 12px;
-            margin: 8px 0;
             flex-wrap: wrap;
+            gap: 12px;
+            margin: 10px 0;
         }
+
         .badge-opt {
-            padding: 6px 16px;
-            background: #f1f5f9;
+            background: #f3ede6;
+            padding: 6px 18px;
             border-radius: 40px;
             cursor: pointer;
-            font-size: 0.8rem;
-            font-weight: 500;
         }
-        .badge-opt.sel { background: #0f172a; color: white; }
+
+        .badge-opt.sel {
+            background: #c49a6c;
+            color: white;
+        }
+
         .img-upload-area {
-            border: 1px dashed #94a3b8;
-            border-radius: 24px;
-            padding: 12px;
+            border: 1px dashed #c0a07a;
+            border-radius: 28px;
+            padding: 14px;
             text-align: center;
-            background: #fafcff;
+            background: #fefaf5;
             cursor: pointer;
         }
-        .preview-img {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 16px;
-            margin-top: 8px;
-        }
-        .feature-row {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 10px;
-            align-items: center;
-        }
-        .del-feat {
-            background: #fee2e2;
-            border: none;
-            border-radius: 30px;
-            width: 32px;
-            cursor: pointer;
-        }
+
         .toast {
             position: fixed;
-            bottom: 25px;
-            right: 25px;
-            background: #1e293b;
+            bottom: 28px;
+            right: 28px;
+            background: #2c2b28;
             color: white;
-            padding: 10px 20px;
+            padding: 12px 24px;
             border-radius: 60px;
             opacity: 0;
             transition: 0.2s;
-            z-index: 1200;
-            pointer-events: none;
+            z-index: 2200;
         }
-        .toast.show { opacity: 1; }
-        .toast.err { background: #b91c1c; }
-        .activity-feed {
+
+        .toast.show {
+            opacity: 1;
+        }
+
+        .toast.err {
+            background: #bc6f5c;
+        }
+
+        .activity-panel {
             background: white;
-            border-radius: 24px;
-            padding: 12px;
-            margin-top: 20px;
-            max-height: 280px;
-            overflow-y: auto;
-        }
-        .activity-item {
-            display: flex;
-            gap: 12px;
-            padding: 12px;
-            border-bottom: 1px solid #edf2f7;
-        }
-        .activity-dot { width: 10px; height: 10px; border-radius: 10px; margin-top: 6px; }
-        .activity-dot.add { background: #2b9348; }
-        .activity-dot.edit { background: #e6a017; }
-        .activity-dot.del { background: #dc2626; }
-        .empty { text-align: center; padding: 40px; color: #64748b; }
-        .test-results {
-            background: #f8fafc;
-            border-radius: 20px;
-            padding: 16px;
-            margin-top: 18px;
-            font-family: monospace;
-            font-size: 0.85rem;
-            border-left: 4px solid #4f46e5;
-        }
-        .panel {
-            background: white;
-            border-radius: 24px;
+            border-radius: 28px;
             padding: 20px;
-            margin-top: 20px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            margin-top: 28px;
         }
-        .panel-head {
-            margin-bottom: 16px;
-            font-weight: 600;
+
+        @media (max-width: 800px) {
+            .admin-wrapper {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 16px;
+            }
+            .main-content {
+                padding: 20px;
+            }
         }
-        @media (max-width: 700px) { .top-bar { flex-direction: column; align-items: stretch; } .nav-tabs { justify-content: center; } }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // ---------- SUPABASE INIT (single declaration) ----------
+        // ---------------------- SUPABASE CONFIG --------------------------
         const SUPABASE_URL = "https://ceeezhukizoobknroovq.supabase.co";
         const SUPABASE_ANON_KEY = "sb_publishable_3XHshryDBRniaiW5YEO03w_pUMH6gIG";
-        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         const STORAGE_BUCKET = "product-images";
 
-        // App state
-        let productsList = [];
+        // ---------------------- GLOBALS --------------------------------
+        let allProducts = [];        // from Supabase
         let editingId = null;
         let selectedBadge = 'none';
         let imgClosedFile = null;
         let imgOpenFile = null;
-        let modalFeatures = ['','',''];
-        let pendingClosedURL = null, pendingOpenURL = null;
+        let pendingClosedURL = null;
+        let pendingOpenURL = null;
+        let modalFeatures = ['', '', ''];
 
-        // Helper functions
-        function escapeHtml(s){ return String(s||'').replace(/[&<>]/g,function(m){if(m==='&')return '&amp;';if(m==='<')return '&lt;';if(m==='>')return '&gt;';return m;});}
-        function toast(msg,isErr){ let t=document.getElementById('toast'); if(t) { t.textContent=msg; t.className='toast'+(isErr?' err':'')+' show'; setTimeout(()=>t.classList.remove('show'),3500); } }
-        
-        // SAFE VERSION: added null check for activityList element (prevents JS error)
-        function renderActivity(){ 
-            let div = document.getElementById('activityList'); 
-            if (!div) return; // graceful exit if element missing (safety)
-            let acts = JSON.parse(localStorage.getItem('securex_activity')||'[]'); 
-            if(!acts.length){ 
-                div.innerHTML='<div class="empty"><div>📝</div><p>No activity</p></div>';
-                return; 
-            } 
-            div.innerHTML=acts.map(a=>`<div class="activity-item"><div class="activity-dot ${a.type}"></div><div class="activity-text">${escapeHtml(a.msg)}</div><div class="activity-time">${escapeHtml(a.time)}</div></div>`).join(''); 
+        // Helper
+        function escapeHtml(s) { return String(s || '').replace(/[&<>]/g, m => m === '&' ? '&amp;' : m === '<' ? '&lt;' : '&gt;'); }
+        function toast(msg, isErr) { let t = document.getElementById('toast'); if (t) { t.textContent = msg; t.className = 'toast' + (isErr ? ' err' : '') + ' show'; setTimeout(() => t.classList.remove('show'), 3200); } }
+
+        // Activity log (localStorage)
+        function addActivity(type, msg) {
+            let acts = JSON.parse(localStorage.getItem('securex_activity') || '[]');
+            acts.unshift({ type, msg, time: new Date().toLocaleString() });
+            if (acts.length > 35) acts.pop();
+            localStorage.setItem('securex_activity', JSON.stringify(acts));
+            renderActivity();
         }
-        
-        function addActivity(type, msg) { 
-            let acts = JSON.parse(localStorage.getItem('securex_activity')||'[]'); 
-            acts.unshift({type,msg,time:new Date().toLocaleString()}); 
-            if(acts.length>30) acts.pop(); 
-            localStorage.setItem('securex_activity',JSON.stringify(acts)); 
-            renderActivity(); 
+        function renderActivity() {
+            let container = document.getElementById('activityList');
+            if (!container) return;
+            let acts = JSON.parse(localStorage.getItem('securex_activity') || '[]');
+            if (!acts.length) { container.innerHTML = '<div class="empty" style="padding:20px;">📭 No recent activity</div>'; return; }
+            container.innerHTML = acts.map(a => `<div style="display:flex; gap:12px; padding: 10px 0; border-bottom:1px solid #f0e3d4;"><span style="font-weight:600;">${a.type.toUpperCase()}</span><span style="flex:1;">${escapeHtml(a.msg)}</span><small>${escapeHtml(a.time)}</small></div>`).join('');
         }
 
-        // Load products from Supabase
-        async function loadProducts(){
-            try{
-                let { data, error } = await supabaseClient.from('products').select('*').order('created_at', { ascending: false });
-                if(error) throw error;
-                productsList = data || [];
+        // -------- LOAD PRODUCTS FROM SUPABASE ----------
+        async function loadProducts() {
+            try {
+                let { data, error } = await supabase.from('products').select('*').order('created_at', { ascending: false });
+                if (error) throw error;
+                allProducts = data || [];
                 renderStats();
-                if(document.getElementById('page-products').classList.contains('active')) renderTable();
-                let storageInfo = document.getElementById('storageInfo');
-                if(storageInfo) storageInfo.innerHTML = `<strong>Total products:</strong> ${productsList.length}<br>🖼 Images stored in Supabase Storage`;
-                return productsList;
-            } catch(e){ toast('Failed to load products: '+e.message, true); return []; }
+                renderTable();
+                document.getElementById('storageInfo').innerHTML = `📦 ${allProducts.length} products in Supabase · Images stored in ${STORAGE_BUCKET}`;
+                return allProducts;
+            } catch (e) { toast('Load error: ' + e.message, true); return []; }
         }
 
-        function renderStats(){
-            let total = productsList.length;
-            let statsRow = document.getElementById('statsRow');
-            if(statsRow) statsRow.innerHTML = `<div class="stat-card"><div class="num">${total}</div><div class="lbl">Products</div><div class="trend up">Supabase Cloud</div></div><div class="stat-card"><div class="num">6</div><div class="lbl">Categories</div></div><div class="stat-card"><div class="num">✓</div><div class="lbl">Real-time</div></div>`;
-            let badgeSpan = document.getElementById('prodCountBadge');
-            if(badgeSpan) badgeSpan.innerText = total+' products';
+        function renderStats() {
+            let total = allProducts.length;
+            let categoriesSet = new Set(allProducts.map(p => p.category).filter(Boolean));
+            document.getElementById('statsRow').innerHTML = `
+                <div class="stat-card"><div class="num">${total}</div><div class="lbl">Total Products</div><div class="trend">Supabase cloud</div></div>
+                <div class="stat-card"><div class="num">${categoriesSet.size || 6}</div><div class="lbl">Categories active</div></div>
+                <div class="stat-card"><div class="num">✓</div><div class="lbl">Real-time ready</div></div>
+            `;
+            document.getElementById('prodCountBadge').innerText = `${total} products`;
         }
 
-        function renderTable(){
+        function renderTable() {
             let search = document.getElementById('searchInput')?.value.toLowerCase() || '';
-            let cat = document.getElementById('catFilter')?.value || '';
-            let filtered = productsList.filter(p => (!search || p.title.toLowerCase().includes(search) || (p.description||'').toLowerCase().includes(search)) && (!cat || p.category===cat));
+            let catFilter = document.getElementById('catFilter')?.value || '';
+            let filtered = allProducts.filter(p => {
+                let matchSearch = (!search || p.title.toLowerCase().includes(search) || (p.description || '').toLowerCase().includes(search));
+                let matchCat = (!catFilter || p.category === catFilter);
+                return matchSearch && matchCat;
+            });
             let tbody = document.getElementById('prodTbody');
-            if(!tbody) return;
-            if(!filtered.length){ tbody.innerHTML='<tr><td colspan="6"><div class="empty">🔍 No products</div></td></tr>'; return; }
+            if (!tbody) return;
+            if (filtered.length === 0) { tbody.innerHTML = '<tr><td colspan="7"><div class="empty" style="padding:32px;">✨ No products yet. Click "Add Product"</div></td></tr>'; return; }
             tbody.innerHTML = filtered.map(p => {
-                let badgeClass = p.badge==='Bestseller'?'best':p.badge==='New'?'new':p.badge==='Hot'?'hot':'none';
-                let imgHtml = p.image_closed ? `<img class="prod-thumb" src="${escapeHtml(p.image_closed)}" onerror="this.style.display='none'">` : `<div class="prod-thumb-ph">📦</div>`;
-                return `<tr><td><div style="display:flex;gap:4px;">${imgHtml}</div></td><td class="prod-name">${escapeHtml(p.title)}</td><td><span class="prod-cat-badge">${escapeHtml(p.category||'')}</span></td><td>${p.badge?`<span class="badge-chip ${badgeClass}">${escapeHtml(p.badge)}</span>`:'—'}</td><td>${escapeHtml(p.price_text||'')}</td><td><div class="tbl-actions"><button class="btn-edit" onclick="openEditModal(${p.id})">✏ Edit</button><button class="btn-del" onclick="confirmDelete(${p.id})">🗑</button></div></td></tr>`;
+                let badgeHtml = p.badge ? `<span class="badge-chip">${escapeHtml(p.badge)}</span>` : '—';
+                let imgHtml = p.image_closed ? `<img class="prod-thumb" src="${escapeHtml(p.image_closed)}" onerror="this.style.display='none'">` : `<div style="width:52px;height:52px;background:#efe3d4;border-radius:14px;"></div>`;
+                return `<tr>
+                    <td>${imgHtml}</td>
+                    <td><strong>${escapeHtml(p.title)}</strong></td>
+                    <td>${escapeHtml(p.category?.replace('-', ' ') || '')}</td>
+                    <td>${badgeHtml}</td>
+                    <td>${escapeHtml(p.price_text || '—')}</td>
+                    <td><button class="btn-outline" style="padding:4px 14px;" onclick="openEditModal(${p.id})">✏️ Edit</button>
+                    <button class="btn-outline" style="background:#f4e2d6; margin-left:8px;" onclick="confirmDelete(${p.id})">🗑️</button></td>
+                </tr>`;
             }).join('');
         }
 
-        // Image upload to storage
-        async function uploadImageToStorage(file, type){
-            if(!file) return null;
+        // ---------- IMAGE UPLOAD TO STORAGE ----------
+        async function uploadImage(file, typeId) {
+            if (!file) return null;
             const ext = file.name.split('.').pop().toLowerCase();
-            const fileName = `${Date.now()}_${Math.random().toString(36).substring(2,8)}_${type}.${ext}`;
+            const fileName = `${Date.now()}_${Math.random().toString(36).substring(2, 8)}_${typeId}.${ext}`;
             const filePath = `public/${fileName}`;
-            const { data, error } = await supabaseClient.storage.from(STORAGE_BUCKET).upload(filePath, file, { cacheControl: '3600', upsert: false });
-            if(error) throw new Error('Upload failed: '+error.message);
-            const { data: publicUrlData } = supabaseClient.storage.from(STORAGE_BUCKET).getPublicUrl(filePath);
-            return publicUrlData.publicUrl;
+            const { error } = await supabase.storage.from(STORAGE_BUCKET).upload(filePath, file, { cacheControl: '3600', upsert: false });
+            if (error) throw new Error('Upload failed: ' + error.message);
+            const { data: publicUrl } = supabase.storage.from(STORAGE_BUCKET).getPublicUrl(filePath);
+            return publicUrl.publicUrl;
         }
 
-        async function deleteOldImageFromProduct(productId, imageType){
-            try{
-                let { data: prod, error } = await supabaseClient.from('products').select(`image_${imageType}`).eq('id',productId).single();
-                if(error || !prod || !prod[`image_${imageType}`]) return;
-                let oldUrl = prod[`image_${imageType}`];
-                let pathMatch = oldUrl.match(/\/storage\/v1\/object\/public\/product-images\/(.+)$/);
-                if(pathMatch && pathMatch[1]) await supabaseClient.storage.from(STORAGE_BUCKET).remove([pathMatch[1]]);
-            } catch(e){ console.warn("Could not delete old image", e); }
+        async function deleteImageByUrl(url) {
+            if (!url) return;
+            const match = url.match(/\/storage\/v1\/object\/public\/product-images\/(.+)$/);
+            if (match) await supabase.storage.from(STORAGE_BUCKET).remove([match[1]]);
         }
 
-        async function deleteImageByUrl(url){
-            let match = url.match(/\/storage\/v1\/object\/public\/product-images\/(.+)$/);
-            if(match) await supabaseClient.storage.from(STORAGE_BUCKET).remove([match[1]]);
-        }
-
-        // Save product
-        async function saveProduct(){
+        // ---------- SAVE / EDIT ----------
+        async function saveProduct() {
             let title = document.getElementById('prodName').value.trim();
             let category = document.getElementById('prodCat').value;
             let description = document.getElementById('prodDesc').value.trim();
             let price_text = document.getElementById('prodPrice').value.trim();
-            let badge = selectedBadge==='none'?'':selectedBadge;
-            let features = modalFeatures.filter(f=>f.trim());
-            if(!title){ toast('Product name required',true); return; }
-            if(!category){ toast('Select category',true); return; }
-            if(!imgClosedFile && !pendingClosedURL && !editingId){ toast('Closed image required',true); return; }
-            
+            let badge = selectedBadge === 'none' ? '' : selectedBadge;
+            let features = modalFeatures.filter(f => f.trim());
+
+            if (!title) { toast('Product name required', true); return; }
+            if (!category) { toast('Select category', true); return; }
+            if (!imgClosedFile && !pendingClosedURL && !editingId) { toast('Closed image required', true); return; }
+
             let closedURL = pendingClosedURL;
             let openURL = pendingOpenURL;
             try {
-                if(imgClosedFile){
-                    closedURL = await uploadImageToStorage(imgClosedFile, 'closed');
-                    if(editingId) await deleteOldImageFromProduct(editingId, 'closed');
+                if (imgClosedFile) {
+                    closedURL = await uploadImage(imgClosedFile, 'closed');
+                    if (editingId && pendingClosedURL && pendingClosedURL !== closedURL) await deleteImageByUrl(pendingClosedURL);
                 }
-                if(imgOpenFile){
-                    openURL = await uploadImageToStorage(imgOpenFile, 'open');
-                    if(editingId) await deleteOldImageFromProduct(editingId, 'open');
+                if (imgOpenFile) {
+                    openURL = await uploadImage(imgOpenFile, 'open');
+                    if (editingId && pendingOpenURL && pendingOpenURL !== openURL) await deleteImageByUrl(pendingOpenURL);
                 }
+
                 const productData = { title, category, description, price_text, badge, features, image_closed: closedURL, image_open: openURL };
-                if(editingId){
-                    const { error } = await supabaseClient.from('products').update(productData).eq('id', editingId);
-                    if(error) throw error;
+
+                if (editingId) {
+                    const { error } = await supabase.from('products').update(productData).eq('id', editingId);
+                    if (error) throw error;
                     addActivity('edit', `Updated "${title}"`);
                     toast(`✅ "${title}" updated`);
                 } else {
-                    const { error } = await supabaseClient.from('products').insert([productData]);
-                    if(error) throw error;
+                    const { error } = await supabase.from('products').insert([productData]);
+                    if (error) throw error;
                     addActivity('add', `Added "${title}"`);
                     toast(`✅ "${title}" added`);
                 }
                 closeModal();
                 await loadProducts();
-                if(document.getElementById('page-products').classList.contains('active')) renderTable();
+                renderTable();
                 renderStats();
-            } catch(e){ toast('Error saving: '+e.message, true); }
+            } catch (e) { toast('Save error: ' + e.message, true); }
         }
 
-        async function confirmDelete(id){
-            let prod = productsList.find(p=>p.id===id);
-            let confirmTitle = document.getElementById('confirmTitle');
-            let confirmMsg = document.getElementById('confirmMsg');
-            if(confirmTitle) confirmTitle.innerText='Delete Product?';
-            if(confirmMsg) confirmMsg.innerText=`Delete "${prod?.title}"? Images will be removed.`;
-            let confirmBtn = document.getElementById('confirmOkBtn');
-            if(confirmBtn) {
-                confirmBtn.onclick = async ()=>{
-                    try{
-                        if(prod?.image_closed) await deleteImageByUrl(prod.image_closed);
-                        if(prod?.image_open) await deleteImageByUrl(prod.image_open);
-                        const { error } = await supabaseClient.from('products').delete().eq('id', id);
-                        if(error) throw error;
-                        addActivity('del', `Deleted "${prod?.title}"`);
-                        toast('Product deleted');
-                        await loadProducts();
-                        renderTable();
-                        renderStats();
-                        closeConfirm();
-                    } catch(e){ toast('Delete failed: '+e.message, true); }
-                };
+        async function confirmDelete(id) {
+            let prod = allProducts.find(p => p.id === id);
+            document.getElementById('confirmTitle').innerText = `Delete product`;
+            document.getElementById('confirmMsg').innerHTML = `Remove <strong>${escapeHtml(prod?.title)}</strong>? Images will be erased from storage.`;
+            document.getElementById('confirmOkBtn').onclick = async () => {
+                try {
+                    if (prod?.image_closed) await deleteImageByUrl(prod.image_closed);
+                    if (prod?.image_open) await deleteImageByUrl(prod.image_open);
+                    const { error } = await supabase.from('products').delete().eq('id', id);
+                    if (error) throw error;
+                    addActivity('del', `Deleted "${prod?.title}"`);
+                    toast('Product deleted');
+                    await loadProducts();
+                    renderTable();
+                    closeConfirm();
+                } catch (e) { toast('Delete failed: ' + e.message, true); }
+            };
+            document.getElementById('confirmBackdrop').classList.add('open');
+        }
+
+        async function clearAllProducts() {
+            if (!confirm("⚠️ PERMANENT: DELETE ALL PRODUCTS from Supabase & Storage?")) return;
+            for (let p of allProducts) {
+                if (p.image_closed) await deleteImageByUrl(p.image_closed);
+                if (p.image_open) await deleteImageByUrl(p.image_open);
             }
-            let backdrop = document.getElementById('confirmBackdrop');
-            if(backdrop) backdrop.classList.add('open');
+            const { error } = await supabase.from('products').delete().neq('id', 0);
+            if (error) toast('Clear error: ' + error.message, true);
+            else { toast('All products cleared'); await loadProducts(); renderTable(); addActivity('del', 'Cleared entire product catalog'); }
         }
 
-        async function clearAllProductsFromSupabase(){
-            if(!confirm("⚠️ DELETE ALL PRODUCTS? This action is permanent.")) return;
-            for(let p of productsList){
-                if(p.image_closed) await deleteImageByUrl(p.image_closed);
-                if(p.image_open) await deleteImageByUrl(p.image_open);
-            }
-            let { error } = await supabaseClient.from('products').delete().neq('id', 0);
-            if(error) toast('Error: '+error.message, true);
-            else { toast('All products cleared'); await loadProducts(); renderTable(); renderStats(); addActivity('del','Deleted all products'); }
-        }
+        // ----- BUILT-IN SEED (13 premium steel furniture items)
+        const BUILTIN_PRODUCTS = [
+            { title: "Royal Steel Almirah", category: "almirah-home", description: "Heavy duty almirah with 3 drawers & locking system", price_text: "₹24,999", badge: "Bestseller", features: ["3 adjustable shelves", "Key lock + digital option", "Powder coated finish"], image_closed: "https://placehold.co/400x300/e8d9cc/5a3e2b?text=Closed+Almirah", image_open: "https://placehold.co/400x300/f3e9df/5a3e2b?text=Open+View" },
+            { title: "Executive Office Locker", category: "almirah-office", description: "Secure office locker with fire-resistant coating", price_text: "₹34,500", badge: "Premium", features: ["Combination lock", "Document shelf", "Anti-rust"], image_closed: "https://placehold.co/400x300/e8d9cc/5a3e2b?text=Office+Locker", image_open: "https://placehold.co/400x300/f3e9df/5a3e2b?text=Open" },
+            { title: "Dressing Mirror Almirah", category: "almirah-dressing", description: "Full length mirror + wooden hangers", price_text: "₹31,200", badge: "Hot", features: ["Attached mirror", "Jewelry tray", "Soft closing"], image_closed: "https://placehold.co/400x300/e8d9cc/5a3e2b?text=Dressing+Almirah", image_open: "https://placehold.co/400x300/f3e9df/5a3e2b?text=Inside+view" },
+            { title: "Heavy Duty Cash Locker", category: "locker", description: "Digital vault for cash & documents", price_text: "₹47,800", badge: "Premium", features: ["Biometric access", "Fireproof", "Anchor bolts"], image_closed: "https://placehold.co/400x300/e8d9cc/5a3e2b?text=Cash+Locker", image_open: "https://placehold.co/400x300/f3e9df/5a3e2b?text=Digital+Panel" },
+            { title: "Industrial Bookshelf", category: "bookshelf", description: "5-tier steel bookshelf with wood finish", price_text: "₹18,250", badge: "Popular", features: ["Adjustable shelves", "Industrial caster wheels", "Matte finish"], image_closed: "https://placehold.co/400x300/e8d9cc/5a3e2b?text=Bookshelf", image_open: "https://placehold.co/400x300/f3e9df/5a3e2b?text=Open+Shelves" },
+            { title: "Curved Glass Showcase", category: "showcase", description: "Elegant showcase for retail jewelry", price_text: "₹41,000", badge: "New", features: ["Tempered glass", "LED lighting", "Lockable doors"], image_closed: "https://placehold.co/400x300/e8d9cc/5a3e2b?text=Showcase", image_open: "https://placehold.co/400x300/f3e9df/5a3e2b?text=Glass+Display" },
+            { title: "Double Door Almirah", category: "almirah-home", description: "Spacious double door wardrobe", price_text: "₹28,500", badge: "Bestseller", features: ["Full extension drawers", "Ventilation", "SS handles"], image_closed: "https://placehold.co/400x300/e8d9cc/5a3e2b?text=Double+Almirah", image_open: "https://placehold.co/400x300/f3e9df/5a3e2b?text=Spacious+Interior" },
+            { title: "Compact Office Locker", category: "almirah-office", description: "Space saving office locker with 2 compartments", price_text: "₹22,999", badge: "Hot", features: ["Key lock", "Fixed shelf", "Powder coated"], image_closed: "https://placehold.co/400x300/e8d9cc/5a3e2b?text=Compact+Locker", image_open: "https://placehold.co/400x300/f3e9df/5a3e2b?text=Inside+Compartment" },
+            { title: "Sliding Door Almirah", category: "almirah-dressing", description: "Modern sliding door almirah", price_text: "₹39,900", badge: "Premium", features: ["Soft close", "Full extension", "Aluminum frame"], image_closed: "https://placehold.co/400x300/e8d9cc/5a3e2b?text=Sliding+Almirah", image_open: "https://placehold.co/400x300/f3e9df/5a3e2b?text=Sliding+Open" },
+            { title: "Fireproof Locker", category: "locker", description: "Insurance rated fireproof safe", price_text: "₹62,000", badge: "Premium", features: ["2hr fire rating", "Water-resistant", "Digital keypad"], image_closed: "https://placehold.co/400x300/e8d9cc/5a3e2b?text=Fire+Locker", image_open: "https://placehold.co/400x300/f3e9df/5a3e2b?text=Fire+Safe" },
+            { title: "Corner Bookshelf", category: "bookshelf", description: "Space saving corner bookshelf", price_text: "₹16,700", badge: "Popular", features: ["5 tiers", "Wall mountable", "Rust resistant"], image_closed: "https://placehold.co/400x300/e8d9cc/5a3e2b?text=Corner+Bookshelf", image_open: "https://placehold.co/400x300/f3e9df/5a3e2b?text=Open+Shelves+Corner" },
+            { title: "Gold Framed Showcase", category: "showcase", description: "Premium glass showcase with gold trim", price_text: "₹53,200", badge: "New", features: ["Gold anodized frame", "Adjustable glass shelves", "Push lock"], image_closed: "https://placehold.co/400x300/e8d9cc/5a3e2b?text=Gold+Showcase", image_open: "https://placehold.co/400x300/f3e9df/5a3e2b?text=Inside+Gold+Showcase" },
+            { title: "Modern Home Almirah", category: "almirah-home", description: "Minimalist design for modern homes", price_text: "₹32,400", badge: "Bestseller", features: ["Mirror panel", "Interior organiser", "Telescopic channels"], image_closed: "https://placehold.co/400x300/e8d9cc/5a3e2b?text=Modern+Almirah", image_open: "https://placehold.co/400x300/f3e9df/5a3e2b?text=Modern+Inside" }
+        ];
 
-        // ***** TEST TB BUTTON FUNCTIONALITY (ENHANCED) *****
-        async function testTableAndBucket() {
-            const outputDiv = document.getElementById('testTbOutput');
-            if (!outputDiv) return;
-            outputDiv.innerHTML = '⏳ Running tests (Supabase table + Storage)...';
-            let results = [];
-            try {
-                const { data: testData, error: readError } = await supabaseClient
-                    .from('products')
-                    .select('id', { count: 'exact', head: false, limit: 1 });
-                if (readError) throw new Error(`Table read error: ${readError.message}`);
-                results.push('✅ Products table: reachable and readable');
-                
-                const testInsert = { title: '_test_tb_entry_', category: 'Test', price_text: '$0', badge: '', description: 'Auto-test' };
-                const { error: insertErr } = await supabaseClient.from('products').insert([testInsert]);
-                if (insertErr && !insertErr.message.includes('duplicate')) {
-                    results.push(`⚠️ Table write issue: ${insertErr.message} (but read works)`);
-                } else if (!insertErr) {
-                    results.push('✅ Products table: write operation successful (inserted test row)');
-                    await supabaseClient.from('products').delete().eq('title', '_test_tb_entry_');
-                    results.push('✅ Cleaned up test row');
-                } else {
-                    results.push('✅ Products table: connection valid (read-only test passed)');
+        async function seedBuiltinProducts() {
+            toast("Seeding built‑in products...");
+            let existing = await supabase.from('products').select('id', { head: false });
+            let existingTitles = new Set(allProducts.map(p => p.title));
+            let insertedCount = 0;
+            for (let prod of BUILTIN_PRODUCTS) {
+                if (!existingTitles.has(prod.title)) {
+                    const { error } = await supabase.from('products').insert([{ ...prod, features: prod.features }]);
+                    if (!error) insertedCount++;
+                    else console.warn("seed error", error);
                 }
-                
-                const { data: buckets, error: bucketError } = await supabaseClient.storage.listBuckets();
-                if (bucketError) throw new Error(`Storage error: ${bucketError.message}`);
-                const bucketExists = buckets.some(b => b.name === STORAGE_BUCKET);
-                if (bucketExists) {
-                    results.push(`✅ Storage bucket '${STORAGE_BUCKET}' exists`);
-                    const { data: files, error: listError } = await supabaseClient.storage.from(STORAGE_BUCKET).list('public/', { limit: 5 });
-                    if (!listError) results.push(`📁 Bucket listing successful (${files?.length || 0} files visible in public/)`);
-                    else results.push(`ℹ️ Could not list files but bucket is accessible`);
-                } else {
-                    results.push(`❌ Storage bucket '${STORAGE_BUCKET}' NOT found. Please create it in Supabase dashboard.`);
-                }
-                
-                const { error: rlsCheck } = await supabaseClient.from('products').select('id', { head: true, count: 'exact' });
-                if (!rlsCheck) results.push('🔐 Row Level Security (RLS) allows SELECT — you likely have proper policies');
-                else results.push(`⚠️ RLS might restrict some actions: ${rlsCheck.message}`);
-                
-                outputDiv.innerHTML = `<strong>🔬 TEST TB & STORAGE RESULTS</strong><br>${results.map(r => `• ${r}`).join('<br>')}`;
-                toast('Test complete — check console & test panel');
-            } catch (err) {
-                outputDiv.innerHTML = `<strong>⚠️ TEST FAILED</strong><br>${err.message}`;
-                toast('Test TB failed: ' + err.message, true);
-                console.error(err);
             }
+            toast(`✅ ${insertedCount} built‑in products added to Supabase`);
+            await loadProducts();
+            renderTable();
+            addActivity('add', `Seeded ${insertedCount} classic products`);
         }
 
-        function openAddModal(){
-            editingId=null; resetModalForm(); 
-            let modal = document.getElementById('modalTitle');
-            if(modal) modal.innerText='Add New Product';
-            let backdrop = document.getElementById('modalBackdrop');
-            if(backdrop) backdrop.classList.add('open');
-        }
-        async function openEditModal(id){
-            let prod = productsList.find(p=>p.id===id);
-            if(!prod) return;
-            editingId=id;
+        // UI MODAL helpers
+        function openAddModal() { editingId = null; resetModalForm(); document.getElementById('modalTitle').innerText = '➕ Add New Product'; document.getElementById('modalBackdrop').classList.add('open'); }
+        async function openEditModal(id) {
+            let prod = allProducts.find(p => p.id === id);
+            if (!prod) return;
+            editingId = id;
             resetModalForm();
-            document.getElementById('prodName').value=prod.title||'';
-            document.getElementById('prodCat').value=prod.category||'';
-            document.getElementById('prodDesc').value=prod.description||'';
-            document.getElementById('prodPrice').value=prod.price_text||'';
-            selectedBadge=prod.badge||'none';
-            document.querySelectorAll('.badge-opt').forEach(b=>b.classList.toggle('sel',b.getAttribute('data-b')===selectedBadge));
+            document.getElementById('prodName').value = prod.title || '';
+            document.getElementById('prodCat').value = prod.category || '';
+            document.getElementById('prodDesc').value = prod.description || '';
+            document.getElementById('prodPrice').value = prod.price_text || '';
+            selectedBadge = prod.badge || 'none';
+            document.querySelectorAll('.badge-opt').forEach(b => b.classList.toggle('sel', b.getAttribute('data-b') === selectedBadge));
             modalFeatures = Array.isArray(prod.features) && prod.features.length ? prod.features : [''];
             renderModalFeatures();
-            if(prod.image_closed){
-                pendingClosedURL = prod.image_closed;
-                let previewClosed = document.getElementById('previewImgClosed');
-                if(previewClosed) previewClosed.src=prod.image_closed;
-                let wrapClosed = document.getElementById('imgPreviewWrapClosed');
-                let zoneClosed = document.getElementById('uploadZoneClosed');
-                if(wrapClosed) wrapClosed.style.display='block';
-                if(zoneClosed) zoneClosed.style.display='none';
-            }
-            if(prod.image_open){
-                pendingOpenURL = prod.image_open;
-                let previewOpen = document.getElementById('previewImgOpen');
-                if(previewOpen) previewOpen.src=prod.image_open;
-                let wrapOpen = document.getElementById('imgPreviewWrapOpen');
-                let zoneOpen = document.getElementById('uploadZoneOpen');
-                if(wrapOpen) wrapOpen.style.display='block';
-                if(zoneOpen) zoneOpen.style.display='none';
-            }
-            let modalTitle = document.getElementById('modalTitle');
-            if(modalTitle) modalTitle.innerText='Edit Product';
-            let backdrop = document.getElementById('modalBackdrop');
-            if(backdrop) backdrop.classList.add('open');
+            if (prod.image_closed) { pendingClosedURL = prod.image_closed; document.getElementById('previewImgClosed').src = prod.image_closed; document.getElementById('imgPreviewWrapClosed').style.display = 'block'; document.getElementById('uploadZoneClosed').style.display = 'none'; }
+            if (prod.image_open) { pendingOpenURL = prod.image_open; document.getElementById('previewImgOpen').src = prod.image_open; document.getElementById('imgPreviewWrapOpen').style.display = 'block'; document.getElementById('uploadZoneOpen').style.display = 'none'; }
+            document.getElementById('modalTitle').innerText = '✏️ Edit Product';
+            document.getElementById('modalBackdrop').classList.add('open');
         }
-        function resetModalForm(){
-            editingId=null; selectedBadge='none'; imgClosedFile=null; imgOpenFile=null; pendingClosedURL=null; pendingOpenURL=null;
-            let nameInp = document.getElementById('prodName'); if(nameInp) nameInp.value='';
-            let catInp = document.getElementById('prodCat'); if(catInp) catInp.value='';
-            let descInp = document.getElementById('prodDesc'); if(descInp) descInp.value='';
-            let priceInp = document.getElementById('prodPrice'); if(priceInp) priceInp.value='';
-            document.querySelectorAll('.badge-opt').forEach(b=>b.classList.toggle('sel',b.getAttribute('data-b')==='none'));
-            modalFeatures=['','','']; renderModalFeatures();
-            let wrapClosed = document.getElementById('imgPreviewWrapClosed'); if(wrapClosed) wrapClosed.style.display='none';
-            let zoneClosed = document.getElementById('uploadZoneClosed'); if(zoneClosed) zoneClosed.style.display='flex';
-            let wrapOpen = document.getElementById('imgPreviewWrapOpen'); if(wrapOpen) wrapOpen.style.display='none';
-            let zoneOpen = document.getElementById('uploadZoneOpen'); if(zoneOpen) zoneOpen.style.display='flex';
-            let closedInput = document.getElementById('imgInputClosed'); if(closedInput) closedInput.value='';
-            let openInput = document.getElementById('imgInputOpen'); if(openInput) openInput.value='';
+        function resetModalForm() {
+            editingId = null; selectedBadge = 'none'; imgClosedFile = null; imgOpenFile = null; pendingClosedURL = null; pendingOpenURL = null;
+            document.getElementById('prodName').value = ''; document.getElementById('prodCat').value = ''; document.getElementById('prodDesc').value = ''; document.getElementById('prodPrice').value = '';
+            document.querySelectorAll('.badge-opt').forEach(b => b.classList.toggle('sel', b.getAttribute('data-b') === 'none'));
+            modalFeatures = ['', '', '']; renderModalFeatures();
+            document.getElementById('imgPreviewWrapClosed').style.display = 'none'; document.getElementById('uploadZoneClosed').style.display = 'flex';
+            document.getElementById('imgPreviewWrapOpen').style.display = 'none'; document.getElementById('uploadZoneOpen').style.display = 'flex';
+            document.getElementById('imgInputClosed').value = ''; document.getElementById('imgInputOpen').value = '';
         }
-        function handleImgFile(file, type){
-            if(!file || !file.type.startsWith('image/')){ toast('Only images allowed',true); return; }
-            if(type==='closed'){ imgClosedFile=file; pendingClosedURL=null; const reader=new FileReader(); reader.onload=e=>{ let preview=document.getElementById('previewImgClosed'); if(preview) preview.src=e.target.result; let wrap=document.getElementById('imgPreviewWrapClosed'); if(wrap) wrap.style.display='block'; let zone=document.getElementById('uploadZoneClosed'); if(zone) zone.style.display='none'; }; reader.readAsDataURL(file); }
-            else{ imgOpenFile=file; pendingOpenURL=null; const reader=new FileReader(); reader.onload=e=>{ let preview=document.getElementById('previewImgOpen'); if(preview) preview.src=e.target.result; let wrap=document.getElementById('imgPreviewWrapOpen'); if(wrap) wrap.style.display='block'; let zone=document.getElementById('uploadZoneOpen'); if(zone) zone.style.display='none'; }; reader.readAsDataURL(file); }
+        function handleImgFile(file, type) {
+            if (!file || !file.type.startsWith('image/')) { toast('Only images', true); return; }
+            if (type === 'closed') { imgClosedFile = file; pendingClosedURL = null; const reader = new FileReader(); reader.onload = e => { document.getElementById('previewImgClosed').src = e.target.result; document.getElementById('imgPreviewWrapClosed').style.display = 'block'; document.getElementById('uploadZoneClosed').style.display = 'none'; }; reader.readAsDataURL(file); }
+            else { imgOpenFile = file; pendingOpenURL = null; const reader = new FileReader(); reader.onload = e => { document.getElementById('previewImgOpen').src = e.target.result; document.getElementById('imgPreviewWrapOpen').style.display = 'block'; document.getElementById('uploadZoneOpen').style.display = 'none'; }; reader.readAsDataURL(file); }
         }
-        function removeImg(type){ 
-            if(type==='closed'){ imgClosedFile=null; pendingClosedURL=null; let wrap=document.getElementById('imgPreviewWrapClosed'); if(wrap) wrap.style.display='none'; let zone=document.getElementById('uploadZoneClosed'); if(zone) zone.style.display='flex'; } 
-            else { imgOpenFile=null; pendingOpenURL=null; let wrap=document.getElementById('imgPreviewWrapOpen'); if(wrap) wrap.style.display='none'; let zone=document.getElementById('uploadZoneOpen'); if(zone) zone.style.display='flex'; } 
+        function removeImg(type) {
+            if (type === 'closed') { imgClosedFile = null; pendingClosedURL = null; document.getElementById('imgPreviewWrapClosed').style.display = 'none'; document.getElementById('uploadZoneClosed').style.display = 'flex'; }
+            else { imgOpenFile = null; pendingOpenURL = null; document.getElementById('imgPreviewWrapOpen').style.display = 'none'; document.getElementById('uploadZoneOpen').style.display = 'flex'; }
         }
-        function renderModalFeatures(){ let list=document.getElementById('featuresList'); if(list) list.innerHTML=modalFeatures.map((v,i)=>`<div class="feature-row"><input type="text" class="form-control" value="${escapeHtml(v)}" oninput="modalFeatures[${i}]=this.value"><button class="del-feat" onclick="removeFeature(${i})">✕</button></div>`).join(''); }
-        function addFeature(){ modalFeatures.push(''); renderModalFeatures(); }
-        function removeFeature(i){ modalFeatures.splice(i,1); renderModalFeatures(); }
-        document.getElementById('badgeOpts')?.addEventListener('click',e=>{ let opt=e.target.closest('.badge-opt'); if(opt){ selectedBadge=opt.getAttribute('data-b'); document.querySelectorAll('.badge-opt').forEach(b=>b.classList.toggle('sel',b===opt)); } });
-        function closeModal(){ let backdrop = document.getElementById('modalBackdrop'); if(backdrop) backdrop.classList.remove('open'); resetModalForm(); }
-        function closeModalOutside(e){ if(e.target===document.getElementById('modalBackdrop')) closeModal(); }
-        function closeConfirm(){ let backdrop = document.getElementById('confirmBackdrop'); if(backdrop) backdrop.classList.remove('open'); }
-        function exportJSON(){ let blob=new Blob([JSON.stringify(productsList,null,2)],{type:'application/json'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='securex-supabase-backup.json'; a.click(); toast('Exported '+productsList.length+' products'); }
-        function importJSON(input){ let file=input.files[0]; if(!file) return; let reader=new FileReader(); reader.onload=async function(e){ try{ let data=JSON.parse(e.target.result); if(!Array.isArray(data)) throw new Error(); for(let p of data){ delete p.id; delete p.created_at; let {error}=await supabaseClient.from('products').insert([p]); if(error) console.warn(error); } toast('Imported '+data.length+' products'); await loadProducts(); renderTable(); }catch(err){ toast('Invalid JSON',true); } }; reader.readAsText(file); input.value=''; }
-        async function testSupabaseConnection(){ try{ let { data, error } = await supabaseClient.from('products').select('id', { count:'exact', head:true }); if(error) throw error; toast('✅ Supabase connected! Products table ready.', false); let statusMsg = document.getElementById('supaStatusMsg'); if(statusMsg) statusMsg.innerHTML='✅ Connected successfully'; }catch(e){ toast('Connection error: '+e.message, true); } }
-        function goPage(page){
-            document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-            let pageEl = document.getElementById(`page-${page}`);
-            if(pageEl) pageEl.classList.add('active');
-            if(page==='products') renderTable();
-            if(page==='dashboard') { renderStats(); renderActivity(); }
-        }
-        document.getElementById('searchInput')?.addEventListener('input',()=>renderTable());
-        document.getElementById('catFilter')?.addEventListener('change',()=>renderTable());
-
-        loadProducts();
-        renderActivity();
-        testSupabaseConnection();
+        function renderModalFeatures() { let list = document.getElementById('featuresList'); if (list) list.innerHTML = modalFeatures.map((v, i) => `<div class="feature-row" style="display:flex; gap:8px; margin-bottom:8px;"><input class="form-control" value="${escapeHtml(v)}" oninput="modalFeatures[${i}]=this.value"><button class="del-feat" onclick="removeFeature(${i})" style="background:#e5cfc0; border:none; border-radius:40px; width:32px;">✕</button></div>`).join(''); }
+        function addFeature() { modalFeatures.push(''); renderModalFeatures(); }
+        function removeFeature(i) { modalFeatures.splice(i, 1); renderModalFeatures(); }
+        document.getElementById('badgeOpts')?.addEventListener('click', e => { let opt = e.target.closest('.badge-opt'); if (opt) { selectedBadge = opt.getAttribute('data-b'); document.querySelectorAll('.badge-opt').forEach(b => b.classList.toggle('sel', b === opt)); } });
+        function closeModal() { document.getElementById('modalBackdrop').classList.remove('open'); resetModalForm(); }
+        function closeConfirm() { document.getElementById('confirmBackdrop').classList.remove('open'); }
+        function exportJSON() { let blob = new Blob([JSON.stringify(allProducts, null, 2)], { type: 'application/json' }); let a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'securex_supabase_backup.json'; a.click(); toast('Exported ' + allProducts.length + ' products'); }
+        async function importJSON(input) { let file = input.files[0]; if (!file) return; let reader = new FileReader(); reader.onload = async function (e) { try { let data = JSON.parse(e.target.result); if (!Array.isArray(data)) throw new Error(); for (let p of data) { delete p.id; delete p.created_at; await supabase.from('products').insert([p]); } toast('Imported ' + data.length + ' products'); await loadProducts(); renderTable(); } catch (err) { toast('Invalid JSON', true); } }; reader.readAsText(file); input.value = ''; }
+        async function testConnection() { try { let { error } = await supabase.from('products').select('id', { head: true }); if (error) throw error; document.getElementById('connStatus').innerHTML = '<span class="green-dot"></span> ✅ Supabase live'; toast('Connection OK'); } catch (e) { document.getElementById('connStatus').innerHTML = '⚠️ DB error'; toast('Connection error: ' + e.message, true); } }
+        function goPage(page) { document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active')); document.getElementById(`page-${page}`).classList.add('active'); document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active')); if (page === 'dashboard') document.querySelector('.nav-item[data-page="dashboard"]').classList.add('active'); else if (page === 'products') document.querySelector('.nav-item[data-page="products"]').classList.add('active'); else if (page === 'settings') document.querySelector('.nav-item[data-page="settings"]').classList.add('active'); if (page === 'products') renderTable(); if (page === 'dashboard') renderStats(); }
+        document.getElementById('searchInput')?.addEventListener('input', () => renderTable());
+        document.getElementById('catFilter')?.addEventListener('change', () => renderTable());
+        loadProducts(); renderActivity(); testConnection();
     </script>
 </head>
 <body>
-<div class="app-container">
-    <div class="top-bar">
-        <div class="logo"><h1>🛡️ SecureX Admin <span>Supabase + Storage</span></h1></div>
-        <div class="nav-tabs">
-            <button class="nav-btn active" onclick="goPage('dashboard')">📊 Dashboard</button>
-            <button class="nav-btn" onclick="goPage('products')">📦 Products</button>
-        </div>
-        <div class="action-buttons">
-            <button class="btn-test" id="testTbBtn" onclick="testTableAndBucket()">🧪 Test TB + Storage</button>
-            <button class="btn-primary" onclick="openAddModal()">+ New Product</button>
-            <button class="btn-outline" onclick="exportJSON()">📁 Export JSON</button>
-            <label class="btn-outline" style="cursor:pointer">📂 Import JSON <input type="file" accept=".json" style="display:none" onchange="importJSON(this)"></label>
-            <button class="btn-outline btn-danger" onclick="clearAllProductsFromSupabase()">🗑️ Clear All</button>
+<div class="admin-wrapper">
+    <div class="sidebar">
+        <div class="logo-area"><h1>SECUREX</h1><p>by Shah Interio • admin panel</p></div>
+        <div class="nav-menu">
+            <button class="nav-item active" data-page="dashboard" onclick="goPage('dashboard')"><i>📊</i> Dashboard</button>
+            <button class="nav-item" data-page="products" onclick="goPage('products')"><i>📦</i> All Products</button>
+            <button class="nav-item" data-page="settings" onclick="goPage('settings')"><i>⚙️</i> Settings</button>
         </div>
     </div>
-
-    <!-- Dashboard page -->
-    <div id="page-dashboard" class="page active">
-        <div class="stats-grid" id="statsRow"></div>
-        <div style="background:white; border-radius:28px; padding:16px 20px; margin-top:12px;">
-            <h3>📡 Supabase Status</h3>
-            <div id="supaStatusMsg" style="color:#2c6e2c;">Testing connection...</div>
-            <div id="storageInfo" style="margin-top: 12px; font-size:0.9rem;"></div>
-            <div id="testTbOutput" class="test-results" style="margin-top:18px;">💡 Click "Test TB + Storage" to verify table & bucket permissions</div>
-        </div>
-        <div class="panel">
-            <div class="panel-head"><h2>📋 Recent Activity</h2></div>
-            <div id="activityList" class="activity-list"></div>
-        </div>
+    <div class="main-content">
+        <div class="top-status"><div class="db-status" id="connStatus"><span class="green-dot"></span> Connecting...</div><div>🛡️ SecureX admin • steel furniture</div></div>
+        <!-- DASHBOARD -->
+        <div id="page-dashboard" class="page-section active"><div class="stats-grid" id="statsRow"></div><div style="display:flex; gap:16px; margin:16px 0;"><button class="btn-primary" onclick="openAddModal()">+ New Product</button><button class="btn-outline" onclick="seedBuiltinProducts()">🌱 Seed built‑in products</button></div><div class="activity-panel"><h3>📋 Recent activity</h3><div id="activityList"></div></div></div>
+        <!-- PRODUCTS -->
+        <div id="page-products" class="page-section" style="display:none;"><div class="filters-bar"><input type="text" id="searchInput" class="filter-input" placeholder="🔍 Search name/description"><select id="catFilter" class="filter-input"><option value="">All categories</option><option value="almirah-home">Home Almirah</option><option value="almirah-office">Office Almirah</option><option value="almirah-dressing">Dressing Almirah</option><option value="locker">Locker</option><option value="bookshelf">Bookshelf</option><option value="showcase">Glass Showcase</option></select><div id="prodCountBadge" style="background:#efe3d4; padding:6px 18px; border-radius:40px;"></div></div><div class="product-table"><table><thead><tr><th>Image</th><th>Name</th><th>Category</th><th>Badge</th><th>Price</th><th>Actions</th></tr></thead><tbody id="prodTbody"><tr><td colspan="6">Loading products...</td></tr></tbody></table></div></div>
+        <!-- SETTINGS -->
+        <div id="page-settings" class="page-section" style="display:none;"><div style="background:white; border-radius:32px; padding:24px;"><h3>🔐 Supabase storage & tools</h3><div id="storageInfo" style="margin:16px 0;"></div><button class="btn-outline" onclick="testConnection()">🔄 Re-check connection</button><hr style="margin:28px 0; border-color:#f0e3d4;"><div style="background:#fff5ef; padding:20px; border-radius:28px;"><h4>⚠️ Danger Zone</h4><button class="btn-danger btn-primary" style="background:#bc6f5c;" onclick="clearAllProducts()">Clear all products (Supabase + images)</button><p class="small" style="margin-top:12px;">This will delete ALL products and their storage images.</p></div><div style="margin-top:28px;"><button class="btn-outline" onclick="exportJSON()">📁 Export as JSON</button><label class="btn-outline" style="margin-left:12px; cursor:pointer;">📂 Import JSON backup<input type="file" accept=".json" style="display:none" onchange="importJSON(this)"></label><button class="btn-primary" style="margin-left:12px;" onclick="seedBuiltinProducts()">🌾 Seed 13 classics</button></div></div></div>
     </div>
-
-    <!-- Products page -->
-    <div id="page-products" class="page">
-        <div class="filters">
-            <input type="text" id="searchInput" class="filter-input" placeholder="🔍 Search products...">
-            <select id="catFilter" class="filter-input">
-                <option value="">All Categories</option>
-                <option value="Faces">Faces</option>
-                <option value="Body">Body</option>
-                <option value="Hair">Hair</option>
-                <option value="Fragrance">Fragrance</option>
-                <option value="Tools">Tools</option>
-                <option value="Skincare">Skincare</option>
-            </select>
-            <div id="prodCountBadge" style="background:#eef2ff; padding: 6px 16px; border-radius:30px;"></div>
-        </div>
-        <div class="table-container">
-            <table>
-                <thead><tr><th>Image</th><th>Name</th><th>Category</th><th>Badge</th><th>Price</th><th>Actions</th></tr></thead>
-                <tbody id="prodTbody"><tr><td colspan="6"><div class="empty">Loading products...</div></td></tr></tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- MODAL (add/edit) -->
-    <div id="modalBackdrop" class="modal-backdrop" onclick="closeModalOutside(event)">
-        <div class="modal">
-            <h2 id="modalTitle">Add Product</h2>
-            <div class="form-group"><label>Product Name *</label><input id="prodName" class="form-control"></div>
-            <div class="form-group"><label>Category *</label><select id="prodCat" class="form-control"><option value="">Select</option><option>Faces</option><option>Body</option><option>Hair</option><option>Fragrance</option><option>Tools</option><option>Skincare</option></select></div>
-            <div class="form-group"><label>Description</label><textarea id="prodDesc" rows="2" class="form-control"></textarea></div>
-            <div class="form-group"><label>Price text (e.g., $29)</label><input id="prodPrice" class="form-control"></div>
-            <div class="form-group"><label>Badge</label><div id="badgeOpts" class="badge-selector"><div data-b="none" class="badge-opt sel">None</div><div data-b="Bestseller" class="badge-opt">🔥 Bestseller</div><div data-b="New" class="badge-opt">✨ New</div><div data-b="Hot" class="badge-opt">⚡ Hot</div></div></div>
-            <div class="form-group"><label>Features (optional)</label><div id="featuresList"></div><button type="button" onclick="addFeature()" class="btn-outline" style="margin-top:6px;">+ Add feature</button></div>
-            <div class="form-group"><label>📸 Closed package image *</label><div id="uploadZoneClosed" class="img-upload-area" onclick="document.getElementById('imgInputClosed').click()">Click or drag to upload closed image</div><input type="file" id="imgInputClosed" style="display:none" accept="image/*" onchange="handleImgFile(this.files[0],'closed')"><div id="imgPreviewWrapClosed" style="display:none"><img id="previewImgClosed" class="preview-img"><button onclick="removeImg('closed')" class="btn-outline" style="margin-top:6px;">Remove</button></div></div>
-            <div class="form-group"><label>📖 Open box image (optional)</label><div id="uploadZoneOpen" class="img-upload-area" onclick="document.getElementById('imgInputOpen').click()">Upload open image</div><input type="file" id="imgInputOpen" style="display:none" accept="image/*" onchange="handleImgFile(this.files[0],'open')"><div id="imgPreviewWrapOpen" style="display:none"><img id="previewImgOpen" class="preview-img"><button onclick="removeImg('open')" class="btn-outline">Remove</button></div></div>
-            <div style="display:flex; gap:12px; justify-content:flex-end;"><button class="btn-outline" onclick="closeModal()">Cancel</button><button class="btn-primary" onclick="saveProduct()">Save Product</button></div>
-        </div>
-    </div>
-
-    <!-- Confirm delete modal -->
-    <div id="confirmBackdrop" class="modal-backdrop" onclick="if(event.target===this) closeConfirm()">
-        <div class="modal" style="max-width:400px;"><h3 id="confirmTitle">Confirm delete</h3><p id="confirmMsg"></p><div style="display:flex; gap:12px; justify-content:flex-end;"><button class="btn-outline" onclick="closeConfirm()">Cancel</button><button id="confirmOkBtn" class="btn-primary btn-danger">Delete</button></div></div>
-    </div>
-    <div id="toast" class="toast"></div>
 </div>
+<!-- MODAL -->
+<div id="modalBackdrop" class="modal-backdrop" onclick="if(event.target===this) closeModal()"><div class="modal"><h2 id="modalTitle">Add Product</h2><div class="form-group"><label>Product name *</label><input id="prodName" class="form-control"></div><div class="form-group"><label>Category *</label><select id="prodCat" class="form-control"><option value="">Select</option><option value="almirah-home">Home Almirah</option><option value="almirah-office">Office Almirah</option><option value="almirah-dressing">Dressing Almirah</option><option value="locker">Locker</option><option value="bookshelf">Bookshelf</option><option value="showcase">Glass Showcase</option></select></div><div class="form-group"><label>Description</label><textarea id="prodDesc" rows="2" class="form-control"></textarea></div><div class="form-group"><label>Price text</label><input id="prodPrice" class="form-control" placeholder="₹18,999"></div><div class="form-group"><label>Badge</label><div id="badgeOpts" class="badge-selector"><div data-b="none" class="badge-opt sel">None</div><div data-b="Bestseller" class="badge-opt">⭐ Bestseller</div><div data-b="New" class="badge-opt">✨ New</div><div data-b="Hot" class="badge-opt">🔥 Hot</div><div data-b="Popular" class="badge-opt">📈 Popular</div><div data-b="Premium" class="badge-opt">💎 Premium</div></div></div><div class="form-group"><label>Features</label><div id="featuresList"></div><button type="button" onclick="addFeature()" class="btn-outline" style="margin-top:6px;">+ Add bullet point</button></div><div class="form-group"><label>📸 Closed image *</label><div id="uploadZoneClosed" class="img-upload-area" onclick="document.getElementById('imgInputClosed').click()">Click to upload closed package image</div><input type="file" id="imgInputClosed" style="display:none" accept="image/*" onchange="handleImgFile(this.files[0],'closed')"><div id="imgPreviewWrapClosed" style="display:none"><img id="previewImgClosed" class="preview-img" style="width:80px;"><button onclick="removeImg('closed')">Remove</button></div></div><div class="form-group"><label>📖 Open image (hover)</label><div id="uploadZoneOpen" class="img-upload-area" onclick="document.getElementById('imgInputOpen').click()">Upload open interior image</div><input type="file" id="imgInputOpen" style="display:none" accept="image/*" onchange="handleImgFile(this.files[0],'open')"><div id="imgPreviewWrapOpen" style="display:none"><img id="previewImgOpen" class="preview-img"><button onclick="removeImg('open')">Remove</button></div></div><div style="display:flex; gap:12px; justify-content:flex-end;"><button class="btn-outline" onclick="closeModal()">Cancel</button><button class="btn-primary" onclick="saveProduct()">Save product</button></div></div></div>
+<div id="confirmBackdrop" class="modal-backdrop" onclick="if(event.target===this) closeConfirm()"><div class="modal" style="max-width:400px;"><h3 id="confirmTitle">Confirm delete</h3><p id="confirmMsg"></p><div style="display:flex; gap:12px; margin-top:20px;"><button class="btn-outline" onclick="closeConfirm()">Cancel</button><button id="confirmOkBtn" class="btn-primary btn-danger">Delete permanently</button></div></div></div>
+<div id="toast" class="toast"></div>
 </body>
 </html>
