@@ -95,6 +95,18 @@
         .btn-outline:hover { background: #f1f5f9; }
         .btn-danger { background: #b91c1c; border: none; color: white; }
         .btn-danger:hover { background: #991b1b; }
+        .btn-test {
+            background: #4f46e5;
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: 0.2s;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        .btn-test:hover { background: #4338ca; transform: translateY(-1px); }
         /* pages */
         .page {
             display: none;
@@ -252,6 +264,7 @@
             display: flex;
             gap: 12px;
             margin: 8px 0;
+            flex-wrap: wrap;
         }
         .badge-opt {
             padding: 6px 16px;
@@ -324,9 +337,28 @@
         .activity-dot.edit { background: #e6a017; }
         .activity-dot.del { background: #dc2626; }
         .empty { text-align: center; padding: 40px; color: #64748b; }
+        .test-results {
+            background: #f8fafc;
+            border-radius: 20px;
+            padding: 16px;
+            margin-top: 18px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            border-left: 4px solid #4f46e5;
+        }
+        .panel {
+            background: white;
+            border-radius: 24px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .panel-head {
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
         @media (max-width: 700px) { .top-bar { flex-direction: column; align-items: stretch; } .nav-tabs { justify-content: center; } }
     </style>
-    <!-- SINGLE SUPABASE SCRIPT TAG (NO DUPLICATE) -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         // ---------- SUPABASE INIT (single declaration) ----------
@@ -346,9 +378,27 @@
 
         // Helper functions
         function escapeHtml(s){ return String(s||'').replace(/[&<>]/g,function(m){if(m==='&')return '&amp;';if(m==='<')return '&lt;';if(m==='>')return '&gt;';return m;});}
-        function toast(msg,isErr){ let t=document.getElementById('toast'); t.textContent=msg; t.className='toast'+(isErr?' err':'')+' show'; setTimeout(()=>t.classList.remove('show'),3500); }
-        function addActivity(type, msg) { let acts = JSON.parse(localStorage.getItem('securex_activity')||'[]'); acts.unshift({type,msg,time:new Date().toLocaleString()}); if(acts.length>30) acts.pop(); localStorage.setItem('securex_activity',JSON.stringify(acts)); renderActivity(); }
-        function renderActivity(){ let acts=JSON.parse(localStorage.getItem('securex_activity')||'[]'); let div=document.getElementById('activityList'); if(!acts.length){div.innerHTML='<div class="empty"><div>📝</div><p>No activity</p></div>';return;} div.innerHTML=acts.map(a=>`<div class="activity-item"><div class="activity-dot ${a.type}"></div><div class="activity-text">${escapeHtml(a.msg)}</div><div class="activity-time">${escapeHtml(a.time)}</div></div>`).join(''); }
+        function toast(msg,isErr){ let t=document.getElementById('toast'); if(t) { t.textContent=msg; t.className='toast'+(isErr?' err':'')+' show'; setTimeout(()=>t.classList.remove('show'),3500); } }
+        
+        // SAFE VERSION: added null check for activityList element (prevents JS error)
+        function renderActivity(){ 
+            let div = document.getElementById('activityList'); 
+            if (!div) return; // graceful exit if element missing (safety)
+            let acts = JSON.parse(localStorage.getItem('securex_activity')||'[]'); 
+            if(!acts.length){ 
+                div.innerHTML='<div class="empty"><div>📝</div><p>No activity</p></div>';
+                return; 
+            } 
+            div.innerHTML=acts.map(a=>`<div class="activity-item"><div class="activity-dot ${a.type}"></div><div class="activity-text">${escapeHtml(a.msg)}</div><div class="activity-time">${escapeHtml(a.time)}</div></div>`).join(''); 
+        }
+        
+        function addActivity(type, msg) { 
+            let acts = JSON.parse(localStorage.getItem('securex_activity')||'[]'); 
+            acts.unshift({type,msg,time:new Date().toLocaleString()}); 
+            if(acts.length>30) acts.pop(); 
+            localStorage.setItem('securex_activity',JSON.stringify(acts)); 
+            renderActivity(); 
+        }
 
         // Load products from Supabase
         async function loadProducts(){
@@ -358,22 +408,26 @@
                 productsList = data || [];
                 renderStats();
                 if(document.getElementById('page-products').classList.contains('active')) renderTable();
-                document.getElementById('storageInfo').innerHTML = `<strong>Total products:</strong> ${productsList.length}<br>🖼 Images stored in Supabase Storage`;
+                let storageInfo = document.getElementById('storageInfo');
+                if(storageInfo) storageInfo.innerHTML = `<strong>Total products:</strong> ${productsList.length}<br>🖼 Images stored in Supabase Storage`;
                 return productsList;
             } catch(e){ toast('Failed to load products: '+e.message, true); return []; }
         }
 
         function renderStats(){
             let total = productsList.length;
-            document.getElementById('statsRow').innerHTML = `<div class="stat-card"><div class="num">${total}</div><div class="lbl">Products</div><div class="trend up">Supabase Cloud</div></div><div class="stat-card"><div class="num">6</div><div class="lbl">Categories</div></div><div class="stat-card"><div class="num">✓</div><div class="lbl">Real-time</div></div>`;
-            document.getElementById('prodCountBadge').innerText = total+' products';
+            let statsRow = document.getElementById('statsRow');
+            if(statsRow) statsRow.innerHTML = `<div class="stat-card"><div class="num">${total}</div><div class="lbl">Products</div><div class="trend up">Supabase Cloud</div></div><div class="stat-card"><div class="num">6</div><div class="lbl">Categories</div></div><div class="stat-card"><div class="num">✓</div><div class="lbl">Real-time</div></div>`;
+            let badgeSpan = document.getElementById('prodCountBadge');
+            if(badgeSpan) badgeSpan.innerText = total+' products';
         }
 
         function renderTable(){
-            let search = document.getElementById('searchInput').value.toLowerCase();
-            let cat = document.getElementById('catFilter').value;
+            let search = document.getElementById('searchInput')?.value.toLowerCase() || '';
+            let cat = document.getElementById('catFilter')?.value || '';
             let filtered = productsList.filter(p => (!search || p.title.toLowerCase().includes(search) || (p.description||'').toLowerCase().includes(search)) && (!cat || p.category===cat));
             let tbody = document.getElementById('prodTbody');
+            if(!tbody) return;
             if(!filtered.length){ tbody.innerHTML='<tr><td colspan="6"><div class="empty">🔍 No products</div></td></tr>'; return; }
             tbody.innerHTML = filtered.map(p => {
                 let badgeClass = p.badge==='Bestseller'?'best':p.badge==='New'?'new':p.badge==='Hot'?'hot':'none';
@@ -453,23 +507,29 @@
 
         async function confirmDelete(id){
             let prod = productsList.find(p=>p.id===id);
-            document.getElementById('confirmTitle').innerText='Delete Product?';
-            document.getElementById('confirmMsg').innerText=`Delete "${prod?.title}"? Images will be removed.`;
-            document.getElementById('confirmOkBtn').onclick = async ()=>{
-                try{
-                    if(prod?.image_closed) await deleteImageByUrl(prod.image_closed);
-                    if(prod?.image_open) await deleteImageByUrl(prod.image_open);
-                    const { error } = await supabaseClient.from('products').delete().eq('id', id);
-                    if(error) throw error;
-                    addActivity('del', `Deleted "${prod?.title}"`);
-                    toast('Product deleted');
-                    await loadProducts();
-                    renderTable();
-                    renderStats();
-                    closeConfirm();
-                } catch(e){ toast('Delete failed: '+e.message, true); }
-            };
-            document.getElementById('confirmBackdrop').classList.add('open');
+            let confirmTitle = document.getElementById('confirmTitle');
+            let confirmMsg = document.getElementById('confirmMsg');
+            if(confirmTitle) confirmTitle.innerText='Delete Product?';
+            if(confirmMsg) confirmMsg.innerText=`Delete "${prod?.title}"? Images will be removed.`;
+            let confirmBtn = document.getElementById('confirmOkBtn');
+            if(confirmBtn) {
+                confirmBtn.onclick = async ()=>{
+                    try{
+                        if(prod?.image_closed) await deleteImageByUrl(prod.image_closed);
+                        if(prod?.image_open) await deleteImageByUrl(prod.image_open);
+                        const { error } = await supabaseClient.from('products').delete().eq('id', id);
+                        if(error) throw error;
+                        addActivity('del', `Deleted "${prod?.title}"`);
+                        toast('Product deleted');
+                        await loadProducts();
+                        renderTable();
+                        renderStats();
+                        closeConfirm();
+                    } catch(e){ toast('Delete failed: '+e.message, true); }
+                };
+            }
+            let backdrop = document.getElementById('confirmBackdrop');
+            if(backdrop) backdrop.classList.add('open');
         }
 
         async function clearAllProductsFromSupabase(){
@@ -483,8 +543,62 @@
             else { toast('All products cleared'); await loadProducts(); renderTable(); renderStats(); addActivity('del','Deleted all products'); }
         }
 
+        // ***** TEST TB BUTTON FUNCTIONALITY (ENHANCED) *****
+        async function testTableAndBucket() {
+            const outputDiv = document.getElementById('testTbOutput');
+            if (!outputDiv) return;
+            outputDiv.innerHTML = '⏳ Running tests (Supabase table + Storage)...';
+            let results = [];
+            try {
+                const { data: testData, error: readError } = await supabaseClient
+                    .from('products')
+                    .select('id', { count: 'exact', head: false, limit: 1 });
+                if (readError) throw new Error(`Table read error: ${readError.message}`);
+                results.push('✅ Products table: reachable and readable');
+                
+                const testInsert = { title: '_test_tb_entry_', category: 'Test', price_text: '$0', badge: '', description: 'Auto-test' };
+                const { error: insertErr } = await supabaseClient.from('products').insert([testInsert]);
+                if (insertErr && !insertErr.message.includes('duplicate')) {
+                    results.push(`⚠️ Table write issue: ${insertErr.message} (but read works)`);
+                } else if (!insertErr) {
+                    results.push('✅ Products table: write operation successful (inserted test row)');
+                    await supabaseClient.from('products').delete().eq('title', '_test_tb_entry_');
+                    results.push('✅ Cleaned up test row');
+                } else {
+                    results.push('✅ Products table: connection valid (read-only test passed)');
+                }
+                
+                const { data: buckets, error: bucketError } = await supabaseClient.storage.listBuckets();
+                if (bucketError) throw new Error(`Storage error: ${bucketError.message}`);
+                const bucketExists = buckets.some(b => b.name === STORAGE_BUCKET);
+                if (bucketExists) {
+                    results.push(`✅ Storage bucket '${STORAGE_BUCKET}' exists`);
+                    const { data: files, error: listError } = await supabaseClient.storage.from(STORAGE_BUCKET).list('public/', { limit: 5 });
+                    if (!listError) results.push(`📁 Bucket listing successful (${files?.length || 0} files visible in public/)`);
+                    else results.push(`ℹ️ Could not list files but bucket is accessible`);
+                } else {
+                    results.push(`❌ Storage bucket '${STORAGE_BUCKET}' NOT found. Please create it in Supabase dashboard.`);
+                }
+                
+                const { error: rlsCheck } = await supabaseClient.from('products').select('id', { head: true, count: 'exact' });
+                if (!rlsCheck) results.push('🔐 Row Level Security (RLS) allows SELECT — you likely have proper policies');
+                else results.push(`⚠️ RLS might restrict some actions: ${rlsCheck.message}`);
+                
+                outputDiv.innerHTML = `<strong>🔬 TEST TB & STORAGE RESULTS</strong><br>${results.map(r => `• ${r}`).join('<br>')}`;
+                toast('Test complete — check console & test panel');
+            } catch (err) {
+                outputDiv.innerHTML = `<strong>⚠️ TEST FAILED</strong><br>${err.message}`;
+                toast('Test TB failed: ' + err.message, true);
+                console.error(err);
+            }
+        }
+
         function openAddModal(){
-            editingId=null; resetModalForm(); document.getElementById('modalTitle').innerText='Add New Product'; document.getElementById('modalBackdrop').classList.add('open');
+            editingId=null; resetModalForm(); 
+            let modal = document.getElementById('modalTitle');
+            if(modal) modal.innerText='Add New Product';
+            let backdrop = document.getElementById('modalBackdrop');
+            if(backdrop) backdrop.classList.add('open');
         }
         async function openEditModal(id){
             let prod = productsList.find(p=>p.id===id);
@@ -501,54 +615,71 @@
             renderModalFeatures();
             if(prod.image_closed){
                 pendingClosedURL = prod.image_closed;
-                document.getElementById('previewImgClosed').src=prod.image_closed;
-                document.getElementById('imgPreviewWrapClosed').style.display='block';
-                document.getElementById('uploadZoneClosed').style.display='none';
+                let previewClosed = document.getElementById('previewImgClosed');
+                if(previewClosed) previewClosed.src=prod.image_closed;
+                let wrapClosed = document.getElementById('imgPreviewWrapClosed');
+                let zoneClosed = document.getElementById('uploadZoneClosed');
+                if(wrapClosed) wrapClosed.style.display='block';
+                if(zoneClosed) zoneClosed.style.display='none';
             }
             if(prod.image_open){
                 pendingOpenURL = prod.image_open;
-                document.getElementById('previewImgOpen').src=prod.image_open;
-                document.getElementById('imgPreviewWrapOpen').style.display='block';
-                document.getElementById('uploadZoneOpen').style.display='none';
+                let previewOpen = document.getElementById('previewImgOpen');
+                if(previewOpen) previewOpen.src=prod.image_open;
+                let wrapOpen = document.getElementById('imgPreviewWrapOpen');
+                let zoneOpen = document.getElementById('uploadZoneOpen');
+                if(wrapOpen) wrapOpen.style.display='block';
+                if(zoneOpen) zoneOpen.style.display='none';
             }
-            document.getElementById('modalTitle').innerText='Edit Product';
-            document.getElementById('modalBackdrop').classList.add('open');
+            let modalTitle = document.getElementById('modalTitle');
+            if(modalTitle) modalTitle.innerText='Edit Product';
+            let backdrop = document.getElementById('modalBackdrop');
+            if(backdrop) backdrop.classList.add('open');
         }
         function resetModalForm(){
             editingId=null; selectedBadge='none'; imgClosedFile=null; imgOpenFile=null; pendingClosedURL=null; pendingOpenURL=null;
-            document.getElementById('prodName').value=''; document.getElementById('prodCat').value=''; document.getElementById('prodDesc').value=''; document.getElementById('prodPrice').value='';
+            let nameInp = document.getElementById('prodName'); if(nameInp) nameInp.value='';
+            let catInp = document.getElementById('prodCat'); if(catInp) catInp.value='';
+            let descInp = document.getElementById('prodDesc'); if(descInp) descInp.value='';
+            let priceInp = document.getElementById('prodPrice'); if(priceInp) priceInp.value='';
             document.querySelectorAll('.badge-opt').forEach(b=>b.classList.toggle('sel',b.getAttribute('data-b')==='none'));
             modalFeatures=['','','']; renderModalFeatures();
-            document.getElementById('imgPreviewWrapClosed').style.display='none'; document.getElementById('uploadZoneClosed').style.display='flex';
-            document.getElementById('imgPreviewWrapOpen').style.display='none'; document.getElementById('uploadZoneOpen').style.display='flex';
-            document.getElementById('imgInputClosed').value=''; document.getElementById('imgInputOpen').value='';
+            let wrapClosed = document.getElementById('imgPreviewWrapClosed'); if(wrapClosed) wrapClosed.style.display='none';
+            let zoneClosed = document.getElementById('uploadZoneClosed'); if(zoneClosed) zoneClosed.style.display='flex';
+            let wrapOpen = document.getElementById('imgPreviewWrapOpen'); if(wrapOpen) wrapOpen.style.display='none';
+            let zoneOpen = document.getElementById('uploadZoneOpen'); if(zoneOpen) zoneOpen.style.display='flex';
+            let closedInput = document.getElementById('imgInputClosed'); if(closedInput) closedInput.value='';
+            let openInput = document.getElementById('imgInputOpen'); if(openInput) openInput.value='';
         }
         function handleImgFile(file, type){
             if(!file || !file.type.startsWith('image/')){ toast('Only images allowed',true); return; }
-            if(type==='closed'){ imgClosedFile=file; pendingClosedURL=null; const reader=new FileReader(); reader.onload=e=>{ document.getElementById('previewImgClosed').src=e.target.result; document.getElementById('imgPreviewWrapClosed').style.display='block'; document.getElementById('uploadZoneClosed').style.display='none'; }; reader.readAsDataURL(file); }
-            else{ imgOpenFile=file; pendingOpenURL=null; const reader=new FileReader(); reader.onload=e=>{ document.getElementById('previewImgOpen').src=e.target.result; document.getElementById('imgPreviewWrapOpen').style.display='block'; document.getElementById('uploadZoneOpen').style.display='none'; }; reader.readAsDataURL(file); }
+            if(type==='closed'){ imgClosedFile=file; pendingClosedURL=null; const reader=new FileReader(); reader.onload=e=>{ let preview=document.getElementById('previewImgClosed'); if(preview) preview.src=e.target.result; let wrap=document.getElementById('imgPreviewWrapClosed'); if(wrap) wrap.style.display='block'; let zone=document.getElementById('uploadZoneClosed'); if(zone) zone.style.display='none'; }; reader.readAsDataURL(file); }
+            else{ imgOpenFile=file; pendingOpenURL=null; const reader=new FileReader(); reader.onload=e=>{ let preview=document.getElementById('previewImgOpen'); if(preview) preview.src=e.target.result; let wrap=document.getElementById('imgPreviewWrapOpen'); if(wrap) wrap.style.display='block'; let zone=document.getElementById('uploadZoneOpen'); if(zone) zone.style.display='none'; }; reader.readAsDataURL(file); }
         }
-        function removeImg(type){ if(type==='closed'){ imgClosedFile=null; pendingClosedURL=null; document.getElementById('imgPreviewWrapClosed').style.display='none'; document.getElementById('uploadZoneClosed').style.display='flex'; } else { imgOpenFile=null; pendingOpenURL=null; document.getElementById('imgPreviewWrapOpen').style.display='none'; document.getElementById('uploadZoneOpen').style.display='flex'; } }
-        function renderModalFeatures(){ let list=document.getElementById('featuresList'); list.innerHTML=modalFeatures.map((v,i)=>`<div class="feature-row"><input type="text" class="form-control" value="${escapeHtml(v)}" oninput="modalFeatures[${i}]=this.value"><button class="del-feat" onclick="removeFeature(${i})">✕</button></div>`).join(''); }
+        function removeImg(type){ 
+            if(type==='closed'){ imgClosedFile=null; pendingClosedURL=null; let wrap=document.getElementById('imgPreviewWrapClosed'); if(wrap) wrap.style.display='none'; let zone=document.getElementById('uploadZoneClosed'); if(zone) zone.style.display='flex'; } 
+            else { imgOpenFile=null; pendingOpenURL=null; let wrap=document.getElementById('imgPreviewWrapOpen'); if(wrap) wrap.style.display='none'; let zone=document.getElementById('uploadZoneOpen'); if(zone) zone.style.display='flex'; } 
+        }
+        function renderModalFeatures(){ let list=document.getElementById('featuresList'); if(list) list.innerHTML=modalFeatures.map((v,i)=>`<div class="feature-row"><input type="text" class="form-control" value="${escapeHtml(v)}" oninput="modalFeatures[${i}]=this.value"><button class="del-feat" onclick="removeFeature(${i})">✕</button></div>`).join(''); }
         function addFeature(){ modalFeatures.push(''); renderModalFeatures(); }
         function removeFeature(i){ modalFeatures.splice(i,1); renderModalFeatures(); }
         document.getElementById('badgeOpts')?.addEventListener('click',e=>{ let opt=e.target.closest('.badge-opt'); if(opt){ selectedBadge=opt.getAttribute('data-b'); document.querySelectorAll('.badge-opt').forEach(b=>b.classList.toggle('sel',b===opt)); } });
-        function closeModal(){ document.getElementById('modalBackdrop').classList.remove('open'); resetModalForm(); }
+        function closeModal(){ let backdrop = document.getElementById('modalBackdrop'); if(backdrop) backdrop.classList.remove('open'); resetModalForm(); }
         function closeModalOutside(e){ if(e.target===document.getElementById('modalBackdrop')) closeModal(); }
-        function closeConfirm(){ document.getElementById('confirmBackdrop').classList.remove('open'); }
+        function closeConfirm(){ let backdrop = document.getElementById('confirmBackdrop'); if(backdrop) backdrop.classList.remove('open'); }
         function exportJSON(){ let blob=new Blob([JSON.stringify(productsList,null,2)],{type:'application/json'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='securex-supabase-backup.json'; a.click(); toast('Exported '+productsList.length+' products'); }
         function importJSON(input){ let file=input.files[0]; if(!file) return; let reader=new FileReader(); reader.onload=async function(e){ try{ let data=JSON.parse(e.target.result); if(!Array.isArray(data)) throw new Error(); for(let p of data){ delete p.id; delete p.created_at; let {error}=await supabaseClient.from('products').insert([p]); if(error) console.warn(error); } toast('Imported '+data.length+' products'); await loadProducts(); renderTable(); }catch(err){ toast('Invalid JSON',true); } }; reader.readAsText(file); input.value=''; }
-        async function testSupabaseConnection(){ try{ let { data, error } = await supabaseClient.from('products').select('id', { count:'exact', head:true }); if(error) throw error; toast('✅ Supabase connected! Products table ready.', false); document.getElementById('supaStatusMsg').innerHTML='✅ Connected successfully'; }catch(e){ toast('Connection error: '+e.message, true); } }
+        async function testSupabaseConnection(){ try{ let { data, error } = await supabaseClient.from('products').select('id', { count:'exact', head:true }); if(error) throw error; toast('✅ Supabase connected! Products table ready.', false); let statusMsg = document.getElementById('supaStatusMsg'); if(statusMsg) statusMsg.innerHTML='✅ Connected successfully'; }catch(e){ toast('Connection error: '+e.message, true); } }
         function goPage(page){
             document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-            document.getElementById(`page-${page}`).classList.add('active');
+            let pageEl = document.getElementById(`page-${page}`);
+            if(pageEl) pageEl.classList.add('active');
             if(page==='products') renderTable();
             if(page==='dashboard') { renderStats(); renderActivity(); }
         }
         document.getElementById('searchInput')?.addEventListener('input',()=>renderTable());
         document.getElementById('catFilter')?.addEventListener('change',()=>renderTable());
 
-        // bootstrap: load data
         loadProducts();
         renderActivity();
         testSupabaseConnection();
@@ -563,6 +694,7 @@
             <button class="nav-btn" onclick="goPage('products')">📦 Products</button>
         </div>
         <div class="action-buttons">
+            <button class="btn-test" id="testTbBtn" onclick="testTableAndBucket()">🧪 Test TB + Storage</button>
             <button class="btn-primary" onclick="openAddModal()">+ New Product</button>
             <button class="btn-outline" onclick="exportJSON()">📁 Export JSON</button>
             <label class="btn-outline" style="cursor:pointer">📂 Import JSON <input type="file" accept=".json" style="display:none" onchange="importJSON(this)"></label>
@@ -577,10 +709,11 @@
             <h3>📡 Supabase Status</h3>
             <div id="supaStatusMsg" style="color:#2c6e2c;">Testing connection...</div>
             <div id="storageInfo" style="margin-top: 12px; font-size:0.9rem;"></div>
+            <div id="testTbOutput" class="test-results" style="margin-top:18px;">💡 Click "Test TB + Storage" to verify table & bucket permissions</div>
         </div>
-        <div class="activity-feed">
-            <h4>📋 Recent Activity</h4>
-            <div id="activityList"></div>
+        <div class="panel">
+            <div class="panel-head"><h2>📋 Recent Activity</h2></div>
+            <div id="activityList" class="activity-list"></div>
         </div>
     </div>
 
