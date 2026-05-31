@@ -21,14 +21,7 @@
 html{font-family:'Outfit',sans-serif;font-size:15px;}
 body{background:#f0ebe2;color:var(--brown-dark);min-height:100vh;display:flex;flex-direction:column;}
 
-/* ===== TOPBAR ===== */
-.topbar{
-  position:fixed;top:0;left:0;right:0;height:var(--topbar-h);
-  background:var(--brown-deep);color:var(--cream);
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 20px 0 calc(var(--sidebar-w)+20px);z-index:100;
-  box-shadow:var(--shadow-md);
-}
+.topbar{position:fixed;top:0;left:0;right:0;height:var(--topbar-h);background:var(--brown-deep);color:var(--cream);display:flex;align-items:center;justify-content:space-between;padding:0 20px 0 calc(var(--sidebar-w)+20px);z-index:100;box-shadow:var(--shadow-md);}
 .topbar-left{display:flex;align-items:center;gap:12px;}
 .topbar-title{font-family:'Rajdhani',sans-serif;font-size:1.15rem;font-weight:700;}
 .topbar-breadcrumb{font-size:0.75rem;color:var(--beige-dark);display:flex;align-items:center;gap:6px;}
@@ -37,16 +30,8 @@ body{background:#f0ebe2;color:var(--brown-dark);min-height:100vh;display:flex;fl
 .topbar-btn:hover{background:rgba(255,255,255,0.2);}
 .topbar-btn.green{background:rgba(46,125,50,0.4);border-color:rgba(46,125,50,0.6);}
 
-/* ===== SIDEBAR ===== */
-.sidebar{
-  position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;
-  background:var(--brown-dark);color:var(--cream);
-  display:flex;flex-direction:column;z-index:200;overflow-y:auto;
-}
-.sidebar-brand{
-  height:var(--topbar-h);display:flex;align-items:center;gap:10px;
-  padding:0 18px;border-bottom:1px solid rgba(255,255,255,0.08);flex-shrink:0;
-}
+.sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--brown-dark);color:var(--cream);display:flex;flex-direction:column;z-index:200;overflow-y:auto;}
+.sidebar-brand{height:var(--topbar-h);display:flex;align-items:center;gap:10px;padding:0 18px;border-bottom:1px solid rgba(255,255,255,0.08);flex-shrink:0;}
 .sidebar-brand-icon{font-family:'Rajdhani',sans-serif;font-size:1.3rem;font-weight:700;}
 .sidebar-brand-sub{font-size:0.65rem;opacity:0.5;margin-top:2px;}
 .sidebar-nav{flex:1;padding:12px 0;}
@@ -57,30 +42,20 @@ body{background:#f0ebe2;color:var(--brown-dark);min-height:100vh;display:flex;fl
 .nav-item-icon{width:20px;text-align:center;font-size:1rem;opacity:0.8;}
 .sidebar-footer{padding:14px 18px;border-top:1px solid rgba(255,255,255,0.08);font-size:0.72rem;color:var(--beige-dark);opacity:0.6;}
 
-/* ===== MAIN ===== */
 .main{margin-left:var(--sidebar-w);padding-top:var(--topbar-h);min-height:100vh;}
 .page{display:none;padding:24px;}
 .page.active{display:block;}
 
-/* ===== GITHUB SETUP BANNER ===== */
-.github-banner{
-  background:linear-gradient(135deg,#0d1117,#21262d);
-  color:#e6edf3;border-radius:var(--r-lg);padding:20px 24px;
-  margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;
-  flex-wrap:wrap;gap:14px;
-}
+/* GitHub Banner */
+.github-banner{background:linear-gradient(135deg,#0d1117,#21262d);color:#e6edf3;border-radius:var(--r-lg);padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;}
 .github-banner h3{font-size:0.95rem;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:8px;}
 .github-banner p{font-size:0.78rem;opacity:0.7;line-height:1.5;}
 .github-banner .badge{background:#238636;color:#fff;font-size:0.7rem;font-weight:700;padding:3px 10px;border-radius:20px;}
 .github-banner .badge.off{background:#6e7681;}
-.github-setup-fields{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end;}
-.github-setup-fields input{background:#0d1117;border:1px solid #30363d;color:#e6edf3;padding:7px 12px;border-radius:7px;font-family:'Outfit',sans-serif;font-size:0.8rem;width:200px;outline:none;}
-.github-setup-fields input:focus{border-color:#58a6ff;}
-.github-setup-fields input::placeholder{color:#484f58;}
 .github-save-btn{background:#238636;border:1px solid #2ea043;color:#fff;padding:7px 16px;border-radius:7px;font-family:'Outfit',sans-serif;font-size:0.8rem;font-weight:600;cursor:pointer;transition:background 0.2s;}
 .github-save-btn:hover{background:#2ea043;}
 
-/* ===== STATS ===== */
+/* Stats */
 .stats-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px;margin-bottom:24px;}
 .stat-card{background:var(--white);border-radius:var(--r-lg);padding:18px 20px;border:1px solid var(--beige);box-shadow:var(--shadow-sm);}
 .stat-card .num{font-family:'Rajdhani',sans-serif;font-size:2rem;font-weight:700;color:var(--brown-dark);line-height:1;}
@@ -89,12 +64,9 @@ body{background:#f0ebe2;color:var(--brown-dark);min-height:100vh;display:flex;fl
 .trend.up{color:var(--green);}
 .trend.neu{color:var(--brown-light);}
 
-/* ===== TABLE PANEL ===== */
+/* Panel */
 .panel{background:var(--white);border-radius:var(--r-lg);border:1px solid var(--beige);box-shadow:var(--shadow-sm);overflow:hidden;margin-bottom:24px;}
-.panel-head{
-  padding:16px 20px;border-bottom:1px solid var(--beige-light);
-  display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
-}
+.panel-head{padding:16px 20px;border-bottom:1px solid var(--beige-light);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
 .panel-head h2{font-family:'Rajdhani',sans-serif;font-size:1.05rem;font-weight:700;color:var(--brown-dark);}
 .panel-head-actions{display:flex;gap:8px;flex-wrap:wrap;}
 .search-box{border:1px solid var(--beige);background:var(--beige-light);border-radius:30px;padding:6px 14px;font-family:'Outfit',sans-serif;font-size:0.82rem;color:var(--brown-dark);outline:none;width:200px;transition:border 0.2s;}
@@ -129,10 +101,10 @@ body{background:#f0ebe2;color:var(--brown-dark);min-height:100vh;display:flex;fl
 .btn-view{background:var(--green-light);color:var(--green);}
 .btn-view:hover{background:#c8e6c9;}
 
-/* ===== MODAL ===== */
+/* Modal */
 .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:500;display:none;align-items:center;justify-content:center;padding:20px;}
 .modal-backdrop.open{display:flex;}
-.modal{background:var(--white);border-radius:var(--r-lg);width:100%;max-width:720px;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);}
+.modal{background:var(--white);border-radius:var(--r-lg);width:100%;max-width:760px;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);}
 .modal-head{padding:18px 24px;border-bottom:1px solid var(--beige-light);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--white);z-index:2;}
 .modal-head h2{font-family:'Rajdhani',sans-serif;font-size:1.2rem;color:var(--brown-dark);}
 .modal-close{background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--brown-light);padding:4px 8px;border-radius:6px;transition:background 0.2s;}
@@ -140,7 +112,7 @@ body{background:#f0ebe2;color:var(--brown-dark);min-height:100vh;display:flex;fl
 .modal-body{padding:24px;}
 .modal-footer{padding:16px 24px;border-top:1px solid var(--beige-light);display:flex;justify-content:flex-end;gap:10px;position:sticky;bottom:0;background:var(--white);}
 
-/* ===== FORM ===== */
+/* Form */
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
 .form-group{margin-bottom:16px;}
 .form-label{display:block;font-weight:600;font-size:0.78rem;color:var(--brown);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.05em;}
@@ -150,23 +122,25 @@ body{background:#f0ebe2;color:var(--brown-dark);min-height:100vh;display:flex;fl
 select.form-control{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235C3D2E' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:34px;}
 textarea.form-control{resize:vertical;min-height:80px;line-height:1.55;}
 
-/* Image Upload */
-.img-upload-zone{border:2px dashed var(--beige-dark);border-radius:var(--r);padding:24px;text-align:center;cursor:pointer;position:relative;background:var(--beige-light);transition:all 0.2s;}
+/* Dual Image Upload */
+.dual-img-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.img-zone-wrap{position:relative;}
+.img-zone-label{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--brown-light);margin-bottom:6px;display:flex;align-items:center;gap:6px;}
+.img-zone-label .tag{background:var(--beige);border:1px solid var(--beige-dark);border-radius:20px;padding:2px 8px;font-size:0.65rem;}
+.img-upload-zone{border:2px dashed var(--beige-dark);border-radius:var(--r);padding:16px;text-align:center;cursor:pointer;position:relative;background:var(--beige-light);transition:all 0.2s;min-height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
 .img-upload-zone:hover,.img-upload-zone.over{border-color:var(--brown);background:rgba(92,61,46,0.05);}
 .img-upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;}
-.img-upload-zone .up-icon{font-size:2rem;margin-bottom:8px;}
-.img-upload-zone .up-txt{font-weight:700;font-size:0.9rem;color:var(--brown-dark);}
-.img-upload-zone .up-sub{font-size:0.75rem;color:var(--brown-light);margin-top:4px;}
-.img-preview-wrap{position:relative;border-radius:var(--r);overflow:hidden;margin-top:12px;}
-.img-preview-wrap img{width:100%;height:160px;object-fit:cover;display:block;}
-.img-preview-wrap .rm-img{position:absolute;top:8px;right:8px;background:rgba(198,40,40,0.9);color:#fff;border:none;border-radius:50%;width:26px;height:26px;font-size:0.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
-
-/* GitHub upload progress */
-.upload-progress{margin-top:10px;display:none;}
-.upload-progress-bar{height:4px;background:var(--beige);border-radius:2px;overflow:hidden;}
+.img-upload-zone .up-icon{font-size:1.6rem;margin-bottom:4px;}
+.img-upload-zone .up-txt{font-weight:700;font-size:0.82rem;color:var(--brown-dark);}
+.img-upload-zone .up-sub{font-size:0.7rem;color:var(--brown-light);margin-top:2px;}
+.img-preview-wrap{position:relative;border-radius:var(--r);overflow:hidden;margin-top:8px;}
+.img-preview-wrap img{width:100%;height:120px;object-fit:cover;display:block;}
+.img-preview-wrap .rm-img{position:absolute;top:6px;right:6px;background:rgba(198,40,40,0.9);color:#fff;border:none;border-radius:50%;width:22px;height:22px;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.upload-progress{margin-top:8px;display:none;}
+.upload-progress-bar{height:3px;background:var(--beige);border-radius:2px;overflow:hidden;}
 .upload-progress-fill{height:100%;background:linear-gradient(90deg,var(--brown),var(--gold));width:0;transition:width 0.4s;border-radius:2px;}
-.upload-progress-txt{font-size:0.73rem;color:var(--brown-light);margin-top:6px;}
-.github-status{font-size:0.73rem;margin-top:6px;padding:6px 10px;border-radius:6px;display:none;}
+.upload-progress-txt{font-size:0.68rem;color:var(--brown-light);margin-top:4px;}
+.github-status{font-size:0.68rem;margin-top:5px;padding:5px 8px;border-radius:6px;display:none;}
 .github-status.ok{background:var(--green-light);color:var(--green);display:block;}
 .github-status.err{background:var(--red-light);color:var(--red);display:block;}
 
@@ -195,16 +169,20 @@ textarea.form-control{resize:vertical;min-height:80px;line-height:1.55;}
 .btn-cancel:hover{background:var(--beige);}
 .btn-save{background:var(--brown);border:none;color:var(--cream);padding:10px 24px;border-radius:30px;font-family:'Outfit',sans-serif;font-weight:700;font-size:0.88rem;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:7px;}
 .btn-save:hover{background:var(--brown-dark);}
-.btn-save:disabled{opacity:0.55;cursor:not-allowed;transform:none;}
+.btn-save:disabled{opacity:0.55;cursor:not-allowed;}
+
+/* GitHub Sync Button */
+.btn-gh-sync{background:#238636;border:1px solid #2ea043;color:#fff;padding:7px 16px;border-radius:7px;font-family:'Outfit',sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;transition:background 0.2s;}
+.btn-gh-sync:hover{background:#2ea043;}
+.btn-gh-sync:disabled{opacity:0.5;cursor:not-allowed;}
 
 /* Toast */
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--green);color:#fff;padding:10px 22px;border-radius:40px;font-weight:600;font-size:0.88rem;z-index:9999;transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1),opacity 0.3s;opacity:0;white-space:nowrap;box-shadow:var(--shadow-md);}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
 .toast.err{background:var(--red);}
 
-/* Settings page */
-.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
-.settings-card{background:var(--white);border-radius:var(--r-lg);border:1px solid var(--beige);padding:22px;box-shadow:var(--shadow-sm);}
+/* Settings */
+.settings-card{background:var(--white);border-radius:var(--r-lg);border:1px solid var(--beige);padding:22px;box-shadow:var(--shadow-sm);margin-bottom:16px;}
 .settings-card h3{font-family:'Rajdhani',sans-serif;font-size:1rem;color:var(--brown-dark);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--beige-light);}
 
 /* Empty state */
@@ -221,7 +199,7 @@ textarea.form-control{resize:vertical;min-height:80px;line-height:1.55;}
 .btn-confirm-ok{background:var(--red);color:#fff;border:none;padding:9px 22px;border-radius:30px;font-family:'Outfit',sans-serif;font-weight:700;cursor:pointer;}
 .btn-confirm-cancel{background:var(--beige-light);border:1px solid var(--beige-dark);color:var(--brown);padding:9px 22px;border-radius:30px;font-family:'Outfit',sans-serif;font-weight:600;cursor:pointer;}
 
-/* Dashboard quick actions */
+/* Quick actions */
 .quick-actions{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;margin-bottom:24px;}
 .qa-btn{background:var(--white);border:1px solid var(--beige);border-radius:var(--r-lg);padding:18px;text-align:center;cursor:pointer;transition:all 0.2s;box-shadow:var(--shadow-sm);}
 .qa-btn:hover{border-color:var(--brown);box-shadow:var(--shadow-md);transform:translateY(-2px);}
@@ -229,7 +207,7 @@ textarea.form-control{resize:vertical;min-height:80px;line-height:1.55;}
 .qa-btn .qa-lbl{font-size:0.82rem;font-weight:600;color:var(--brown-dark);}
 .qa-btn .qa-sub{font-size:0.7rem;color:var(--brown-light);margin-top:3px;}
 
-/* Recent activity */
+/* Activity */
 .activity-list{display:flex;flex-direction:column;}
 .activity-item{display:flex;align-items:center;gap:12px;padding:12px 18px;border-bottom:1px solid var(--beige-light);}
 .activity-item:last-child{border-bottom:none;}
@@ -240,15 +218,17 @@ textarea.form-control{resize:vertical;min-height:80px;line-height:1.55;}
 .activity-text{flex:1;font-size:0.83rem;color:var(--brown-dark);}
 .activity-time{font-size:0.72rem;color:var(--brown-light);}
 
-/* Responsive */
+/* Info box */
+.info-box{background:rgba(21,101,192,0.08);border:1px solid rgba(21,101,192,0.2);border-radius:var(--r);padding:12px 16px;font-size:0.8rem;color:var(--blue);margin-bottom:16px;line-height:1.6;}
+.info-box strong{font-weight:700;}
+
 @media(max-width:900px){
   .topbar{padding-left:70px;}
   .sidebar{width:56px;overflow:visible;}
   .sidebar-brand-icon{display:none;}
   .nav-item span:not(.nav-item-icon){display:none;}
   .main{margin-left:56px;}
-  .form-row{grid-template-columns:1fr;}
-  .settings-grid{grid-template-columns:1fr;}
+  .form-row,.dual-img-row{grid-template-columns:1fr;}
 }
 </style>
 </head>
@@ -259,7 +239,7 @@ textarea.form-control{resize:vertical;min-height:80px;line-height:1.55;}
   <div class="sidebar-brand">
     <div>
       <div class="sidebar-brand-icon">🏭 SECUREX</div>
-      <div class="sidebar-brand-sub">Admin Panel v2</div>
+      <div class="sidebar-brand-sub">Admin Panel v3</div>
     </div>
   </div>
   <nav class="sidebar-nav">
@@ -276,6 +256,9 @@ textarea.form-control{resize:vertical;min-height:80px;line-height:1.55;}
     <div class="nav-section-label">Tools</div>
     <a class="nav-item" data-page="settings" onclick="goPage('settings')">
       <span class="nav-item-icon">⚙️</span><span>Settings & GitHub</span>
+    </a>
+    <a class="nav-item" onclick="syncToGitHub()">
+      <span class="nav-item-icon">🔄</span><span>Sync to GitHub</span>
     </a>
     <a class="nav-item" onclick="exportJSON()">
       <span class="nav-item-icon">📤</span><span>Export JSON</span>
@@ -299,12 +282,11 @@ textarea.form-control{resize:vertical;min-height:80px;line-height:1.55;}
 <div class="topbar">
   <div class="topbar-left">
     <div class="topbar-title" id="pageTitle">Dashboard</div>
-    <div class="topbar-breadcrumb" id="pageBreadcrumb">
-      <span>Admin</span><span>›</span><span>Dashboard</span>
-    </div>
+    <div class="topbar-breadcrumb" id="pageBreadcrumb"><span>Admin</span><span>›</span><span>Dashboard</span></div>
   </div>
   <div class="topbar-right">
     <span id="ghStatusBadge" class="topbar-btn" style="cursor:default;"></span>
+    <button class="topbar-btn" onclick="syncToGitHub()">🔄 Sync GitHub</button>
     <button class="topbar-btn" onclick="goPage('settings')">⚙ Settings</button>
     <a href="product/" target="_blank" class="topbar-btn green">🛍 View Site</a>
   </div>
@@ -313,59 +295,36 @@ textarea.form-control{resize:vertical;min-height:80px;line-height:1.55;}
 <!-- MAIN -->
 <div class="main">
 
-  <!-- =================== DASHBOARD =================== -->
+  <!-- DASHBOARD -->
   <div class="page active" id="page-dashboard">
-
-    <!-- GitHub Banner -->
     <div class="github-banner" id="githubBanner">
       <div>
-        <h3>🐙 GitHub Auto-Upload <span class="badge off" id="ghBadge">Not Connected</span></h3>
-        <p>Connect your GitHub repo → images auto-upload when you add/edit a product.<br>
-        Go to <strong>Settings & GitHub</strong> to configure. Images save to your repo automatically!</p>
+        <h3>🐙 GitHub Sync <span class="badge off" id="ghBadge">Not Connected</span></h3>
+        <p>GitHub connect karein → products aur images automatically save honge.<br>
+        Dusre browsers mein bhi products dikhenge! Settings mein jakar configure karein.</p>
       </div>
       <button class="github-save-btn" onclick="goPage('settings')" style="background:#0d1117;border-color:#30363d;">⚙ Configure GitHub →</button>
     </div>
-
     <div class="stats-row" id="statsRow"></div>
-
     <div class="quick-actions">
-      <div class="qa-btn" onclick="openAddModal();goPage('products')">
-        <div class="qa-icon">➕</div>
-        <div class="qa-lbl">Add Product</div>
-        <div class="qa-sub">New to catalog</div>
-      </div>
-      <div class="qa-btn" onclick="goPage('products')">
-        <div class="qa-icon">📋</div>
-        <div class="qa-lbl">Manage Products</div>
-        <div class="qa-sub">Edit / delete</div>
-      </div>
-      <div class="qa-btn" onclick="exportJSON()">
-        <div class="qa-icon">📤</div>
-        <div class="qa-lbl">Export Data</div>
-        <div class="qa-sub">Backup JSON</div>
-      </div>
-      <div class="qa-btn" onclick="goPage('settings')">
-        <div class="qa-icon">⚙️</div>
-        <div class="qa-lbl">GitHub Setup</div>
-        <div class="qa-sub">Auto image save</div>
-      </div>
+      <div class="qa-btn" onclick="openAddModal();goPage('products')"><div class="qa-icon">➕</div><div class="qa-lbl">Add Product</div><div class="qa-sub">New to catalog</div></div>
+      <div class="qa-btn" onclick="goPage('products')"><div class="qa-icon">📋</div><div class="qa-lbl">Manage Products</div><div class="qa-sub">Edit / delete</div></div>
+      <div class="qa-btn" onclick="syncToGitHub()"><div class="qa-icon">🔄</div><div class="qa-lbl">Sync to GitHub</div><div class="qa-sub">Save all products</div></div>
+      <div class="qa-btn" onclick="goPage('settings')"><div class="qa-icon">⚙️</div><div class="qa-lbl">GitHub Setup</div><div class="qa-sub">Configure once</div></div>
     </div>
-
     <div class="panel">
-      <div class="panel-head">
-        <h2>📋 Recent Activity</h2>
-      </div>
+      <div class="panel-head"><h2>📋 Recent Activity</h2></div>
       <div id="activityList" class="activity-list"></div>
     </div>
   </div>
 
-  <!-- =================== PRODUCTS =================== -->
+  <!-- PRODUCTS -->
   <div class="page" id="page-products">
     <div class="panel">
       <div class="panel-head">
         <h2>📦 All Products <span id="prodCountBadge" style="font-size:0.75rem;background:var(--beige);color:var(--brown);padding:2px 10px;border-radius:20px;margin-left:8px;font-family:Outfit,sans-serif;font-weight:600;"></span></h2>
         <div class="panel-head-actions">
-          <input class="search-box" type="text" placeholder="🔍 Search products..." id="searchInput" oninput="renderTable()">
+          <input class="search-box" type="text" placeholder="🔍 Search..." id="searchInput" oninput="renderTable()">
           <select class="cat-filter" id="catFilter" onchange="renderTable()">
             <option value="">All Categories</option>
             <option value="almirah-home">Home Almirah</option>
@@ -375,37 +334,33 @@ textarea.form-control{resize:vertical;min-height:80px;line-height:1.55;}
             <option value="bookshelf">BookShelf</option>
             <option value="showcase">Glass Showcase</option>
           </select>
-          <button class="btn-add" onclick="openAddModal()">➕ Add New Product</button>
+          <button class="btn-add" onclick="openAddModal()">➕ Add New</button>
         </div>
       </div>
       <div style="overflow-x:auto;">
         <table class="prod-table" id="prodTable">
-          <thead>
-            <tr>
-              <th>Image</th>
-              <th>Product Name</th>
-              <th>Category</th>
-              <th>Badge</th>
-              <th>Source</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
+          <thead><tr><th>Images</th><th>Product Name</th><th>Category</th><th>Badge</th><th>Source</th><th>Actions</th></tr></thead>
           <tbody id="prodTbody"></tbody>
         </table>
       </div>
     </div>
   </div>
 
-  <!-- =================== SETTINGS =================== -->
+  <!-- SETTINGS -->
   <div class="page" id="page-settings">
     <div class="panel" style="max-width:700px;">
-      <div class="panel-head"><h2>⚙️ Settings & GitHub Auto-Upload</h2></div>
-      <div class="panel-body" style="padding:24px;">
+      <div class="panel-head"><h2>⚙️ Settings & GitHub Sync</h2></div>
+      <div style="padding:24px;">
+
+        <div class="info-box">
+          <strong>💡 Dusre browsers mein products kyun gayab hote hain?</strong><br>
+          Products abhi sirf is browser ke localStorage mein hain. GitHub setup karke <strong>"Sync to GitHub"</strong> click karein — ek JSON file repo mein save hogi aur product page ussi se data load karega. Kisi bhi browser ya device mein same products dikhenge!
+        </div>
+
         <div style="background:#0d1117;color:#e6edf3;border-radius:var(--r-lg);padding:20px;margin-bottom:20px;">
           <h3 style="color:#58a6ff;font-size:0.95rem;margin-bottom:12px;">🐙 GitHub Repository Setup</h3>
           <p style="font-size:0.8rem;color:#8b949e;line-height:1.6;margin-bottom:14px;">
-            When configured, product images you upload here get automatically committed to your GitHub repo.<br>
-            The product page will use those image URLs directly — no server needed!
+            Ek baar setup karein — products aur images dono GitHub pe save honge. Product page GitHub se hi data load karega.
           </p>
           <div class="form-group">
             <label class="form-label" style="color:#58a6ff;">GitHub Username</label>
@@ -422,38 +377,42 @@ textarea.form-control{resize:vertical;min-height:80px;line-height:1.55;}
           <div class="form-group">
             <label class="form-label" style="color:#58a6ff;">Personal Access Token <span style="color:#f85149;">*</span></label>
             <input id="gh_token" type="password" class="form-control" style="background:#161b22;border-color:#30363d;color:#e6edf3;" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
-            <p style="font-size:0.73rem;color:#6e7681;margin-top:6px;">
-              ⚠ Token needs <strong>repo</strong> scope. Create at: GitHub → Settings → Developer Settings → Personal Access Tokens → Fine-grained or Classic.<br>
-              Token is saved in browser localStorage only — never sent anywhere except GitHub API.
-            </p>
+            <p style="font-size:0.73rem;color:#6e7681;margin-top:6px;">Token ko <strong>repo</strong> scope chahiye. GitHub → Settings → Developer Settings → Personal Access Tokens mein banayein.<br>Token sirf browser localStorage mein save hota hai.</p>
           </div>
           <div class="form-group">
-            <label class="form-label" style="color:#58a6ff;">Image Upload Folder (in repo)</label>
+            <label class="form-label" style="color:#58a6ff;">Image Folder (repo mein)</label>
             <input id="gh_folder" class="form-control" style="background:#161b22;border-color:#30363d;color:#e6edf3;" placeholder="images/products" value="images/products">
           </div>
-          <button onclick="saveGithubSettings()" style="background:#238636;border:1px solid #2ea043;color:#fff;padding:9px 20px;border-radius:8px;font-family:'Outfit',sans-serif;font-weight:700;font-size:0.85rem;cursor:pointer;margin-right:8px;">💾 Save GitHub Settings</button>
-          <button onclick="testGithubConnection()" style="background:#0d1117;border:1px solid #30363d;color:#58a6ff;padding:9px 20px;border-radius:8px;font-family:'Outfit',sans-serif;font-weight:600;font-size:0.85rem;cursor:pointer;">🔗 Test Connection</button>
+          <div class="form-group">
+            <label class="form-label" style="color:#58a6ff;">Products JSON File Path (repo mein)</label>
+            <input id="gh_json_path" class="form-control" style="background:#161b22;border-color:#30363d;color:#e6edf3;" placeholder="data/custom-products.json" value="data/custom-products.json">
+            <p style="font-size:0.73rem;color:#6e7681;margin-top:6px;">Yahan products ka JSON save hoga. Product page isi file se load karega.</p>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button onclick="saveGithubSettings()" style="background:#238636;border:1px solid #2ea043;color:#fff;padding:9px 20px;border-radius:8px;font-family:'Outfit',sans-serif;font-weight:700;font-size:0.85rem;cursor:pointer;">💾 Save Settings</button>
+            <button onclick="testGithubConnection()" style="background:#0d1117;border:1px solid #30363d;color:#58a6ff;padding:9px 20px;border-radius:8px;font-family:'Outfit',sans-serif;font-weight:600;font-size:0.85rem;cursor:pointer;">🔗 Test Connection</button>
+            <button onclick="syncToGitHub()" style="background:#1f6feb;border:1px solid #388bfd;color:#fff;padding:9px 20px;border-radius:8px;font-family:'Outfit',sans-serif;font-weight:700;font-size:0.85rem;cursor:pointer;">🔄 Sync All to GitHub Now</button>
+          </div>
           <div id="ghTestResult" style="margin-top:12px;font-size:0.8rem;padding:8px 12px;border-radius:7px;display:none;"></div>
         </div>
 
-        <div class="settings-card" style="margin-bottom:16px;">
+        <div class="settings-card">
           <h3>📊 Storage Info</h3>
           <div id="storageInfo" style="font-size:0.85rem;color:var(--brown);line-height:1.7;"></div>
         </div>
 
         <div class="settings-card">
           <h3>🗑 Danger Zone</h3>
-          <p style="font-size:0.83rem;color:var(--brown-light);margin-bottom:14px;">These actions cannot be undone.</p>
+          <p style="font-size:0.83rem;color:var(--brown-light);margin-bottom:14px;">Ye actions undo nahi ho sakti.</p>
           <button onclick="clearAllCustom()" style="background:var(--red-light);border:1px solid var(--red);color:var(--red);padding:8px 18px;border-radius:7px;font-family:'Outfit',sans-serif;font-weight:600;cursor:pointer;font-size:0.83rem;margin-right:8px;">🗑 Clear All Custom Products</button>
           <button onclick="clearActivity()" style="background:var(--beige-light);border:1px solid var(--beige-dark);color:var(--brown);padding:8px 18px;border-radius:7px;font-family:'Outfit',sans-serif;font-weight:600;cursor:pointer;font-size:0.83rem;">Clear Activity Log</button>
         </div>
       </div>
     </div>
   </div>
+</div>
 
-</div><!-- /.main -->
-
-<!-- =================== PRODUCT MODAL =================== -->
+<!-- PRODUCT MODAL -->
 <div class="modal-backdrop" id="modalBackdrop" onclick="closeModalOutside(event)">
   <div class="modal" id="modal">
     <div class="modal-head">
@@ -462,25 +421,57 @@ textarea.form-control{resize:vertical;min-height:80px;line-height:1.55;}
     </div>
     <div class="modal-body">
 
-      <!-- Image -->
+      <!-- DUAL IMAGE UPLOAD -->
       <div class="form-group">
-        <label class="form-label">Product Image <span class="req">*</span></label>
-        <div class="img-upload-zone" id="uploadZone">
-          <input type="file" id="imgInput" accept="image/*" onchange="handleImgFile(this.files[0])">
-          <div class="up-icon">📷</div>
-          <div class="up-txt">Click or drag image here</div>
-          <div class="up-sub">PNG, JPG, WebP</div>
+        <label class="form-label">Product Images <span class="req">*</span></label>
+        <div class="dual-img-row">
+
+          <!-- Closed Image -->
+          <div class="img-zone-wrap">
+            <div class="img-zone-label">
+              🚪 Band (Closed) Image <span class="tag">Required</span>
+            </div>
+            <div class="img-upload-zone" id="uploadZoneClosed">
+              <input type="file" id="imgInputClosed" accept="image/*" onchange="handleImgFile(this.files[0],'closed')">
+              <div class="up-icon">📷</div>
+              <div class="up-txt">Click or drag</div>
+              <div class="up-sub">Almirah band wali photo</div>
+            </div>
+            <div id="imgPreviewWrapClosed" style="display:none;" class="img-preview-wrap">
+              <img id="previewImgClosed" src="" alt="Closed Preview">
+              <button class="rm-img" onclick="removeImg('closed')">✕</button>
+            </div>
+            <div class="upload-progress" id="uploadProgressClosed">
+              <div class="upload-progress-bar"><div class="upload-progress-fill" id="uploadFillClosed"></div></div>
+              <div class="upload-progress-txt" id="uploadTxtClosed">Uploading...</div>
+            </div>
+            <div class="github-status" id="githubStatusClosed"></div>
+          </div>
+
+          <!-- Open Image -->
+          <div class="img-zone-wrap">
+            <div class="img-zone-label">
+              🔓 Khula (Open) Image <span class="tag" style="background:var(--green-light);border-color:var(--green);color:var(--green);">Optional</span>
+            </div>
+            <div class="img-upload-zone" id="uploadZoneOpen">
+              <input type="file" id="imgInputOpen" accept="image/*" onchange="handleImgFile(this.files[0],'open')">
+              <div class="up-icon">📸</div>
+              <div class="up-txt">Click or drag</div>
+              <div class="up-sub">Almirah khula wali photo</div>
+            </div>
+            <div id="imgPreviewWrapOpen" style="display:none;" class="img-preview-wrap">
+              <img id="previewImgOpen" src="" alt="Open Preview">
+              <button class="rm-img" onclick="removeImg('open')">✕</button>
+            </div>
+            <div class="upload-progress" id="uploadProgressOpen">
+              <div class="upload-progress-bar"><div class="upload-progress-fill" id="uploadFillOpen"></div></div>
+              <div class="upload-progress-txt" id="uploadTxtOpen">Uploading...</div>
+            </div>
+            <div class="github-status" id="githubStatusOpen"></div>
+          </div>
+
         </div>
-        <div id="imgPreviewWrap" style="display:none;" class="img-preview-wrap">
-          <img id="previewImg" src="" alt="Preview">
-          <button class="rm-img" onclick="removeImg()">✕</button>
-        </div>
-        <div class="upload-progress" id="uploadProgress">
-          <div class="upload-progress-bar"><div class="upload-progress-fill" id="uploadFill"></div></div>
-          <div class="upload-progress-txt" id="uploadTxt">Uploading to GitHub...</div>
-        </div>
-        <div class="github-status" id="githubStatus"></div>
-        <div id="imgUrlNote" style="font-size:0.73rem;color:var(--brown-light);margin-top:6px;display:none;"></div>
+        <p style="font-size:0.72rem;color:var(--brown-light);margin-top:8px;">💡 Product page pe hover karne par "Open" image dikhegi — same effect jaise builtin products mein hai.</p>
       </div>
 
       <!-- Name -->
@@ -519,12 +510,12 @@ textarea.form-control{resize:vertical;min-height:80px;line-height:1.55;}
       <!-- Description -->
       <div class="form-group">
         <label class="form-label">Description <span class="req">*</span></label>
-        <textarea class="form-control" id="prodDesc" placeholder="Short description of the product..."></textarea>
+        <textarea class="form-control" id="prodDesc" placeholder="Product ki short description..."></textarea>
       </div>
 
       <!-- Features -->
       <div class="form-group">
-        <label class="form-label">Key Features <span style="text-transform:none;font-weight:400;font-size:0.75rem;color:var(--brown-light);">(bullet points on catalog)</span></label>
+        <label class="form-label">Key Features <span style="text-transform:none;font-weight:400;font-size:0.75rem;color:var(--brown-light);">(bullet points)</span></label>
         <div class="features-list" id="featuresList"></div>
         <button class="add-feat-btn" onclick="addFeature()">+ Add Feature</button>
       </div>
@@ -549,16 +540,15 @@ textarea.form-control{resize:vertical;min-height:80px;line-height:1.55;}
   </div>
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
 /* ================================================================
    CONSTANTS
-   ================================================================ */
-var STORAGE_KEY = 'securex_custom_products';
+================================================================ */
+var STORAGE_KEY  = 'securex_custom_products';
 var ACTIVITY_KEY = 'securex_admin_activity';
-var GH_KEY = 'securex_gh_config';
+var GH_KEY       = 'securex_gh_config';
 
 var CAT_LABELS = {
   'almirah-home':'Home Almirah','almirah-office':'Office Almirah',
@@ -567,37 +557,36 @@ var CAT_LABELS = {
 };
 
 /* ================================================================
-   BUILT-IN PRODUCTS (from product page)
-   ================================================================ */
+   BUILT-IN PRODUCTS
+================================================================ */
 var BUILTIN = [
-  {id:1,category:'almirah-home',name:'SECUREX 2-Door Steel Almirah – Blue',img:'../Secure-X-Almirah-4001.png',badge:'Bestseller',badgeClass:'badge-best',desc:'A solid 2-door home almirah in a bright blue finish. Multiple colour options available. Custom prints also available.',features:['1.0 mm CRCA steel body','Scratch-resistant powder coat','3 adjustable internal shelves','Anti-rust inner coating','Multiple colour options available']},
-  {id:2,category:'almirah-home',name:'SECUREX 2-Door Steel Almirah – Rose',img:'../Secure-X-Almirah-4002.png',badge:'Popular',badgeClass:'',desc:'Same reliable build as the blue variant, wrapped in a warm rose finish. Multiple colour options available. Custom prints also available.',features:['1.0 mm CRCA steel body','Scratch-resistant powder coat','3 shelves + hanging rod','Double-key locking system']},
-  {id:3,category:'almirah-home',name:'SECUREX 3-Door Steel Almirah – Bicolour Blue & White',img:'../Secure-X-Almirah-4003.png',badge:'New',badgeClass:'badge-new',desc:'Extra-wide 3-door almirah in a fresh two-tone blue and white finish. Multiple colour options available.',features:['1.2 mm heavy-gauge steel','Two-tone powder-coat finish','5 shelves + centre hanging section','Central locking bar with 3 bolts']},
-  {id:4,category:'almirah-home',name:'SECUREX 3-Door Steel Almirah – Pink',img:'../Secure-X-Almirah-4004.png',badge:'Hot',badgeClass:'badge-hot',desc:'A bold pink 3-door almirah that makes a statement in any modern bedroom. Multiple colour options available.',features:['1.2 mm steel frame','Premium pink powder coat','Full-length hanging rod + 4 shelves']},
-  {id:5,category:'almirah-home',name:'SECUREX 3-Door Steel Almirah – Black',img:'../Secure-X-Almirah-4006.png',badge:'Premium',badgeClass:'',desc:'A sleek matte-black 3-door almirah for anyone who wants a modern look. Multiple colour options available.',features:['1.2 mm CRCA steel','Matte-black electrostatic coat','5 shelves + hanging rod']},
-  {id:6,category:'almirah-home',name:'SECUREX 3-Door Steel Almirah – Maroon',img:'../Secure-X-Almirah-3007.png',badge:'Classic',badgeClass:'',desc:'Rich maroon finish on a sturdy 3-door frame. Multiple colour options available.',features:['1.2 mm steel with anti-rust treatment','Deep maroon powder coat','4 adjustable shelves']},
-  {id:7,category:'almirah-office',name:'SECUREX 2-Door Office Almirah – Grey',img:'../Secure-X-Almirah-3006.png',badge:'Office',badgeClass:'',desc:'A professional grey almirah built for busy offices. Multiple colour options available.',features:['1.2 mm CRCA steel body','Neutral grey powder coat','4 deep document shelves']},
-  {id:8,category:'almirah-office',name:'SECUREX 2-Door Office Almirah – Pink',img:'../Secure-X-Almirah-2-Door-Office-1.png',badge:'Office',badgeClass:'',desc:'A compact 2-door office cupboard in a fresh pink shade. Multiple colour options available.',features:['1.0 mm CRCA steel','Vibrant pink powder coat','3 fixed shelves for files']},
-  {id:9,category:'almirah-office',name:'SECUREX 2-Door Office Almirah – Graphite',img:'../Secure-X-Almirah-2-Door-Office-2.png',badge:'Office',badgeClass:'',desc:'Graphite-finish office almirah with an industrial look. Multiple colour options available.',features:['1.2 mm heavy-gauge steel','Graphite powder-coat finish','4 adjustable shelves']},
-  {id:10,category:'almirah-dressing',name:'SECUREX Dressing Almirah with Full-Length Mirror',img:'../Secure-X-Dressing-2003.png',badge:'Bestseller',badgeClass:'badge-best',desc:'A full-height dressing almirah with an integrated full-length mirror. Multiple colour options available.',features:['1.0 mm CRCA steel frame','Full-length fixed mirror on door','Hanging section + 3 shelves + drawers']},
-  {id:11,category:'locker',name:'SECUREX 10-Door Steel Locker Bank',img:'../Secure-X-10-Locker.png',badge:'Multi-Unit',badgeClass:'',desc:'Ten individual lockable compartments. Perfect for schools, gyms, offices. Multiple colour options available.',features:['10 independent locking compartments','Master-key override access','Ventilated door panels']},
-  {id:12,category:'bookshelf',name:'SECUREX Heavy-Duty Steel BookShelf',img:'../Secure-X-BookShelf.png',badge:'Storage',badgeClass:'',desc:'An open-frame steel bookshelf with multiple adjustable shelves. Multiple colour options available.',features:['1.2 mm steel frame','5 height-adjustable shelves','80 kg load capacity per shelf']},
-  {id:13,category:'showcase',name:'SECUREX Glass Door Showcase Cabinet',img:'../Secure-X-GlassDoor-Showcase.png',badge:'Display',badgeClass:'badge-best',desc:'A steel-framed display cabinet with toughened glass doors. Multiple colour options available.',features:['Toughened safety glass doors','Powder-coated steel frame','3 adjustable glass shelves']}
+  {id:1,category:'almirah-home',name:'SECUREX 2-Door Steel Almirah – Blue',img:'../Secure-X-Almirah-4001.png',badge:'Bestseller',badgeClass:'badge-best',desc:'A solid 2-door home almirah in a bright blue finish.',features:['1.0 mm CRCA steel body','Scratch-resistant powder coat','3 adjustable internal shelves','Anti-rust inner coating','Multiple colour options available']},
+  {id:2,category:'almirah-home',name:'SECUREX 2-Door Steel Almirah – Rose',img:'../Secure-X-Almirah-4002.png',badge:'Popular',badgeClass:'',desc:'Same reliable build as the blue variant, wrapped in a warm rose finish.',features:['1.0 mm CRCA steel body','Scratch-resistant powder coat','3 shelves + hanging rod','Double-key locking system']},
+  {id:3,category:'almirah-home',name:'SECUREX 3-Door Steel Almirah – Bicolour Blue & White',img:'../Secure-X-Almirah-4003.png',badge:'New',badgeClass:'badge-new',desc:'Extra-wide 3-door almirah in a fresh two-tone blue and white finish.',features:['1.2 mm heavy-gauge steel','Two-tone powder-coat finish','5 shelves + centre hanging section','Central locking bar with 3 bolts']},
+  {id:4,category:'almirah-home',name:'SECUREX 3-Door Steel Almirah – Pink',img:'../Secure-X-Almirah-4004.png',badge:'Hot',badgeClass:'badge-hot',desc:'A bold pink 3-door almirah that makes a statement.',features:['1.2 mm steel frame','Premium pink powder coat','Full-length hanging rod + 4 shelves']},
+  {id:5,category:'almirah-home',name:'SECUREX 3-Door Steel Almirah – Black',img:'../Secure-X-Almirah-4006.png',badge:'Premium',badgeClass:'',desc:'A sleek matte-black 3-door almirah for a modern look.',features:['1.2 mm CRCA steel','Matte-black electrostatic coat','5 shelves + hanging rod']},
+  {id:6,category:'almirah-home',name:'SECUREX 3-Door Steel Almirah – Maroon',img:'../Secure-X-Almirah-3007.png',badge:'Classic',badgeClass:'',desc:'Rich maroon finish on a sturdy 3-door frame.',features:['1.2 mm steel with anti-rust treatment','Deep maroon powder coat','4 adjustable shelves']},
+  {id:7,category:'almirah-office',name:'SECUREX 2-Door Office Almirah – Grey',img:'../Secure-X-Almirah-3006.png',badge:'Office',badgeClass:'',desc:'A professional grey almirah built for busy offices.',features:['1.2 mm CRCA steel body','Neutral grey powder coat','4 deep document shelves']},
+  {id:8,category:'almirah-office',name:'SECUREX 2-Door Office Almirah – Pink',img:'../Secure-X-Almirah-2-Door-Office-1.png',badge:'Office',badgeClass:'',desc:'A compact 2-door office cupboard in a fresh pink shade.',features:['1.0 mm CRCA steel','Vibrant pink powder coat','3 fixed shelves for files']},
+  {id:9,category:'almirah-office',name:'SECUREX 2-Door Office Almirah – Graphite',img:'../Secure-X-Almirah-2-Door-Office-2.png',badge:'Office',badgeClass:'',desc:'Graphite-finish office almirah with an industrial look.',features:['1.2 mm heavy-gauge steel','Graphite powder-coat finish','4 adjustable shelves']},
+  {id:10,category:'almirah-dressing',name:'SECUREX Dressing Almirah with Full-Length Mirror',img:'../Secure-X-Dressing-2003.png',badge:'Bestseller',badgeClass:'badge-best',desc:'A full-height dressing almirah with integrated full-length mirror.',features:['1.0 mm CRCA steel frame','Full-length fixed mirror on door','Hanging section + 3 shelves + drawers']},
+  {id:11,category:'locker',name:'SECUREX 10-Door Steel Locker Bank',img:'../Secure-X-10-Locker.png',badge:'Multi-Unit',badgeClass:'',desc:'Ten individual lockable compartments.',features:['10 independent locking compartments','Master-key override access','Ventilated door panels']},
+  {id:12,category:'bookshelf',name:'SECUREX Heavy-Duty Steel BookShelf',img:'../Secure-X-BookShelf.png',badge:'Storage',badgeClass:'',desc:'An open-frame steel bookshelf with multiple adjustable shelves.',features:['1.2 mm steel frame','5 height-adjustable shelves','80 kg load capacity per shelf']},
+  {id:13,category:'showcase',name:'SECUREX Glass Door Showcase Cabinet',img:'../Secure-X-GlassDoor-Showcase.png',badge:'Display',badgeClass:'badge-best',desc:'A steel-framed display cabinet with toughened glass doors.',features:['Toughened safety glass doors','Powder-coated steel frame','3 adjustable glass shelves']}
 ];
 
 /* ================================================================
    STATE
-   ================================================================ */
-var editingId = null;
-var selectedBadge = 'none';
-var currentImgBase64 = null;
-var currentImgUrl = null; // GitHub URL if uploaded
-var modalFeatures = [];
-var confirmCallback = null;
+================================================================ */
+var editingId       = null;
+var selectedBadge   = 'none';
+var imgClosed       = {base64:null, url:null};   // closed image
+var imgOpen         = {base64:null, url:null};    // open image
+var modalFeatures   = [];
 
 /* ================================================================
    HELPERS
-   ================================================================ */
+================================================================ */
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function getCustom(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');}catch(e){return[];}}
 function setCustom(arr){localStorage.setItem(STORAGE_KEY,JSON.stringify(arr));}
@@ -613,19 +602,19 @@ function getGH(){try{return JSON.parse(localStorage.getItem(GH_KEY)||'{}');}catc
 function toast(msg,isErr){
   var t=document.getElementById('toast');
   t.textContent=msg;t.className='toast'+(isErr?' err':'')+ ' show';
-  setTimeout(function(){t.classList.remove('show');},3200);
+  setTimeout(function(){t.classList.remove('show');},3500);
 }
 
 /* ================================================================
    PAGE NAVIGATION
-   ================================================================ */
+================================================================ */
 var pageTitles={'dashboard':'Dashboard','products':'All Products','settings':'Settings & GitHub'};
-
 function goPage(p){
   document.querySelectorAll('.page').forEach(function(el){el.classList.remove('active');});
   document.querySelectorAll('.nav-item[data-page]').forEach(function(el){el.classList.remove('active');});
   document.getElementById('page-'+p).classList.add('active');
-  document.querySelector('.nav-item[data-page="'+p+'"]')&&document.querySelector('.nav-item[data-page="'+p+'"]').classList.add('active');
+  var navEl=document.querySelector('.nav-item[data-page="'+p+'"]');
+  if(navEl)navEl.classList.add('active');
   document.getElementById('pageTitle').textContent=pageTitles[p]||p;
   document.getElementById('pageBreadcrumb').innerHTML='<span>Admin</span><span>›</span><span>'+(pageTitles[p]||p)+'</span>';
   if(p==='products')renderTable();
@@ -635,19 +624,16 @@ function goPage(p){
 
 /* ================================================================
    STATS
-   ================================================================ */
+================================================================ */
 function renderStats(){
   var custom=getCustom();
   var all=BUILTIN.length+custom.length;
-  var cats={};
-  custom.forEach(function(p){cats[p.category]=(cats[p.category]||0)+1;});
+  var gh=getGH();
   var html='<div class="stat-card"><div class="num">'+all+'</div><div class="lbl">Total Products</div><div class="trend neu">'+BUILTIN.length+' builtin + '+custom.length+' custom</div></div>';
   html+='<div class="stat-card"><div class="num">'+custom.length+'</div><div class="lbl">Custom Added</div><div class="trend up">Via admin panel</div></div>';
   html+='<div class="stat-card"><div class="num">6</div><div class="lbl">Categories</div><div class="trend neu">All active</div></div>';
-  var gh=getGH();
   html+='<div class="stat-card"><div class="num">'+(gh.token?'ON':'OFF')+'</div><div class="lbl">GitHub Sync</div><div class="trend '+(gh.token?'up':'neu')+'">'+(gh.token?'Connected':'Not setup')+'</div></div>';
   document.getElementById('statsRow').innerHTML=html;
-  document.getElementById('prodCountBadge').textContent=all+' products';
   updateGHBadge();
 }
 
@@ -657,13 +643,11 @@ function updateGHBadge(){
   var statusBadge=document.getElementById('ghStatusBadge');
   var banner=document.getElementById('githubBanner');
   if(gh.token&&gh.user&&gh.repo){
-    if(badge)badge.textContent='Connected ✓';
-    if(badge)badge.className='badge';
-    if(statusBadge)statusBadge.textContent='🐙 GitHub: '+gh.user+'/'+gh.repo;
+    if(badge){badge.textContent='Connected ✓';badge.className='badge';}
+    if(statusBadge)statusBadge.textContent='🐙 '+gh.user+'/'+gh.repo;
     if(banner)banner.style.display='none';
   } else {
-    if(badge)badge.textContent='Not Connected';
-    if(badge)badge.className='badge off';
+    if(badge){badge.textContent='Not Connected';badge.className='badge off';}
     if(statusBadge)statusBadge.textContent='⚠ GitHub not connected';
     if(banner)banner.style.display='flex';
   }
@@ -671,7 +655,7 @@ function updateGHBadge(){
 
 /* ================================================================
    ACTIVITY
-   ================================================================ */
+================================================================ */
 function renderActivity(){
   var acts=getActivity();
   var el=document.getElementById('activityList');
@@ -680,15 +664,13 @@ function renderActivity(){
     return '<div class="activity-item"><div class="activity-dot '+a.type+'"></div><div class="activity-text">'+esc(a.msg)+'</div><div class="activity-time">'+esc(a.time)+'</div></div>';
   }).join('');
 }
-
 function clearActivity(){localStorage.removeItem(ACTIVITY_KEY);renderActivity();toast('Activity log cleared');}
 
 /* ================================================================
    PRODUCT TABLE
-   ================================================================ */
+================================================================ */
 function getAllProducts(){
   var custom=getCustom();
-  // Custom overrides take priority over built-ins with same id
   var overrideIds=custom.reduce(function(acc,p){acc[p.id]=true;return acc;},{});
   var builtins=BUILTIN.filter(function(p){return !overrideIds[p.id];});
   return builtins.concat(custom);
@@ -698,30 +680,30 @@ function renderTable(){
   var search=(document.getElementById('searchInput').value||'').toLowerCase();
   var cat=document.getElementById('catFilter').value;
   var all=getAllProducts().filter(function(p){
-    var matchSearch=!search||p.name.toLowerCase().includes(search)||(p.desc||'').toLowerCase().includes(search);
-    var matchCat=!cat||p.category===cat;
-    return matchSearch&&matchCat;
+    var ms=!search||p.name.toLowerCase().includes(search)||(p.desc||'').toLowerCase().includes(search);
+    var mc=!cat||p.category===cat;
+    return ms&&mc;
   });
   document.getElementById('prodCountBadge').textContent=all.length+' products';
   var tbody=document.getElementById('prodTbody');
   if(!all.length){tbody.innerHTML='<tr><td colspan="6"><div class="empty"><div class="emo">🔍</div><p>No products found.</p></div></td></tr>';return;}
   tbody.innerHTML=all.map(function(p){
     var isCustom=!!p._custom;
-    var isBase64=p.img&&p.img.startsWith('data:');
     var imgEl=p.img?('<img class="prod-thumb" src="'+esc(p.img)+'" alt="" onerror="this.style.display=\'none\'">'):('<div class="prod-thumb-ph">📦</div>');
+    var openEl=p.imgOpen?('<img class="prod-thumb" src="'+esc(p.imgOpen)+'" alt="open" onerror="this.style.display=\'none\'" style="margin-left:4px;" title="Open image">'):('<span style="font-size:0.65rem;color:var(--brown-light);">No open img</span>');
     var badgeClass=p.badge==='Bestseller'?'best':p.badge==='New'?'new':p.badge==='Hot'?'hot':'none';
     var badgeEl=p.badge?('<span class="badge-chip '+badgeClass+'">'+esc(p.badge)+'</span>'):'<span class="badge-chip none">—</span>';
     var sourceEl=isCustom?('<span class="source-tag"><span class="custom-dot"></span>Custom</span>'):'<span class="source-tag" style="color:var(--blue);">📦 Built-in</span>';
     var actions='<button class="btn-edit" onclick="openEditModal('+p.id+','+isCustom+')">✏ Edit</button>';
     if(isCustom)actions+=' <button class="btn-del" onclick="confirmDelete('+p.id+')">🗑</button>';
     actions+=' <a class="btn-view" href="product/" target="_blank">👁</a>';
-    return '<tr><td>'+imgEl+'</td><td><div class="prod-name">'+esc(p.name)+'</div></td><td><span class="prod-cat-badge">'+esc(CAT_LABELS[p.category]||p.category)+'</span></td><td>'+badgeEl+'</td><td>'+sourceEl+'</td><td><div class="tbl-actions">'+actions+'</div></td></tr>';
+    return '<tr><td><div style="display:flex;align-items:center;gap:4px;">'+imgEl+openEl+'</div></td><td><div class="prod-name">'+esc(p.name)+'</div></td><td><span class="prod-cat-badge">'+esc(CAT_LABELS[p.category]||p.category)+'</span></td><td>'+badgeEl+'</td><td>'+sourceEl+'</td><td><div class="tbl-actions">'+actions+'</div></td></tr>';
   }).join('');
 }
 
 /* ================================================================
-   MODAL — OPEN / CLOSE
-   ================================================================ */
+   MODAL
+================================================================ */
 function openAddModal(){
   editingId=null;
   resetForm();
@@ -729,74 +711,59 @@ function openAddModal(){
   document.getElementById('modalBackdrop').classList.add('open');
 }
 
-function openEditModal(id, isCustom){
+function openEditModal(id,isCustom){
   var all=getAllProducts();
   var prod=all.find(function(p){return p.id===id;});
   if(!prod){toast('Product not found',true);return;}
-
-  // Reset form first (this clears editingId too), then set everything
   resetForm();
-
-  // Now set the editing state AFTER reset
   editingId=id;
   document.getElementById('modalTitle').textContent=(isCustom?'Edit Custom':'Edit Built-in')+' Product';
-
   document.getElementById('prodName').value=prod.name||'';
   document.getElementById('prodCat').value=prod.category||'';
   document.getElementById('prodDesc').value=prod.desc||'';
 
-  // Badge — handle empty/undefined badge
   var badgeVal=prod.badge||'none';
   selectedBadge=badgeVal;
-  document.querySelectorAll('.badge-opt').forEach(function(b){
-    b.classList.toggle('sel',b.getAttribute('data-b')===badgeVal);
-  });
+  document.querySelectorAll('.badge-opt').forEach(function(b){b.classList.toggle('sel',b.getAttribute('data-b')===badgeVal);});
 
-  // Image — support both base64, http URLs, and relative paths (built-ins)
   if(prod.img){
-    // For built-in products with relative paths, store as currentImgBase64
-    // but also keep track it's a path-based image via currentImgPath
-    currentImgBase64=prod.img;   // store whatever — path or base64
-    currentImgUrl=null;
-    document.getElementById('previewImg').src=prod.img;
-    document.getElementById('imgPreviewWrap').style.display='block';
-    document.getElementById('uploadZone').style.display='none';
+    imgClosed.base64=prod.img;imgClosed.url=null;
+    document.getElementById('previewImgClosed').src=prod.img;
+    document.getElementById('imgPreviewWrapClosed').style.display='block';
+    document.getElementById('uploadZoneClosed').style.display='none';
+  }
+  if(prod.imgOpen){
+    imgOpen.base64=prod.imgOpen;imgOpen.url=null;
+    document.getElementById('previewImgOpen').src=prod.imgOpen;
+    document.getElementById('imgPreviewWrapOpen').style.display='block';
+    document.getElementById('uploadZoneOpen').style.display='none';
   }
 
-  // Features — defensive copy, ensure it's always an array of strings
   var rawFeats=prod.features;
-  if(Array.isArray(rawFeats)){
-    modalFeatures=rawFeats.map(function(f){return String(f);});
-  } else {
-    modalFeatures=[''];
-  }
-  if(modalFeatures.length===0) modalFeatures=[''];
+  modalFeatures=Array.isArray(rawFeats)?rawFeats.map(function(f){return String(f);}):[''];
+  if(!modalFeatures.length)modalFeatures=[''];
   renderModalFeatures();
-
   document.getElementById('modalBackdrop').classList.add('open');
 }
 
-function closeModal(){
-  document.getElementById('modalBackdrop').classList.remove('open');
-  resetForm();
-}
+function closeModal(){document.getElementById('modalBackdrop').classList.remove('open');resetForm();}
 function closeModalOutside(e){if(e.target===document.getElementById('modalBackdrop'))closeModal();}
 
 function resetForm(){
-  editingId=null;
-  selectedBadge='none';
-  currentImgBase64=null;
-  currentImgUrl=null;
+  editingId=null;selectedBadge='none';
+  imgClosed={base64:null,url:null};
+  imgOpen={base64:null,url:null};
   document.getElementById('prodName').value='';
   document.getElementById('prodCat').value='';
   document.getElementById('prodDesc').value='';
-  document.getElementById('imgPreviewWrap').style.display='none';
-  document.getElementById('uploadZone').style.display='block';
-  document.getElementById('imgInput').value='';
-  document.getElementById('uploadProgress').style.display='none';
-  document.getElementById('uploadFill').style.width='0';
-  document.getElementById('githubStatus').style.display='none';
-  document.getElementById('imgUrlNote').style.display='none';
+  ['Closed','Open'].forEach(function(t){
+    document.getElementById('imgPreviewWrap'+t).style.display='none';
+    document.getElementById('uploadZone'+t).style.display='flex';
+    document.getElementById('imgInput'+t).value='';
+    document.getElementById('uploadProgress'+t).style.display='none';
+    document.getElementById('uploadFill'+t).style.width='0';
+    document.getElementById('githubStatus'+t).style.display='none';
+  });
   document.querySelectorAll('.badge-opt').forEach(function(b){b.classList.toggle('sel',b.getAttribute('data-b')==='none');});
   modalFeatures=['','',''];
   renderModalFeatures();
@@ -804,112 +771,123 @@ function resetForm(){
 
 /* ================================================================
    IMAGE HANDLING
-   ================================================================ */
-document.getElementById('uploadZone').addEventListener('dragover',function(e){e.preventDefault();this.classList.add('over');});
-document.getElementById('uploadZone').addEventListener('dragleave',function(){this.classList.remove('over');});
-document.getElementById('uploadZone').addEventListener('drop',function(e){
-  e.preventDefault();this.classList.remove('over');
-  var f=e.dataTransfer.files[0];if(f)handleImgFile(f);
+================================================================ */
+['Closed','Open'].forEach(function(t){
+  var zone=document.getElementById('uploadZone'+t);
+  zone.addEventListener('dragover',function(e){e.preventDefault();this.classList.add('over');});
+  zone.addEventListener('dragleave',function(){this.classList.remove('over');});
+  zone.addEventListener('drop',function(e){
+    e.preventDefault();this.classList.remove('over');
+    var f=e.dataTransfer.files[0];if(f)handleImgFile(f,t.toLowerCase());
+  });
 });
 
-function handleImgFile(file){
+function handleImgFile(file, type){
   if(!file||!file.type.startsWith('image/')){toast('Please select an image file',true);return;}
+  var T=type==='closed'?'Closed':'Open';
   var reader=new FileReader();
   reader.onload=function(e){
-    currentImgBase64=e.target.result;
-    currentImgUrl=null;
-    document.getElementById('previewImg').src=currentImgBase64;
-    document.getElementById('imgPreviewWrap').style.display='block';
-    document.getElementById('uploadZone').style.display='none';
+    var b64=e.target.result;
+    if(type==='closed'){imgClosed.base64=b64;imgClosed.url=null;}
+    else{imgOpen.base64=b64;imgOpen.url=null;}
+    document.getElementById('previewImg'+T).src=b64;
+    document.getElementById('imgPreviewWrap'+T).style.display='block';
+    document.getElementById('uploadZone'+T).style.display='none';
     var gh=getGH();
-    if(gh.token&&gh.user&&gh.repo){
-      uploadToGitHub(file,currentImgBase64);
-    }
+    if(gh.token&&gh.user&&gh.repo) uploadToGitHub(file,b64,type);
   };
   reader.readAsDataURL(file);
 }
 
-function removeImg(){
-  currentImgBase64=null;currentImgUrl=null;
-  document.getElementById('imgPreviewWrap').style.display='none';
-  document.getElementById('uploadZone').style.display='block';
-  document.getElementById('imgInput').value='';
-  document.getElementById('githubStatus').style.display='none';
-  document.getElementById('imgUrlNote').style.display='none';
+function removeImg(type){
+  var T=type==='closed'?'Closed':'Open';
+  if(type==='closed'){imgClosed.base64=null;imgClosed.url=null;}
+  else{imgOpen.base64=null;imgOpen.url=null;}
+  document.getElementById('imgPreviewWrap'+T).style.display='none';
+  document.getElementById('uploadZone'+T).style.display='flex';
+  document.getElementById('imgInput'+T).value='';
+  document.getElementById('githubStatus'+T).style.display='none';
 }
 
 /* ================================================================
-   GITHUB UPLOAD
-   ================================================================ */
-async function uploadToGitHub(file, base64DataUrl){
+   GITHUB IMAGE UPLOAD
+================================================================ */
+async function uploadToGitHub(file, base64DataUrl, type){
   var gh=getGH();
-  if(!gh.token||!gh.user||!gh.repo) return;
-
-  var prog=document.getElementById('uploadProgress');
-  var fill=document.getElementById('uploadFill');
-  var txt=document.getElementById('uploadTxt');
-  var statusEl=document.getElementById('githubStatus');
-  var noteEl=document.getElementById('imgUrlNote');
-
-  prog.style.display='block';
-  fill.style.width='20%';
-  txt.textContent='Preparing upload...';
-  statusEl.style.display='none';
-
+  if(!gh.token||!gh.user||!gh.repo)return;
+  var T=type==='closed'?'Closed':'Open';
+  var prog=document.getElementById('uploadProgress'+T);
+  var fill=document.getElementById('uploadFill'+T);
+  var txt=document.getElementById('uploadTxt'+T);
+  var statusEl=document.getElementById('githubStatus'+T);
+  prog.style.display='block';fill.style.width='20%';txt.textContent='Preparing...';statusEl.style.display='none';
   try {
     var folder=(gh.folder||'images/products').replace(/^\/|\/$/g,'');
     var ts=Date.now();
     var ext=file.name.split('.').pop().toLowerCase()||'png';
-    var safeName='product-'+ts+'.'+ext;
+    var suffix=type==='open'?'-Open':'';
+    var safeName='product-'+ts+suffix+'.'+ext;
     var path=folder+'/'+safeName;
-    var base64Content=base64DataUrl.split(',')[1];
-    var branch=gh.branch||'main';
-
-    fill.style.width='50%';txt.textContent='Uploading to GitHub repo...';
-
-    var apiUrl='https://api.github.com/repos/'+gh.user+'/'+gh.repo+'/contents/'+path;
-    var res=await fetch(apiUrl,{
+    var b64Content=base64DataUrl.split(',')[1];
+    fill.style.width='50%';txt.textContent='Uploading to GitHub...';
+    var res=await fetch('https://api.github.com/repos/'+gh.user+'/'+gh.repo+'/contents/'+path,{
       method:'PUT',
-      headers:{
-        'Authorization':'Bearer '+gh.token,
-        'Content-Type':'application/json',
-        'Accept':'application/vnd.github.v3+json'
-      },
-      body:JSON.stringify({
-        message:'Upload product image: '+safeName+' [SECUREX Admin]',
-        content:base64Content,
-        branch:branch
-      })
+      headers:{'Authorization':'Bearer '+gh.token,'Content-Type':'application/json','Accept':'application/vnd.github.v3+json'},
+      body:JSON.stringify({message:'Upload product image: '+safeName+' [SECUREX Admin]',content:b64Content,branch:gh.branch||'main'})
     });
-
     fill.style.width='90%';
     var data=await res.json();
-
     if(res.ok){
-      fill.style.width='100%';
-      txt.textContent='Upload complete!';
-      currentImgUrl=data.content.download_url;
+      fill.style.width='100%';txt.textContent='Done!';
+      var url=data.content.download_url;
+      if(type==='closed'){imgClosed.url=url;}
+      else{imgOpen.url=url;}
       statusEl.className='github-status ok';
-      statusEl.textContent='✅ Saved to GitHub: '+path;
-      noteEl.style.display='block';
-      noteEl.textContent='📎 GitHub URL: '+currentImgUrl;
+      statusEl.textContent='✅ Saved: '+safeName;
       addActivity('add','Image uploaded to GitHub: '+safeName);
       setTimeout(function(){prog.style.display='none';},2000);
-    } else {
-      throw new Error(data.message||'Upload failed');
-    }
+    } else {throw new Error(data.message||'Upload failed');}
   } catch(err){
-    fill.style.width='0';
-    prog.style.display='none';
+    fill.style.width='0';prog.style.display='none';
     statusEl.className='github-status err';
-    statusEl.textContent='❌ GitHub upload failed: '+err.message+'. Image saved as Base64 (local only).';
-    console.error('GitHub upload error:',err);
+    statusEl.textContent='❌ GitHub upload failed: '+err.message+'. Saving as Base64 (local only).';
+  }
+}
+
+/* ================================================================
+   GITHUB JSON SYNC — Save all custom products to repo
+================================================================ */
+async function syncToGitHub(){
+  var gh=getGH();
+  if(!gh.token||!gh.user||!gh.repo){toast('⚠ GitHub settings configure karein pehle!',true);goPage('settings');return;}
+  var custom=getCustom();
+  if(!custom.length){toast('Koi custom product nahi hai sync karne ke liye',true);return;}
+  toast('🔄 Syncing to GitHub...');
+  try {
+    var jsonPath=(gh.json_path||'data/custom-products.json').replace(/^\/|\/$/g,'');
+    var apiUrl='https://api.github.com/repos/'+gh.user+'/'+gh.repo+'/contents/'+jsonPath;
+    var headers={'Authorization':'Bearer '+gh.token,'Content-Type':'application/json','Accept':'application/vnd.github.v3+json'};
+    var sha=null;
+    var checkRes=await fetch(apiUrl,{headers:headers});
+    if(checkRes.ok){var existing=await checkRes.json();sha=existing.sha;}
+    var content=btoa(unescape(encodeURIComponent(JSON.stringify(custom,null,2))));
+    var body={message:'Update custom products [SECUREX Admin] - '+new Date().toLocaleString('en-IN'),content:content,branch:gh.branch||'main'};
+    if(sha)body.sha=sha;
+    var res=await fetch(apiUrl,{method:'PUT',headers:headers,body:JSON.stringify(body)});
+    var data=await res.json();
+    if(res.ok){
+      toast('✅ '+custom.length+' products synced to GitHub!');
+      addActivity('edit','Synced '+custom.length+' products to GitHub: '+jsonPath);
+      renderStats();renderActivity();
+    } else {throw new Error(data.message||'Sync failed');}
+  } catch(err){
+    toast('❌ Sync failed: '+err.message,true);
   }
 }
 
 /* ================================================================
    FEATURES
-   ================================================================ */
+================================================================ */
 function renderModalFeatures(){
   var list=document.getElementById('featuresList');
   list.innerHTML=modalFeatures.map(function(v,i){
@@ -919,17 +897,15 @@ function renderModalFeatures(){
 function addFeature(){modalFeatures.push('');renderModalFeatures();var inputs=document.querySelectorAll('#featuresList input');inputs[inputs.length-1].focus();}
 function removeFeature(i){modalFeatures.splice(i,1);renderModalFeatures();}
 
-/* Badge picker */
 document.getElementById('badgeOpts').addEventListener('click',function(e){
-  var opt=e.target.closest('.badge-opt');
-  if(!opt)return;
+  var opt=e.target.closest('.badge-opt');if(!opt)return;
   selectedBadge=opt.getAttribute('data-b');
   document.querySelectorAll('.badge-opt').forEach(function(b){b.classList.toggle('sel',b===opt);});
 });
 
 /* ================================================================
    SAVE PRODUCT
-   ================================================================ */
+================================================================ */
 function saveProduct(){
   var name=document.getElementById('prodName').value.trim();
   var cat=document.getElementById('prodCat').value;
@@ -938,82 +914,54 @@ function saveProduct(){
   var feats=modalFeatures.filter(function(f){return f.trim();});
 
   if(!name){toast('⚠ Product name required',true);return;}
-  if(!cat){toast('⚠ Please select a category',true);return;}
+  if(!cat){toast('⚠ Category select karein',true);return;}
   if(!desc){toast('⚠ Description required',true);return;}
 
-  // Accept base64 data URL, http/https URL, OR relative path (built-in images like ../img.png)
-  var imgSrc=currentImgUrl||currentImgBase64;
-  if(!imgSrc){toast('⚠ Please upload a product image',true);return;}
+  var imgSrc=imgClosed.url||imgClosed.base64;
+  if(!imgSrc){toast('⚠ Band (closed) image required hai',true);return;}
+  var imgOpenSrc=imgOpen.url||imgOpen.base64||null;
 
   var badgeClass=badge==='Bestseller'?'badge-best':badge==='New'?'badge-new':badge==='Hot'?'badge-hot':'';
   var saved=getCustom();
-  // CRITICAL: capture editingId NOW before closeModal() resets it
   var capturedEditId=editingId;
 
   if(capturedEditId){
     var isBuiltIn=BUILTIN.some(function(p){return p.id===capturedEditId;});
+    var overrideProd={id:capturedEditId,category:cat,name:name,img:imgSrc,imgOpen:imgOpenSrc,badge:badge,badgeClass:badgeClass,desc:desc,features:feats.length?feats:['Product'],_custom:true,_builtinOverride:isBuiltIn,_editedAt:new Date().toLocaleString('en-IN')};
     if(isBuiltIn){
-      // Built-in override: save as custom entry with same id
       var idx=saved.findIndex(function(p){return p.id===capturedEditId;});
-      var overrideProd={
-        id:capturedEditId,category:cat,name:name,img:imgSrc,
-        badge:badge,badgeClass:badgeClass,desc:desc,
-        features:feats.length?feats:['Product'],
-        _custom:true,_builtinOverride:true,
-        _editedAt:new Date().toLocaleString('en-IN')
-      };
-      if(idx>=0){saved[idx]=overrideProd;}else{saved.push(overrideProd);}
-      toast('✅ "'+name+'" updated!');
-      addActivity('edit','Edited built-in product: '+name);
+      if(idx>=0)saved[idx]=overrideProd;else saved.push(overrideProd);
     } else {
-      // Custom product update
       var idx2=saved.findIndex(function(p){return p.id===capturedEditId;});
-      if(idx2>=0){
-        saved[idx2]=Object.assign({},saved[idx2],{
-          category:cat,name:name,img:imgSrc,
-          badge:badge,badgeClass:badgeClass,desc:desc,
-          features:feats.length?feats:['Product'],
-          _editedAt:new Date().toLocaleString('en-IN')
-        });
-        toast('✅ "'+name+'" updated!');
-        addActivity('edit','Edited custom product: '+name);
-      } else {
-        toast('⚠ Could not find product to update',true);return;
-      }
+      if(idx2>=0)saved[idx2]=Object.assign({},saved[idx2],overrideProd);
     }
+    toast('✅ "'+name+'" updated!');
+    addActivity('edit','Edited product: '+name);
   } else {
-    // New product
-    var newProd={
-      id:Date.now(),category:cat,name:name,img:imgSrc,
-      badge:badge,badgeClass:badgeClass,desc:desc,
-      features:feats.length?feats:['Custom product'],
-      _custom:true,_addedAt:new Date().toLocaleString('en-IN')
-    };
+    var newProd={id:Date.now(),category:cat,name:name,img:imgSrc,imgOpen:imgOpenSrc,badge:badge,badgeClass:badgeClass,desc:desc,features:feats.length?feats:['Custom product'],_custom:true,_addedAt:new Date().toLocaleString('en-IN')};
     saved.push(newProd);
-    toast('✅ "'+name+'" added to catalog!');
+    toast('✅ "'+name+'" added! GitHub sync mat bhoolein.');
     addActivity('add','Added new product: '+name);
   }
 
   setCustom(saved);
   closeModal();
-  renderTable();
-  renderStats();
+  renderTable();renderStats();
 }
 
 /* ================================================================
    DELETE
-   ================================================================ */
+================================================================ */
 function confirmDelete(id){
   var all=getAllProducts();
   var prod=all.find(function(p){return p.id===id;});
   document.getElementById('confirmTitle').textContent='Delete Product?';
-  document.getElementById('confirmMsg').textContent='Delete "'+((prod&&prod.name)||'this product')+'"? This cannot be undone.';
+  document.getElementById('confirmMsg').textContent='Delete "'+((prod&&prod.name)||'this product')+'"? Cannot be undone.';
   document.getElementById('confirmOkBtn').onclick=function(){
     var saved=getCustom().filter(function(p){return p.id!==id;});
     setCustom(saved);
     addActivity('del','Deleted product: '+((prod&&prod.name)||id));
-    closeConfirm();
-    renderTable();renderStats();
+    closeConfirm();renderTable();renderStats();
     toast('Product deleted');
   };
   document.getElementById('confirmBackdrop').classList.add('open');
@@ -1023,12 +971,12 @@ document.getElementById('confirmBackdrop').addEventListener('click',function(e){
 
 /* ================================================================
    EXPORT / IMPORT
-   ================================================================ */
+================================================================ */
 function exportJSON(){
   var saved=getCustom();
-  if(!saved.length){toast('No custom products to export',true);return;}
+  if(!saved.length){toast('Koi custom product nahi hai',true);return;}
   var blob=new Blob([JSON.stringify(saved,null,2)],{type:'application/json'});
-  var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='securex-products.json';a.click();
+  var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='securex-custom-products.json';a.click();
   toast('📤 Exported '+saved.length+' products');
 }
 function importJSON(input){
@@ -1048,10 +996,10 @@ function importJSON(input){
 
 /* ================================================================
    CLEAR ALL
-   ================================================================ */
+================================================================ */
 function clearAllCustom(){
   document.getElementById('confirmTitle').textContent='Clear All Custom Products?';
-  document.getElementById('confirmMsg').textContent='This will remove all products you added via the admin panel. Built-in products remain. Cannot be undone.';
+  document.getElementById('confirmMsg').textContent='All custom products delete ho jayenge. Built-in products rahenge.';
   document.getElementById('confirmOkBtn').onclick=function(){
     localStorage.removeItem(STORAGE_KEY);
     addActivity('del','Cleared all custom products');
@@ -1063,18 +1011,11 @@ function clearAllCustom(){
 
 /* ================================================================
    GITHUB SETTINGS
-   ================================================================ */
+================================================================ */
 function saveGithubSettings(){
-  var cfg={
-    user:document.getElementById('gh_user').value.trim(),
-    repo:document.getElementById('gh_repo').value.trim(),
-    branch:document.getElementById('gh_branch').value.trim()||'main',
-    token:document.getElementById('gh_token').value.trim(),
-    folder:document.getElementById('gh_folder').value.trim()||'images/products'
-  };
+  var cfg={user:document.getElementById('gh_user').value.trim(),repo:document.getElementById('gh_repo').value.trim(),branch:document.getElementById('gh_branch').value.trim()||'main',token:document.getElementById('gh_token').value.trim(),folder:document.getElementById('gh_folder').value.trim()||'images/products',json_path:document.getElementById('gh_json_path').value.trim()||'data/custom-products.json'};
   localStorage.setItem(GH_KEY,JSON.stringify(cfg));
-  updateGHBadge();
-  renderStats();
+  updateGHBadge();renderStats();
   toast('✅ GitHub settings saved!');
   addActivity('edit','GitHub settings updated');
 }
@@ -1084,58 +1025,37 @@ async function testGithubConnection(){
   var res=document.getElementById('ghTestResult');
   if(!gh.token||!gh.user||!gh.repo){
     res.style.display='block';res.style.background='#fff3cd';res.style.color='#856404';
-    res.textContent='⚠ Please fill and save all GitHub settings first.';return;
+    res.textContent='⚠ Pehle settings fill karein aur save karein.';return;
   }
   res.style.display='block';res.style.background='#0d1117';res.style.color='#8b949e';
-  res.textContent='🔄 Testing connection...';
+  res.textContent='🔄 Testing...';
   try{
-    var r=await fetch('https://api.github.com/repos/'+gh.user+'/'+gh.repo,{
-      headers:{'Authorization':'Bearer '+gh.token,'Accept':'application/vnd.github.v3+json'}
-    });
+    var r=await fetch('https://api.github.com/repos/'+gh.user+'/'+gh.repo,{headers:{'Authorization':'Bearer '+gh.token,'Accept':'application/vnd.github.v3+json'}});
     var data=await r.json();
-    if(r.ok){
-      res.style.background='#0f2d1f';res.style.color='#3fb950';
-      res.textContent='✅ Connected! Repo: '+data.full_name+' ('+data.visibility+') — Images will upload to /'+gh.folder;
-    } else {
-      res.style.background='#2d1b1b';res.style.color='#f85149';
-      res.textContent='❌ Error: '+data.message;
-    }
-  }catch(err){
-    res.style.background='#2d1b1b';res.style.color='#f85149';
-    res.textContent='❌ Connection failed: '+err.message;
-  }
+    if(r.ok){res.style.background='#0f2d1f';res.style.color='#3fb950';res.textContent='✅ Connected! Repo: '+data.full_name+' ('+data.visibility+')';}
+    else{res.style.background='#2d1b1b';res.style.color='#f85149';res.textContent='❌ Error: '+data.message;}
+  }catch(err){res.style.background='#2d1b1b';res.style.color='#f85149';res.textContent='❌ Failed: '+err.message;}
 }
 
 function renderSettingsPage(){
-  // Load saved GH settings
   var gh=getGH();
   document.getElementById('gh_user').value=gh.user||'';
   document.getElementById('gh_repo').value=gh.repo||'';
   document.getElementById('gh_branch').value=gh.branch||'main';
   document.getElementById('gh_token').value=gh.token||'';
   document.getElementById('gh_folder').value=gh.folder||'images/products';
-
-  // Storage info
+  document.getElementById('gh_json_path').value=gh.json_path||'data/custom-products.json';
   var custom=getCustom();
-  var base64Count=custom.filter(function(p){return p.img&&p.img.startsWith('data:');}).length;
+  var b64Count=custom.filter(function(p){return p.img&&p.img.startsWith('data:');}).length;
   var ghCount=custom.filter(function(p){return p.img&&p.img.startsWith('http');}).length;
   var lsSize=Math.round(JSON.stringify(localStorage).length/1024);
-  document.getElementById('storageInfo').innerHTML=
-    '<strong>Custom products:</strong> '+custom.length+'<br>'+
-    '<strong>Images as Base64:</strong> '+base64Count+' (stored in browser)<br>'+
-    '<strong>Images on GitHub:</strong> '+ghCount+' (external URL)<br>'+
-    '<strong>localStorage used:</strong> ~'+lsSize+' KB';
+  document.getElementById('storageInfo').innerHTML='<strong>Custom products:</strong> '+custom.length+'<br><strong>Images as Base64 (local only):</strong> '+b64Count+'<br><strong>Images on GitHub (cross-browser):</strong> '+ghCount+'<br><strong>localStorage used:</strong> ~'+lsSize+' KB<br><br><em style="color:var(--brown-light);font-size:0.78rem;">💡 Tip: "Sync to GitHub" click karne ke baad product page kisi bhi browser mein kaam karega.</em>';
 }
 
 /* ================================================================
    INIT
-   ================================================================ */
-function init(){
-  renderStats();
-  renderActivity();
-  updateGHBadge();
-}
-
+================================================================ */
+function init(){renderStats();renderActivity();updateGHBadge();}
 init();
 </script>
 </body>
