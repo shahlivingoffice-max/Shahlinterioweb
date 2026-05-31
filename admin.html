@@ -1,1284 +1,1279 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SECUREX Admin Panel</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', system-ui, sans-serif;
-        }
-
-        body {
-            background: linear-gradient(135deg, #2c2418 0%, #4a3727 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .login-container {
-            background: white;
-            border-radius: 32px;
-            padding: 48px 40px;
-            width: 90%;
-            max-width: 440px;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
-            text-align: center;
-        }
-
-        .login-logo h1 {
-            font-size: 2rem;
-            background: linear-gradient(135deg, #b87c4f, #5e3a2c);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-        }
-
-        .login-input {
-            width: 100%;
-            padding: 14px 18px;
-            border: 2px solid #e8dccc;
-            border-radius: 60px;
-            font-size: 1rem;
-            margin: 12px 0;
-            outline: none;
-        }
-
-        .login-input:focus {
-            border-color: #b87c4f;
-        }
-
-        .login-btn {
-            background: #b87c4f;
-            color: white;
-            border: none;
-            width: 100%;
-            padding: 14px;
-            border-radius: 60px;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            margin-top: 8px;
-        }
-
-        .login-btn:hover {
-            background: #9a663f;
-        }
-
-        .message {
-            margin-top: 12px;
-            padding: 10px;
-            border-radius: 12px;
-            font-size: 0.85rem;
-            display: none;
-        }
-
-        .error-message {
-            background: #fee2e2;
-            color: #c2410c;
-        }
-
-        .success-message {
-            background: #dcfce7;
-            color: #166534;
-        }
-
-        .admin-panel {
-            display: none;
-            width: 100%;
-        }
-
-        .app-layout {
-            display: flex;
-            min-height: 100vh;
-        }
-
-        .sidebar {
-            width: 260px;
-            background: #2c2418;
-            color: #f3ede5;
-            padding: 24px 20px;
-            position: sticky;
-            top: 0;
-            height: 100vh;
-        }
-
-        .logo-area h2 {
-            font-size: 1.6rem;
-        }
-
-        .user-info {
-            background: #3e3226;
-            border-radius: 16px;
-            padding: 12px;
-            margin: 20px 0;
-            font-size: 0.8rem;
-        }
-
-        .user-email {
-            font-weight: 600;
-            color: #e9d6b0;
-            word-break: break-all;
-        }
-
-        .nav-menu {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            margin-top: 20px;
-        }
-
-        .nav-item {
-            background: none;
-            border: none;
-            text-align: left;
-            padding: 10px 16px;
-            border-radius: 40px;
-            font-weight: 500;
-            color: #ddd0be;
-            cursor: pointer;
-            width: 100%;
-        }
-
-        .nav-item:hover, .nav-item.active {
-            background: #b87c4f;
-            color: white;
-        }
-
-        .logout-btn {
-            background: #3e2a1f;
-            border: none;
-            color: #e6ccb2;
-            padding: 10px;
-            border-radius: 40px;
-            cursor: pointer;
-            margin-top: 40px;
-            width: 100%;
-        }
-
-        .main-content {
-            flex: 1;
-            padding: 24px;
-            background: #faf7f2;
-            overflow-x: auto;
-        }
-
-        .top-bar {
-            background: white;
-            border-radius: 60px;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-        }
-
-        .stats-grid {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-            margin-bottom: 24px;
-        }
-
-        .stat-card {
-            background: white;
-            border-radius: 24px;
-            padding: 16px 24px;
-            flex: 1;
-            min-width: 140px;
-        }
-
-        .stat-number {
-            font-size: 2rem;
-            font-weight: 800;
-            color: #5e3a2c;
-        }
-
-        .page {
-            display: none;
-        }
-
-        .page.active {
-            display: block;
-        }
-
-        .table-wrapper {
-            background: white;
-            border-radius: 20px;
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #f2e9df;
-        }
-
-        th {
-            background: #fdfaf5;
-        }
-
-        .prod-thumb {
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-            border-radius: 10px;
-        }
-
-        .badge-chip {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 30px;
-            font-size: 0.7rem;
-            font-weight: 600;
-        }
-
-        .badge-chip.Bestseller { background: #fae6cf; color: #bd6b2a; }
-        .badge-chip.New { background: #d9efd0; color: #3f6b2f; }
-        .badge-chip.Hot { background: #ffe0db; color: #c23b1c; }
-        .badge-chip.Popular { background: #e0e7ff; color: #264a8a; }
-        .badge-chip.Premium { background: #eae0c5; color: #8b6946; }
-
-        .btn-edit, .btn-del {
-            border: none;
-            padding: 5px 12px;
-            border-radius: 30px;
-            margin: 0 3px;
-            cursor: pointer;
-        }
-
-        .btn-edit { background: #e8e0d5; }
-        .btn-del { background: #ffe5e2; color: #b63a2c; }
-
-        .btn-primary {
-            background: #b87c4f;
-            color: white;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 40px;
-            cursor: pointer;
-        }
-
-        .btn-primary:hover {
-            background: #9a663f;
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 1px solid #c7b59e;
-            padding: 6px 16px;
-            border-radius: 40px;
-            cursor: pointer;
-        }
-
-        .btn-outline:hover {
-            background: #fef5ea;
-        }
-
-        .badge-selector {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-top: 8px;
-        }
-
-        .badge-option {
-            padding: 6px 16px;
-            background: #f1e9df;
-            border-radius: 30px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            transition: all 0.2s;
-        }
-
-        .badge-option:hover {
-            background: #e0d5c5;
-        }
-
-        .badge-option.selected {
-            background: #b87c4f;
-            color: white;
-        }
-
-        .modal-backdrop {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.6);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            visibility: hidden;
-            opacity: 0;
-            transition: 0.2s;
-        }
-
-        .modal-backdrop.open {
-            visibility: visible;
-            opacity: 1;
-        }
-
-        .modal-card {
-            background: white;
-            width: 90%;
-            max-width: 500px;
-            border-radius: 28px;
-            max-height: 85vh;
-            overflow-y: auto;
-            padding: 24px;
-        }
-
-        .modal-card.large {
-            max-width: 650px;
-        }
-
-        .form-group {
-            margin-bottom: 16px;
-        }
-
-        label {
-            font-weight: 600;
-            display: block;
-            margin-bottom: 5px;
-            color: #3b2c1e;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 10px 14px;
-            border-radius: 24px;
-            border: 1px solid #dfcfbc;
-            background: white;
-            font-size: 0.95rem;
-        }
-
-        textarea.form-control {
-            resize: vertical;
-            min-height: 60px;
-        }
-
-        .feature-row {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 8px;
-        }
-
-        .feature-row .form-control {
-            flex: 1;
-        }
-
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #2c2418;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 50px;
-            opacity: 0;
-            transition: 0.2s;
-            z-index: 1100;
-        }
-
-        .toast.show { opacity: 1; }
-        .toast.error { background: #b63a2c; }
-
-        .img-upload-area {
-            border: 1px dashed #bc9a72;
-            border-radius: 20px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            background: #fefaf5;
-        }
-
-        .img-upload-area:hover {
-            background: #fef5ea;
-        }
-
-        .preview-img {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 12px;
-            margin-top: 8px;
-        }
-
-        .admin-list {
-            background: #f8f2ea;
-            border-radius: 16px;
-            padding: 16px;
-            margin-top: 16px;
-        }
-
-        .admin-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            border-bottom: 1px solid #e0cfbc;
-        }
-
-        .admin-item:last-child {
-            border-bottom: none;
-        }
-
-        @media (max-width: 700px) {
-            .app-layout { flex-direction: column; }
-            .sidebar { width: 100%; height: auto; position: relative; }
-            .badge-selector { gap: 6px; }
-            .badge-option { padding: 4px 12px; font-size: 0.75rem; }
-        }
-    </style>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>
-        // ========== SUPABASE INIT ==========
-        const SUPABASE_URL = "https://ceeezhukizoobknroovq.supabase.co";
-        const SUPABASE_ANON_KEY = "sb_publishable_3XHshryDBRniaiW5YEO03w_pUMH6gIG";
-        const _supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        const STORAGE_BUCKET = "product-images";
-
-        // Global variables
-        let allProducts = [];
-        let allAdmins = [];
-        let editingProductId = null;
-        let currentBadge = "none";
-        let featuresList = [""];
-        let closedImageFile = null;
-        let openImageFile = null;
-        let existingClosedUrl = null;
-        let existingOpenUrl = null;
-        let currentUser = null;
-
-        // ========== LOGIN FUNCTIONS ==========
-        
-        window.login = async function() {
-            const email = document.getElementById('loginEmail').value.trim();
-            const password = document.getElementById('loginPassword').value;
-            const errorDiv = document.getElementById('loginError');
-            
-            errorDiv.style.display = 'none';
-            
-            if (!email || !password) {
-                errorDiv.textContent = 'Email and password required';
-                errorDiv.style.display = 'block';
-                return;
-            }
-            
-            const btn = document.getElementById('loginBtn');
-            btn.innerHTML = '⏳ Logging in...';
-            btn.disabled = true;
-            
-            try {
-                const { data, error } = await _supabase.auth.signInWithPassword({
-                    email: email,
-                    password: password
-                });
-                
-                if (error) throw error;
-                
-                if (data.user) {
-                    currentUser = data.user;
-                    
-                    setTimeout(() => {
-                        document.getElementById('loginScreen').style.display = 'none';
-                        document.querySelector('.admin-panel').style.display = 'block';
-                        document.getElementById('userEmailDisplay').innerHTML = currentUser.email;
-                        loadProducts();
-                        loadActivity();
-                        loadAdmins();
-                    }, 500);
-                }
-            } catch (err) {
-                errorDiv.textContent = '❌ ' + (err.message || 'Invalid email or password');
-                errorDiv.style.display = 'block';
-            } finally {
-                btn.innerHTML = 'Login';
-                btn.disabled = false;
-            }
-        };
-
-        window.logout = async function() {
-            await _supabase.auth.signOut();
-            currentUser = null;
-            document.getElementById('loginScreen').style.display = 'flex';
-            document.querySelector('.admin-panel').style.display = 'none';
-            document.getElementById('loginEmail').value = '';
-            document.getElementById('loginPassword').value = '';
-        };
-
-        async function checkSession() {
-            const { data: { session } } = await _supabase.auth.getSession();
-            if (session) {
-                currentUser = session.user;
-                document.getElementById('loginScreen').style.display = 'none';
-                document.querySelector('.admin-panel').style.display = 'block';
-                document.getElementById('userEmailDisplay').innerHTML = currentUser.email;
-                loadProducts();
-                loadActivity();
-                loadAdmins();
-            }
-        }
-
-        // ========== ADMIN MANAGEMENT ==========
-        
-        async function loadAdmins() {
-            try {
-                const { data, error } = await _supabase
-                    .from('admin_users')
-                    .select('*')
-                    .order('created_at', { ascending: false });
-                
-                if (error) throw error;
-                allAdmins = data || [];
-                renderAdminList();
-            } catch (err) {
-                console.log('Admin table may not exist yet');
-            }
-        }
-
-        function renderAdminList() {
-            const container = document.getElementById('adminList');
-            if (!container) return;
-            
-            if (!allAdmins.length) {
-                container.innerHTML = '<div style="text-align:center; padding:20px; color:#8b7355;">No admin users found</div>';
-                return;
-            }
-            
-            container.innerHTML = allAdmins.map(admin => `
-                <div class="admin-item">
-                    <div>
-                        <strong>${escapeHtml(admin.email)}</strong>
-                        <div style="font-size:0.75rem; color:#8b7355;">${admin.role || 'admin'} • ${new Date(admin.created_at).toLocaleDateString()}</div>
-                    </div>
-                    ${admin.email !== currentUser?.email ? `<button class="btn-outline" style="padding:4px 12px; border-color:#c2410c; color:#c2410c;" onclick="removeAdmin('${admin.user_id}')">Remove</button>` : '<span style="font-size:0.7rem; color:#8b7355;">(You)</span>'}
-                </div>
-            `).join('');
-        }
-
-        window.openAddAdminModal = function() {
-            document.getElementById('addAdminModal').classList.add('open');
-            document.getElementById('newAdminEmail').value = '';
-            document.getElementById('newAdminPassword').value = '';
-            document.getElementById('adminError').style.display = 'none';
-            document.getElementById('adminSuccess').style.display = 'none';
-        };
-
-        window.addNewAdmin = async function() {
-            const email = document.getElementById('newAdminEmail').value.trim();
-            const password = document.getElementById('newAdminPassword').value;
-            const errorDiv = document.getElementById('adminError');
-            const successDiv = document.getElementById('adminSuccess');
-            
-            errorDiv.style.display = 'none';
-            successDiv.style.display = 'none';
-            
-            if (!email || !password) {
-                errorDiv.textContent = 'Email and password required';
-                errorDiv.style.display = 'block';
-                return;
-            }
-            
-            if (password.length < 6) {
-                errorDiv.textContent = 'Password must be at least 6 characters';
-                errorDiv.style.display = 'block';
-                return;
-            }
-            
-            const btn = document.getElementById('addAdminBtn');
-            btn.innerHTML = '⏳ Creating...';
-            btn.disabled = true;
-            
-            try {
-                // Create user in Supabase Auth
-                const { data, error } = await _supabase.auth.signUp({
-                    email: email,
-                    password: password
-                });
-                
-                if (error) throw error;
-                
-                if (data.user) {
-                    // Add to admin_users table
-                    const { error: insertError } = await _supabase
-                        .from('admin_users')
-                        .insert([{ 
-                            user_id: data.user.id, 
-                            email: email, 
-                            role: 'admin' 
-                        }]);
-                    
-                    if (insertError) throw insertError;
-                    
-                    successDiv.textContent = '✅ Admin user created successfully!';
-                    successDiv.style.display = 'block';
-                    
-                    document.getElementById('newAdminEmail').value = '';
-                    document.getElementById('newAdminPassword').value = '';
-                    
-                    await loadAdmins();
-                    
-                    setTimeout(() => {
-                        document.getElementById('addAdminModal').classList.remove('open');
-                    }, 2000);
-                }
-            } catch (err) {
-                errorDiv.textContent = '❌ ' + err.message;
-                errorDiv.style.display = 'block';
-            } finally {
-                btn.innerHTML = 'Create Admin';
-                btn.disabled = false;
-            }
-        };
-
-        window.removeAdmin = async function(userId) {
-            if (!confirm('Remove this admin? They will no longer be able to login.')) return;
-            
-            try {
-                const { error } = await _supabase
-                    .from('admin_users')
-                    .delete()
-                    .eq('user_id', userId);
-                
-                if (error) throw error;
-                
-                showToast('Admin removed successfully');
-                await loadAdmins();
-            } catch (err) {
-                showToast('Error: ' + err.message, true);
-            }
-        };
-
-        // ========== PRODUCT FUNCTIONS ==========
-        
-        function showToast(msg, isError = false) {
-            let toast = document.getElementById('toast');
-            toast.textContent = msg;
-            toast.className = 'toast' + (isError ? ' error' : '');
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 3000);
-        }
-
-        function addActivity(type, msg) {
-            let acts = JSON.parse(localStorage.getItem('securex_activity') || '[]');
-            acts.unshift({ type, msg, time: new Date().toLocaleString(), user: currentUser?.email });
-            if (acts.length > 30) acts.pop();
-            localStorage.setItem('securex_activity', JSON.stringify(acts));
-            loadActivity();
-        }
-
-        function loadActivity() {
-            let container = document.getElementById('activityList');
-            if (!container) return;
-            let acts = JSON.parse(localStorage.getItem('securex_activity') || '[]');
-            if (!acts.length) {
-                container.innerHTML = '<div style="text-align:center; padding:20px;">No activity yet</div>';
-                return;
-            }
-            container.innerHTML = acts.map(a => `
-                <div style="padding:8px; border-bottom:1px solid #f2e9df;">
-                    <div>${a.type === 'add' ? '➕' : a.type === 'edit' ? '✏️' : '🗑️'} <strong>${escapeHtml(a.msg)}</strong></div>
-                    <small style="color:#8b7355;">${a.time} • ${escapeHtml(a.user)}</small>
-                </div>
-            `).join('');
-        }
-
-        async function loadProducts() {
-            try {
-                const { data, error } = await _supabase.from('products').select('*').order('created_at', { ascending: false });
-                if (error) throw error;
-                allProducts = data || [];
-                
-                document.getElementById('statTotal').innerText = allProducts.length;
-                const categories = [...new Set(allProducts.map(p => p.category).filter(Boolean))];
-                document.getElementById('statCategories').innerText = categories.length;
-                document.getElementById('storageInfo').innerHTML = `📦 Total: ${allProducts.length} products • Logged in as: ${currentUser?.email}`;
-                
-                renderProductsTable();
-                return allProducts;
-            } catch (err) {
-                showToast('Failed to load: ' + err.message, true);
-                return [];
-            }
-        }
-
-        function renderProductsTable() {
-            const search = document.getElementById('searchInput')?.value.toLowerCase() || '';
-            const catFilter = document.getElementById('catFilter')?.value || '';
-            
-            let filtered = allProducts.filter(p => {
-                const matchSearch = (p.title || '').toLowerCase().includes(search);
-                const matchCat = !catFilter || p.category === catFilter;
-                return matchSearch && matchCat;
-            });
-            
-            const tbody = document.getElementById('prodTableBody');
-            if (!tbody) return;
-            
-            if (filtered.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:30px;">No products found</td></tr>';
-                return;
-            }
-            
-            tbody.innerHTML = filtered.map(p => {
-                let badgeHtml = p.badge && p.badge !== 'none' ? `<span class="badge-chip ${p.badge}">${p.badge}</span>` : '—';
-                let thumb = p.image_closed ? `<img class="prod-thumb" src="${escapeHtml(p.image_closed)}">` : '<div style="width:50px;height:50px;background:#f2ebe2;border-radius:10px;display:flex;align-items:center;justify-content:center;">📦</div>';
-                return `
-                    <tr>
-                        <td>${thumb}</td>
-                        <td><strong>${escapeHtml(p.title)}</strong></td>
-                        <td>${escapeHtml(p.category)}</td>
-                        <td>${badgeHtml}</td>
-                        <td>${escapeHtml(p.price_text)}</td>
-                        <td>
-                            <button class="btn-edit" onclick="openEditModal(${p.id})">Edit</button>
-                            <button class="btn-del" onclick="confirmDelete(${p.id})">Delete</button>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
-        async function uploadImage(file) {
-            if (!file) return null;
-            const fileName = `${Date.now()}_${Math.random().toString(36).substring(2, 8)}.${file.name.split('.').pop()}`;
-            const { error } = await _supabase.storage.from(STORAGE_BUCKET).upload(`public/${fileName}`, file);
-            if (error) throw error;
-            const { data } = _supabase.storage.from(STORAGE_BUCKET).getPublicUrl(`public/${fileName}`);
-            return data.publicUrl;
-        }
-
-        async function deleteImage(url) {
-            if (!url) return;
-            const match = url.match(/\/storage\/v1\/object\/public\/product-images\/(.+)$/);
-            if (match) await _supabase.storage.from(STORAGE_BUCKET).remove([match[1]]);
-        }
-
-        window.saveProduct = async function() {
-            const title = document.getElementById('prodName').value.trim();
-            const category = document.getElementById('prodCategory').value;
-            const description = document.getElementById('prodDesc').value;
-            const price_text = document.getElementById('prodPrice').value;
-            const badge = currentBadge === 'none' ? '' : currentBadge;
-            const features = featuresList.filter(f => f.trim());
-            
-            if (!title) { showToast('Product name required', true); return; }
-            if (!category) { showToast('Category required', true); return; }
-            if (!editingProductId && !closedImageFile && !existingClosedUrl) {
-                showToast('Closed image required', true); 
-                return;
-            }
-            
-            try {
-                let finalClosed = existingClosedUrl;
-                let finalOpen = existingOpenUrl;
-                
-                if (closedImageFile) {
-                    if (editingProductId && existingClosedUrl) await deleteImage(existingClosedUrl);
-                    finalClosed = await uploadImage(closedImageFile);
-                }
-                if (openImageFile) {
-                    if (editingProductId && existingOpenUrl) await deleteImage(existingOpenUrl);
-                    finalOpen = await uploadImage(openImageFile);
-                }
-                
-                const productData = { title, category, description, price_text, badge, features, image_closed: finalClosed, image_open: finalOpen };
-                
-                if (editingProductId) {
-                    await _supabase.from('products').update(productData).eq('id', editingProductId);
-                    addActivity('edit', `Updated "${title}"`);
-                    showToast(`✅ "${title}" updated`);
-                } else {
-                    await _supabase.from('products').insert([productData]);
-                    addActivity('add', `Added "${title}"`);
-                    showToast(`✅ "${title}" added`);
-                }
-                
-                closeModal();
-                await loadProducts();
-            } catch (err) {
-                showToast('Error: ' + err.message, true);
-            }
-        };
-
-        window.confirmDelete = function(id) {
-            const product = allProducts.find(p => p.id === id);
-            window.deleteId = id;
-            document.getElementById('confirmMsg').innerHTML = `Delete "${escapeHtml(product?.title)}"?`;
-            document.getElementById('confirmModal').classList.add('open');
-        };
-
-        window.executeDelete = async function() {
-            const id = window.deleteId;
-            const product = allProducts.find(p => p.id === id);
-            if (product?.image_closed) await deleteImage(product.image_closed);
-            if (product?.image_open) await deleteImage(product.image_open);
-            await _supabase.from('products').delete().eq('id', id);
-            addActivity('del', `Deleted "${product?.title}"`);
-            await loadProducts();
-            closeConfirm();
-        };
-
-        window.openAddModal = function() {
-            resetForm();
-            editingProductId = null;
-            document.getElementById('modalTitle').innerHTML = 'Add New Product';
-            document.getElementById('productModal').classList.add('open');
-        };
-
-        window.openEditModal = async function(id) {
-            const prod = allProducts.find(p => p.id === id);
-            if (!prod) return;
-            resetForm();
-            editingProductId = id;
-            
-            document.getElementById('prodName').value = prod.title || '';
-            document.getElementById('prodCategory').value = prod.category || '';
-            document.getElementById('prodDesc').value = prod.description || '';
-            document.getElementById('prodPrice').value = prod.price_text || '';
-            
-            currentBadge = prod.badge || 'none';
-            updateBadgeSelection(currentBadge);
-            
-            featuresList = prod.features?.length ? prod.features : [''];
-            renderFeatures();
-            
-            if (prod.image_closed) {
-                existingClosedUrl = prod.image_closed;
-                document.getElementById('previewClosed').src = prod.image_closed;
-                document.getElementById('closedPreview').style.display = 'block';
-                document.getElementById('closedUpload').style.display = 'none';
-            }
-            if (prod.image_open) {
-                existingOpenUrl = prod.image_open;
-                document.getElementById('previewOpen').src = prod.image_open;
-                document.getElementById('openPreview').style.display = 'block';
-                document.getElementById('openUpload').style.display = 'none';
-            }
-            
-            document.getElementById('modalTitle').innerHTML = 'Edit Product';
-            document.getElementById('productModal').classList.add('open');
-        };
-
-        function updateBadgeSelection(badgeValue) {
-            document.querySelectorAll('.badge-option').forEach(opt => {
-                if (opt.dataset.badge === badgeValue) {
-                    opt.classList.add('selected');
-                } else {
-                    opt.classList.remove('selected');
-                }
-            });
-        }
-
-        function resetForm() {
-            editingProductId = null;
-            closedImageFile = openImageFile = null;
-            existingClosedUrl = existingOpenUrl = null;
-            currentBadge = 'none';
-            featuresList = [''];
-            
-            document.getElementById('prodName').value = '';
-            document.getElementById('prodCategory').value = '';
-            document.getElementById('prodDesc').value = '';
-            document.getElementById('prodPrice').value = '';
-            
-            updateBadgeSelection('none');
-            renderFeatures();
-            
-            document.getElementById('closedPreview').style.display = 'none';
-            document.getElementById('openPreview').style.display = 'none';
-            document.getElementById('closedUpload').style.display = 'block';
-            document.getElementById('openUpload').style.display = 'block';
-        }
-
-        function renderFeatures() {
-            const container = document.getElementById('featuresList');
-            if (!container) return;
-            container.innerHTML = featuresList.map((f, i) => `
-                <div class="feature-row">
-                    <input type="text" class="form-control" value="${escapeHtml(f)}" 
-                           onchange="featuresList[${i}] = this.value" placeholder="Feature bullet point">
-                    <button class="btn-outline" onclick="removeFeature(${i})" style="padding:4px 12px;">✕</button>
-                </div>
-            `).join('');
-        }
-
-        window.removeFeature = function(i) {
-            featuresList.splice(i, 1);
-            if (featuresList.length === 0) featuresList = [''];
-            renderFeatures();
-        };
-        
-        window.addFeature = function() {
-            featuresList.push('');
-            renderFeatures();
-        };
-
-        window.selectBadge = function(badgeValue) {
-            currentBadge = badgeValue;
-            updateBadgeSelection(badgeValue);
-        };
-
-        window.handleImage = function(file, type) {
-            if (!file || !file.type.startsWith('image/')) {
-                showToast('Only images allowed', true);
-                return;
-            }
-            if (type === 'closed') {
-                closedImageFile = file;
-                existingClosedUrl = null;
-                const reader = new FileReader();
-                reader.onload = e => {
-                    document.getElementById('previewClosed').src = e.target.result;
-                    document.getElementById('closedPreview').style.display = 'block';
-                    document.getElementById('closedUpload').style.display = 'none';
-                };
-                reader.readAsDataURL(file);
-            } else {
-                openImageFile = file;
-                existingOpenUrl = null;
-                const reader = new FileReader();
-                reader.onload = e => {
-                    document.getElementById('previewOpen').src = e.target.result;
-                    document.getElementById('openPreview').style.display = 'block';
-                    document.getElementById('openUpload').style.display = 'none';
-                };
-                reader.readAsDataURL(file);
-            }
-        };
-
-        window.removeImage = function(type) {
-            if (type === 'closed') {
-                closedImageFile = null;
-                existingClosedUrl = null;
-                document.getElementById('closedPreview').style.display = 'none';
-                document.getElementById('closedUpload').style.display = 'block';
-            } else {
-                openImageFile = null;
-                existingOpenUrl = null;
-                document.getElementById('openPreview').style.display = 'none';
-                document.getElementById('openUpload').style.display = 'block';
-            }
-        };
-
-        window.closeModal = function() {
-            document.getElementById('productModal').classList.remove('open');
-            resetForm();
-        };
-
-        window.closeConfirm = function() {
-            document.getElementById('confirmModal').classList.remove('open');
-            window.deleteId = null;
-        };
-
-        window.closeAdminModal = function() {
-            document.getElementById('addAdminModal').classList.remove('open');
-        };
-
-        window.navigateTo = function(page) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(`page-${page}`).classList.add('active');
-            if (page === 'products') renderProductsTable();
-            if (page === 'dashboard') loadActivity();
-            if (page === 'settings') loadAdmins();
-        };
-
-        window.exportData = function() {
-            const blob = new Blob([JSON.stringify(allProducts, null, 2)], { type: 'application/json' });
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = `securex-backup-${Date.now()}.json`;
-            a.click();
-            showToast(`Exported ${allProducts.length} products`);
-        };
-
-        window.importData = function(input) {
-            const file = input.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = async (e) => {
-                try {
-                    const data = JSON.parse(e.target.result);
-                    for (let p of data) {
-                        delete p.id;
-                        delete p.created_at;
-                        await _supabase.from('products').insert([p]);
-                    }
-                    await loadProducts();
-                    showToast(`Imported ${data.length} products`);
-                } catch (err) {
-                    showToast('Invalid JSON', true);
-                }
-            };
-            reader.readAsText(file);
-            input.value = '';
-        };
-
-        window.deleteAllProducts = async function() {
-            if (!confirm('⚠️ Delete ALL products? This cannot be undone!')) return;
-            if (prompt('Type "DELETE ALL" to confirm') !== 'DELETE ALL') return;
-            for (let p of allProducts) {
-                if (p.image_closed) await deleteImage(p.image_closed);
-                if (p.image_open) await deleteImage(p.image_open);
-            }
-            await _supabase.from('products').delete().neq('id', 0);
-            await loadProducts();
-            showToast('All products deleted');
-        };
-
-        function escapeHtml(str) {
-            if (!str) return '';
-            return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
-        }
-
-        // Event listeners
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('searchInput')?.addEventListener('input', () => renderProductsTable());
-            document.getElementById('catFilter')?.addEventListener('change', () => renderProductsTable());
-        });
-
-        checkSession();
-    </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SECUREX Admin Panel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{
+  --cream:#FEFAE0;--beige:#E8D5B4;--beige-d:#C4A882;
+  --brown-l:#8B6F4E;--brown:#5C3D2E;--brown-d:#3E2415;--brown-deep:#2A180D;
+  --gold:#B8860B;--white:#fff;
+  --sidebar:220px;
+  --bar-h:60px;
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Outfit',sans-serif;}
+html,body{height:100%;overflow-x:hidden;}
+
+/* ============ LOGIN SCREEN ============ */
+#loginScreen{
+  position:fixed;inset:0;z-index:9999;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--brown-deep);
+  overflow:hidden;
+}
+/* Particle canvas behind */
+#loginCanvas{position:absolute;inset:0;opacity:.35;}
+
+/* Animated geometric rings */
+.ring{
+  position:absolute;border-radius:50%;border:1px solid rgba(184,134,11,.25);
+  animation:expand 8s ease-in-out infinite;
+}
+.ring:nth-child(1){width:300px;height:300px;top:50%;left:50%;transform:translate(-50%,-50%);animation-delay:0s;}
+.ring:nth-child(2){width:500px;height:500px;top:50%;left:50%;transform:translate(-50%,-50%);animation-delay:1.5s;}
+.ring:nth-child(3){width:720px;height:720px;top:50%;left:50%;transform:translate(-50%,-50%);animation-delay:3s;}
+.ring:nth-child(4){width:960px;height:960px;top:50%;left:50%;transform:translate(-50%,-50%);animation-delay:4.5s;}
+@keyframes expand{
+  0%,100%{opacity:.4;transform:translate(-50%,-50%) scale(1);}
+  50%{opacity:.1;transform:translate(-50%,-50%) scale(1.06);}
+}
+/* Floating orbs */
+.orb{position:absolute;border-radius:50%;filter:blur(60px);animation:drift 12s ease-in-out infinite;}
+.orb1{width:250px;height:250px;background:rgba(184,134,11,.12);top:10%;left:15%;animation-delay:0s;}
+.orb2{width:180px;height:180px;background:rgba(92,61,46,.2);bottom:20%;right:10%;animation-delay:4s;}
+.orb3{width:120px;height:120px;background:rgba(184,134,11,.08);bottom:30%;left:35%;animation-delay:8s;}
+@keyframes drift{
+  0%,100%{transform:translateY(0) translateX(0);}
+  33%{transform:translateY(-30px) translateX(15px);}
+  66%{transform:translateY(20px) translateX(-20px);}
+}
+/* Diagonal grid lines */
+.grid-lines{
+  position:absolute;inset:0;
+  background-image:repeating-linear-gradient(
+    45deg,rgba(184,134,11,.04) 0px,rgba(184,134,11,.04) 1px,transparent 1px,transparent 60px
+  );
+}
+
+.login-card{
+  position:relative;z-index:2;
+  background:rgba(42,24,13,.82);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border:1px solid rgba(184,134,11,.25);
+  border-radius:24px;padding:44px 40px;
+  width:90%;max-width:420px;
+  animation:cardIn .7s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes cardIn{
+  from{opacity:0;transform:translateY(40px) scale(.95);}
+  to{opacity:1;transform:translateY(0) scale(1);}
+}
+.login-logo{text-align:center;margin-bottom:32px;}
+.login-logo h1{font-family:'Rajdhani',sans-serif;font-size:2.4rem;font-weight:700;color:var(--cream);letter-spacing:.08em;}
+.login-logo p{color:var(--beige-d);font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;margin-top:4px;}
+.login-logo-icon{font-size:2.8rem;margin-bottom:8px;display:block;
+  animation:spin-in .8s cubic-bezier(.34,1.56,.64,1);}
+@keyframes spin-in{from{transform:rotate(-180deg) scale(0);}to{transform:rotate(0) scale(1);}}
+
+.lf-group{margin-bottom:16px;position:relative;}
+.lf-label{display:block;font-size:.78rem;font-weight:600;color:var(--beige-d);letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px;}
+.lf-input{
+  width:100%;padding:13px 18px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(184,134,11,.2);
+  border-radius:50px;color:var(--cream);font-size:.95rem;
+  transition:border-color .2s,background .2s;outline:none;
+}
+.lf-input::placeholder{color:rgba(255,255,255,.3);}
+.lf-input:focus{border-color:var(--gold);background:rgba(255,255,255,.1);}
+.lf-input:focus+.lf-line{width:100%;}
+.lf-btn{
+  width:100%;padding:14px;margin-top:8px;
+  background:linear-gradient(135deg,var(--gold),#8B6F4E);
+  border:none;border-radius:50px;color:white;
+  font-family:'Rajdhani',sans-serif;font-size:1.05rem;font-weight:700;letter-spacing:.06em;
+  cursor:pointer;transition:all .25s;
+}
+.lf-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(184,134,11,.35);}
+.lf-btn:disabled{opacity:.6;transform:none;}
+.lf-err{background:rgba(194,65,12,.15);border:1px solid rgba(194,65,12,.3);
+  color:#fdba74;padding:10px 16px;border-radius:12px;font-size:.82rem;
+  margin-top:12px;display:none;}
+
+/* ============ ADMIN SHELL ============ */
+#adminShell{display:none;height:100%;min-height:100vh;background:#f7f3ec;}
+
+/* Top bar */
+.topbar{
+  position:fixed;top:0;left:var(--sidebar);right:0;z-index:200;
+  height:var(--bar-h);
+  background:white;border-bottom:1px solid #ede4d6;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;
+}
+.topbar-title{font-family:'Rajdhani',sans-serif;font-size:1.15rem;font-weight:700;color:var(--brown-d);}
+.topbar-right{display:flex;align-items:center;gap:12px;}
+.topbar-user{font-size:.8rem;color:var(--brown-l);}
+.topbar-logout{background:none;border:1px solid #e0cdb8;padding:6px 16px;border-radius:30px;
+  font-size:.8rem;color:var(--brown);cursor:pointer;transition:all .2s;}
+.topbar-logout:hover{background:var(--brown-d);color:white;border-color:transparent;}
+
+/* Sidebar */
+.sidebar{
+  position:fixed;top:0;left:0;width:var(--sidebar);height:100vh;z-index:300;
+  background:var(--brown-deep);display:flex;flex-direction:column;overflow-y:auto;
+}
+.sb-logo{padding:20px 20px 16px;border-bottom:1px solid rgba(255,255,255,.07);}
+.sb-logo h2{font-family:'Rajdhani',sans-serif;font-size:1.5rem;color:var(--cream);letter-spacing:.06em;}
+.sb-logo span{font-size:.65rem;color:var(--beige-d);display:block;letter-spacing:.08em;text-transform:uppercase;margin-top:2px;}
+.sb-user{padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.07);}
+.sb-email{font-size:.72rem;color:var(--beige-d);word-break:break-all;font-weight:500;}
+
+.sb-section{padding:12px 20px 4px;font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.25);}
+.sb-nav{list-style:none;padding:0 10px;}
+.sb-nav li{margin-bottom:2px;}
+.sb-nav button{
+  width:100%;text-align:left;background:none;border:none;
+  padding:9px 14px;border-radius:10px;
+  color:rgba(255,255,255,.6);font-size:.85rem;font-weight:500;cursor:pointer;
+  display:flex;align-items:center;gap:9px;transition:all .18s;
+}
+.sb-nav button:hover{background:rgba(255,255,255,.06);color:var(--cream);}
+.sb-nav button.active{background:var(--gold);color:white;}
+.sb-nav .icon{font-size:1.1rem;width:20px;text-align:center;}
+.sb-bottom{margin-top:auto;padding:16px 20px;border-top:1px solid rgba(255,255,255,.07);}
+.sb-new-btn{
+  width:100%;padding:11px;border:none;border-radius:10px;
+  background:var(--gold);color:white;
+  font-family:'Rajdhani',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:.04em;
+  cursor:pointer;transition:all .2s;
+}
+.sb-new-btn:hover{background:#9a6d08;}
+
+/* Main content */
+.main{margin-left:var(--sidebar);padding-top:var(--bar-h);min-height:100vh;}
+.page{display:none;padding:28px;animation:fadeIn .3s ease;}
+.page.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+/* Page title row */
+.page-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;}
+.page-head h2{font-family:'Rajdhani',sans-serif;font-size:1.6rem;color:var(--brown-d);}
+
+/* Stat cards */
+.stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;margin-bottom:28px;}
+.stat-card{background:white;border-radius:16px;padding:18px 22px;border:1px solid #ede4d6;}
+.stat-n{font-family:'Rajdhani',sans-serif;font-size:2.2rem;font-weight:700;color:var(--brown-d);}
+.stat-l{font-size:.78rem;color:var(--brown-l);font-weight:500;}
+
+/* Table */
+.tbl-wrap{background:white;border-radius:16px;overflow:hidden;border:1px solid #ede4d6;}
+.tbl-toolbar{display:flex;gap:12px;padding:16px;flex-wrap:wrap;border-bottom:1px solid #f2e9df;}
+.tbl-search,.tbl-sel{
+  padding:9px 16px;border:1px solid #dfcfbc;border-radius:30px;
+  font-size:.87rem;background:white;outline:none;
+}
+.tbl-search{flex:1;min-width:180px;}
+.tbl-search:focus,.tbl-sel:focus{border-color:var(--gold);}
+table{width:100%;border-collapse:collapse;}
+th,td{padding:11px 14px;text-align:left;border-bottom:1px solid #f5ede3;font-size:.87rem;}
+th{font-weight:700;font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;color:var(--brown-l);background:#fdfaf5;}
+td img.thumb{width:48px;height:48px;object-fit:cover;border-radius:10px;display:block;}
+.no-img{width:48px;height:48px;background:#f2ebe2;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;}
+
+/* Badges */
+.chip{display:inline-block;padding:3px 10px;border-radius:20px;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;}
+.chip.Bestseller{background:#fae6cf;color:#9a5e10;}
+.chip.New{background:#d9efd0;color:#2e6320;}
+.chip.Hot{background:#ffe0db;color:#a0290e;}
+.chip.Popular{background:#e0e7ff;color:#1e3a8a;}
+.chip.Premium{background:#eae0c5;color:#7a5a2a;}
+
+/* Action buttons */
+.btn-sm{border:none;padding:5px 13px;border-radius:20px;font-size:.76rem;cursor:pointer;font-weight:600;transition:all .15s;}
+.btn-edit{background:#f0e8dc;color:var(--brown);}.btn-edit:hover{background:var(--beige);}
+.btn-del{background:#ffe5e2;color:#b63a2c;}.btn-del:hover{background:#fcd0cc;}
+.btn-primary{background:var(--gold);color:white;border:none;padding:9px 22px;border-radius:30px;font-weight:700;font-size:.87rem;cursor:pointer;transition:all .2s;}
+.btn-primary:hover{background:#9a6d08;transform:translateY(-1px);}
+.btn-outline{background:transparent;border:1px solid var(--beige-d);padding:7px 18px;border-radius:30px;font-size:.85rem;color:var(--brown);cursor:pointer;transition:all .2s;}
+.btn-outline:hover{background:#f5ecd7;}
+
+/* ===== MODALS ===== */
+.modal-backdrop{
+  position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:800;
+  display:flex;align-items:center;justify-content:center;
+  visibility:hidden;opacity:0;transition:.2s;
+}
+.modal-backdrop.open{visibility:visible;opacity:1;}
+.modal{
+  background:white;border-radius:24px;width:90%;max-width:560px;
+  max-height:88vh;overflow-y:auto;padding:28px;
+  transform:scale(.95);transition:.2s;
+}
+.modal-backdrop.open .modal{transform:scale(1);}
+.modal.lg{max-width:680px;}
+.modal-title{font-family:'Rajdhani',sans-serif;font-size:1.35rem;color:var(--brown-d);margin-bottom:20px;}
+.form-g{margin-bottom:16px;}
+.form-g label{display:block;font-weight:700;font-size:.78rem;color:var(--brown-d);letter-spacing:.04em;text-transform:uppercase;margin-bottom:5px;}
+.form-ctrl{width:100%;padding:10px 15px;border:1px solid #dfcfbc;border-radius:20px;font-size:.9rem;outline:none;background:white;transition:border-color .15s;}
+.form-ctrl:focus{border-color:var(--gold);}
+textarea.form-ctrl{resize:vertical;min-height:70px;border-radius:14px;}
+.form-row{display:flex;gap:12px;flex-wrap:wrap;}
+.form-row .form-g{flex:1;min-width:180px;}
+
+/* Badge selector */
+.badge-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;}
+.badge-opt{padding:5px 14px;background:#f2e9df;border-radius:20px;font-size:.78rem;cursor:pointer;font-weight:600;transition:all .18s;border:2px solid transparent;}
+.badge-opt:hover{background:var(--beige);}
+.badge-opt.sel{background:var(--gold);color:white;border-color:var(--gold);}
+
+/* Image upload */
+.img-up{border:2px dashed var(--beige-d);border-radius:16px;padding:20px;text-align:center;cursor:pointer;background:#fdfaf5;font-size:.87rem;color:var(--brown-l);transition:all .2s;}
+.img-up:hover{background:#f5ecd7;border-color:var(--gold);}
+.img-preview{display:none;margin-top:10px;position:relative;display:inline-block;}
+.img-preview img{width:80px;height:80px;object-fit:cover;border-radius:10px;display:block;}
+.img-rm{position:absolute;top:-6px;right:-6px;width:20px;height:20px;background:#b63a2c;color:white;border-radius:50%;font-size:.7rem;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;}
+
+/* Feature rows */
+.feat-row{display:flex;gap:8px;margin-bottom:8px;}
+.feat-row .form-ctrl{flex:1;}
+
+/* ===== ACTIVITY ===== */
+.activity-list{background:white;border-radius:16px;border:1px solid #ede4d6;overflow:hidden;}
+.act-item{padding:12px 16px;border-bottom:1px solid #f5ede3;display:flex;align-items:flex-start;gap:10px;}
+.act-icon{font-size:1.1rem;flex-shrink:0;margin-top:1px;}
+.act-text{font-size:.85rem;color:var(--brown-d);}
+.act-meta{font-size:.72rem;color:var(--brown-l);margin-top:2px;}
+
+/* ===== ADMIN LIST ===== */
+.adm-item{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid #f2e9df;}
+.adm-item:last-child{border-bottom:none;}
+.adm-email{font-weight:600;font-size:.88rem;color:var(--brown-d);}
+.adm-role{font-size:.72rem;color:var(--brown-l);margin-top:2px;}
+
+/* Toast */
+.toast{position:fixed;bottom:24px;right:24px;z-index:9999;background:var(--brown-deep);color:var(--cream);padding:11px 22px;border-radius:40px;font-size:.87rem;font-weight:600;opacity:0;transform:translateY(10px);transition:.25s;pointer-events:none;}
+.toast.show{opacity:1;transform:translateY(0);}
+.toast.err{background:#9a2a1a;}
+
+/* Info bar */
+.info-bar{background:#f0e8d8;border-radius:14px;padding:14px 18px;font-size:.83rem;color:var(--brown);border:1px solid var(--beige-d);margin-top:20px;}
+
+/* ===== HOME/ABOUT EDITOR SECTIONS ===== */
+.edit-section-card{background:white;border:1px solid #ede4d6;border-radius:16px;margin-bottom:20px;overflow:hidden;}
+.edit-section-head{padding:14px 20px;background:#fdfaf5;border-bottom:1px solid #f2e9df;display:flex;justify-content:space-between;align-items:center;cursor:pointer;}
+.edit-section-head h4{font-family:'Rajdhani',sans-serif;font-size:1.05rem;color:var(--brown-d);font-weight:700;}
+.edit-section-body{padding:20px;display:none;}
+.edit-section-body.open{display:block;}
+.chevron{transition:transform .2s;font-size:.9rem;color:var(--brown-l);}
+.chevron.open{transform:rotate(180deg);}
+
+/* Gallery item row */
+.gal-item-row{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid #f2e9df;}
+.gal-item-row:last-child{border-bottom:none;}
+.gal-thumb{width:52px;height:52px;object-fit:cover;border-radius:10px;flex-shrink:0;border:1px solid #ede4d6;}
+.gal-fields{flex:1;display:flex;gap:8px;flex-wrap:wrap;}
+.gal-fields .form-ctrl{flex:1;min-width:120px;padding:7px 12px;font-size:.82rem;}
+.gal-rm{background:#ffe5e2;border:none;padding:6px 10px;border-radius:10px;cursor:pointer;color:#b63a2c;font-size:.9rem;font-weight:700;}
+
+/* Danger zone */
+.danger-zone{background:#fff5f0;border:1px solid #ffd4cc;border-radius:16px;padding:20px;}
+.danger-zone h4{color:#b63a2c;font-family:'Rajdhani',sans-serif;font-size:1.05rem;margin-bottom:8px;}
+
+/* Message */
+.msg{padding:10px 16px;border-radius:12px;font-size:.82rem;margin-top:10px;display:none;}
+.msg.err{background:#fee2e2;color:#c2410c;display:block;}
+.msg.ok{background:#dcfce7;color:#166534;display:block;}
+
+/* Custom tag (removing from product page) */
+/* This tag won't appear if we store data correctly */
+
+/* Scrollbar */
+::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar-track{background:#f2e9df;}
+::-webkit-scrollbar-thumb{background:#c4a882;border-radius:4px;}
+::-webkit-scrollbar-thumb:hover{background:#8b6f4e;}
+
+/* Responsive */
+@media(max-width:768px){
+  :root{--sidebar:0px;}
+  .sidebar{transform:translateX(-220px);width:220px;transition:transform .3s;}
+  .sidebar.open{transform:translateX(0);}
+  .topbar{left:0;}
+  .main{margin-left:0;}
+  .topbar-title::before{content:'☰ ';cursor:pointer;}
+  .stat-row{grid-template-columns:1fr 1fr;}
+}
+</style>
 </head>
 <body>
-    <!-- Login Screen - NO CREATE ACCOUNT BUTTON -->
-    <div id="loginScreen" class="login-container" style="display: flex;">
-        <div class="login-logo">
-            <h1>🔒 SECUREX Admin</h1>
-            <p>by Shah Interio</p>
+
+<!-- ==================== LOGIN ==================== -->
+<div id="loginScreen">
+  <canvas id="loginCanvas"></canvas>
+  <div class="grid-lines"></div>
+  <div class="ring"></div><div class="ring"></div><div class="ring"></div><div class="ring"></div>
+  <div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div>
+
+  <div class="login-card">
+    <div class="login-logo">
+      <span class="login-logo-icon">🔒</span>
+      <h1>SECUREX</h1>
+      <p>Admin Console · Shah Interio</p>
+    </div>
+    <div class="lf-group">
+      <label class="lf-label">Email Address</label>
+      <input type="email" id="lEmail" class="lf-input" placeholder="admin@shahinterio.com">
+    </div>
+    <div class="lf-group">
+      <label class="lf-label">Password</label>
+      <input type="password" id="lPass" class="lf-input" placeholder="••••••••"
+             onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="lf-btn" id="lBtn" onclick="doLogin()">Sign In to Admin</button>
+    <div class="lf-err" id="lErr"></div>
+  </div>
+</div>
+
+<!-- ==================== ADMIN SHELL ==================== -->
+<div id="adminShell">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-logo">
+      <h2>🔒 SECUREX</h2>
+      <span>Shah Interio Admin</span>
+    </div>
+    <div class="sb-user"><div class="sb-email" id="sbEmail">—</div></div>
+
+    <div class="sb-section">Dashboard</div>
+    <ul class="sb-nav">
+      <li><button class="active" onclick="nav('dashboard')"><span class="icon">📊</span>Dashboard</button></li>
+    </ul>
+
+    <div class="sb-section">Catalog</div>
+    <ul class="sb-nav">
+      <li><button onclick="nav('products')"><span class="icon">📦</span>Products</button></li>
+    </ul>
+
+    <div class="sb-section">Website</div>
+    <ul class="sb-nav">
+      <li><button onclick="nav('homepage')"><span class="icon">🏠</span>Home Page</button></li>
+      <li><button onclick="nav('about')"><span class="icon">ℹ️</span>About Section</button></li>
+    </ul>
+
+    <div class="sb-section">Admin</div>
+    <ul class="sb-nav">
+      <li><button onclick="nav('settings')"><span class="icon">⚙️</span>Settings & Admins</button></li>
+    </ul>
+
+    <div class="sb-bottom">
+      <button class="sb-new-btn" onclick="openAddModal()">+ New Product</button>
+    </div>
+  </aside>
+
+  <!-- Top Bar -->
+  <div class="topbar">
+    <div class="topbar-title" id="topbarTitle">Dashboard</div>
+    <div class="topbar-right">
+      <span class="topbar-user" id="topbarUser"></span>
+      <button class="topbar-logout" onclick="doLogout()">Sign Out</button>
+    </div>
+  </div>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="main">
+
+    <!-- DASHBOARD -->
+    <div class="page active" id="page-dashboard">
+      <div class="page-head">
+        <h2>Dashboard</h2>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button class="btn-outline" onclick="exportData()">⬇ Export JSON</button>
+          <label class="btn-outline" style="cursor:pointer;">⬆ Import JSON
+            <input type="file" accept=".json" style="display:none" onchange="importData(this)">
+          </label>
         </div>
-        
-        <div id="loginForm">
-            <input type="email" id="loginEmail" class="login-input" placeholder="Email address">
-            <input type="password" id="loginPassword" class="login-input" placeholder="Password">
-            <button id="loginBtn" class="login-btn" onclick="login()">Login</button>
-            <div id="loginError" class="message error-message"></div>
-        </div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-card"><div class="stat-n" id="stTotal">0</div><div class="stat-l">Total Products</div></div>
+        <div class="stat-card"><div class="stat-n" id="stCats">0</div><div class="stat-l">Categories</div></div>
+        <div class="stat-card"><div class="stat-n">✅</div><div class="stat-l">DB Connected</div></div>
+        <div class="stat-card"><div class="stat-n">🔒</div><div class="stat-l">Secure</div></div>
+      </div>
+      <h3 style="font-family:'Rajdhani',sans-serif;color:var(--brown-d);margin-bottom:14px;">Recent Activity</h3>
+      <div class="activity-list" id="actList"><div style="padding:20px;text-align:center;color:var(--brown-l);">No activity yet</div></div>
+      <div class="info-bar" id="infoBar">Loading...</div>
     </div>
 
-    <!-- Admin Panel -->
-    <div class="admin-panel">
-        <div class="app-layout">
-            <aside class="sidebar">
-                <div class="logo-area">
-                    <h2>🔒 SECUREX</h2>
-                    <p>Steel Furniture</p>
-                </div>
-                <div class="user-info">
-                    <div>👤 Logged in as</div>
-                    <div class="user-email" id="userEmailDisplay">---</div>
-                </div>
-                <div class="nav-menu">
-                    <button class="nav-item active" onclick="navigateTo('dashboard')">📊 Dashboard</button>
-                    <button class="nav-item" onclick="navigateTo('products')">📦 Products</button>
-                    <button class="nav-item" onclick="navigateTo('settings')">⚙️ Settings</button>
-                </div>
-                <button class="logout-btn" onclick="logout()">🚪 Logout</button>
-            </aside>
-            <main class="main-content">
-                <div class="top-bar">
-                    <div>🛡️ SECUREX Admin Console</div>
-                    <button class="btn-primary" onclick="openAddModal()">+ New Product</button>
-                </div>
-
-                <!-- Dashboard -->
-                <div id="page-dashboard" class="page active">
-                    <div class="stats-grid">
-                        <div class="stat-card"><div class="stat-number" id="statTotal">0</div><div>Products</div></div>
-                        <div class="stat-card"><div class="stat-number" id="statCategories">0</div><div>Categories</div></div>
-                        <div class="stat-card"><div class="stat-number">✅</div><div>Connected</div></div>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
-                        <h3>📋 Recent Activity</h3>
-                        <div>
-                            <button class="btn-outline" onclick="exportData()">Export JSON</button>
-                            <label class="btn-outline" style="margin-left:8px; cursor:pointer;">Import JSON
-                                <input type="file" accept=".json" style="display:none" onchange="importData(this)">
-                            </label>
-                        </div>
-                    </div>
-                    <div id="activityList" style="background:white; border-radius:20px; overflow:hidden;"></div>
-                    <div id="storageInfo" style="margin-top:20px; background:#f8f2ea; border-radius:24px; padding:16px;"></div>
-                </div>
-
-                <!-- Products -->
-                <div id="page-products" class="page">
-                    <div style="display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap;">
-                        <input type="text" id="searchInput" class="form-control" placeholder="🔍 Search products..." style="flex:1;">
-                        <select id="catFilter" class="form-control" style="width: auto;">
-                            <option value="">All Categories</option>
-                            <option value="almirah-home">🏠 Home Almirah</option>
-                            <option value="almirah-office">💼 Office Almirah</option>
-                            <option value="almirah-dressing">🪞 Dressing Almirah</option>
-                            <option value="locker">🔒 Locker</option>
-                            <option value="bookshelf">📚 BookShelf</option>
-                            <option value="showcase">✨ Glass Showcase</option>
-                        </select>
-                    </div>
-                    <div class="table-wrapper">
-                        <table>
-                            <thead>
-                                <tr><th>Image</th><th>Name</th><th>Category</th><th>Badge</th><th>Price</th><th>Actions</th></tr>
-                            </thead>
-                            <tbody id="prodTableBody"><tr><td colspan="6">Loading...<\/td><\/tr><\/tbody>
-                        <\/table>
-                    <\/div>
-                <\/div>
-
-                <!-- Settings with Add Admin Option -->
-                <div id="page-settings" class="page">
-                    <div style="background:white; border-radius:24px; padding:24px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
-                            <h3>👥 Admin Users</h3>
-                            <button class="btn-primary" onclick="openAddAdminModal()">+ Add New Admin</button>
-                        </div>
-                        <div id="adminList" class="admin-list"></div>
-                        
-                        <hr style="margin: 24px 0;">
-                        
-                        <h3>⚙️ System Settings</h3>
-                        <p style="margin: 12px 0;">Supabase: Connected ✅</p>
-                        <p>Storage: product-images (public)</p>
-                        <p>Authentication: Email/Password (Supabase Auth)</p>
-                        
-                        <hr style="margin: 24px 0;">
-                        
-                        <div style="background:#fff5f0; padding:20px; border-radius:20px;">
-                            <h4 style="color:#c2410c;">⚠️ Danger Zone</h4>
-                            <p style="margin: 10px 0;">Delete ALL products from database and storage. This cannot be undone.</p>
-                            <button class="btn-outline" style="border-color:#c2410c; color:#c2410c;" onclick="deleteAllProducts()">Delete All Products</button>
-                        </div>
-                    </div>
-                </div>
-            </main>
+    <!-- PRODUCTS -->
+    <div class="page" id="page-products">
+      <div class="page-head">
+        <h2>Products</h2>
+        <button class="btn-primary" onclick="openAddModal()">+ Add Product</button>
+      </div>
+      <div class="tbl-wrap">
+        <div class="tbl-toolbar">
+          <input type="text" class="tbl-search" id="srchIn" placeholder="🔍 Search products..." oninput="renderTable()">
+          <select class="tbl-sel" id="catFilt" onchange="renderTable()">
+            <option value="">All Categories</option>
+            <option value="almirah-home">Home Almirah</option>
+            <option value="almirah-office">Office Almirah</option>
+            <option value="almirah-dressing">Dressing Almirah</option>
+            <option value="locker">Locker</option>
+            <option value="bookshelf">BookShelf</option>
+            <option value="showcase">Glass Showcase</option>
+          </select>
         </div>
+        <table>
+          <thead><tr><th>Image</th><th>Name</th><th>Category</th><th>Badge</th><th>Price</th><th>Actions</th></tr></thead>
+          <tbody id="prodBody"></tbody>
+        </table>
+      </div>
     </div>
 
-    <!-- Product Modal -->
-    <div id="productModal" class="modal-backdrop" onclick="if(event.target===this) closeModal()">
-        <div class="modal-card large">
-            <h3 id="modalTitle">Add New Product</h3>
-            
-            <div class="form-group">
-                <label>Product Name *</label>
-                <input id="prodName" class="form-control" placeholder="e.g., Royal Steel Almirah">
-            </div>
-            
-            <div class="form-group">
-                <label>Category *</label>
-                <select id="prodCategory" class="form-control">
-                    <option value="">Select Category</option>
-                    <option value="almirah-home">🏠 Home Almirah</option>
-                    <option value="almirah-office">💼 Office Almirah</option>
-                    <option value="almirah-dressing">🪞 Dressing Almirah</option>
-                    <option value="locker">🔒 Locker</option>
-                    <option value="bookshelf">📚 BookShelf</option>
-                    <option value="showcase">✨ Glass Showcase</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label>Description</label>
-                <textarea id="prodDesc" class="form-control" rows="3" placeholder="Product description..."></textarea>
-            </div>
-            
-            <div class="form-group">
-                <label>Price Text</label>
-                <input id="prodPrice" class="form-control" placeholder="e.g., ₹18,999 / MRP ₹24,999">
-            </div>
-            
-            <div class="form-group">
-                <label>Badge (Optional)</label>
-                <div class="badge-selector">
-                    <div class="badge-option selected" data-badge="none" onclick="selectBadge('none')">None</div>
-                    <div class="badge-option" data-badge="Bestseller" onclick="selectBadge('Bestseller')">🔥 Bestseller</div>
-                    <div class="badge-option" data-badge="New" onclick="selectBadge('New')">✨ New</div>
-                    <div class="badge-option" data-badge="Hot" onclick="selectBadge('Hot')">⚡ Hot</div>
-                    <div class="badge-option" data-badge="Popular" onclick="selectBadge('Popular')">⭐ Popular</div>
-                    <div class="badge-option" data-badge="Premium" onclick="selectBadge('Premium')">💎 Premium</div>
-                </div>
-            </div>
-            
-            <div class="form-group">
-                <label>Features (Bullet Points)</label>
-                <div id="featuresList"></div>
-                <button type="button" class="btn-outline" onclick="addFeature()" style="margin-top:8px;">+ Add Feature</button>
-            </div>
-            
-            <div class="form-group">
-                <label>📦 Closed Image *</label>
-                <div id="closedUpload" class="img-upload-area" onclick="document.getElementById('closedFile').click()">
-                    Click to upload closed product image
-                </div>
-                <input type="file" id="closedFile" style="display:none" accept="image/*" onchange="handleImage(this.files[0],'closed')">
-                <div id="closedPreview" style="display:none; margin-top:8px;">
-                    <img id="previewClosed" class="preview-img">
-                    <button class="btn-outline" onclick="removeImage('closed')" style="margin-left:8px;">Remove</button>
-                </div>
-            </div>
-            
-            <div class="form-group">
-                <label>📖 Open Image (Optional - Shows on Hover)</label>
-                <div id="openUpload" class="img-upload-area" onclick="document.getElementById('openFile').click()">
-                    Click to upload open box image
-                </div>
-                <input type="file" id="openFile" style="display:none" accept="image/*" onchange="handleImage(this.files[0],'open')">
-                <div id="openPreview" style="display:none; margin-top:8px;">
-                    <img id="previewOpen" class="preview-img">
-                    <button class="btn-outline" onclick="removeImage('open')" style="margin-left:8px;">Remove</button>
-                </div>
-            </div>
-            
-            <div style="display:flex; gap:12px; justify-content:flex-end; margin-top:20px;">
-                <button class="btn-outline" onclick="closeModal()">Cancel</button>
-                <button class="btn-primary" onclick="saveProduct()">Save Product</button>
-            </div>
+    <!-- HOME PAGE EDITOR -->
+    <div class="page" id="page-homepage">
+      <div class="page-head">
+        <h2>Home Page Editor</h2>
+        <button class="btn-primary" onclick="saveHomepage()">💾 Save Changes</button>
+      </div>
+      <p style="color:var(--brown-l);font-size:.85rem;margin-bottom:20px;">Changes are saved to Supabase and reflected on the live website.</p>
+
+      <!-- Hero Section -->
+      <div class="edit-section-card">
+        <div class="edit-section-head" onclick="toggleSection(this)">
+          <h4>🦸 Hero Section (Top Banner)</h4><span class="chevron">▼</span>
         </div>
+        <div class="edit-section-body">
+          <div class="form-g"><label>Badge Text</label><input class="form-ctrl" id="heroBadge" placeholder="Odisha's Trusted B2B Steel Furniture Manufacturer"></div>
+          <div class="form-g"><label>Headline Line 1</label><input class="form-ctrl" id="heroH1a" placeholder="Securex Steel Almirahs –"></div>
+          <div class="form-g"><label>Highlighted Words</label><input class="form-ctrl" id="heroHighlight" placeholder="Built for Strength & Style"></div>
+          <div class="form-g"><label>Sub-headline</label><textarea class="form-ctrl" id="heroSubtitle"></textarea></div>
+          <div class="form-g"><label>Since Year (shown in bold)</label><input class="form-ctrl" id="heroYear" placeholder="1985"></div>
+          <div class="form-g"><label>WhatsApp Enquiry Pre-text</label><input class="form-ctrl" id="heroWaText" placeholder="Hello SECUREX Team! I'm interested in your steel almirahs."></div>
+        </div>
+      </div>
+
+      <!-- Stats Bar -->
+      <div class="edit-section-card">
+        <div class="edit-section-head" onclick="toggleSection(this)">
+          <h4>📊 Stats Bar (Numbers)</h4><span class="chevron">▼</span>
+        </div>
+        <div class="edit-section-body">
+          <div class="form-row">
+            <div class="form-g"><label>Stat 1 Number</label><input class="form-ctrl" id="stat1n" placeholder="10+"></div>
+            <div class="form-g"><label>Stat 1 Label</label><input class="form-ctrl" id="stat1l" placeholder="Years of Experience"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-g"><label>Stat 2 Number</label><input class="form-ctrl" id="stat2n" placeholder="UL"></div>
+            <div class="form-g"><label>Stat 2 Label</label><input class="form-ctrl" id="stat2l" placeholder="Product Variants"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-g"><label>Stat 3 Number</label><input class="form-ctrl" id="stat3n" placeholder="500+"></div>
+            <div class="form-g"><label>Stat 3 Label</label><input class="form-ctrl" id="stat3l" placeholder="B2B Clients"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-g"><label>Stat 4 Number</label><input class="form-ctrl" id="stat4n" placeholder="100%"></div>
+            <div class="form-g"><label>Stat 4 Label</label><input class="form-ctrl" id="stat4l" placeholder="Factory Direct"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gallery Section -->
+      <div class="edit-section-card">
+        <div class="edit-section-head" onclick="toggleSection(this)">
+          <h4>🖼️ Gallery Section</h4><span class="chevron">▼</span>
+        </div>
+        <div class="edit-section-body">
+          <div class="form-g"><label>Section Label</label><input class="form-ctrl" id="galLabel" placeholder="Product Gallery"></div>
+          <div class="form-g"><label>Section Title</label><input class="form-ctrl" id="galTitle" placeholder="Explore Our Range"></div>
+          <div class="form-g"><label>Description</label><textarea class="form-ctrl" id="galDesc"></textarea></div>
+          <div style="margin-top:16px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+              <label style="font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:.04em;color:var(--brown-d);">Gallery Items</label>
+              <button class="btn-outline" onclick="addGalleryItem()" style="font-size:.8rem;padding:5px 14px;">+ Add Item</button>
+            </div>
+            <div id="galleryItems"></div>
+          </div>
+          <div class="form-g" style="margin-top:16px;"><label>View All Button Text</label><input class="form-ctrl" id="galBtnText" placeholder="View All 28+ Products"></div>
+        </div>
+      </div>
+
+      <!-- Features Section -->
+      <div class="edit-section-card">
+        <div class="edit-section-head" onclick="toggleSection(this)">
+          <h4>⭐ Features Section</h4><span class="chevron">▼</span>
+        </div>
+        <div class="edit-section-body">
+          <div class="form-g"><label>Section Label</label><input class="form-ctrl" id="featLabel" placeholder="Features"></div>
+          <div class="form-g"><label>Section Title</label><input class="form-ctrl" id="featTitle" placeholder="Why SECUREX Stands Out"></div>
+          <div class="form-g"><label>Description</label><textarea class="form-ctrl" id="featDesc"></textarea></div>
+          <div style="margin-top:12px;" id="featureSections">
+            <!-- Feature cards 1-4 -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact -->
+      <div class="edit-section-card">
+        <div class="edit-section-head" onclick="toggleSection(this)">
+          <h4>📞 Contact Info</h4><span class="chevron">▼</span>
+        </div>
+        <div class="edit-section-body">
+          <div class="form-row">
+            <div class="form-g"><label>Phone Number</label><input class="form-ctrl" id="ctPhone" placeholder="+91 9179539610"></div>
+            <div class="form-g"><label>WhatsApp Number</label><input class="form-ctrl" id="ctWa" placeholder="919179539610"></div>
+          </div>
+          <div class="form-g"><label>Address</label><input class="form-ctrl" id="ctAddr" placeholder="Brajesh Steel, Kantabaji, Odisha"></div>
+          <div class="form-g"><label>Website URL</label><input class="form-ctrl" id="ctWeb" placeholder="https://shahinterio.com"></div>
+        </div>
+      </div>
+
+      <div style="text-align:right;margin-top:8px;">
+        <button class="btn-primary" onclick="saveHomepage()">💾 Save All Changes</button>
+      </div>
     </div>
 
-    <!-- Add Admin Modal -->
-    <div id="addAdminModal" class="modal-backdrop" onclick="if(event.target===this) closeAdminModal()">
-        <div class="modal-card">
-            <h3>➕ Add New Admin User</h3>
-            <div class="form-group">
-                <label>Email Address</label>
-                <input type="email" id="newAdminEmail" class="form-control" placeholder="admin@example.com">
-            </div>
-            <div class="form-group">
-                <label>Password</label>
-                <input type="password" id="newAdminPassword" class="form-control" placeholder="Minimum 6 characters">
-            </div>
-            <div id="adminError" class="message error-message"></div>
-            <div id="adminSuccess" class="message success-message"></div>
-            <div style="display:flex; gap:12px; justify-content:flex-end; margin-top:20px;">
-                <button class="btn-outline" onclick="closeAdminModal()">Cancel</button>
-                <button id="addAdminBtn" class="btn-primary" onclick="addNewAdmin()">Create Admin</button>
-            </div>
+    <!-- ABOUT SECTION EDITOR -->
+    <div class="page" id="page-about">
+      <div class="page-head">
+        <h2>About Section Editor</h2>
+        <button class="btn-primary" onclick="saveAbout()">💾 Save Changes</button>
+      </div>
+
+      <div class="edit-section-card">
+        <div class="edit-section-head" onclick="toggleSection(this)">
+          <h4>ℹ️ About Us Content</h4><span class="chevron">▼</span>
         </div>
+        <div class="edit-section-body">
+          <div class="form-g"><label>Section Label</label><input class="form-ctrl" id="abLabel" placeholder="About Us"></div>
+          <div class="form-g"><label>Section Heading</label><input class="form-ctrl" id="abHeading" placeholder="Shah Interio – The Force Behind SECUREX"></div>
+          <div class="form-g"><label>Paragraph 1</label><textarea class="form-ctrl" id="abP1" style="min-height:90px;"></textarea></div>
+          <div class="form-g"><label>Paragraph 2</label><textarea class="form-ctrl" id="abP2" style="min-height:90px;"></textarea></div>
+          <div class="form-g"><label>Paragraph 3</label><textarea class="form-ctrl" id="abP3" style="min-height:90px;"></textarea></div>
+          <div class="form-g"><label>About Image URL (or upload below)</label><input class="form-ctrl" id="abImgUrl" placeholder="https://..."></div>
+          <div class="form-g">
+            <label>Or Upload About Image</label>
+            <div class="img-up" onclick="document.getElementById('abImgFile').click()">Click to upload about image</div>
+            <input type="file" id="abImgFile" style="display:none" accept="image/*" onchange="handleAboutImg(this.files[0])">
+            <div id="abImgPreview" style="margin-top:8px;display:none;">
+              <img id="abImgThumb" style="width:120px;height:80px;object-fit:cover;border-radius:10px;">
+              <button class="btn-sm btn-del" onclick="clearAboutImg()" style="margin-top:6px;">Remove</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="edit-section-card">
+        <div class="edit-section-head" onclick="toggleSection(this)">
+          <h4>🏷️ Highlight Tags</h4><span class="chevron">▼</span>
+        </div>
+        <div class="edit-section-body">
+          <p style="font-size:.82rem;color:var(--brown-l);margin-bottom:12px;">Tags shown below the about text (e.g. "Advanced Machinery", "B2B Specialists")</p>
+          <div id="abTagsContainer"></div>
+          <button class="btn-outline" onclick="addAbTag()" style="margin-top:8px;font-size:.8rem;padding:5px 14px;">+ Add Tag</button>
+        </div>
+      </div>
+
+      <div class="edit-section-card">
+        <div class="edit-section-head" onclick="toggleSection(this)">
+          <h4>📊 Why Choose Us Cards</h4><span class="chevron">▼</span>
+        </div>
+        <div class="edit-section-body" id="whyUsCards"></div>
+      </div>
+
+      <div style="text-align:right;margin-top:8px;">
+        <button class="btn-primary" onclick="saveAbout()">💾 Save All Changes</button>
+      </div>
     </div>
 
-    <!-- Confirm Delete Modal -->
-    <div id="confirmModal" class="modal-backdrop" onclick="if(event.target===this) closeConfirm()">
-        <div class="modal-card" style="max-width:350px;">
-            <h3>⚠️ Confirm Delete</h3>
-            <p id="confirmMsg" style="margin: 20px 0;"></p>
-            <div style="display:flex; gap:12px;">
-                <button class="btn-outline" onclick="closeConfirm()">Cancel</button>
-                <button class="btn-primary" style="background:#b63a2c;" onclick="executeDelete()">Delete Permanently</button>
-            </div>
+    <!-- SETTINGS -->
+    <div class="page" id="page-settings">
+      <div class="page-head"><h2>Settings & Admin Users</h2></div>
+
+      <div style="background:white;border-radius:16px;border:1px solid #ede4d6;padding:24px;margin-bottom:20px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+          <h3 style="font-family:'Rajdhani',sans-serif;color:var(--brown-d);">Admin Users</h3>
+          <button class="btn-primary" onclick="openAddAdminModal()">+ Add Admin</button>
         </div>
+        <div id="adminList"></div>
+      </div>
+
+      <div style="background:white;border-radius:16px;border:1px solid #ede4d6;padding:24px;margin-bottom:20px;">
+        <h3 style="font-family:'Rajdhani',sans-serif;color:var(--brown-d);margin-bottom:12px;">System Info</h3>
+        <p style="font-size:.87rem;color:var(--brown);margin-bottom:6px;">✅ Supabase Connected</p>
+        <p style="font-size:.87rem;color:var(--brown);margin-bottom:6px;">📦 Storage: product-images (public)</p>
+        <p style="font-size:.87rem;color:var(--brown);">🔐 Auth: Email / Password</p>
+      </div>
+
+      <div class="danger-zone">
+        <h4>⚠️ Danger Zone</h4>
+        <p style="font-size:.85rem;color:#7a3a2a;margin-bottom:12px;">Permanently delete all products. This cannot be undone.</p>
+        <button class="btn-sm btn-del" onclick="deleteAllProducts()">Delete All Products</button>
+      </div>
     </div>
 
-    <div id="toast" class="toast"></div>
+  </main>
+</div>
+
+<!-- ===== PRODUCT MODAL ===== -->
+<div class="modal-backdrop" id="prodModal" onclick="if(event.target===this)closeModal()">
+  <div class="modal lg">
+    <div class="modal-title" id="prodModalTitle">Add New Product</div>
+
+    <div class="form-row">
+      <div class="form-g" style="flex:2"><label>Product Name *</label><input class="form-ctrl" id="pName" placeholder="e.g. Royal Steel Almirah"></div>
+      <div class="form-g" style="flex:1"><label>Category *</label>
+        <select class="form-ctrl" id="pCat">
+          <option value="">Select</option>
+          <option value="almirah-home">Home Almirah</option>
+          <option value="almirah-office">Office Almirah</option>
+          <option value="almirah-dressing">Dressing Almirah</option>
+          <option value="locker">Locker</option>
+          <option value="bookshelf">BookShelf</option>
+          <option value="showcase">Glass Showcase</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-g"><label>Description</label><textarea class="form-ctrl" id="pDesc"></textarea></div>
+    <div class="form-g"><label>Price Text</label><input class="form-ctrl" id="pPrice" placeholder="e.g. ₹18,999 / MRP ₹24,999"></div>
+
+    <div class="form-g">
+      <label>Badge</label>
+      <div class="badge-row">
+        <div class="badge-opt sel" data-b="none" onclick="selBadge('none')">None</div>
+        <div class="badge-opt" data-b="Bestseller" onclick="selBadge('Bestseller')">🔥 Bestseller</div>
+        <div class="badge-opt" data-b="New" onclick="selBadge('New')">✨ New</div>
+        <div class="badge-opt" data-b="Hot" onclick="selBadge('Hot')">⚡ Hot</div>
+        <div class="badge-opt" data-b="Popular" onclick="selBadge('Popular')">⭐ Popular</div>
+        <div class="badge-opt" data-b="Premium" onclick="selBadge('Premium')">💎 Premium</div>
+      </div>
+    </div>
+
+    <div class="form-g">
+      <label>Features</label>
+      <div id="featsContainer"></div>
+      <button class="btn-outline" onclick="addFeat()" style="margin-top:8px;font-size:.8rem;padding:5px 14px;">+ Add Feature</button>
+    </div>
+
+    <div class="form-row">
+      <div class="form-g">
+        <label>📦 Closed Image *</label>
+        <div class="img-up" id="closedUp" onclick="document.getElementById('cFile').click()">Click to upload</div>
+        <input type="file" id="cFile" style="display:none" accept="image/*" onchange="handleImg(this.files[0],'closed')">
+        <div id="closedPrev" style="display:none;margin-top:8px;position:relative;display:inline-block;">
+          <img id="closedThumb" style="width:80px;height:80px;object-fit:cover;border-radius:10px;display:block;">
+          <button class="img-rm" onclick="rmImg('closed')">✕</button>
+        </div>
+      </div>
+      <div class="form-g">
+        <label>📖 Open Image (Hover)</label>
+        <div class="img-up" id="openUp" onclick="document.getElementById('oFile').click()">Click to upload</div>
+        <input type="file" id="oFile" style="display:none" accept="image/*" onchange="handleImg(this.files[0],'open')">
+        <div id="openPrev" style="display:none;margin-top:8px;position:relative;display:inline-block;">
+          <img id="openThumb" style="width:80px;height:80px;object-fit:cover;border-radius:10px;display:block;">
+          <button class="img-rm" onclick="rmImg('open')">✕</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px;">
+      <button class="btn-outline" onclick="closeModal()">Cancel</button>
+      <button class="btn-primary" onclick="saveProduct()">Save Product</button>
+    </div>
+  </div>
+</div>
+
+<!-- DELETE CONFIRM -->
+<div class="modal-backdrop" id="delModal" onclick="if(event.target===this)closeDelModal()">
+  <div class="modal" style="max-width:380px;">
+    <div class="modal-title">⚠️ Confirm Delete</div>
+    <p id="delMsg" style="margin-bottom:20px;color:var(--brown);">Delete this product?</p>
+    <div style="display:flex;gap:10px;">
+      <button class="btn-outline" onclick="closeDelModal()">Cancel</button>
+      <button class="btn-primary" style="background:#b63a2c;" onclick="execDelete()">Delete Permanently</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD ADMIN MODAL -->
+<div class="modal-backdrop" id="adminModal" onclick="if(event.target===this)closeAdminModal()">
+  <div class="modal" style="max-width:400px;">
+    <div class="modal-title">➕ Add Admin User</div>
+    <div class="form-g"><label>Email</label><input type="email" class="form-ctrl" id="aEmail" placeholder="admin@example.com"></div>
+    <div class="form-g"><label>Password</label><input type="password" class="form-ctrl" id="aPass" placeholder="Min 6 characters"></div>
+    <div class="msg" id="aErr"></div>
+    <div class="msg ok" id="aOk" style="display:none;"></div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px;">
+      <button class="btn-outline" onclick="closeAdminModal()">Cancel</button>
+      <button class="btn-primary" id="aBtn" onclick="addAdmin()">Create Admin</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== SUPABASE =====
+const SB_URL  = "https://ceeezhukizoobknroovq.supabase.co";
+const SB_KEY  = "sb_publishable_3XHshryDBRniaiW5YEO03w_pUMH6gIG";
+const sb      = window.supabase.createClient(SB_URL, SB_KEY);
+const BUCKET  = "product-images";
+
+// State
+let allProducts=[], allAdmins=[], editId=null, curBadge='none',
+    feats=[], closedFile=null, openFile=null, exClosed=null, exOpen=null, curUser=null,
+    delId=null, abImgFile=null, abImgExisting=null;
+
+// Default content for homepage/about
+const defaultHP={
+  heroBadge:"Odisha's Trusted B2B Steel Furniture Manufacturer",
+  heroH1a:"Securex Steel Almirahs –",heroHighlight:"Built for Strength & Style",
+  heroSubtitle:"Trusted steel furniture manufacturer since 1985. Delivering durable, rust-resistant almirahs & storage solutions to businesses across Odisha.",
+  heroYear:"1985",heroWaText:"Hello SECUREX Team! I'm interested in your steel almirahs.",
+  stat1n:"10+",stat1l:"Years of Experience",stat2n:"UL",stat2l:"Product Variants",
+  stat3n:"500+",stat3l:"B2B Clients",stat4n:"100%",stat4l:"Factory Direct",
+  galLabel:"Product Gallery",galTitle:"Explore Our Range",
+  galDesc:"A glimpse into our diverse collection of steel almirahs, cabinets, and custom solutions.",
+  galBtnText:"View All 28+ Products",
+  galleryItems:[
+    {img:"../Secure-X-Almirah (1).png",alt:"Heavy-Duty Storage Cabinet",overlay:"Heavy-Duty Storage Cabinet"},
+    {img:"../Secure-X-Almirah (2).png",alt:"Secure Locker Almirah",overlay:"Secure Locker Almirah"},
+    {img:"../Secure-X-Almirah (3).png",alt:"Modular Office Cabinet",overlay:"Modular Office Cabinet"},
+    {img:"../Secure-X-Dressing2003.png",alt:"Designer Dressing Almirah",overlay:"Designer Dressing Almirah"},
+    {img:"../Secure-X-Almirah-3006.png",alt:"View Full Catalog",overlay:"View Full Catalog →"}
+  ],
+  featLabel:"Features",featTitle:"Why SECUREX Stands Out",
+  featDesc:"Every product is built with precision engineering and premium materials.",
+  features:[
+    {icon:"🎨",title:"Modern Design",desc:"Sleek, contemporary aesthetics that complement any workspace or home interior."},
+    {icon:"🛡️",title:"Rust Resistant",desc:"Advanced anti-corrosion treatment ensures furniture stays pristine even in humid conditions."},
+    {icon:"🧹",title:"Low Maintenance",desc:"Easy-to-clean surfaces that require minimal upkeep."},
+    {icon:"💪",title:"Heavy-Duty Build",desc:"Industrial-grade thick steel sheets with reinforced joints."}
+  ],
+  ctPhone:"+91 9179539610",ctWa:"919179539610",
+  ctAddr:"Brajesh Steel, Kantabaji, Odisha",ctWeb:"https://shahinterio.com"
+};
+const defaultAB={
+  abLabel:"About Us",abHeading:"Shah Interio – The Force Behind SECUREX",
+  abP1:"Shah Interio is the proud manufacturer of the SECUREX brand of premium steel furniture. Under the leadership of Brajesh Steel, we specialize in producing high-quality steel almirahs, storage cabinets, and customized metal furniture for B2B clients across Odisha and beyond.",
+  abP2:"Our strength lies in our advanced manufacturing setup using high-precision machines: Fiber Laser Cutting Machines, CNC Bending Machines, Almirah Printing Machines, and Glossy Finishing Units — achieving superior accuracy and premium finish in every product.",
+  abP3:"With a focus on bulk production, customization, and timely delivery, Shah Interio has become a trusted partner for wholesalers, retailers, and institutional buyers.",
+  abImgUrl:"",
+  abTags:["Advanced Machinery","Precision Manufacturing","Rust Resistant Finish","Modern Designs","Bulk Production","B2B Specialists"],
+  whyUs:[
+    {icon:"🏗️",title:"High-Quality Steel",desc:"We source premium-grade cold-rolled steel for superior strength and flawless finish."},
+    {icon:"🏭",title:"Factory Direct Pricing",desc:"No middlemen — you get manufacturer prices that beat market rates by up to 25%."},
+    {icon:"📦",title:"Bulk Order Specialist",desc:"Scalable production capacity to handle large institutional and corporate orders with ease."},
+    {icon:"🔧",title:"Customization Available",desc:"Tailor dimensions, colors, locking systems, and layouts to your exact requirements."}
+  ]
+};
+
+// gallery items state & ab tags state
+let galItems=[...defaultHP.galleryItems];
+let abTags=[...defaultAB.abTags];
+let hpFeatures=[...defaultHP.features];
+let whyUsData=[...defaultAB.whyUs];
+
+// ===== LOGIN ANIMATION =====
+(function(){
+  const canvas=document.getElementById('loginCanvas');
+  const ctx=canvas.getContext('2d');
+  let particles=[];
+  function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+  resize();window.addEventListener('resize',resize);
+  for(let i=0;i<60;i++)particles.push({
+    x:Math.random()*window.innerWidth,y:Math.random()*window.innerHeight,
+    vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,
+    r:Math.random()*2+1,alpha:Math.random()*.5+.1
+  });
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0||p.x>canvas.width)p.vx*=-1;
+      if(p.y<0||p.y>canvas.height)p.vy*=-1;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(184,134,11,${p.alpha})`;ctx.fill();
+    });
+    // connect nearby
+    for(let i=0;i<particles.length;i++)for(let j=i+1;j<particles.length;j++){
+      const d=Math.hypot(particles[i].x-particles[j].x,particles[i].y-particles[j].y);
+      if(d<100){
+        ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);
+        ctx.strokeStyle=`rgba(184,134,11,${.15*(1-d/100)})`;ctx.lineWidth=.5;ctx.stroke();
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ===== AUTH =====
+async function doLogin(){
+  const email=document.getElementById('lEmail').value.trim();
+  const pass=document.getElementById('lPass').value;
+  const err=document.getElementById('lErr');
+  const btn=document.getElementById('lBtn');
+  err.style.display='none';
+  if(!email||!pass){err.textContent='Email and password required';err.style.display='block';return;}
+  btn.textContent='⏳ Signing in...';btn.disabled=true;
+  try{
+    const{data,error}=await sb.auth.signInWithPassword({email,password:pass});
+    if(error)throw error;
+    curUser=data.user;
+    showAdmin();
+  }catch(e){err.textContent='❌ '+(e.message||'Invalid credentials');err.style.display='block';}
+  finally{btn.textContent='Sign In to Admin';btn.disabled=false;}
+}
+
+async function doLogout(){
+  await sb.auth.signOut();curUser=null;
+  document.getElementById('loginScreen').style.display='flex';
+  document.getElementById('adminShell').style.display='none';
+}
+
+function showAdmin(){
+  document.getElementById('loginScreen').style.display='none';
+  document.getElementById('adminShell').style.display='block';
+  document.getElementById('sbEmail').textContent=curUser.email;
+  document.getElementById('topbarUser').textContent=curUser.email;
+  loadProducts();loadAdmins();loadActivity();
+  loadHomepageData();loadAboutData();
+}
+
+(async function(){
+  const{data:{session}}=await sb.auth.getSession();
+  if(session){curUser=session.user;showAdmin();}
+})();
+
+// ===== NAVIGATION =====
+const TITLES={'dashboard':'Dashboard','products':'Products','homepage':'Home Page Editor','about':'About Section Editor','settings':'Settings & Admins'};
+function nav(p){
+  document.querySelectorAll('.page').forEach(e=>e.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  document.querySelectorAll('.sb-nav button').forEach(b=>{
+    b.classList.toggle('active',b.getAttribute('onclick')===`nav('${p}')`);
+  });
+  document.getElementById('topbarTitle').textContent=TITLES[p]||p;
+  if(p==='products')renderTable();
+  if(p==='dashboard')loadActivity();
+  if(p==='settings')loadAdmins();
+}
+
+// ===== TOAST =====
+function toast(msg,err=false){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast'+(err?' err':'');
+  t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// ===== ACTIVITY =====
+function addAct(type,msg){
+  let acts=JSON.parse(localStorage.getItem('sx_act')||'[]');
+  acts.unshift({type,msg,time:new Date().toLocaleString(),user:curUser?.email});
+  if(acts.length>30)acts.pop();
+  localStorage.setItem('sx_act',JSON.stringify(acts));
+  loadActivity();
+}
+function loadActivity(){
+  const c=document.getElementById('actList');if(!c)return;
+  const acts=JSON.parse(localStorage.getItem('sx_act')||'[]');
+  if(!acts.length){c.innerHTML='<div style="padding:20px;text-align:center;color:var(--brown-l);">No activity yet</div>';return;}
+  c.innerHTML=acts.map(a=>`<div class="act-item">
+    <span class="act-icon">${a.type==='add'?'➕':a.type==='edit'?'✏️':'🗑️'}</span>
+    <div><div class="act-text"><strong>${esc(a.msg)}</strong></div>
+    <div class="act-meta">${a.time} · ${esc(a.user||'')}</div></div>
+  </div>`).join('');
+}
+
+// ===== PRODUCTS =====
+async function loadProducts(){
+  const{data,error}=await sb.from('products').select('*').order('created_at',{ascending:false});
+  if(error){toast('Load failed: '+error.message,true);return;}
+  allProducts=data||[];
+  document.getElementById('stTotal').textContent=allProducts.length;
+  document.getElementById('stCats').textContent=[...new Set(allProducts.map(p=>p.category).filter(Boolean))].length;
+  document.getElementById('infoBar').innerHTML=`📦 ${allProducts.length} products · Logged in as ${curUser?.email}`;
+  renderTable();
+}
+
+const CATS={'almirah-home':'Home Almirah','almirah-office':'Office Almirah','almirah-dressing':'Dressing Almirah','locker':'Locker','bookshelf':'BookShelf','showcase':'Glass Showcase'};
+function renderTable(){
+  const q=(document.getElementById('srchIn')?.value||'').toLowerCase();
+  const cat=document.getElementById('catFilt')?.value||'';
+  const rows=allProducts.filter(p=>(!q||(p.title||'').toLowerCase().includes(q))&&(!cat||p.category===cat));
+  const b=document.getElementById('prodBody');if(!b)return;
+  if(!rows.length){b.innerHTML=`<tr><td colspan="6" style="text-align:center;padding:30px;color:var(--brown-l);">No products found</td></tr>`;return;}
+  b.innerHTML=rows.map(p=>`<tr>
+    <td>${p.image_closed?`<img class="thumb" src="${esc(p.image_closed)}" onerror="this.style.display='none'">`:'<div class="no-img">📦</div>'}</td>
+    <td><strong>${esc(p.title)}</strong></td>
+    <td><span style="font-size:.78rem;color:var(--brown-l);">${CATS[p.category]||p.category||'—'}</span></td>
+    <td>${p.badge&&p.badge!=='none'?`<span class="chip ${p.badge}">${p.badge}</span>`:'—'}</td>
+    <td style="font-size:.82rem;">${esc(p.price_text||'')}</td>
+    <td><button class="btn-sm btn-edit" onclick="openEdit(${p.id})">Edit</button> <button class="btn-sm btn-del" onclick="askDel(${p.id})">Delete</button></td>
+  </tr>`).join('');
+}
+
+// ===== PRODUCT MODAL =====
+function resetProdForm(){
+  editId=null;closedFile=openFile=null;exClosed=exOpen=null;curBadge='none';feats=[''];
+  ['pName','pDesc','pPrice'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('pCat').value='';
+  selBadge('none');renderFeats();
+  document.getElementById('closedPrev').style.display='none';
+  document.getElementById('openPrev').style.display='none';
+  document.getElementById('closedUp').style.display='block';
+  document.getElementById('openUp').style.display='block';
+}
+function openAddModal(){resetProdForm();document.getElementById('prodModalTitle').textContent='Add New Product';document.getElementById('prodModal').classList.add('open');}
+function openEdit(id){
+  const p=allProducts.find(x=>x.id===id);if(!p)return;
+  resetProdForm();editId=id;
+  document.getElementById('pName').value=p.title||'';
+  document.getElementById('pCat').value=p.category||'';
+  document.getElementById('pDesc').value=p.description||'';
+  document.getElementById('pPrice').value=p.price_text||'';
+  curBadge=p.badge||'none';selBadge(curBadge);
+  feats=p.features?.length?[...p.features]:[''];renderFeats();
+  if(p.image_closed){exClosed=p.image_closed;showPrev('closed',p.image_closed);}
+  if(p.image_open){exOpen=p.image_open;showPrev('open',p.image_open);}
+  document.getElementById('prodModalTitle').textContent='Edit Product';
+  document.getElementById('prodModal').classList.add('open');
+}
+function closeModal(){document.getElementById('prodModal').classList.remove('open');}
+
+function selBadge(v){
+  curBadge=v;
+  document.querySelectorAll('.badge-opt').forEach(o=>o.classList.toggle('sel',o.dataset.b===v));
+}
+function renderFeats(){
+  document.getElementById('featsContainer').innerHTML=feats.map((f,i)=>`
+    <div class="feat-row">
+      <input class="form-ctrl" value="${esc(f)}" onchange="feats[${i}]=this.value" placeholder="Feature point">
+      <button class="btn-sm btn-del" onclick="remFeat(${i})">✕</button>
+    </div>`).join('');
+}
+function addFeat(){feats.push('');renderFeats();}
+function remFeat(i){feats.splice(i,1);if(!feats.length)feats=[''];renderFeats();}
+
+function handleImg(file,type){
+  if(!file||!file.type.startsWith('image/')){toast('Images only',true);return;}
+  const reader=new FileReader();
+  reader.onload=e=>{
+    if(type==='closed'){closedFile=file;exClosed=null;showPrev('closed',e.target.result);}
+    else{openFile=file;exOpen=null;showPrev('open',e.target.result);}
+  };reader.readAsDataURL(file);
+}
+function showPrev(type,src){
+  const prevEl=document.getElementById(type+'Prev');
+  const upEl=document.getElementById(type+'Up');
+  const thumb=document.getElementById(type+'Thumb');
+  thumb.src=src;prevEl.style.display='inline-block';upEl.style.display='none';
+}
+function rmImg(type){
+  if(type==='closed'){closedFile=null;exClosed=null;}
+  else{openFile=null;exOpen=null;}
+  document.getElementById(type+'Prev').style.display='none';
+  document.getElementById(type+'Up').style.display='block';
+  document.getElementById(type+'Thumb').src='';
+}
+
+async function uploadImg(file){
+  if(!file)return null;
+  const ext=file.name.split('.').pop();
+  const name=`public/${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
+  const{error}=await sb.storage.from(BUCKET).upload(name,file);
+  if(error)throw error;
+  return sb.storage.from(BUCKET).getPublicUrl(name).data.publicUrl;
+}
+async function delImg(url){
+  if(!url)return;
+  const m=url.match(/\/storage\/v1\/object\/public\/product-images\/(.+)$/);
+  if(m)await sb.storage.from(BUCKET).remove([m[1]]);
+}
+
+async function saveProduct(){
+  const title=document.getElementById('pName').value.trim();
+  const category=document.getElementById('pCat').value;
+  if(!title){toast('Name required',true);return;}
+  if(!category){toast('Category required',true);return;}
+  if(!editId&&!closedFile&&!exClosed){toast('Closed image required',true);return;}
+  try{
+    let fc=exClosed,fo=exOpen;
+    if(closedFile){if(editId&&exClosed)await delImg(exClosed);fc=await uploadImg(closedFile);}
+    if(openFile){if(editId&&exOpen)await delImg(exOpen);fo=await uploadImg(openFile);}
+    const d={title,category,description:document.getElementById('pDesc').value,
+      price_text:document.getElementById('pPrice').value,
+      badge:curBadge==='none'?'':curBadge,
+      features:feats.filter(f=>f.trim()),
+      image_closed:fc,image_open:fo};
+    if(editId){
+      await sb.from('products').update(d).eq('id',editId);
+      addAct('edit',`Updated "${title}"`);toast(`✅ "${title}" updated`);
+    }else{
+      await sb.from('products').insert([d]);
+      addAct('add',`Added "${title}"`);toast(`✅ "${title}" added`);
+    }
+    closeModal();await loadProducts();
+  }catch(e){toast('Error: '+e.message,true);}
+}
+
+// ===== DELETE =====
+function askDel(id){
+  delId=id;
+  const p=allProducts.find(x=>x.id===id);
+  document.getElementById('delMsg').textContent=`Delete "${p?.title}"? This cannot be undone.`;
+  document.getElementById('delModal').classList.add('open');
+}
+function closeDelModal(){document.getElementById('delModal').classList.remove('open');delId=null;}
+async function execDelete(){
+  const p=allProducts.find(x=>x.id===delId);
+  if(p?.image_closed)await delImg(p.image_closed);
+  if(p?.image_open)await delImg(p.image_open);
+  await sb.from('products').delete().eq('id',delId);
+  addAct('del',`Deleted "${p?.title}"`);
+  await loadProducts();closeDelModal();toast('Product deleted');
+}
+async function deleteAllProducts(){
+  if(!confirm('⚠️ Delete ALL products?'))return;
+  if(prompt('Type "DELETE ALL" to confirm')!=='DELETE ALL')return;
+  for(const p of allProducts){
+    if(p.image_closed)await delImg(p.image_closed);
+    if(p.image_open)await delImg(p.image_open);
+  }
+  await sb.from('products').delete().neq('id',0);
+  await loadProducts();toast('All products deleted');
+}
+
+// ===== EXPORT / IMPORT =====
+function exportData(){
+  const blob=new Blob([JSON.stringify(allProducts,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`securex-backup-${Date.now()}.json`;a.click();
+  toast(`Exported ${allProducts.length} products`);
+}
+async function importData(inp){
+  const file=inp.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=async e=>{
+    try{
+      const data=JSON.parse(e.target.result);
+      for(const p of data){delete p.id;delete p.created_at;await sb.from('products').insert([p]);}
+      await loadProducts();toast(`Imported ${data.length} products`);
+    }catch{toast('Invalid JSON',true);}
+  };
+  reader.readAsText(file);inp.value='';
+}
+
+// ===== ADMINS =====
+async function loadAdmins(){
+  try{
+    const{data,error}=await sb.from('admin_users').select('*').order('created_at',{ascending:false});
+    if(error)throw error;
+    allAdmins=data||[];renderAdmins();
+  }catch{console.log('admin_users table may not exist');}
+}
+function renderAdmins(){
+  const c=document.getElementById('adminList');if(!c)return;
+  if(!allAdmins.length){c.innerHTML='<div style="padding:16px;text-align:center;color:var(--brown-l);">No admin users found</div>';return;}
+  c.innerHTML=allAdmins.map(a=>`<div class="adm-item">
+    <div><div class="adm-email">${esc(a.email)}</div><div class="adm-role">${a.role||'admin'} · ${new Date(a.created_at).toLocaleDateString()}</div></div>
+    ${a.email!==curUser?.email?`<button class="btn-sm btn-del" onclick="removeAdmin('${a.user_id}')">Remove</button>`:'<span style="font-size:.72rem;color:var(--brown-l);">(You)</span>'}
+  </div>`).join('');
+}
+function openAddAdminModal(){
+  document.getElementById('aEmail').value='';document.getElementById('aPass').value='';
+  document.getElementById('aErr').style.display='none';document.getElementById('aOk').style.display='none';
+  document.getElementById('adminModal').classList.add('open');
+}
+function closeAdminModal(){document.getElementById('adminModal').classList.remove('open');}
+async function addAdmin(){
+  const email=document.getElementById('aEmail').value.trim();
+  const pass=document.getElementById('aPass').value;
+  const err=document.getElementById('aErr');const ok=document.getElementById('aOk');
+  err.style.display='none';ok.style.display='none';
+  if(!email||!pass){err.className='msg err';err.textContent='Email and password required';return;}
+  if(pass.length<6){err.className='msg err';err.textContent='Password must be at least 6 characters';return;}
+  const btn=document.getElementById('aBtn');btn.textContent='⏳ Creating...';btn.disabled=true;
+  try{
+    const{data,error}=await sb.auth.signUp({email,password:pass});
+    if(error)throw error;
+    if(data.user){
+      await sb.from('admin_users').insert([{user_id:data.user.id,email,role:'admin'}]);
+      ok.style.display='block';ok.textContent='✅ Admin created!';
+      await loadAdmins();
+      setTimeout(()=>closeAdminModal(),2000);
+    }
+  }catch(e){err.className='msg err';err.textContent='❌ '+e.message;}
+  finally{btn.textContent='Create Admin';btn.disabled=false;}
+}
+async function removeAdmin(uid){
+  if(!confirm('Remove this admin?'))return;
+  await sb.from('admin_users').delete().eq('user_id',uid);
+  toast('Admin removed');await loadAdmins();
+}
+
+// ===== HOMEPAGE DATA (Supabase site_settings table) =====
+async function loadHomepageData(){
+  try{
+    const{data}=await sb.from('site_settings').select('*').eq('key','homepage').single();
+    const hp=data?.value||defaultHP;
+    setHPFields(hp);
+  }catch{setHPFields(defaultHP);}
+}
+function setHPFields(hp){
+  const ids=['heroBadge','heroH1a','heroHighlight','heroSubtitle','heroYear','heroWaText',
+    'stat1n','stat1l','stat2n','stat2l','stat3n','stat3l','stat4n','stat4l',
+    'galLabel','galTitle','galDesc','galBtnText',
+    'featLabel','featTitle','featDesc','ctPhone','ctWa','ctAddr','ctWeb'];
+  ids.forEach(id=>{const el=document.getElementById(id);if(el&&hp[id]!==undefined)el.value=hp[id];});
+  galItems=hp.galleryItems||[...defaultHP.galleryItems];renderGalleryItems();
+  hpFeatures=hp.features||[...defaultHP.features];renderHPFeatures();
+}
+async function saveHomepage(){
+  const ids=['heroBadge','heroH1a','heroHighlight','heroSubtitle','heroYear','heroWaText',
+    'stat1n','stat1l','stat2n','stat2l','stat3n','stat3l','stat4n','stat4l',
+    'galLabel','galTitle','galDesc','galBtnText',
+    'featLabel','featTitle','featDesc','ctPhone','ctWa','ctAddr','ctWeb'];
+  const hp={};
+  ids.forEach(id=>{const el=document.getElementById(id);if(el)hp[id]=el.value;});
+  hp.galleryItems=galItems;
+  // collect features
+  hp.features=hpFeatures.map((f,i)=>{
+    return{
+      icon:document.getElementById(`hpFIcon${i}`)?.value||f.icon,
+      title:document.getElementById(`hpFTitle${i}`)?.value||f.title,
+      desc:document.getElementById(`hpFDesc${i}`)?.value||f.desc
+    };
+  });
+  try{
+    const{error}=await sb.from('site_settings').upsert({key:'homepage',value:hp},{onConflict:'key'});
+    if(error)throw error;
+    toast('✅ Homepage saved!');addAct('edit','Homepage settings updated');
+  }catch(e){toast('Error: '+e.message,true);}
+}
+
+// Gallery items
+function renderGalleryItems(){
+  const c=document.getElementById('galleryItems');if(!c)return;
+  c.innerHTML=galItems.map((g,i)=>`<div class="gal-item-row">
+    ${g.img?`<img class="gal-thumb" src="${esc(g.img)}" onerror="this.style.display='none'">`:'<div class="gal-thumb" style="background:#f2ebe2;display:flex;align-items:center;justify-content:center;">🖼️</div>'}
+    <div class="gal-fields">
+      <input class="form-ctrl" value="${esc(g.img||'')}" onchange="galItems[${i}].img=this.value" placeholder="Image URL or path">
+      <input class="form-ctrl" value="${esc(g.alt||'')}" onchange="galItems[${i}].alt=this.value" placeholder="Alt text">
+      <input class="form-ctrl" value="${esc(g.overlay||'')}" onchange="galItems[${i}].overlay=this.value" placeholder="Overlay label">
+    </div>
+    <button class="gal-rm" onclick="removeGalItem(${i})">✕</button>
+  </div>`).join('');
+}
+function addGalleryItem(){galItems.push({img:'',alt:'',overlay:''});renderGalleryItems();}
+function removeGalItem(i){galItems.splice(i,1);renderGalleryItems();}
+
+// HP Features
+function renderHPFeatures(){
+  const c=document.getElementById('featureSections');if(!c)return;
+  c.innerHTML=hpFeatures.map((f,i)=>`<div style="background:#fdfaf5;border:1px solid #ede4d6;border-radius:12px;padding:14px;margin-bottom:10px;">
+    <div class="form-row">
+      <div class="form-g" style="flex:0 0 80px"><label>Icon</label><input class="form-ctrl" id="hpFIcon${i}" value="${esc(f.icon||'')}" placeholder="🎨"></div>
+      <div class="form-g"><label>Title</label><input class="form-ctrl" id="hpFTitle${i}" value="${esc(f.title||'')}" placeholder="Feature Title"></div>
+    </div>
+    <div class="form-g"><label>Description</label><textarea class="form-ctrl" id="hpFDesc${i}">${esc(f.desc||'')}</textarea></div>
+  </div>`).join('');
+}
+
+// Section toggle (accordion)
+function toggleSection(headEl){
+  const body=headEl.nextElementSibling;
+  const chev=headEl.querySelector('.chevron');
+  const isOpen=body.classList.contains('open');
+  body.classList.toggle('open',!isOpen);
+  chev.classList.toggle('open',!isOpen);
+}
+
+// ===== ABOUT DATA =====
+async function loadAboutData(){
+  try{
+    const{data}=await sb.from('site_settings').select('*').eq('key','about').single();
+    const ab=data?.value||defaultAB;setABFields(ab);
+  }catch{setABFields(defaultAB);}
+}
+function setABFields(ab){
+  ['abLabel','abHeading','abP1','abP2','abP3','abImgUrl'].forEach(id=>{
+    const el=document.getElementById(id);if(el&&ab[id]!==undefined)el.value=ab[id];
+  });
+  if(ab.abImgUrl){abImgExisting=ab.abImgUrl;}
+  abTags=ab.abTags||[...defaultAB.abTags];renderAbTags();
+  whyUsData=ab.whyUs||[...defaultAB.whyUs];renderWhyUs();
+}
+async function saveAbout(){
+  // collect tags from inputs
+  const tagEls=document.querySelectorAll('.ab-tag-input');
+  abTags=[...tagEls].map(el=>el.value).filter(Boolean);
+  // collect whyUs
+  whyUsData=whyUsData.map((w,i)=>({
+    icon:document.getElementById(`wuIcon${i}`)?.value||w.icon,
+    title:document.getElementById(`wuTitle${i}`)?.value||w.title,
+    desc:document.getElementById(`wuDesc${i}`)?.value||w.desc
+  }));
+  let imgUrl=document.getElementById('abImgUrl').value.trim()||abImgExisting||'';
+  if(abImgFile){
+    try{const url=await uploadImg(abImgFile);imgUrl=url;}catch(e){toast('Image upload failed',true);return;}
+  }
+  const ab={
+    abLabel:document.getElementById('abLabel').value,
+    abHeading:document.getElementById('abHeading').value,
+    abP1:document.getElementById('abP1').value,
+    abP2:document.getElementById('abP2').value,
+    abP3:document.getElementById('abP3').value,
+    abImgUrl:imgUrl,abTags,whyUs:whyUsData
+  };
+  try{
+    const{error}=await sb.from('site_settings').upsert({key:'about',value:ab},{onConflict:'key'});
+    if(error)throw error;
+    toast('✅ About section saved!');addAct('edit','About section updated');
+  }catch(e){toast('Error: '+e.message,true);}
+}
+function handleAboutImg(file){
+  if(!file||!file.type.startsWith('image/')){toast('Images only',true);return;}
+  abImgFile=file;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    document.getElementById('abImgThumb').src=e.target.result;
+    document.getElementById('abImgPreview').style.display='block';
+    document.getElementById('abImgUrl').value='(uploading on save)';
+  };reader.readAsDataURL(file);
+}
+function clearAboutImg(){
+  abImgFile=null;abImgExisting=null;
+  document.getElementById('abImgPreview').style.display='none';
+  document.getElementById('abImgUrl').value='';
+}
+function renderAbTags(){
+  const c=document.getElementById('abTagsContainer');if(!c)return;
+  c.innerHTML=abTags.map((t,i)=>`<div class="feat-row">
+    <input class="form-ctrl ab-tag-input" value="${esc(t)}" placeholder="Tag label">
+    <button class="btn-sm btn-del" onclick="abTags.splice(${i},1);renderAbTags()">✕</button>
+  </div>`).join('');
+}
+function addAbTag(){abTags.push('');renderAbTags();}
+function renderWhyUs(){
+  const c=document.getElementById('whyUsCards');if(!c)return;
+  c.innerHTML=whyUsData.map((w,i)=>`<div style="background:#fdfaf5;border:1px solid #ede4d6;border-radius:12px;padding:14px;margin-bottom:10px;">
+    <div class="form-row">
+      <div class="form-g" style="flex:0 0 80px"><label>Icon</label><input class="form-ctrl" id="wuIcon${i}" value="${esc(w.icon||'')}" placeholder="🏗️"></div>
+      <div class="form-g"><label>Title</label><input class="form-ctrl" id="wuTitle${i}" value="${esc(w.title||'')}" placeholder="Title"></div>
+    </div>
+    <div class="form-g"><label>Description</label><textarea class="form-ctrl" id="wuDesc${i}">${esc(w.desc||'')}</textarea></div>
+  </div>`).join('');
+}
+
+// ===== UTILS =====
+function esc(s){if(!s)return'';return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+</script>
 </body>
 </html>
