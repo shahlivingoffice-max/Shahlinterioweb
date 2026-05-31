@@ -1,468 +1,633 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SECUREX Admin | Supabase</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
-<style>
-:root {
-  --cream:#FEFAE0;--beige-light:#F5ECD7;--beige:#E8D5B4;--beige-dark:#C4A882;
-  --brown-light:#8B6F4E;--brown:#5C3D2E;--brown-dark:#3E2415;--brown-deep:#2A180D;
-  --white:#FFFFFF;--gold:#B8860B;--green:#2e7d32;--green-light:#e8f5e9;
-  --red:#c62828;--red-light:#ffebee;--blue:#1565c0;--blue-light:#e3f2fd;
-  --sidebar-w:240px;--topbar-h:60px;
-  --shadow-sm:0 1px 4px rgba(0,0,0,0.08);
-  --shadow-md:0 4px 16px rgba(62,36,21,0.12);
-  --shadow-lg:0 8px 32px rgba(62,36,21,0.16);
-  --r:10px;--r-lg:16px;
-}
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-html{font-family:'Outfit',sans-serif;font-size:15px;}
-body{background:#f0ebe2;color:var(--brown-dark);min-height:100vh;display:flex;flex-direction:column;}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>SecureX Admin • Supabase Storage</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif;
+        }
+        body {
+            background: #f1f5f9;
+            color: #0f172a;
+            padding: 24px 20px;
+        }
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        /* header */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 28px;
+            background: white;
+            padding: 16px 24px;
+            border-radius: 32px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02), 0 1px 2px rgba(0,0,0,0.05);
+        }
+        .logo h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #1e293b, #2d4a6e);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .logo span {
+            font-size: 0.85rem;
+            color: #475569;
+            font-weight: normal;
+        }
+        .nav-tabs {
+            display: flex;
+            gap: 12px;
+            background: #f8fafc;
+            padding: 6px;
+            border-radius: 60px;
+        }
+        .nav-btn {
+            border: none;
+            background: transparent;
+            padding: 8px 22px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #334155;
+        }
+        .nav-btn.active {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            color: #0f172a;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .btn-primary {
+            background: #0f172a;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-primary:hover { background: #1e293b; transform: scale(0.97); }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #cbd5e1;
+            padding: 8px 18px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .btn-outline:hover { background: #f1f5f9; }
+        .btn-danger { background: #b91c1c; border: none; color: white; }
+        .btn-danger:hover { background: #991b1b; }
+        /* pages */
+        .page {
+            display: none;
+            animation: fade 0.2s ease;
+        }
+        .page.active {
+            display: block;
+        }
+        @keyframes fade { from { opacity:0; } to { opacity:1; } }
+        /* cards */
+        .stats-grid {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            margin-bottom: 32px;
+        }
+        .stat-card {
+            background: white;
+            border-radius: 28px;
+            padding: 20px 28px;
+            flex: 1;
+            min-width: 160px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+            border: 1px solid #e2e8f0;
+        }
+        .num {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #0f172a;
+        }
+        .lbl { color: #475569; margin-top: 6px; }
+        .trend { font-size: 0.8rem; margin-top: 10px; color: #2b9348; }
+        /* table */
+        .table-container {
+            background: white;
+            border-radius: 24px;
+            overflow-x: auto;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.02);
+            border: 1px solid #eef2f6;
+        }
+        .filters {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .filter-input {
+            padding: 10px 16px;
+            border-radius: 40px;
+            border: 1px solid #cbd5e1;
+            background: white;
+            flex: 1;
+            min-width: 180px;
+        }
+        select.filter-input {
+            background: white;
+            cursor: pointer;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th {
+            text-align: left;
+            padding: 16px 12px;
+            background: #fafcff;
+            font-weight: 600;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        td {
+            padding: 14px 12px;
+            border-bottom: 1px solid #f1f5f9;
+            vertical-align: middle;
+        }
+        .prod-thumb {
+            width: 48px;
+            height: 48px;
+            object-fit: cover;
+            border-radius: 12px;
+            background: #f1f5f9;
+        }
+        .prod-thumb-ph {
+            width: 48px;
+            height: 48px;
+            background: #eef2ff;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        .badge-chip {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .badge-chip.best { background: #fef3c7; color: #b45309; }
+        .badge-chip.new { background: #d9f99d; color: #3f6212; }
+        .badge-chip.hot { background: #ffe4e6; color: #b91c1c; }
+        .tbl-actions { display: flex; gap: 8px; }
+        .btn-edit, .btn-del {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 5px 10px;
+            border-radius: 30px;
+        }
+        .btn-edit { background: #eef2ff; color: #1e40af; }
+        .btn-del { background: #fff1f0; color: #b91c1c; }
+        /* modal */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            visibility: hidden;
+            opacity: 0;
+            transition: 0.2s;
+        }
+        .modal-backdrop.open {
+            visibility: visible;
+            opacity: 1;
+        }
+        .modal {
+            background: white;
+            width: 90%;
+            max-width: 720px;
+            border-radius: 36px;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 24px 28px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 6px;
+        }
+        .form-control, select.form-control {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 20px;
+            border: 1px solid #cbd5e1;
+        }
+        .badge-selector {
+            display: flex;
+            gap: 12px;
+            margin: 8px 0;
+        }
+        .badge-opt {
+            padding: 6px 16px;
+            background: #f1f5f9;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        .badge-opt.sel { background: #0f172a; color: white; }
+        .img-upload-area {
+            border: 1px dashed #94a3b8;
+            border-radius: 24px;
+            padding: 12px;
+            text-align: center;
+            background: #fafcff;
+            cursor: pointer;
+        }
+        .preview-img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 16px;
+            margin-top: 8px;
+        }
+        .feature-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+        .del-feat {
+            background: #fee2e2;
+            border: none;
+            border-radius: 30px;
+            width: 32px;
+            cursor: pointer;
+        }
+        .toast {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: #1e293b;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 60px;
+            opacity: 0;
+            transition: 0.2s;
+            z-index: 1200;
+            pointer-events: none;
+        }
+        .toast.show { opacity: 1; }
+        .toast.err { background: #b91c1c; }
+        .activity-feed {
+            background: white;
+            border-radius: 24px;
+            padding: 12px;
+            margin-top: 20px;
+            max-height: 280px;
+            overflow-y: auto;
+        }
+        .activity-item {
+            display: flex;
+            gap: 12px;
+            padding: 12px;
+            border-bottom: 1px solid #edf2f7;
+        }
+        .activity-dot { width: 10px; height: 10px; border-radius: 10px; margin-top: 6px; }
+        .activity-dot.add { background: #2b9348; }
+        .activity-dot.edit { background: #e6a017; }
+        .activity-dot.del { background: #dc2626; }
+        .empty { text-align: center; padding: 40px; color: #64748b; }
+        @media (max-width: 700px) { .top-bar { flex-direction: column; align-items: stretch; } .nav-tabs { justify-content: center; } }
+    </style>
+    <!-- SINGLE SUPABASE SCRIPT TAG (NO DUPLICATE) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // ---------- SUPABASE INIT (single declaration) ----------
+        const SUPABASE_URL = "https://ceeezhukizoobknroovq.supabase.co";
+        const SUPABASE_ANON_KEY = "sb_publishable_3XHshryDBRniaiW5YEO03w_pUMH6gIG";
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const STORAGE_BUCKET = "product-images";
 
-.topbar{position:fixed;top:0;left:0;right:0;height:var(--topbar-h);background:var(--brown-deep);color:var(--cream);display:flex;align-items:center;justify-content:space-between;padding:0 20px 0 calc(var(--sidebar-w)+20px);z-index:100;box-shadow:var(--shadow-md);}
-.topbar-left{display:flex;align-items:center;gap:12px;}
-.topbar-title{font-family:'Rajdhani',sans-serif;font-size:1.15rem;font-weight:700;}
-.topbar-breadcrumb{font-size:0.75rem;color:var(--beige-dark);display:flex;align-items:center;gap:6px;}
-.topbar-right{display:flex;align-items:center;gap:10px;}
-.topbar-btn{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);color:var(--cream);padding:6px 14px;border-radius:30px;font-size:0.78rem;font-weight:600;cursor:pointer;text-decoration:none;font-family:'Outfit',sans-serif;transition:background 0.2s;}
-.topbar-btn:hover{background:rgba(255,255,255,0.2);}
-.topbar-btn.green{background:rgba(46,125,50,0.4);border-color:rgba(46,125,50,0.6);}
+        // App state
+        let productsList = [];
+        let editingId = null;
+        let selectedBadge = 'none';
+        let imgClosedFile = null;
+        let imgOpenFile = null;
+        let modalFeatures = ['','',''];
+        let pendingClosedURL = null, pendingOpenURL = null;
 
-.sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--brown-dark);color:var(--cream);display:flex;flex-direction:column;z-index:200;overflow-y:auto;}
-.sidebar-brand{height:var(--topbar-h);display:flex;align-items:center;gap:10px;padding:0 18px;border-bottom:1px solid rgba(255,255,255,0.08);flex-shrink:0;}
-.sidebar-brand-icon{font-family:'Rajdhani',sans-serif;font-size:1.3rem;font-weight:700;}
-.sidebar-brand-sub{font-size:0.65rem;opacity:0.5;margin-top:2px;}
-.sidebar-nav{flex:1;padding:12px 0;}
-.nav-section-label{font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--beige-dark);padding:14px 18px 6px;opacity:0.7;}
-.nav-item{display:flex;align-items:center;gap:10px;padding:10px 18px;font-size:0.85rem;font-weight:500;color:rgba(254,250,224,0.75);cursor:pointer;transition:all 0.2s;border-left:3px solid transparent;text-decoration:none;}
-.nav-item:hover{background:rgba(255,255,255,0.07);color:var(--cream);}
-.nav-item.active{background:rgba(255,255,255,0.1);color:var(--cream);border-left-color:var(--beige-dark);}
-.nav-item-icon{width:20px;text-align:center;font-size:1rem;opacity:0.8;}
-.sidebar-footer{padding:14px 18px;border-top:1px solid rgba(255,255,255,0.08);font-size:0.72rem;color:var(--beige-dark);opacity:0.6;}
+        // Helper functions
+        function escapeHtml(s){ return String(s||'').replace(/[&<>]/g,function(m){if(m==='&')return '&amp;';if(m==='<')return '&lt;';if(m==='>')return '&gt;';return m;});}
+        function toast(msg,isErr){ let t=document.getElementById('toast'); t.textContent=msg; t.className='toast'+(isErr?' err':'')+' show'; setTimeout(()=>t.classList.remove('show'),3500); }
+        function addActivity(type, msg) { let acts = JSON.parse(localStorage.getItem('securex_activity')||'[]'); acts.unshift({type,msg,time:new Date().toLocaleString()}); if(acts.length>30) acts.pop(); localStorage.setItem('securex_activity',JSON.stringify(acts)); renderActivity(); }
+        function renderActivity(){ let acts=JSON.parse(localStorage.getItem('securex_activity')||'[]'); let div=document.getElementById('activityList'); if(!acts.length){div.innerHTML='<div class="empty"><div>📝</div><p>No activity</p></div>';return;} div.innerHTML=acts.map(a=>`<div class="activity-item"><div class="activity-dot ${a.type}"></div><div class="activity-text">${escapeHtml(a.msg)}</div><div class="activity-time">${escapeHtml(a.time)}</div></div>`).join(''); }
 
-.main{margin-left:var(--sidebar-w);padding-top:var(--topbar-h);min-height:100vh;}
-.page{display:none;padding:24px;}
-.page.active{display:block;}
+        // Load products from Supabase
+        async function loadProducts(){
+            try{
+                let { data, error } = await supabaseClient.from('products').select('*').order('created_at', { ascending: false });
+                if(error) throw error;
+                productsList = data || [];
+                renderStats();
+                if(document.getElementById('page-products').classList.contains('active')) renderTable();
+                document.getElementById('storageInfo').innerHTML = `<strong>Total products:</strong> ${productsList.length}<br>🖼 Images stored in Supabase Storage`;
+                return productsList;
+            } catch(e){ toast('Failed to load products: '+e.message, true); return []; }
+        }
 
-/* Stats */
-.stats-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px;margin-bottom:24px;}
-.stat-card{background:var(--white);border-radius:var(--r-lg);padding:18px 20px;border:1px solid var(--beige);box-shadow:var(--shadow-sm);}
-.stat-card .num{font-family:'Rajdhani',sans-serif;font-size:2rem;font-weight:700;color:var(--brown-dark);line-height:1;}
-.stat-card .lbl{font-size:0.72rem;color:var(--brown-light);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;margin-top:4px;}
-.stat-card .trend{font-size:0.72rem;margin-top:6px;font-weight:600;}
-.trend.up{color:var(--green);}
-.trend.neu{color:var(--brown-light);}
+        function renderStats(){
+            let total = productsList.length;
+            document.getElementById('statsRow').innerHTML = `<div class="stat-card"><div class="num">${total}</div><div class="lbl">Products</div><div class="trend up">Supabase Cloud</div></div><div class="stat-card"><div class="num">6</div><div class="lbl">Categories</div></div><div class="stat-card"><div class="num">✓</div><div class="lbl">Real-time</div></div>`;
+            document.getElementById('prodCountBadge').innerText = total+' products';
+        }
 
-/* Panel */
-.panel{background:var(--white);border-radius:var(--r-lg);border:1px solid var(--beige);box-shadow:var(--shadow-sm);overflow:hidden;margin-bottom:24px;}
-.panel-head{padding:16px 20px;border-bottom:1px solid var(--beige-light);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
-.panel-head h2{font-family:'Rajdhani',sans-serif;font-size:1.05rem;font-weight:700;color:var(--brown-dark);}
-.panel-head-actions{display:flex;gap:8px;flex-wrap:wrap;}
-.search-box{border:1px solid var(--beige);background:var(--beige-light);border-radius:30px;padding:6px 14px;font-family:'Outfit',sans-serif;font-size:0.82rem;color:var(--brown-dark);outline:none;width:200px;transition:border 0.2s;}
-.search-box:focus{border-color:var(--brown);background:var(--white);}
-.cat-filter{border:1px solid var(--beige);background:var(--beige-light);border-radius:30px;padding:6px 14px;font-family:'Outfit',sans-serif;font-size:0.82rem;color:var(--brown-dark);outline:none;cursor:pointer;}
-.btn-add{background:var(--brown);color:var(--cream);border:none;padding:7px 16px;border-radius:30px;font-family:'Outfit',sans-serif;font-size:0.82rem;font-weight:700;cursor:pointer;transition:background 0.2s;display:flex;align-items:center;gap:6px;}
-.btn-add:hover{background:var(--brown-dark);}
+        function renderTable(){
+            let search = document.getElementById('searchInput').value.toLowerCase();
+            let cat = document.getElementById('catFilter').value;
+            let filtered = productsList.filter(p => (!search || p.title.toLowerCase().includes(search) || (p.description||'').toLowerCase().includes(search)) && (!cat || p.category===cat));
+            let tbody = document.getElementById('prodTbody');
+            if(!filtered.length){ tbody.innerHTML='<tr><td colspan="6"><div class="empty">🔍 No products</div></td></tr>'; return; }
+            tbody.innerHTML = filtered.map(p => {
+                let badgeClass = p.badge==='Bestseller'?'best':p.badge==='New'?'new':p.badge==='Hot'?'hot':'none';
+                let imgHtml = p.image_closed ? `<img class="prod-thumb" src="${escapeHtml(p.image_closed)}" onerror="this.style.display='none'">` : `<div class="prod-thumb-ph">📦</div>`;
+                return `<tr><td><div style="display:flex;gap:4px;">${imgHtml}</div></td><td class="prod-name">${escapeHtml(p.title)}</td><td><span class="prod-cat-badge">${escapeHtml(p.category||'')}</span></td><td>${p.badge?`<span class="badge-chip ${badgeClass}">${escapeHtml(p.badge)}</span>`:'—'}</td><td>${escapeHtml(p.price_text||'')}</td><td><div class="tbl-actions"><button class="btn-edit" onclick="openEditModal(${p.id})">✏ Edit</button><button class="btn-del" onclick="confirmDelete(${p.id})">🗑</button></div></td></tr>`;
+            }).join('');
+        }
 
-/* Product Table */
-.prod-table{width:100%;border-collapse:collapse;}
-.prod-table th{padding:10px 16px;text-align:left;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--brown-light);background:var(--beige-light);border-bottom:1px solid var(--beige);}
-.prod-table td{padding:12px 16px;border-bottom:1px solid var(--beige-light);font-size:0.85rem;color:var(--brown-dark);vertical-align:middle;}
-.prod-table tr:last-child td{border-bottom:none;}
-.prod-table tr:hover td{background:#faf7f1;}
-.prod-thumb{width:48px;height:48px;border-radius:8px;object-fit:cover;background:var(--beige);border:1px solid var(--beige-dark);}
-.prod-thumb-ph{width:48px;height:48px;border-radius:8px;background:var(--beige-light);border:1px solid var(--beige);display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:var(--brown-light);}
-.prod-name{font-weight:600;color:var(--brown-dark);}
-.prod-cat-badge{display:inline-block;background:var(--beige-light);border:1px solid var(--beige);color:var(--brown);font-size:0.7rem;font-weight:600;padding:3px 10px;border-radius:20px;}
-.badge-chip{display:inline-block;font-size:0.68rem;font-weight:700;padding:3px 9px;border-radius:20px;text-transform:uppercase;}
-.badge-chip.best{background:rgba(184,134,11,0.12);color:#7a5c05;border:1px solid rgba(184,134,11,0.3);}
-.badge-chip.new{background:rgba(46,125,50,0.12);color:#1b5e20;border:1px solid rgba(46,125,50,0.3);}
-.badge-chip.hot{background:rgba(198,40,40,0.12);color:#7f0000;border:1px solid rgba(198,40,40,0.3);}
-.badge-chip.none{background:var(--beige-light);color:var(--brown-light);border:1px solid var(--beige);}
-.tbl-actions{display:flex;gap:6px;}
-.btn-edit,.btn-del,.btn-view{border:none;border-radius:7px;padding:6px 12px;font-family:'Outfit',sans-serif;font-size:0.75rem;font-weight:600;cursor:pointer;transition:all 0.2s;}
-.btn-edit{background:var(--blue-light);color:var(--blue);}
-.btn-edit:hover{background:#bbdefb;}
-.btn-del{background:var(--red-light);color:var(--red);}
-.btn-del:hover{background:#ffcdd2;}
-.btn-view{background:var(--green-light);color:var(--green);}
-.btn-view:hover{background:#c8e6c9;}
+        // Image upload to storage
+        async function uploadImageToStorage(file, type){
+            if(!file) return null;
+            const ext = file.name.split('.').pop().toLowerCase();
+            const fileName = `${Date.now()}_${Math.random().toString(36).substring(2,8)}_${type}.${ext}`;
+            const filePath = `public/${fileName}`;
+            const { data, error } = await supabaseClient.storage.from(STORAGE_BUCKET).upload(filePath, file, { cacheControl: '3600', upsert: false });
+            if(error) throw new Error('Upload failed: '+error.message);
+            const { data: publicUrlData } = supabaseClient.storage.from(STORAGE_BUCKET).getPublicUrl(filePath);
+            return publicUrlData.publicUrl;
+        }
 
-/* Modal */
-.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:500;display:none;align-items:center;justify-content:center;padding:20px;}
-.modal-backdrop.open{display:flex;}
-.modal{background:var(--white);border-radius:var(--r-lg);width:100%;max-width:760px;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);}
-.modal-head{padding:18px 24px;border-bottom:1px solid var(--beige-light);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--white);z-index:2;}
-.modal-head h2{font-family:'Rajdhani',sans-serif;font-size:1.2rem;color:var(--brown-dark);}
-.modal-close{background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--brown-light);padding:4px 8px;border-radius:6px;transition:background 0.2s;}
-.modal-close:hover{background:var(--beige-light);}
-.modal-body{padding:24px;}
-.modal-footer{padding:16px 24px;border-top:1px solid var(--beige-light);display:flex;justify-content:flex-end;gap:10px;position:sticky;bottom:0;background:var(--white);}
+        async function deleteOldImageFromProduct(productId, imageType){
+            try{
+                let { data: prod, error } = await supabaseClient.from('products').select(`image_${imageType}`).eq('id',productId).single();
+                if(error || !prod || !prod[`image_${imageType}`]) return;
+                let oldUrl = prod[`image_${imageType}`];
+                let pathMatch = oldUrl.match(/\/storage\/v1\/object\/public\/product-images\/(.+)$/);
+                if(pathMatch && pathMatch[1]) await supabaseClient.storage.from(STORAGE_BUCKET).remove([pathMatch[1]]);
+            } catch(e){ console.warn("Could not delete old image", e); }
+        }
 
-/* Form */
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
-.form-group{margin-bottom:16px;}
-.form-label{display:block;font-weight:600;font-size:0.78rem;color:var(--brown);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.05em;}
-.form-label .req{color:var(--red);margin-left:2px;}
-.form-control{width:100%;padding:10px 14px;border:1.5px solid var(--beige);border-radius:9px;font-family:'Outfit',sans-serif;font-size:0.9rem;background:var(--beige-light);color:var(--brown-dark);outline:none;transition:border 0.2s,box-shadow 0.2s;}
-.form-control:focus{border-color:var(--brown);box-shadow:0 0 0 3px rgba(92,61,46,0.1);background:var(--white);}
-select.form-control{appearance:none;}
-textarea.form-control{resize:vertical;min-height:80px;line-height:1.55;}
+        async function deleteImageByUrl(url){
+            let match = url.match(/\/storage\/v1\/object\/public\/product-images\/(.+)$/);
+            if(match) await supabaseClient.storage.from(STORAGE_BUCKET).remove([match[1]]);
+        }
 
-/* Dual Image */
-.dual-img-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-.img-zone-wrap{position:relative;}
-.img-zone-label{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--brown-light);margin-bottom:6px;display:flex;align-items:center;gap:6px;}
-.img-upload-zone{border:2px dashed var(--beige-dark);border-radius:var(--r);padding:16px;text-align:center;cursor:pointer;position:relative;background:var(--beige-light);transition:all 0.2s;min-height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
-.img-upload-zone:hover{border-color:var(--brown);background:rgba(92,61,46,0.05);}
-.img-upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;}
-.img-upload-zone .up-icon{font-size:1.6rem;margin-bottom:4px;}
-.img-preview-wrap{position:relative;border-radius:var(--r);overflow:hidden;margin-top:8px;}
-.img-preview-wrap img{width:100%;height:120px;object-fit:cover;display:block;}
-.img-preview-wrap .rm-img{position:absolute;top:6px;right:6px;background:rgba(198,40,40,0.9);color:#fff;border:none;border-radius:50%;width:22px;height:22px;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
-.upload-progress{margin-top:8px;display:none;}
-.upload-progress-bar{height:3px;background:var(--beige);border-radius:2px;overflow:hidden;}
-.upload-progress-fill{height:100%;background:linear-gradient(90deg,var(--brown),var(--gold));width:0;transition:width 0.4s;}
-/* Features */
-.features-list{display:flex;flex-direction:column;gap:7px;}
-.feature-row{display:flex;gap:7px;}
-.feature-row .form-control{flex:1;}
-.del-feat{background:var(--beige-light);border:1px solid var(--beige);border-radius:7px;padding:8px 10px;color:var(--brown-light);cursor:pointer;}
-.del-feat:hover{background:var(--red-light);color:var(--red);}
-.add-feat-btn{margin-top:7px;width:100%;background:var(--beige-light);border:1.5px dashed var(--beige-dark);border-radius:8px;padding:8px;font-weight:600;cursor:pointer;}
-/* Badge opts */
-.badge-opts{display:flex;gap:7px;flex-wrap:wrap;margin-top:4px;}
-.badge-opt{padding:6px 14px;border-radius:30px;font-size:0.75rem;font-weight:700;cursor:pointer;border:2px solid transparent;opacity:0.55;}
-.badge-opt.sel{opacity:1;transform:scale(1.04);}
-.badge-opt[data-b=none]{background:var(--beige-light);color:var(--brown-light);}
-.badge-opt[data-b=Bestseller]{background:rgba(184,134,11,0.1);color:#7a5c05;}
-.badge-opt[data-b=New]{background:rgba(46,125,50,0.1);color:var(--green);}
-.badge-opt[data-b=Hot]{background:rgba(198,40,40,0.1);color:var(--red);}
-/* Buttons */
-.btn-cancel{background:var(--beige-light);border:1px solid var(--beige-dark);color:var(--brown);padding:9px 20px;border-radius:30px;font-weight:600;cursor:pointer;}
-.btn-save{background:var(--brown);border:none;color:var(--cream);padding:10px 24px;border-radius:30px;font-weight:700;cursor:pointer;}
-/* Toast */
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--green);color:#fff;padding:10px 22px;border-radius:40px;font-weight:600;z-index:9999;transition:transform 0.4s;opacity:0;}
-.toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
-.toast.err{background:var(--red);}
-.confirm-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:600;display:none;align-items:center;justify-content:center;}
-.confirm-backdrop.open{display:flex;}
-.confirm-box{background:var(--white);border-radius:var(--r-lg);padding:28px;max-width:380px;width:90%;text-align:center;}
-.confirm-btns{display:flex;gap:10px;justify-content:center;}
-.btn-confirm-ok{background:var(--red);color:#fff;border:none;padding:9px 22px;border-radius:30px;font-weight:700;}
-.btn-confirm-cancel{background:var(--beige-light);border:1px solid var(--beige-dark);color:var(--brown);padding:9px 22px;border-radius:30px;}
-.activity-list{display:flex;flex-direction:column;}
-.activity-item{display:flex;align-items:center;gap:12px;padding:12px 18px;border-bottom:1px solid var(--beige-light);}
-.activity-dot{width:8px;height:8px;border-radius:50%;}
-.activity-dot.add{background:var(--green);}
-.activity-dot.edit{background:var(--blue);}
-.activity-dot.del{background:var(--red);}
-.activity-text{flex:1;font-size:0.83rem;}
-.info-box{background:rgba(21,101,192,0.08);border:1px solid rgba(21,101,192,0.2);border-radius:var(--r);padding:12px 16px;font-size:0.8rem;color:var(--blue);margin-bottom:16px;}
-@media(max-width:900px){
-  .topbar{padding-left:70px;}
-  .sidebar{width:56px;}
-  .sidebar-brand-icon, .nav-item span:not(.nav-item-icon){display:none;}
-  .main{margin-left:56px;}
-  .form-row,.dual-img-row{grid-template-columns:1fr;}
-}
-</style>
+        // Save product
+        async function saveProduct(){
+            let title = document.getElementById('prodName').value.trim();
+            let category = document.getElementById('prodCat').value;
+            let description = document.getElementById('prodDesc').value.trim();
+            let price_text = document.getElementById('prodPrice').value.trim();
+            let badge = selectedBadge==='none'?'':selectedBadge;
+            let features = modalFeatures.filter(f=>f.trim());
+            if(!title){ toast('Product name required',true); return; }
+            if(!category){ toast('Select category',true); return; }
+            if(!imgClosedFile && !pendingClosedURL && !editingId){ toast('Closed image required',true); return; }
+            
+            let closedURL = pendingClosedURL;
+            let openURL = pendingOpenURL;
+            try {
+                if(imgClosedFile){
+                    closedURL = await uploadImageToStorage(imgClosedFile, 'closed');
+                    if(editingId) await deleteOldImageFromProduct(editingId, 'closed');
+                }
+                if(imgOpenFile){
+                    openURL = await uploadImageToStorage(imgOpenFile, 'open');
+                    if(editingId) await deleteOldImageFromProduct(editingId, 'open');
+                }
+                const productData = { title, category, description, price_text, badge, features, image_closed: closedURL, image_open: openURL };
+                if(editingId){
+                    const { error } = await supabaseClient.from('products').update(productData).eq('id', editingId);
+                    if(error) throw error;
+                    addActivity('edit', `Updated "${title}"`);
+                    toast(`✅ "${title}" updated`);
+                } else {
+                    const { error } = await supabaseClient.from('products').insert([productData]);
+                    if(error) throw error;
+                    addActivity('add', `Added "${title}"`);
+                    toast(`✅ "${title}" added`);
+                }
+                closeModal();
+                await loadProducts();
+                if(document.getElementById('page-products').classList.contains('active')) renderTable();
+                renderStats();
+            } catch(e){ toast('Error saving: '+e.message, true); }
+        }
+
+        async function confirmDelete(id){
+            let prod = productsList.find(p=>p.id===id);
+            document.getElementById('confirmTitle').innerText='Delete Product?';
+            document.getElementById('confirmMsg').innerText=`Delete "${prod?.title}"? Images will be removed.`;
+            document.getElementById('confirmOkBtn').onclick = async ()=>{
+                try{
+                    if(prod?.image_closed) await deleteImageByUrl(prod.image_closed);
+                    if(prod?.image_open) await deleteImageByUrl(prod.image_open);
+                    const { error } = await supabaseClient.from('products').delete().eq('id', id);
+                    if(error) throw error;
+                    addActivity('del', `Deleted "${prod?.title}"`);
+                    toast('Product deleted');
+                    await loadProducts();
+                    renderTable();
+                    renderStats();
+                    closeConfirm();
+                } catch(e){ toast('Delete failed: '+e.message, true); }
+            };
+            document.getElementById('confirmBackdrop').classList.add('open');
+        }
+
+        async function clearAllProductsFromSupabase(){
+            if(!confirm("⚠️ DELETE ALL PRODUCTS? This action is permanent.")) return;
+            for(let p of productsList){
+                if(p.image_closed) await deleteImageByUrl(p.image_closed);
+                if(p.image_open) await deleteImageByUrl(p.image_open);
+            }
+            let { error } = await supabaseClient.from('products').delete().neq('id', 0);
+            if(error) toast('Error: '+error.message, true);
+            else { toast('All products cleared'); await loadProducts(); renderTable(); renderStats(); addActivity('del','Deleted all products'); }
+        }
+
+        function openAddModal(){
+            editingId=null; resetModalForm(); document.getElementById('modalTitle').innerText='Add New Product'; document.getElementById('modalBackdrop').classList.add('open');
+        }
+        async function openEditModal(id){
+            let prod = productsList.find(p=>p.id===id);
+            if(!prod) return;
+            editingId=id;
+            resetModalForm();
+            document.getElementById('prodName').value=prod.title||'';
+            document.getElementById('prodCat').value=prod.category||'';
+            document.getElementById('prodDesc').value=prod.description||'';
+            document.getElementById('prodPrice').value=prod.price_text||'';
+            selectedBadge=prod.badge||'none';
+            document.querySelectorAll('.badge-opt').forEach(b=>b.classList.toggle('sel',b.getAttribute('data-b')===selectedBadge));
+            modalFeatures = Array.isArray(prod.features) && prod.features.length ? prod.features : [''];
+            renderModalFeatures();
+            if(prod.image_closed){
+                pendingClosedURL = prod.image_closed;
+                document.getElementById('previewImgClosed').src=prod.image_closed;
+                document.getElementById('imgPreviewWrapClosed').style.display='block';
+                document.getElementById('uploadZoneClosed').style.display='none';
+            }
+            if(prod.image_open){
+                pendingOpenURL = prod.image_open;
+                document.getElementById('previewImgOpen').src=prod.image_open;
+                document.getElementById('imgPreviewWrapOpen').style.display='block';
+                document.getElementById('uploadZoneOpen').style.display='none';
+            }
+            document.getElementById('modalTitle').innerText='Edit Product';
+            document.getElementById('modalBackdrop').classList.add('open');
+        }
+        function resetModalForm(){
+            editingId=null; selectedBadge='none'; imgClosedFile=null; imgOpenFile=null; pendingClosedURL=null; pendingOpenURL=null;
+            document.getElementById('prodName').value=''; document.getElementById('prodCat').value=''; document.getElementById('prodDesc').value=''; document.getElementById('prodPrice').value='';
+            document.querySelectorAll('.badge-opt').forEach(b=>b.classList.toggle('sel',b.getAttribute('data-b')==='none'));
+            modalFeatures=['','','']; renderModalFeatures();
+            document.getElementById('imgPreviewWrapClosed').style.display='none'; document.getElementById('uploadZoneClosed').style.display='flex';
+            document.getElementById('imgPreviewWrapOpen').style.display='none'; document.getElementById('uploadZoneOpen').style.display='flex';
+            document.getElementById('imgInputClosed').value=''; document.getElementById('imgInputOpen').value='';
+        }
+        function handleImgFile(file, type){
+            if(!file || !file.type.startsWith('image/')){ toast('Only images allowed',true); return; }
+            if(type==='closed'){ imgClosedFile=file; pendingClosedURL=null; const reader=new FileReader(); reader.onload=e=>{ document.getElementById('previewImgClosed').src=e.target.result; document.getElementById('imgPreviewWrapClosed').style.display='block'; document.getElementById('uploadZoneClosed').style.display='none'; }; reader.readAsDataURL(file); }
+            else{ imgOpenFile=file; pendingOpenURL=null; const reader=new FileReader(); reader.onload=e=>{ document.getElementById('previewImgOpen').src=e.target.result; document.getElementById('imgPreviewWrapOpen').style.display='block'; document.getElementById('uploadZoneOpen').style.display='none'; }; reader.readAsDataURL(file); }
+        }
+        function removeImg(type){ if(type==='closed'){ imgClosedFile=null; pendingClosedURL=null; document.getElementById('imgPreviewWrapClosed').style.display='none'; document.getElementById('uploadZoneClosed').style.display='flex'; } else { imgOpenFile=null; pendingOpenURL=null; document.getElementById('imgPreviewWrapOpen').style.display='none'; document.getElementById('uploadZoneOpen').style.display='flex'; } }
+        function renderModalFeatures(){ let list=document.getElementById('featuresList'); list.innerHTML=modalFeatures.map((v,i)=>`<div class="feature-row"><input type="text" class="form-control" value="${escapeHtml(v)}" oninput="modalFeatures[${i}]=this.value"><button class="del-feat" onclick="removeFeature(${i})">✕</button></div>`).join(''); }
+        function addFeature(){ modalFeatures.push(''); renderModalFeatures(); }
+        function removeFeature(i){ modalFeatures.splice(i,1); renderModalFeatures(); }
+        document.getElementById('badgeOpts')?.addEventListener('click',e=>{ let opt=e.target.closest('.badge-opt'); if(opt){ selectedBadge=opt.getAttribute('data-b'); document.querySelectorAll('.badge-opt').forEach(b=>b.classList.toggle('sel',b===opt)); } });
+        function closeModal(){ document.getElementById('modalBackdrop').classList.remove('open'); resetModalForm(); }
+        function closeModalOutside(e){ if(e.target===document.getElementById('modalBackdrop')) closeModal(); }
+        function closeConfirm(){ document.getElementById('confirmBackdrop').classList.remove('open'); }
+        function exportJSON(){ let blob=new Blob([JSON.stringify(productsList,null,2)],{type:'application/json'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='securex-supabase-backup.json'; a.click(); toast('Exported '+productsList.length+' products'); }
+        function importJSON(input){ let file=input.files[0]; if(!file) return; let reader=new FileReader(); reader.onload=async function(e){ try{ let data=JSON.parse(e.target.result); if(!Array.isArray(data)) throw new Error(); for(let p of data){ delete p.id; delete p.created_at; let {error}=await supabaseClient.from('products').insert([p]); if(error) console.warn(error); } toast('Imported '+data.length+' products'); await loadProducts(); renderTable(); }catch(err){ toast('Invalid JSON',true); } }; reader.readAsText(file); input.value=''; }
+        async function testSupabaseConnection(){ try{ let { data, error } = await supabaseClient.from('products').select('id', { count:'exact', head:true }); if(error) throw error; toast('✅ Supabase connected! Products table ready.', false); document.getElementById('supaStatusMsg').innerHTML='✅ Connected successfully'; }catch(e){ toast('Connection error: '+e.message, true); } }
+        function goPage(page){
+            document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+            document.getElementById(`page-${page}`).classList.add('active');
+            if(page==='products') renderTable();
+            if(page==='dashboard') { renderStats(); renderActivity(); }
+        }
+        document.getElementById('searchInput')?.addEventListener('input',()=>renderTable());
+        document.getElementById('catFilter')?.addEventListener('change',()=>renderTable());
+
+        // bootstrap: load data
+        loadProducts();
+        renderActivity();
+        testSupabaseConnection();
+    </script>
 </head>
 <body>
-
-<aside class="sidebar">
-  <div class="sidebar-brand"><div><div class="sidebar-brand-icon">🏭 SECUREX</div><div class="sidebar-brand-sub">Supabase Admin</div></div></div>
-  <nav class="sidebar-nav">
-    <div class="nav-section-label">Main</div>
-    <a class="nav-item active" data-page="dashboard" onclick="goPage('dashboard')"><span class="nav-item-icon">📊</span><span>Dashboard</span></a>
-    <a class="nav-item" data-page="products" onclick="goPage('products')"><span class="nav-item-icon">📦</span><span>All Products</span></a>
-    <a class="nav-item" onclick="openAddModal();goPage('products')"><span class="nav-item-icon">➕</span><span>Add New</span></a>
-    <div class="nav-section-label">Tools</div>
-    <a class="nav-item" onclick="exportJSON()"><span class="nav-item-icon">📤</span><span>Export JSON</span></a>
-    <label class="nav-item" style="cursor:pointer;"><span class="nav-item-icon">📥</span><span>Import JSON</span><input type="file" accept=".json" onchange="importJSON(this)" style="display:none;"></label>
-    <a class="nav-item" href="./" target="_blank"><span class="nav-item-icon">🏠</span><span>Homepage</span></a>
-  </nav>
-  <div class="sidebar-footer">SECUREX © 2026</div>
-</aside>
-
-<div class="topbar">
-  <div class="topbar-left"><div class="topbar-title" id="pageTitle">Dashboard</div><div class="topbar-breadcrumb"><span>Admin</span><span>›</span><span>Dashboard</span></div></div>
-  <div class="topbar-right"><span id="dbStatusBadge" class="topbar-btn" style="cursor:default;">🔌 Supabase</span><button class="topbar-btn" onclick="testSupabaseConnection()">🔄 Test DB</button><a href="./" target="_blank" class="topbar-btn green">🛍 View Site</a></div>
-</div>
-
-<div class="main">
-  <div class="page active" id="page-dashboard">
-    <div class="stats-row" id="statsRow"></div>
-    <div class="quick-actions" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;margin-bottom:24px;">
-      <div class="qa-btn" style="background:var(--white);border:1px solid var(--beige);border-radius:var(--r-lg);padding:18px;text-align:center;cursor:pointer;" onclick="openAddModal();goPage('products')"><div class="qa-icon">➕</div><div class="qa-lbl">Add Product</div><div class="qa-sub">New to catalog</div></div>
-      <div class="qa-btn" style="background:var(--white);border:1px solid var(--beige);border-radius:var(--r-lg);padding:18px;text-align:center;cursor:pointer;" onclick="goPage('products')"><div class="qa-icon">📋</div><div class="qa-lbl">Manage Products</div><div class="qa-sub">Edit / delete</div></div>
-      <div class="qa-btn" style="background:var(--white);border:1px solid var(--beige);border-radius:var(--r-lg);padding:18px;text-align:center;cursor:pointer;" onclick="exportJSON()"><div class="qa-icon">📤</div><div class="qa-lbl">Export Backup</div><div class="qa-sub">JSON format</div></div>
+<div class="app-container">
+    <div class="top-bar">
+        <div class="logo"><h1>🛡️ SecureX Admin <span>Supabase + Storage</span></h1></div>
+        <div class="nav-tabs">
+            <button class="nav-btn active" onclick="goPage('dashboard')">📊 Dashboard</button>
+            <button class="nav-btn" onclick="goPage('products')">📦 Products</button>
+        </div>
+        <div class="action-buttons">
+            <button class="btn-primary" onclick="openAddModal()">+ New Product</button>
+            <button class="btn-outline" onclick="exportJSON()">📁 Export JSON</button>
+            <label class="btn-outline" style="cursor:pointer">📂 Import JSON <input type="file" accept=".json" style="display:none" onchange="importJSON(this)"></label>
+            <button class="btn-outline btn-danger" onclick="clearAllProductsFromSupabase()">🗑️ Clear All</button>
+        </div>
     </div>
-    <div class="panel"><div class="panel-head"><h2>📋 Recent Activity</h2></div><div id="activityList" class="activity-list"></div></div>
-  </div>
 
-  <div class="page" id="page-products">
-    <div class="panel">
-      <div class="panel-head"><h2>📦 All Products <span id="prodCountBadge" style="font-size:0.75rem;background:var(--beige);padding:2px 10px;border-radius:20px;"></span></h2>
-        <div class="panel-head-actions"><input class="search-box" type="text" placeholder="🔍 Search..." id="searchInput" oninput="renderTable()"><select class="cat-filter" id="catFilter" onchange="renderTable()"><option value="">All Categories</option><option value="almirah-home">Home Almirah</option><option value="almirah-office">Office Almirah</option><option value="almirah-dressing">Dressing Almirah</option><option value="locker">Locker</option><option value="bookshelf">BookShelf</option><option value="showcase">Glass Showcase</option></select><button class="btn-add" onclick="openAddModal()">➕ Add New</button></div>
-      </div>
-      <div style="overflow-x:auto;"><table class="prod-table"><thead><tr><th>Images</th><th>Product Name</th><th>Category</th><th>Badge</th><th>Price</th><th>Actions</th></tr></thead><tbody id="prodTbody"></tbody></table></div>
+    <!-- Dashboard page -->
+    <div id="page-dashboard" class="page active">
+        <div class="stats-grid" id="statsRow"></div>
+        <div style="background:white; border-radius:28px; padding:16px 20px; margin-top:12px;">
+            <h3>📡 Supabase Status</h3>
+            <div id="supaStatusMsg" style="color:#2c6e2c;">Testing connection...</div>
+            <div id="storageInfo" style="margin-top: 12px; font-size:0.9rem;"></div>
+        </div>
+        <div class="activity-feed">
+            <h4>📋 Recent Activity</h4>
+            <div id="activityList"></div>
+        </div>
     </div>
-  </div>
 
-  <div class="page" id="page-settings">
-    <div class="panel" style="max-width:700px;"><div class="panel-head"><h2>⚙️ Supabase Status</h2></div>
-      <div style="padding:24px;"><div class="info-box"><strong>☁️ Products stored in Supabase</strong><br>Images uploaded to product-images bucket. Changes reflect instantly across all devices.</div>
-      <div style="background:#0d1117;color:#e6edf3;border-radius:var(--r-lg);padding:20px;margin-bottom:20px;"><h3 style="color:#58a6ff;">🗄 Database Connection</h3><p id="supaStatusMsg" style="font-size:0.8rem;margin:10px 0;">✅ Using preconfigured Supabase</p><button onclick="testSupabaseConnection()" style="background:#238636;border:none;color:#fff;padding:8px 16px;border-radius:8px;">Test Connection</button></div>
-      <div class="settings-card"><h3>📊 Storage Info</h3><div id="storageInfo" style="font-size:0.85rem;"></div></div>
-      <div class="settings-card"><h3>🗑 Danger Zone</h3><button onclick="clearAllProductsFromSupabase()" style="background:var(--red-light);border:1px solid var(--red);color:var(--red);padding:8px 18px;border-radius:7px;font-weight:600;cursor:pointer;">🗑 Delete ALL Products (Supabase)</button></div>
-    </div></div>
-  </div>
+    <!-- Products page -->
+    <div id="page-products" class="page">
+        <div class="filters">
+            <input type="text" id="searchInput" class="filter-input" placeholder="🔍 Search products...">
+            <select id="catFilter" class="filter-input">
+                <option value="">All Categories</option>
+                <option value="Faces">Faces</option>
+                <option value="Body">Body</option>
+                <option value="Hair">Hair</option>
+                <option value="Fragrance">Fragrance</option>
+                <option value="Tools">Tools</option>
+                <option value="Skincare">Skincare</option>
+            </select>
+            <div id="prodCountBadge" style="background:#eef2ff; padding: 6px 16px; border-radius:30px;"></div>
+        </div>
+        <div class="table-container">
+            <table>
+                <thead><tr><th>Image</th><th>Name</th><th>Category</th><th>Badge</th><th>Price</th><th>Actions</th></tr></thead>
+                <tbody id="prodTbody"><tr><td colspan="6"><div class="empty">Loading products...</div></td></tr></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- MODAL (add/edit) -->
+    <div id="modalBackdrop" class="modal-backdrop" onclick="closeModalOutside(event)">
+        <div class="modal">
+            <h2 id="modalTitle">Add Product</h2>
+            <div class="form-group"><label>Product Name *</label><input id="prodName" class="form-control"></div>
+            <div class="form-group"><label>Category *</label><select id="prodCat" class="form-control"><option value="">Select</option><option>Faces</option><option>Body</option><option>Hair</option><option>Fragrance</option><option>Tools</option><option>Skincare</option></select></div>
+            <div class="form-group"><label>Description</label><textarea id="prodDesc" rows="2" class="form-control"></textarea></div>
+            <div class="form-group"><label>Price text (e.g., $29)</label><input id="prodPrice" class="form-control"></div>
+            <div class="form-group"><label>Badge</label><div id="badgeOpts" class="badge-selector"><div data-b="none" class="badge-opt sel">None</div><div data-b="Bestseller" class="badge-opt">🔥 Bestseller</div><div data-b="New" class="badge-opt">✨ New</div><div data-b="Hot" class="badge-opt">⚡ Hot</div></div></div>
+            <div class="form-group"><label>Features (optional)</label><div id="featuresList"></div><button type="button" onclick="addFeature()" class="btn-outline" style="margin-top:6px;">+ Add feature</button></div>
+            <div class="form-group"><label>📸 Closed package image *</label><div id="uploadZoneClosed" class="img-upload-area" onclick="document.getElementById('imgInputClosed').click()">Click or drag to upload closed image</div><input type="file" id="imgInputClosed" style="display:none" accept="image/*" onchange="handleImgFile(this.files[0],'closed')"><div id="imgPreviewWrapClosed" style="display:none"><img id="previewImgClosed" class="preview-img"><button onclick="removeImg('closed')" class="btn-outline" style="margin-top:6px;">Remove</button></div></div>
+            <div class="form-group"><label>📖 Open box image (optional)</label><div id="uploadZoneOpen" class="img-upload-area" onclick="document.getElementById('imgInputOpen').click()">Upload open image</div><input type="file" id="imgInputOpen" style="display:none" accept="image/*" onchange="handleImgFile(this.files[0],'open')"><div id="imgPreviewWrapOpen" style="display:none"><img id="previewImgOpen" class="preview-img"><button onclick="removeImg('open')" class="btn-outline">Remove</button></div></div>
+            <div style="display:flex; gap:12px; justify-content:flex-end;"><button class="btn-outline" onclick="closeModal()">Cancel</button><button class="btn-primary" onclick="saveProduct()">Save Product</button></div>
+        </div>
+    </div>
+
+    <!-- Confirm delete modal -->
+    <div id="confirmBackdrop" class="modal-backdrop" onclick="if(event.target===this) closeConfirm()">
+        <div class="modal" style="max-width:400px;"><h3 id="confirmTitle">Confirm delete</h3><p id="confirmMsg"></p><div style="display:flex; gap:12px; justify-content:flex-end;"><button class="btn-outline" onclick="closeConfirm()">Cancel</button><button id="confirmOkBtn" class="btn-primary btn-danger">Delete</button></div></div>
+    </div>
+    <div id="toast" class="toast"></div>
 </div>
-
-<!-- MODALS -->
-<div class="modal-backdrop" id="modalBackdrop" onclick="closeModalOutside(event)"><div class="modal"><div class="modal-head"><h2 id="modalTitle">Add New Product</h2><button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-body">
-  <div class="form-group"><label class="form-label">Product Images <span class="req">*</span></label><div class="dual-img-row">
-    <div class="img-zone-wrap"><div class="img-zone-label">🚪 Closed Image <span class="tag">Required</span></div><div class="img-upload-zone" id="uploadZoneClosed"><input type="file" id="imgInputClosed" accept="image/*" onchange="handleImgFile(this.files[0],'closed')"><div class="up-icon">📷</div><div class="up-txt">Click or drag</div></div><div id="imgPreviewWrapClosed" style="display:none;" class="img-preview-wrap"><img id="previewImgClosed"><button class="rm-img" onclick="removeImg('closed')">✕</button></div></div>
-    <div class="img-zone-wrap"><div class="img-zone-label">🔓 Open Image <span class="tag">Optional</span></div><div class="img-upload-zone" id="uploadZoneOpen"><input type="file" id="imgInputOpen" accept="image/*" onchange="handleImgFile(this.files[0],'open')"><div class="up-icon">📸</div><div class="up-txt">Click or drag</div></div><div id="imgPreviewWrapOpen" style="display:none;" class="img-preview-wrap"><img id="previewImgOpen"><button class="rm-img" onclick="removeImg('open')">✕</button></div></div>
-  </div></div>
-  <div class="form-group"><label class="form-label">Product Name <span class="req">*</span></label><input type="text" class="form-control" id="prodName" placeholder="e.g. SECUREX 2-Door Steel Almirah"></div>
-  <div class="form-row"><div class="form-group"><label class="form-label">Category</label><select class="form-control" id="prodCat"><option value="">— Select —</option><option value="almirah-home">Home Almirah</option><option value="almirah-office">Office Almirah</option><option value="almirah-dressing">Dressing Almirah</option><option value="locker">Locker</option><option value="bookshelf">BookShelf</option><option value="showcase">Glass Showcase</option></select></div>
-  <div class="form-group"><label class="form-label">Badge</label><div class="badge-opts" id="badgeOpts"><div class="badge-opt sel" data-b="none">None</div><div class="badge-opt" data-b="Bestseller">⭐ Bestseller</div><div class="badge-opt" data-b="New">🟢 New</div><div class="badge-opt" data-b="Hot">🔴 Hot</div></div></div></div>
-  <div class="form-group"><label class="form-label">Price Text</label><input class="form-control" id="prodPrice" placeholder="e.g. ₹18,999 / MRP ₹24,999"></div>
-  <div class="form-group"><label class="form-label">Description</label><textarea class="form-control" id="prodDesc" placeholder="Short description..."></textarea></div>
-  <div class="form-group"><label class="form-label">Key Features</label><div class="features-list" id="featuresList"></div><button class="add-feat-btn" onclick="addFeature()">+ Add Feature</button></div>
-</div><div class="modal-footer"><button class="btn-cancel" onclick="closeModal()">Cancel</button><button class="btn-save" onclick="saveProduct()">✅ Save Product</button></div></div></div>
-
-<div class="confirm-backdrop" id="confirmBackdrop"><div class="confirm-box"><h3 id="confirmTitle">Delete Product?</h3><p id="confirmMsg"></p><div class="confirm-btns"><button class="btn-confirm-cancel" onclick="closeConfirm()">Cancel</button><button class="btn-confirm-ok" id="confirmOkBtn">Delete</button></div></div></div>
-<div class="toast" id="toast"></div>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-// ---------- SUPABASE INIT ----------
-const SUPABASE_URL = "https://ceeezhukizoobknroovq.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_3XHshryDBRniaiW5YEO03w_pUMH6gIG";
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-const STORAGE_BUCKET = "product-images";
-
-let productsList = [];        // all products from DB
-let editingId = null;
-let selectedBadge = 'none';
-let imgClosedFile = null;     // store File object for new upload
-let imgOpenFile = null;
-let modalFeatures = ['','',''];
-let pendingClosedURL = null, pendingOpenURL = null; // used when editing existing product but user didn't change image
-
-// activity log helper (local only)
-function addActivity(type, msg) { let acts = JSON.parse(localStorage.getItem('securex_activity')||'[]'); acts.unshift({type,msg,time:new Date().toLocaleString()}); if(acts.length>30) acts.pop(); localStorage.setItem('securex_activity',JSON.stringify(acts)); renderActivity(); }
-function renderActivity(){ let acts=JSON.parse(localStorage.getItem('securex_activity')||'[]'); let div=document.getElementById('activityList'); if(!acts.length){div.innerHTML='<div class="empty"><div>📝</div><p>No activity</p></div>';return;} div.innerHTML=acts.map(a=>`<div class="activity-item"><div class="activity-dot ${a.type}"></div><div class="activity-text">${escapeHtml(a.msg)}</div><div class="activity-time">${escapeHtml(a.time)}</div></div>`).join(''); }
-function escapeHtml(s){ return String(s||'').replace(/[&<>]/g,function(m){if(m==='&')return '&amp;';if(m==='<')return '&lt;';if(m==='>')return '&gt;';return m;});}
-function toast(msg,isErr){ let t=document.getElementById('toast'); t.textContent=msg; t.className='toast'+(isErr?' err':'')+' show'; setTimeout(()=>t.classList.remove('show'),3500); }
-
-// ---------- LOAD PRODUCTS FROM SUPABASE ----------
-async function loadProducts(){
-  try {
-    let { data, error } = await supabase.from('products').select('*').order('created_at', { ascending: false });
-    if(error) throw error;
-    productsList = data || [];
-    renderStats();
-    if(document.getElementById('page-products').classList.contains('active')) renderTable();
-    document.getElementById('storageInfo').innerHTML = `<strong>Total products:</strong> ${productsList.length}<br>🖼 Images stored in Supabase Storage (cross-device)`;
-    return productsList;
-  } catch(e){ toast('Failed to load products: '+e.message, true); return []; }
-}
-
-function renderStats(){
-  let total = productsList.length;
-  document.getElementById('statsRow').innerHTML = `<div class="stat-card"><div class="num">${total}</div><div class="lbl">Products</div><div class="trend up">Supabase Cloud</div></div><div class="stat-card"><div class="num">6</div><div class="lbl">Categories</div></div><div class="stat-card"><div class="num">✓</div><div class="lbl">Real-time</div></div>`;
-  document.getElementById('prodCountBadge').innerText = total+' products';
-}
-
-function renderTable(){
-  let search = document.getElementById('searchInput').value.toLowerCase();
-  let cat = document.getElementById('catFilter').value;
-  let filtered = productsList.filter(p => (!search || p.title.toLowerCase().includes(search) || (p.description||'').toLowerCase().includes(search)) && (!cat || p.category===cat));
-  let tbody = document.getElementById('prodTbody');
-  if(!filtered.length){ tbody.innerHTML='<tr><td colspan="6"><div class="empty">🔍 No products</div></td></tr>'; return; }
-  tbody.innerHTML = filtered.map(p => {
-    let badgeClass = p.badge==='Bestseller'?'best':p.badge==='New'?'new':p.badge==='Hot'?'hot':'none';
-    let imgHtml = p.image_closed ? `<img class="prod-thumb" src="${escapeHtml(p.image_closed)}" onerror="this.style.display='none'">` : `<div class="prod-thumb-ph">📦</div>`;
-    return `<tr><td><div style="display:flex;gap:4px;">${imgHtml}</div></td><td class="prod-name">${escapeHtml(p.title)}</td><td><span class="prod-cat-badge">${escapeHtml(p.category||'')}</span></td><td>${p.badge?`<span class="badge-chip ${badgeClass}">${escapeHtml(p.badge)}</span>`:'—'}</td><td>${escapeHtml(p.price_text||'')}</td><td><div class="tbl-actions"><button class="btn-edit" onclick="openEditModal(${p.id})">✏ Edit</button><button class="btn-del" onclick="confirmDelete(${p.id})">🗑</button></div></td></tr>`;
-  }).join('');
-}
-
-// ---------- CRUD OPERATIONS ----------
-async function saveProduct(){
-  let title = document.getElementById('prodName').value.trim();
-  let category = document.getElementById('prodCat').value;
-  let description = document.getElementById('prodDesc').value.trim();
-  let price_text = document.getElementById('prodPrice').value.trim();
-  let badge = selectedBadge==='none'?'':selectedBadge;
-  let features = modalFeatures.filter(f=>f.trim());
-  if(!title){ toast('Product name required',true); return; }
-  if(!category){ toast('Select category',true); return; }
-  if(!imgClosedFile && !pendingClosedURL && !editingId){ toast('Closed image required',true); return; }
-  
-  let closedURL = pendingClosedURL;
-  let openURL = pendingOpenURL;
-  try {
-    // upload new images if any
-    if(imgClosedFile){
-      closedURL = await uploadImageToStorage(imgClosedFile, 'closed');
-      if(editingId) deleteOldImageFromProduct(editingId, 'closed');
-    }
-    if(imgOpenFile){
-      openURL = await uploadImageToStorage(imgOpenFile, 'open');
-      if(editingId) deleteOldImageFromProduct(editingId, 'open');
-    }
-    const productData = { title, category, description, price_text, badge, features, image_closed: closedURL, image_open: openURL };
-    if(editingId){
-      const { error } = await supabase.from('products').update(productData).eq('id', editingId);
-      if(error) throw error;
-      addActivity('edit', `Updated "${title}"`);
-      toast(`✅ "${title}" updated`);
-    } else {
-      const { error } = await supabase.from('products').insert([productData]);
-      if(error) throw error;
-      addActivity('add', `Added "${title}"`);
-      toast(`✅ "${title}" added`);
-    }
-    closeModal();
-    await loadProducts();
-    if(document.getElementById('page-products').classList.contains('active')) renderTable();
-    renderStats();
-  } catch(e){ toast('Error saving: '+e.message, true); }
-}
-
-async function uploadImageToStorage(file, type){
-  if(!file) return null;
-  const ext = file.name.split('.').pop().toLowerCase();
-  const fileName = `${Date.now()}_${Math.random().toString(36).substring(2,8)}_${type}.${ext}`;
-  const filePath = `public/${fileName}`;
-  const { data, error } = await supabase.storage.from(STORAGE_BUCKET).upload(filePath, file, { cacheControl: '3600', upsert: false });
-  if(error) throw new Error('Upload failed: '+error.message);
-  const { data: publicUrlData } = supabase.storage.from(STORAGE_BUCKET).getPublicUrl(filePath);
-  return publicUrlData.publicUrl;
-}
-
-async function deleteOldImageFromProduct(productId, imageType){
-  try{
-    let { data: prod, error } = await supabase.from('products').select(`image_${imageType}`).eq('id',productId).single();
-    if(error || !prod || !prod[`image_${imageType}`]) return;
-    let oldUrl = prod[`image_${imageType}`];
-    let pathMatch = oldUrl.match(/\/storage\/v1\/object\/public\/product-images\/(.+)$/);
-    if(pathMatch && pathMatch[1]) await supabase.storage.from(STORAGE_BUCKET).remove([pathMatch[1]]);
-  } catch(e){ console.warn("Could not delete old image", e); }
-}
-
-async function confirmDelete(id){
-  let prod = productsList.find(p=>p.id===id);
-  document.getElementById('confirmTitle').innerText='Delete Product?';
-  document.getElementById('confirmMsg').innerText=`Delete "${prod?.title}"? Images will be removed.`;
-  document.getElementById('confirmOkBtn').onclick = async ()=>{
-    try{
-      // delete images from storage
-      if(prod?.image_closed) await deleteImageByUrl(prod.image_closed);
-      if(prod?.image_open) await deleteImageByUrl(prod.image_open);
-      const { error } = await supabase.from('products').delete().eq('id', id);
-      if(error) throw error;
-      addActivity('del', `Deleted "${prod?.title}"`);
-      toast('Product deleted');
-      await loadProducts();
-      renderTable();
-      renderStats();
-      closeConfirm();
-    } catch(e){ toast('Delete failed: '+e.message, true); }
-  };
-  document.getElementById('confirmBackdrop').classList.add('open');
-}
-async function deleteImageByUrl(url){
-  let match = url.match(/\/storage\/v1\/object\/public\/product-images\/(.+)$/);
-  if(match) await supabase.storage.from(STORAGE_BUCKET).remove([match[1]]);
-}
-async function clearAllProductsFromSupabase(){
-  if(!confirm("⚠️ DELETE ALL PRODUCTS? This action is permanent.")) return;
-  for(let p of productsList){
-    if(p.image_closed) await deleteImageByUrl(p.image_closed);
-    if(p.image_open) await deleteImageByUrl(p.image_open);
-  }
-  let { error } = await supabase.from('products').delete().neq('id', 0);
-  if(error) toast('Error: '+error.message, true);
-  else { toast('All products cleared'); await loadProducts(); renderTable(); renderStats(); addActivity('del','Deleted all products'); }
-}
-
-function openAddModal(){
-  editingId=null; resetModalForm(); document.getElementById('modalTitle').innerText='Add New Product'; document.getElementById('modalBackdrop').classList.add('open');
-}
-async function openEditModal(id){
-  let prod = productsList.find(p=>p.id===id);
-  if(!prod) return;
-  editingId=id;
-  resetModalForm();
-  document.getElementById('prodName').value=prod.title||'';
-  document.getElementById('prodCat').value=prod.category||'';
-  document.getElementById('prodDesc').value=prod.description||'';
-  document.getElementById('prodPrice').value=prod.price_text||'';
-  selectedBadge=prod.badge||'none';
-  document.querySelectorAll('.badge-opt').forEach(b=>b.classList.toggle('sel',b.getAttribute('data-b')===selectedBadge));
-  modalFeatures = Array.isArray(prod.features) && prod.features.length ? prod.features : [''];
-  renderModalFeatures();
-  if(prod.image_closed){
-    pendingClosedURL = prod.image_closed;
-    document.getElementById('previewImgClosed').src=prod.image_closed;
-    document.getElementById('imgPreviewWrapClosed').style.display='block';
-    document.getElementById('uploadZoneClosed').style.display='none';
-  }
-  if(prod.image_open){
-    pendingOpenURL = prod.image_open;
-    document.getElementById('previewImgOpen').src=prod.image_open;
-    document.getElementById('imgPreviewWrapOpen').style.display='block';
-    document.getElementById('uploadZoneOpen').style.display='none';
-  }
-  document.getElementById('modalTitle').innerText='Edit Product';
-  document.getElementById('modalBackdrop').classList.add('open');
-}
-function resetModalForm(){
-  editingId=null; selectedBadge='none'; imgClosedFile=null; imgOpenFile=null; pendingClosedURL=null; pendingOpenURL=null;
-  document.getElementById('prodName').value=''; document.getElementById('prodCat').value=''; document.getElementById('prodDesc').value=''; document.getElementById('prodPrice').value='';
-  document.querySelectorAll('.badge-opt').forEach(b=>b.classList.toggle('sel',b.getAttribute('data-b')==='none'));
-  modalFeatures=['','','']; renderModalFeatures();
-  document.getElementById('imgPreviewWrapClosed').style.display='none'; document.getElementById('uploadZoneClosed').style.display='flex';
-  document.getElementById('imgPreviewWrapOpen').style.display='none'; document.getElementById('uploadZoneOpen').style.display='flex';
-  document.getElementById('imgInputClosed').value=''; document.getElementById('imgInputOpen').value='';
-}
-function handleImgFile(file, type){
-  if(!file || !file.type.startsWith('image/')){ toast('Only images allowed',true); return; }
-  if(type==='closed'){ imgClosedFile=file; pendingClosedURL=null; const reader=new FileReader(); reader.onload=e=>{ document.getElementById('previewImgClosed').src=e.target.result; document.getElementById('imgPreviewWrapClosed').style.display='block'; document.getElementById('uploadZoneClosed').style.display='none'; }; reader.readAsDataURL(file); }
-  else{ imgOpenFile=file; pendingOpenURL=null; const reader=new FileReader(); reader.onload=e=>{ document.getElementById('previewImgOpen').src=e.target.result; document.getElementById('imgPreviewWrapOpen').style.display='block'; document.getElementById('uploadZoneOpen').style.display='none'; }; reader.readAsDataURL(file); }
-}
-function removeImg(type){ if(type==='closed'){ imgClosedFile=null; pendingClosedURL=null; document.getElementById('imgPreviewWrapClosed').style.display='none'; document.getElementById('uploadZoneClosed').style.display='flex'; } else { imgOpenFile=null; pendingOpenURL=null; document.getElementById('imgPreviewWrapOpen').style.display='none'; document.getElementById('uploadZoneOpen').style.display='flex'; } }
-function renderModalFeatures(){ let list=document.getElementById('featuresList'); list.innerHTML=modalFeatures.map((v,i)=>`<div class="feature-row"><input type="text" class="form-control" value="${escapeHtml(v)}" oninput="modalFeatures[${i}]=this.value"><button class="del-feat" onclick="removeFeature(${i})">✕</button></div>`).join(''); }
-function addFeature(){ modalFeatures.push(''); renderModalFeatures(); }
-function removeFeature(i){ modalFeatures.splice(i,1); renderModalFeatures(); }
-document.getElementById('badgeOpts').addEventListener('click',e=>{ let opt=e.target.closest('.badge-opt'); if(opt){ selectedBadge=opt.getAttribute('data-b'); document.querySelectorAll('.badge-opt').forEach(b=>b.classList.toggle('sel',b===opt)); } });
-function closeModal(){ document.getElementById('modalBackdrop').classList.remove('active'); document.getElementById('modalBackdrop').classList.remove('open'); resetModalForm(); }
-function closeModalOutside(e){ if(e.target===document.getElementById('modalBackdrop')) closeModal(); }
-function closeConfirm(){ document.getElementById('confirmBackdrop').classList.remove('open'); }
-
-function exportJSON(){ let blob=new Blob([JSON.stringify(productsList,null,2)],{type:'application/json'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='securex-supabase-backup.json'; a.click(); toast('Exported '+productsList.length+' products'); }
-function importJSON(input){ let file=input.files[0]; if(!file) return; let reader=new FileReader(); reader.onload=async function(e){ try{ let data=JSON.parse(e.target.result); if(!Array.isArray(data)) throw new Error(); for(let p of data){ delete p.id; delete p.created_at; let {error}=await supabase.from('products').insert([p]); if(error) console.warn(error); } toast('Imported '+data.length+' products'); await loadProducts(); renderTable(); }catch(err){ toast('Invalid JSON',true); } }; reader.readAsText(file); input.value=''; }
-async function testSupabaseConnection(){ try{ let { data, error } = await supabase.from('products').select('id', { count:'exact', head:true }); if(error) throw error; toast('✅ Supabase connected! Products table ready.', false); document.getElementById('supaStatusMsg').innerHTML='✅ Connected successfully'; }catch(e){ toast('Connection error: '+e.message, true); } }
-
-function goPage(page){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById(`page-${page}`).classList.add('active');
-  if(page==='products') renderTable();
-  if(page==='dashboard') { renderStats(); renderActivity(); }
-}
-document.getElementById('searchInput')?.addEventListener('input',()=>renderTable());
-document.getElementById('catFilter')?.addEventListener('change',()=>renderTable());
-
-loadProducts();
-renderActivity();
-testSupabaseConnection();
-</script>
 </body>
 </html>
