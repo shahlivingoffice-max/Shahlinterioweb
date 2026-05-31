@@ -1,794 +1,477 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>SECUREX • Admin Panel | Shah Interio</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SECUREX Admin | Supabase</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream:#FEFAE0;--beige-light:#F5ECD7;--beige:#E8D5B4;--beige-dark:#C4A882;
+  --brown-light:#8B6F4E;--brown:#5C3D2E;--brown-dark:#3E2415;--brown-deep:#2A180D;
+  --white:#FFFFFF;--gold:#B8860B;--green:#2e7d32;--green-light:#e8f5e9;
+  --red:#c62828;--red-light:#ffebee;--blue:#1565c0;--blue-light:#e3f2fd;
+  --sidebar-w:240px;--topbar-h:60px;
+  --shadow-sm:0 1px 4px rgba(0,0,0,0.08);
+  --shadow-md:0 4px 16px rgba(62,36,21,0.12);
+  --shadow-lg:0 8px 32px rgba(62,36,21,0.16);
+  --r:10px;--r-lg:16px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{font-family:'Outfit',sans-serif;font-size:15px;}
+body{background:#f0ebe2;color:var(--brown-dark);min-height:100vh;display:flex;flex-direction:column;}
 
-        body {
-            background: #faf7f2;  /* warm cream background */
-            color: #2c2418;
-        }
+.topbar{position:fixed;top:0;left:0;right:0;height:var(--topbar-h);background:var(--brown-deep);color:var(--cream);display:flex;align-items:center;justify-content:space-between;padding:0 20px 0 calc(var(--sidebar-w)+20px);z-index:100;box-shadow:var(--shadow-md);}
+.topbar-left{display:flex;align-items:center;gap:12px;}
+.topbar-title{font-family:'Rajdhani',sans-serif;font-size:1.15rem;font-weight:700;}
+.topbar-breadcrumb{font-size:0.75rem;color:var(--beige-dark);display:flex;align-items:center;gap:6px;}
+.topbar-right{display:flex;align-items:center;gap:10px;}
+.topbar-btn{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);color:var(--cream);padding:6px 14px;border-radius:30px;font-size:0.78rem;font-weight:600;cursor:pointer;text-decoration:none;font-family:'Outfit',sans-serif;transition:background 0.2s;}
+.topbar-btn:hover{background:rgba(255,255,255,0.2);}
+.topbar-btn.green{background:rgba(46,125,50,0.4);border-color:rgba(46,125,50,0.6);}
 
-        /* premium earthy palette */
-        :root {
-            --cream: #fefaf5;
-            --sand: #e8dccc;
-            --brown-soft: #b87c4f;
-            --brown-deep: #5e3a2c;
-            --gold: #c9a87b;
-            --gold-dark: #aa7c58;
-            --shadow-sm: 0 8px 20px rgba(0, 0, 0, 0.03), 0 2px 6px rgba(0, 0, 0, 0.05);
-        }
+.sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--brown-dark);color:var(--cream);display:flex;flex-direction:column;z-index:200;overflow-y:auto;}
+.sidebar-brand{height:var(--topbar-h);display:flex;align-items:center;gap:10px;padding:0 18px;border-bottom:1px solid rgba(255,255,255,0.08);flex-shrink:0;}
+.sidebar-brand-icon{font-family:'Rajdhani',sans-serif;font-size:1.3rem;font-weight:700;}
+.sidebar-brand-sub{font-size:0.65rem;opacity:0.5;margin-top:2px;}
+.sidebar-nav{flex:1;padding:12px 0;}
+.nav-section-label{font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--beige-dark);padding:14px 18px 6px;opacity:0.7;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 18px;font-size:0.85rem;font-weight:500;color:rgba(254,250,224,0.75);cursor:pointer;transition:all 0.2s;border-left:3px solid transparent;text-decoration:none;}
+.nav-item:hover{background:rgba(255,255,255,0.07);color:var(--cream);}
+.nav-item.active{background:rgba(255,255,255,0.1);color:var(--cream);border-left-color:var(--beige-dark);}
+.nav-item-icon{width:20px;text-align:center;font-size:1rem;opacity:0.8;}
+.sidebar-footer{padding:14px 18px;border-top:1px solid rgba(255,255,255,0.08);font-size:0.72rem;color:var(--beige-dark);opacity:0.6;}
 
-        .app-layout {
-            display: flex;
-            min-height: 100vh;
-        }
+.main{margin-left:var(--sidebar-w);padding-top:var(--topbar-h);min-height:100vh;}
+.page{display:none;padding:24px;}
+.page.active{display:block;}
 
-        /* SIDEBAR */
-        .sidebar {
-            width: 280px;
-            background: #2c2418;
-            color: #f3ede5;
-            padding: 28px 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 32px;
-            position: sticky;
-            top: 0;
-            height: 100vh;
-            overflow-y: auto;
-        }
+/* Stats */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px;margin-bottom:24px;}
+.stat-card{background:var(--white);border-radius:var(--r-lg);padding:18px 20px;border:1px solid var(--beige);box-shadow:var(--shadow-sm);}
+.stat-card .num{font-family:'Rajdhani',sans-serif;font-size:2rem;font-weight:700;color:var(--brown-dark);line-height:1;}
+.stat-card .lbl{font-size:0.72rem;color:var(--brown-light);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;margin-top:4px;}
+.stat-card .trend{font-size:0.72rem;margin-top:6px;font-weight:600;}
+.trend.up{color:var(--green);}
+.trend.neu{color:var(--brown-light);}
 
-        .logo-area h2 {
-            font-size: 1.8rem;
-            letter-spacing: -0.5px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #e9d6b0, #f7e5c2);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-        }
+/* Panel */
+.panel{background:var(--white);border-radius:var(--r-lg);border:1px solid var(--beige);box-shadow:var(--shadow-sm);overflow:hidden;margin-bottom:24px;}
+.panel-head{padding:16px 20px;border-bottom:1px solid var(--beige-light);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.panel-head h2{font-family:'Rajdhani',sans-serif;font-size:1.05rem;font-weight:700;color:var(--brown-dark);}
+.panel-head-actions{display:flex;gap:8px;flex-wrap:wrap;}
+.search-box{border:1px solid var(--beige);background:var(--beige-light);border-radius:30px;padding:6px 14px;font-family:'Outfit',sans-serif;font-size:0.82rem;color:var(--brown-dark);outline:none;width:200px;transition:border 0.2s;}
+.search-box:focus{border-color:var(--brown);background:var(--white);}
+.cat-filter{border:1px solid var(--beige);background:var(--beige-light);border-radius:30px;padding:6px 14px;font-family:'Outfit',sans-serif;font-size:0.82rem;color:var(--brown-dark);outline:none;cursor:pointer;}
+.btn-add{background:var(--brown);color:var(--cream);border:none;padding:7px 16px;border-radius:30px;font-family:'Outfit',sans-serif;font-size:0.82rem;font-weight:700;cursor:pointer;transition:background 0.2s;display:flex;align-items:center;gap:6px;}
+.btn-add:hover{background:var(--brown-dark);}
 
-        .logo-area p {
-            font-size: 0.7rem;
-            color: #bfaa8a;
-            margin-top: 4px;
-        }
+/* Product Table */
+.prod-table{width:100%;border-collapse:collapse;}
+.prod-table th{padding:10px 16px;text-align:left;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--brown-light);background:var(--beige-light);border-bottom:1px solid var(--beige);}
+.prod-table td{padding:12px 16px;border-bottom:1px solid var(--beige-light);font-size:0.85rem;color:var(--brown-dark);vertical-align:middle;}
+.prod-table tr:last-child td{border-bottom:none;}
+.prod-table tr:hover td{background:#faf7f1;}
+.prod-thumb{width:48px;height:48px;border-radius:8px;object-fit:cover;background:var(--beige);border:1px solid var(--beige-dark);}
+.prod-thumb-ph{width:48px;height:48px;border-radius:8px;background:var(--beige-light);border:1px solid var(--beige);display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:var(--brown-light);}
+.prod-name{font-weight:600;color:var(--brown-dark);}
+.prod-cat-badge{display:inline-block;background:var(--beige-light);border:1px solid var(--beige);color:var(--brown);font-size:0.7rem;font-weight:600;padding:3px 10px;border-radius:20px;}
+.badge-chip{display:inline-block;font-size:0.68rem;font-weight:700;padding:3px 9px;border-radius:20px;text-transform:uppercase;}
+.badge-chip.best{background:rgba(184,134,11,0.12);color:#7a5c05;border:1px solid rgba(184,134,11,0.3);}
+.badge-chip.new{background:rgba(46,125,50,0.12);color:#1b5e20;border:1px solid rgba(46,125,50,0.3);}
+.badge-chip.hot{background:rgba(198,40,40,0.12);color:#7f0000;border:1px solid rgba(198,40,40,0.3);}
+.badge-chip.none{background:var(--beige-light);color:var(--brown-light);border:1px solid var(--beige);}
+.tbl-actions{display:flex;gap:6px;}
+.btn-edit,.btn-del,.btn-view{border:none;border-radius:7px;padding:6px 12px;font-family:'Outfit',sans-serif;font-size:0.75rem;font-weight:600;cursor:pointer;transition:all 0.2s;}
+.btn-edit{background:var(--blue-light);color:var(--blue);}
+.btn-edit:hover{background:#bbdefb;}
+.btn-del{background:var(--red-light);color:var(--red);}
+.btn-del:hover{background:#ffcdd2;}
+.btn-view{background:var(--green-light);color:var(--green);}
+.btn-view:hover{background:#c8e6c9;}
 
-        .nav-menu {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
+/* Modal */
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:500;display:none;align-items:center;justify-content:center;padding:20px;}
+.modal-backdrop.open{display:flex;}
+.modal{background:var(--white);border-radius:var(--r-lg);width:100%;max-width:760px;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);}
+.modal-head{padding:18px 24px;border-bottom:1px solid var(--beige-light);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--white);z-index:2;}
+.modal-head h2{font-family:'Rajdhani',sans-serif;font-size:1.2rem;color:var(--brown-dark);}
+.modal-close{background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--brown-light);padding:4px 8px;border-radius:6px;transition:background 0.2s;}
+.modal-close:hover{background:var(--beige-light);}
+.modal-body{padding:24px;}
+.modal-footer{padding:16px 24px;border-top:1px solid var(--beige-light);display:flex;justify-content:flex-end;gap:10px;position:sticky;bottom:0;background:var(--white);}
 
-        .nav-item {
-            background: none;
-            border: none;
-            text-align: left;
-            padding: 12px 18px;
-            border-radius: 40px;
-            font-weight: 500;
-            font-size: 1rem;
-            color: #ddd0be;
-            cursor: pointer;
-            transition: 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+/* Form */
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.form-group{margin-bottom:16px;}
+.form-label{display:block;font-weight:600;font-size:0.78rem;color:var(--brown);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.05em;}
+.form-label .req{color:var(--red);margin-left:2px;}
+.form-control{width:100%;padding:10px 14px;border:1.5px solid var(--beige);border-radius:9px;font-family:'Outfit',sans-serif;font-size:0.9rem;background:var(--beige-light);color:var(--brown-dark);outline:none;transition:border 0.2s,box-shadow 0.2s;}
+.form-control:focus{border-color:var(--brown);box-shadow:0 0 0 3px rgba(92,61,46,0.1);background:var(--white);}
+select.form-control{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235C3D2E' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:34px;}
+textarea.form-control{resize:vertical;min-height:80px;line-height:1.55;}
 
-        .nav-item i { font-style: normal; font-size: 1.2rem; }
-        .nav-item:hover { background: #3e3226; color: white; }
-        .nav-item.active {
-            background: #b87c4f;
-            color: white;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-        }
-
-        .supabase-badge {
-            margin-top: auto;
-            background: #1f1a14;
-            border-radius: 24px;
-            padding: 16px;
-            font-size: 0.75rem;
-            color: #cdba9f;
-        }
-
-        /* MAIN CONTENT */
-        .main-content {
-            flex: 1;
-            padding: 28px 32px;
-            overflow-x: auto;
-        }
-
-        .top-status {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 16px;
-            margin-bottom: 28px;
-            background: white;
-            padding: 12px 24px;
-            border-radius: 60px;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid #f0e5d8;
-        }
-
-        .conn-status {
-            background: #eef2e6;
-            padding: 6px 14px;
-            border-radius: 40px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            color: #2e5c2e;
-        }
-
-        .btn-icon {
-            background: #f3ede5;
-            border: 1px solid #e0cfbc;
-            padding: 8px 18px;
-            border-radius: 40px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: 0.2s;
-        }
-
-        .btn-primary {
-            background: #b87c4f;
-            border: none;
-            color: white;
-            padding: 10px 24px;
-            border-radius: 40px;
-            font-weight: 600;
-            cursor: pointer;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 1px solid #c7b59e;
-            padding: 8px 18px;
-            border-radius: 40px;
-            cursor: pointer;
-        }
-
-        .btn-outline:hover { background: #fef5ea; }
-
-        /* cards grid */
-        .stats-grid {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin-bottom: 32px;
-        }
-        .stat-card {
-            background: white;
-            border-radius: 28px;
-            padding: 20px 28px;
-            flex: 1;
-            min-width: 160px;
-            border: 1px solid #f0e2d2;
-            box-shadow: var(--shadow-sm);
-        }
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: #5e3a2c;
-        }
-
-        /* table */
-        .table-wrapper {
-            background: white;
-            border-radius: 28px;
-            overflow-x: auto;
-            border: 1px solid #f0e2d2;
-            padding: 4px 0;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th {
-            text-align: left;
-            padding: 16px 14px;
-            background: #fdfaf5;
-            font-weight: 600;
-            color: #4f3929;
-        }
-        td {
-            padding: 14px;
-            border-top: 1px solid #f2e9df;
-            vertical-align: middle;
-        }
-        .prod-thumb {
-            width: 52px;
-            height: 52px;
-            object-fit: cover;
-            border-radius: 14px;
-            background: #f2ebe2;
-        }
-        .badge-chip {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 30px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            background: #f9efdf;
-            color: #aa7c58;
-        }
-        .badge-chip.Bestseller { background: #fae6cf; color: #bd6b2a; }
-        .badge-chip.New { background: #d9efd0; color: #3f6b2f; }
-        .badge-chip.Hot { background: #ffe0db; color: #c23b1c; }
-        .badge-chip.Popular { background: #e0e7ff; color: #264a8a; }
-        .badge-chip.Premium { background: #eae0c5; color: #8b6946; }
-
-        .btn-edit, .btn-del {
-            border: none;
-            background: #f5ede4;
-            padding: 6px 12px;
-            border-radius: 30px;
-            margin: 0 4px;
-            cursor: pointer;
-        }
-        .btn-del { background: #ffe5e2; color: #b63a2c; }
-
-        /* modal */
-        .modal-backdrop {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.6);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1100;
-            visibility: hidden;
-            opacity: 0;
-            transition: 0.2s;
-        }
-        .modal-backdrop.open {
-            visibility: visible;
-            opacity: 1;
-        }
-        .modal-card {
-            background: white;
-            width: 90%;
-            max-width: 760px;
-            border-radius: 36px;
-            max-height: 85vh;
-            overflow-y: auto;
-            padding: 28px;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label { font-weight: 600; display: block; margin-bottom: 6px; color: #3b2c1e; }
-        .form-control {
-            width: 100%;
-            padding: 12px 14px;
-            border-radius: 28px;
-            border: 1px solid #dfcfbc;
-            background: #fffcf9;
-        }
-        .badge-selector {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin: 8px 0;
-        }
-        .badge-option {
-            padding: 6px 16px;
-            background: #f1e9df;
-            border-radius: 40px;
-            cursor: pointer;
-            font-size: 0.8rem;
-        }
-        .badge-option.selected {
-            background: #b87c4f;
-            color: white;
-        }
-        .feature-row {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 8px;
-        }
-        .img-upload-area {
-            border: 1px dashed #bc9a72;
-            background: #fefaf5;
-            border-radius: 28px;
-            padding: 18px;
-            text-align: center;
-            cursor: pointer;
-        }
-        .preview-img-sm {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 18px;
-            margin-top: 6px;
-        }
-        .toast {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            background: #2c2418;
-            color: white;
-            padding: 12px 24px;
-            border-radius: 60px;
-            opacity: 0;
-            transition: 0.2s;
-            z-index: 1300;
-        }
-        .toast.show { opacity: 1; }
-        .toast.error { background: #b63a2c; }
-        .flex-between { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
-        .activity-feed {
-            background: white;
-            border-radius: 24px;
-            padding: 12px;
-            max-height: 280px;
-            overflow-y: auto;
-        }
-        .activity-item {
-            display: flex;
-            gap: 12px;
-            padding: 10px;
-            border-bottom: 1px solid #f1e6db;
-        }
-        @media (max-width: 780px) {
-            .app-layout { flex-direction: column; }
-            .sidebar { width: 100%; height: auto; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: space-between; padding: 16px; }
-            .nav-menu { flex-direction: row; flex-wrap: wrap; }
-            .main-content { padding: 20px; }
-        }
-    </style>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>
-        // -------------------- SUPABASE CONFIG --------------------
-        const SUPABASE_URL = "https://ceeezhukizoobknroovq.supabase.co";
-        const SUPABASE_ANON_KEY = "sb_publishable_3XHshryDBRniaiW5YEO03w_pUMH6gIG";
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        const STORAGE_BUCKET = "product-images";
-
-        // -------------------- GLOBAL STATE --------------------
-        let allProducts = [];           // products from supabase (source of truth)
-        let editingProductId = null;
-        let currentBadge = "none";
-        let featuresList = ["", "", ""];   // dynamic features
-        // image files / URLs
-        let closedImageFile = null;
-        let openImageFile = null;
-        let existingClosedUrl = null;
-        let existingOpenUrl = null;
-
-        // Helper: toast
-        function showToast(msg, isError = false) {
-            let toast = document.getElementById("globalToast");
-            if (!toast) return;
-            toast.textContent = msg;
-            toast.className = "toast" + (isError ? " error" : "");
-            toast.classList.add("show");
-            setTimeout(() => toast.classList.remove("show"), 3200);
-        }
-
-        // activity log (localStorage)
-        function addActivity(type, msg) {
-            let acts = JSON.parse(localStorage.getItem("securex_activity") || "[]");
-            acts.unshift({ type, msg, time: new Date().toLocaleString() });
-            if (acts.length > 40) acts.pop();
-            localStorage.setItem("securex_activity", JSON.stringify(acts));
-            renderActivityFeed();
-        }
-
-        function renderActivityFeed() {
-            let container = document.getElementById("activityList");
-            if (!container) return;
-            let acts = JSON.parse(localStorage.getItem("securex_activity") || "[]");
-            if (!acts.length) { container.innerHTML = "<div class='empty' style='padding:24px; text-align:center;'>✨ No recent activity</div>"; return; }
-            container.innerHTML = acts.map(a => `
-                <div class="activity-item">
-                    <span style="font-size:1.2rem;">${a.type === 'add' ? '➕' : a.type === 'edit' ? '✏️' : '🗑️'}</span>
-                    <div><strong>${a.msg}</strong><br><small>${a.time}</small></div>
-                </div>
-            `).join("");
-        }
-
-        // ---------- CRUD: load products from Supabase ----------
-        async function loadProducts() {
-            try {
-                const { data, error } = await supabase.from("products").select("*").order("created_at", { ascending: false });
-                if (error) throw error;
-                allProducts = data || [];
-                renderStatsAndDashboard();
-                if (document.getElementById("page-products")?.classList.contains("active")) renderProductsTable();
-                if (document.getElementById("supaStatusMsg")) document.getElementById("supaStatusMsg").innerHTML = "✅ Connected to Supabase • Products table ready";
-                return allProducts;
-            } catch (err) {
-                showToast("Failed to load products: " + err.message, true);
-                return [];
-            }
-        }
-
-        function renderStatsAndDashboard() {
-            const total = allProducts.length;
-            const categoriesCount = [...new Set(allProducts.map(p => p.category).filter(Boolean))].length;
-            document.getElementById("statTotal").innerText = total;
-            document.getElementById("statCategories").innerText = categoriesCount;
-            document.getElementById("storageInfoSpan").innerHTML = `📦 ${total} products in Supabase • Images stored in '${STORAGE_BUCKET}' bucket`;
-        }
-
-        function renderProductsTable() {
-            const searchTerm = document.getElementById("searchInput")?.value.toLowerCase() || "";
-            const catFilter = document.getElementById("catFilterSelect")?.value || "";
-            let filtered = allProducts.filter(p => {
-                const matchSearch = (p.title?.toLowerCase().includes(searchTerm) || (p.description || "").toLowerCase().includes(searchTerm));
-                const matchCat = !catFilter || p.category === catFilter;
-                return matchSearch && matchCat;
-            });
-            const tbody = document.getElementById("prodTableBody");
-            if (!tbody) return;
-            if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="empty" style="text-align:center; padding:40px;">📭 No products found. Add a new product.</td></tr>`;
-                return;
-            }
-            tbody.innerHTML = filtered.map(p => {
-                let badgeClass = p.badge && p.badge !== "none" ? p.badge : "";
-                let badgeHtml = badgeClass ? `<span class="badge-chip ${badgeClass}">${p.badge}</span>` : "—";
-                let thumb = p.image_closed ? `<img class="prod-thumb" src="${escapeHtml(p.image_closed)}" onerror="this.src='https://placehold.co/100x100?text=📦'">` : `<div style="width:52px;height:52px;background:#e9dfd3;border-radius:14px;display:flex;align-items:center;justify-content:center;">📦</div>`;
-                return `<tr>
-                    <td>${thumb}</td>
-                    <td><strong>${escapeHtml(p.title)}</strong></td>
-                    <td>${escapeHtml(p.category || '')}</td>
-                    <td>${badgeHtml}</td>
-                    <td>${escapeHtml(p.price_text || '')}</td>
-                    <td><button class="btn-edit" data-id="${p.id}">✏️ Edit</button> <button class="btn-del" data-id="${p.id}">🗑️ Delete</button></td>
-                </tr>`;
-            }).join("");
-            // attach edit/delete events
-            document.querySelectorAll(".btn-edit").forEach(btn => btn.addEventListener("click", (e) => openEditModal(parseInt(btn.dataset.id))));
-            document.querySelectorAll(".btn-del").forEach(btn => btn.addEventListener("click", (e) => confirmDeleteProduct(parseInt(btn.dataset.id))));
-        }
-
-        // image upload helper
-        async function uploadImageToBucket(file, folderHint = "public") {
-            if (!file) return null;
-            const ext = file.name.split('.').pop().toLowerCase();
-            const fileName = `${Date.now()}_${Math.random().toString(36).substring(2, 10)}.${ext}`;
-            const filePath = `${folderHint}/${fileName}`;
-            const { error } = await supabase.storage.from(STORAGE_BUCKET).upload(filePath, file, { cacheControl: "3600" });
-            if (error) throw new Error("Upload error: " + error.message);
-            const { data: urlData } = supabase.storage.from(STORAGE_BUCKET).getPublicUrl(filePath);
-            return urlData.publicUrl;
-        }
-
-        async function deleteImageByUrl(imageUrl) {
-            if (!imageUrl) return;
-            const match = imageUrl.match(/\/storage\/v1\/object\/public\/product-images\/(.+)$/);
-            if (match && match[1]) {
-                await supabase.storage.from(STORAGE_BUCKET).remove([match[1]]);
-            }
-        }
-
-        // SAVE product (create or update)
-        async function saveProductHandler() {
-            const title = document.getElementById("prodName").value.trim();
-            const category = document.getElementById("prodCategory").value;
-            const description = document.getElementById("prodDesc").value.trim();
-            const price_text = document.getElementById("prodPrice").value.trim();
-            const badge = currentBadge === "none" ? "" : currentBadge;
-            const features = featuresList.filter(f => f.trim() !== "");
-
-            if (!title) { showToast("Product name is required", true); return; }
-            if (!category) { showToast("Select category", true); return; }
-            if (!closedImageFile && !existingClosedUrl && !editingProductId) { showToast("Closed package image is required", true); return; }
-
-            try {
-                let finalClosedUrl = existingClosedUrl;
-                let finalOpenUrl = existingOpenUrl;
-                if (closedImageFile) {
-                    if (editingProductId && existingClosedUrl) await deleteImageByUrl(existingClosedUrl);
-                    finalClosedUrl = await uploadImageToBucket(closedImageFile, "public");
-                }
-                if (openImageFile) {
-                    if (editingProductId && existingOpenUrl) await deleteImageByUrl(existingOpenUrl);
-                    finalOpenUrl = await uploadImageToBucket(openImageFile, "public");
-                }
-                const productPayload = {
-                    title, category, description, price_text, badge, features,
-                    image_closed: finalClosedUrl,
-                    image_open: finalOpenUrl
-                };
-                if (editingProductId) {
-                    const { error } = await supabase.from("products").update(productPayload).eq("id", editingProductId);
-                    if (error) throw error;
-                    addActivity("edit", `Updated "${title}"`);
-                    showToast(`✅ "${title}" updated`);
-                } else {
-                    const { error } = await supabase.from("products").insert([productPayload]);
-                    if (error) throw error;
-                    addActivity("add", `Added "${title}"`);
-                    showToast(`✅ "${title}" added`);
-                }
-                await loadProducts();
-                if (document.getElementById("page-products").classList.contains("active")) renderProductsTable();
-                closeModal();
-            } catch (err) {
-                showToast("Save error: " + err.message, true);
-            }
-        }
-
-        async function confirmDeleteProduct(id) {
-            const product = allProducts.find(p => p.id === id);
-            if (!product) return;
-            document.getElementById("confirmMsgText").innerText = `Delete "${product.title}"? Images will be removed from storage.`;
-            const confirmModal = document.getElementById("confirmBackdrop");
-            confirmModal.classList.add("open");
-            const confirmBtn = document.getElementById("confirmDeleteBtn");
-            const oldHandler = confirmBtn.onclick;
-            confirmBtn.onclick = async () => {
-                try {
-                    if (product.image_closed) await deleteImageByUrl(product.image_closed);
-                    if (product.image_open) await deleteImageByUrl(product.image_open);
-                    const { error } = await supabase.from("products").delete().eq("id", id);
-                    if (error) throw error;
-                    addActivity("del", `Deleted "${product.title}"`);
-                    showToast(`🗑️ Deleted ${product.title}`);
-                    await loadProducts();
-                    if (document.getElementById("page-products").classList.contains("active")) renderProductsTable();
-                    closeConfirmModal();
-                } catch (err) {
-                    showToast("Delete failed: " + err.message, true);
-                }
-            };
-        }
-
-        // ----- MODAL logic & image preview -----
-        function resetModalForm() {
-            editingProductId = null;
-            document.getElementById("prodName").value = "";
-            document.getElementById("prodCategory").value = "";
-            document.getElementById("prodDesc").value = "";
-            document.getElementById("prodPrice").value = "";
-            currentBadge = "none";
-            document.querySelectorAll(".badge-option").forEach(opt => opt.classList.remove("selected"));
-            const noneOpt = document.querySelector(".badge-option[data-badge='none']");
-            if (noneOpt) noneOpt.classList.add("selected");
-            featuresList = ["", "", ""];
-            renderFeaturesUI();
-            closedImageFile = null; openImageFile = null;
-            existingClosedUrl = null; existingOpenUrl = null;
-            document.getElementById("previewClosedImg").src = "";
-            document.getElementById("previewOpenImg").src = "";
-            document.getElementById("closedPreviewWrap").style.display = "none";
-            document.getElementById("openPreviewWrap").style.display = "none";
-            document.getElementById("uploadClosedZone").style.display = "flex";
-            document.getElementById("uploadOpenZone").style.display = "flex";
-            document.getElementById("imgInputClosed").value = "";
-            document.getElementById("imgInputOpen").value = "";
-        }
-
-        function renderFeaturesUI() {
-            const container = document.getElementById("dynamicFeatures");
-            if (!container) return;
-            container.innerHTML = featuresList.map((feat, idx) => `
-                <div class="feature-row">
-                    <input type="text" class="form-control" placeholder="Feature bullet point" value="${escapeHtml(feat)}" onchange="featuresList[${idx}] = this.value">
-                    <button type="button" class="btn-outline" style="padding:6px 12px;" onclick="removeFeatureItem(${idx})">✕</button>
-                </div>
-            `).join("");
-        }
-        window.removeFeatureItem = (idx) => { featuresList.splice(idx, 1); if (featuresList.length === 0) featuresList = [""]; renderFeaturesUI(); };
-        window.addFeatureField = () => { featuresList.push(""); renderFeaturesUI(); };
-
-        function handleImageSelection(file, type) {
-            if (!file || !file.type.startsWith("image/")) { showToast("Please select an image file", true); return; }
-            if (type === "closed") {
-                closedImageFile = file;
-                existingClosedUrl = null;
-                const reader = new FileReader();
-                reader.onload = e => { document.getElementById("previewClosedImg").src = e.target.result; document.getElementById("closedPreviewWrap").style.display = "block"; document.getElementById("uploadClosedZone").style.display = "none"; };
-                reader.readAsDataURL(file);
-            } else {
-                openImageFile = file;
-                existingOpenUrl = null;
-                const reader = new FileReader();
-                reader.onload = e => { document.getElementById("previewOpenImg").src = e.target.result; document.getElementById("openPreviewWrap").style.display = "block"; document.getElementById("uploadOpenZone").style.display = "none"; };
-                reader.readAsDataURL(file);
-            }
-        }
-        function removeImage(type) {
-            if (type === "closed") { closedImageFile = null; existingClosedUrl = null; document.getElementById("closedPreviewWrap").style.display = "none"; document.getElementById("uploadClosedZone").style.display = "flex"; }
-            else { openImageFile = null; existingOpenUrl = null; document.getElementById("openPreviewWrap").style.display = "none"; document.getElementById("uploadOpenZone").style.display = "flex"; }
-        }
-
-        async function openEditModal(id) {
-            const prod = allProducts.find(p => p.id === id);
-            if (!prod) return;
-            editingProductId = id;
-            resetModalForm();
-            document.getElementById("prodName").value = prod.title || "";
-            document.getElementById("prodCategory").value = prod.category || "";
-            document.getElementById("prodDesc").value = prod.description || "";
-            document.getElementById("prodPrice").value = prod.price_text || "";
-            currentBadge = prod.badge || "none";
-            document.querySelectorAll(".badge-option").forEach(opt => {
-                opt.classList.remove("selected");
-                if (opt.dataset.badge === currentBadge) opt.classList.add("selected");
-            });
-            featuresList = Array.isArray(prod.features) && prod.features.length ? prod.features : [""];
-            renderFeaturesUI();
-            if (prod.image_closed) {
-                existingClosedUrl = prod.image_closed;
-                document.getElementById("previewClosedImg").src = prod.image_closed;
-                document.getElementById("closedPreviewWrap").style.display = "block";
-                document.getElementById("uploadClosedZone").style.display = "none";
-            }
-            if (prod.image_open) {
-                existingOpenUrl = prod.image_open;
-                document.getElementById("previewOpenImg").src = prod.image_open;
-                document.getElementById("openPreviewWrap").style.display = "block";
-                document.getElementById("uploadOpenZone").style.display = "none";
-            }
-            document.getElementById("modalTitleSpan").innerText = "✏️ Edit Product";
-            document.getElementById("modalBackdrop").classList.add("open");
-        }
-
-        function openAddNewModal() {
-            resetModalForm();
-            editingProductId = null;
-            document.getElementById("modalTitleSpan").innerText = "➕ Add New Product";
-            document.getElementById("modalBackdrop").classList.add("open");
-        }
-        function closeModal() { document.getElementById("modalBackdrop").classList.remove("open"); resetModalForm(); }
-        function closeConfirmModal() { document.getElementById("confirmBackdrop").classList.remove("open"); }
-
-        // extras: export/import/clear all
-        function exportAllProducts() {
-            const dataStr = JSON.stringify(allProducts, null, 2);
-            const blob = new Blob([dataStr], { type: "application/json" });
-            const a = document.createElement("a");
-            a.href = URL.createObjectURL(blob);
-            a.download = "securex_backup.json";
-            a.click();
-            showToast(`Exported ${allProducts.length} products`);
-        }
-        async function importJSON(file) {
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = async (e) => {
-                try {
-                    const imported = JSON.parse(e.target.result);
-                    if (!Array.isArray(imported)) throw new Error();
-                    for (const prod of imported) {
-                        delete prod.id;
-                        delete prod.created_at;
-                        const { error } = await supabase.from("products").insert([prod]);
-                        if (error) console.warn(error);
-                    }
-                    showToast(`Imported ${imported.length} products`);
-                    await loadProducts();
-                    if (document.getElementById("page-products").classList.contains("active")) renderProductsTable();
-                } catch (err) { showToast("Invalid JSON file", true); }
-            };
-            reader.readAsText(file);
-        }
-
-        async function clearAllProducts() {
-            if (!confirm("⚠️ PERMANENT: Delete ALL products from Supabase and storage images?")) return;
-            for (const p of allProducts) {
-                if (p.image_closed) await deleteImageByUrl(p.image_closed);
-                if (p.image_open) await deleteImageByUrl(p.image_open);
-            }
-            const { error } = await supabase.from("products").delete().neq("id", 0);
-            if (error) showToast("Clear error: " + error.message, true);
-            else { showToast("All products cleared"); await loadProducts(); renderProductsTable(); addActivity("del", "Cleared all products"); }
-        }
-
-        async function testSupabaseFull() {
-            try {
-                const { data, error } = await supabase.from("products").select("id", { count: "exact", head: true });
-                if (error) throw error;
-                const { data: buckets } = await supabase.storage.listBuckets();
-                const bucketExists = buckets.some(b => b.name === STORAGE_BUCKET);
-                document.getElementById("testResultArea").innerHTML = `<strong>✅ Connection OK</strong><br>• Products table reachable<br>• Storage bucket "${STORAGE_BUCKET}" ${bucketExists ? "exists ✅" : "❌ missing"}`;
-                showToast("Supabase test passed");
-            } catch (err) {
-                document.getElementById("testResultArea").innerHTML = `<strong>❌ Error:</strong> ${err.message}`;
-                showToast(err.message, true);
-            }
-        }
-
-        // UI navigation
-        function navigateTo(pageId) {
-            document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
-            document.getElementById(`page-${pageId}`).classList.add("active");
-            document.querySelectorAll(".nav-item").forEach(nav => nav.classList.remove("active"));
-            if (pageId === "dashboard") document.querySelector(".nav-item[data-page='dashboard']").classList.add("active");
-            if (pageId === "products") document.querySelector(".nav-item[data-page='products']").classList.add("active");
-            if (pageId === "settings") document.querySelector(".nav-item[data-page='settings']").classList.add("active");
-            if (pageId === "products") renderProductsTable();
-            if (pageId === "dashboard") renderActivityFeed();
-        }
-
-        // event binding
-        window.onload = async () => {
-            await loadProducts();
-            renderActivityFeed();
-            document.getElementById("searchInput")?.addEventListener("input", () => renderProductsTable());
-            document.getElementById("catFilterSelect")?.addEventListener("change", () => renderProductsTable());
-            document.querySelectorAll(".badge-option").forEach(opt => {
-                opt.addEventListener("click", () => {
-                    document.querySelectorAll(".badge-option").forEach(b => b.classList.remove("selected"));
-                    opt.classList.add("selected");
-                    currentBadge = opt.dataset.badge;
-                });
-            });
-            // badge preselect default
-            document.querySelector(".badge-option[data-badge='none']")?.classList.add("selected");
-        };
-        window.exportJSON = exportAllProducts;
-        window.importFile = (input) => importJSON(input.files[0]);
-        window.clearAllHandler = clearAllProducts;
-        window.testSupabase = testSupabaseFull;
-        window.navigateTo = navigateTo;
-        window.openAddModal = openAddNewModal;
-        window.saveProduct = saveProductHandler;
-        window.closeModal = closeModal;
-        window.closeConfirmModal = closeConfirmModal;
-        window.removeImage = removeImage;
-        window.addFeatureField = addFeatureField;
-        window.handleImageSelection = handleImageSelection;
-        function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m){ if(m === '&') return '&amp;'; if(m === '<') return '&lt;'; if(m === '>') return '&gt;'; return m;}); }
-        window.escapeHtml = escapeHtml;
-    </script>
+/* Dual Image */
+.dual-img-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.img-zone-wrap{position:relative;}
+.img-zone-label{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--brown-light);margin-bottom:6px;display:flex;align-items:center;gap:6px;}
+.img-upload-zone{border:2px dashed var(--beige-dark);border-radius:var(--r);padding:16px;text-align:center;cursor:pointer;position:relative;background:var(--beige-light);transition:all 0.2s;min-height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.img-upload-zone:hover{border-color:var(--brown);background:rgba(92,61,46,0.05);}
+.img-upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;}
+.img-upload-zone .up-icon{font-size:1.6rem;margin-bottom:4px;}
+.img-preview-wrap{position:relative;border-radius:var(--r);overflow:hidden;margin-top:8px;}
+.img-preview-wrap img{width:100%;height:120px;object-fit:cover;display:block;}
+.img-preview-wrap .rm-img{position:absolute;top:6px;right:6px;background:rgba(198,40,40,0.9);color:#fff;border:none;border-radius:50%;width:22px;height:22px;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.upload-progress{margin-top:8px;display:none;}
+.upload-progress-bar{height:3px;background:var(--beige);border-radius:2px;overflow:hidden;}
+.upload-progress-fill{height:100%;background:linear-gradient(90deg,var(--brown),var(--gold));width:0;transition:width 0.4s;}
+/* Features */
+.features-list{display:flex;flex-direction:column;gap:7px;}
+.feature-row{display:flex;gap:7px;}
+.feature-row .form-control{flex:1;}
+.del-feat{background:var(--beige-light);border:1px solid var(--beige);border-radius:7px;padding:8px 10px;color:var(--brown-light);cursor:pointer;}
+.del-feat:hover{background:var(--red-light);color:var(--red);}
+.add-feat-btn{margin-top:7px;width:100%;background:var(--beige-light);border:1.5px dashed var(--beige-dark);border-radius:8px;padding:8px;font-weight:600;cursor:pointer;}
+/* Badge opts */
+.badge-opts{display:flex;gap:7px;flex-wrap:wrap;margin-top:4px;}
+.badge-opt{padding:6px 14px;border-radius:30px;font-size:0.75rem;font-weight:700;cursor:pointer;border:2px solid transparent;opacity:0.55;}
+.badge-opt.sel{opacity:1;transform:scale(1.04);}
+.badge-opt[data-b=none]{background:var(--beige-light);color:var(--brown-light);}
+.badge-opt[data-b=Bestseller]{background:rgba(184,134,11,0.1);color:#7a5c05;}
+.badge-opt[data-b=New]{background:rgba(46,125,50,0.1);color:var(--green);}
+.badge-opt[data-b=Hot]{background:rgba(198,40,40,0.1);color:var(--red);}
+.badge-opt[data-b=Popular]{background:rgba(92,61,46,0.1);color:var(--brown);}
+.badge-opt[data-b=Premium]{background:rgba(42,24,13,0.1);color:var(--brown-deep);}
+/* Buttons */
+.btn-cancel{background:var(--beige-light);border:1px solid var(--beige-dark);color:var(--brown);padding:9px 20px;border-radius:30px;font-weight:600;cursor:pointer;}
+.btn-save{background:var(--brown);border:none;color:var(--cream);padding:10px 24px;border-radius:30px;font-weight:700;cursor:pointer;}
+/* Toast */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--green);color:#fff;padding:10px 22px;border-radius:40px;font-weight:600;z-index:9999;transition:transform 0.4s;opacity:0;}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+.toast.err{background:var(--red);}
+.confirm-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:600;display:none;align-items:center;justify-content:center;}
+.confirm-backdrop.open{display:flex;}
+.confirm-box{background:var(--white);border-radius:var(--r-lg);padding:28px;max-width:380px;width:90%;text-align:center;}
+.confirm-btns{display:flex;gap:10px;justify-content:center;}
+.btn-confirm-ok{background:var(--red);color:#fff;border:none;padding:9px 22px;border-radius:30px;font-weight:700;}
+.btn-confirm-cancel{background:var(--beige-light);border:1px solid var(--beige-dark);color:var(--brown);padding:9px 22px;border-radius:30px;}
+.activity-list{display:flex;flex-direction:column;}
+.activity-item{display:flex;align-items:center;gap:12px;padding:12px 18px;border-bottom:1px solid var(--beige-light);}
+.activity-dot{width:8px;height:8px;border-radius:50%;}
+.activity-dot.add{background:var(--green);}
+.activity-dot.edit{background:var(--blue);}
+.activity-dot.del{background:var(--red);}
+.activity-text{flex:1;font-size:0.83rem;}
+.info-box{background:rgba(21,101,192,0.08);border:1px solid rgba(21,101,192,0.2);border-radius:var(--r);padding:12px 16px;font-size:0.8rem;color:var(--blue);margin-bottom:16px;}
+@media(max-width:900px){
+  .topbar{padding-left:70px;}
+  .sidebar{width:56px;}
+  .sidebar-brand-icon, .nav-item span:not(.nav-item-icon){display:none;}
+  .main{margin-left:56px;}
+  .form-row,.dual-img-row{grid-template-columns:1fr;}
+}
+</style>
 </head>
 <body>
-<div class="app-layout">
-    <aside class="sidebar">
-        <div class="logo-area"><h2>🔒 SECUREX</h2><p>by Shah Interio • steel furniture</p></div>
-        <div class="nav-menu">
-            <button class="nav-item active" data-page="dashboard" onclick="navigateTo('dashboard')">📊 Dashboard</button>
-            <button class="nav-item" data-page="products" onclick="navigateTo('products')">📦 Products</button>
-            <button class="nav-item" data-page="settings" onclick="navigateTo('settings')">⚙️ Settings</button>
-        </div>
-        <div class="supabase-badge">☁️ Supabase powered • real‑time</div>
-    </aside>
-    <main class="main-content">
-        <div class="top-status"><div class="conn-status" id="supaStatusMsg">🔄 Connecting...</div><button class="btn-primary" onclick="openAddModal()">+ New Product</button></div>
 
-        <!-- Dashboard page -->
-        <div id="page-dashboard" class="page active">
-            <div class="stats-grid"><div class="stat-card"><div class="stat-number" id="statTotal">0</div><div>Total Products</div></div><div class="stat-card"><div class="stat-number" id="statCategories">0</div><div>Categories</div></div><div class="stat-card"><div class="stat-number">✅</div><div>Supabase Active</div></div></div>
-            <div class="flex-between"><h3>📋 Recent Activity</h3><button class="btn-outline" onclick="exportJSON()">📁 Export JSON</button><label class="btn-outline" style="cursor:pointer">📂 Import JSON <input type="file" accept=".json" style="display:none" onchange="importFile(this)"></label></div>
-            <div id="activityList" class="activity-feed" style="margin-top:16px;"></div>
-            <div id="storageInfoSpan" style="margin-top:20px; background:#f8f2ea; border-radius:28px; padding:12px 20px;"></div>
-        </div>
+<aside class="sidebar">
+  <div class="sidebar-brand"><div><div class="sidebar-brand-icon">🏭 SECUREX</div><div class="sidebar-brand-sub">Supabase Admin</div></div></div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Main</div>
+    <a class="nav-item active" data-page="dashboard" onclick="goPage('dashboard')"><span class="nav-item-icon">📊</span><span>Dashboard</span></a>
+    <a class="nav-item" data-page="products" onclick="goPage('products')"><span class="nav-item-icon">📦</span><span>All Products</span></a>
+    <a class="nav-item" onclick="openAddModal();goPage('products')"><span class="nav-item-icon">➕</span><span>Add New</span></a>
+    <div class="nav-section-label">Tools</div>
+    <a class="nav-item" onclick="exportJSON()"><span class="nav-item-icon">📤</span><span>Export JSON</span></a>
+    <label class="nav-item" style="cursor:pointer;"><span class="nav-item-icon">📥</span><span>Import JSON</span><input type="file" accept=".json" onchange="importJSON(this)" style="display:none;"></label>
+    <a class="nav-item" href="./" target="_blank"><span class="nav-item-icon">🏠</span><span>Homepage</span></a>
+  </nav>
+  <div class="sidebar-footer">SECUREX © 2026</div>
+</aside>
 
-        <!-- Products page -->
-        <div id="page-products" class="page">
-            <div class="flex-between" style="margin-bottom: 20px;"><div><input type="text" id="searchInput" class="form-control" placeholder="🔍 Search product..."></div><div><select id="catFilterSelect" class="form-control"><option value="">All Categories</option><option value="almirah-home">Home Almirah</option><option value="almirah-office">Office Almirah</option><option value="almirah-dressing">Dressing Almirah</option><option value="locker">Locker</option><option value="bookshelf">BookShelf</option><option value="showcase">Glass Showcase</option></select></div></div>
-            <div class="table-wrapper"><table><thead><tr><th>Image</th><th>Name</th><th>Category</th><th>Badge</th><th>Price</th><th>Actions</th></tr></thead><tbody id="prodTableBody"><tr><td colspan="6">Loading...</td></tr></tbody></table></div>
-        </div>
-
-        <!-- Settings page -->
-        <div id="page-settings" class="page"><div style="background:white; border-radius:32px; padding:24px;"><h3>🔐 Supabase Diagnostics</h3><button class="btn-primary" onclick="testSupabase()">Test Connection & Storage</button><div id="testResultArea" class="test-results" style="margin-top:16px; background:#f7f2ea; padding:16px; border-radius:24px;"></div><hr style="margin:20px 0"><div class="danger-zone"><h4 style="color:#a5442f;">⚠️ Danger Zone</h4><button class="btn-outline" style="border-color:#c76b55;" onclick="clearAllHandler()">Delete All Products (permanent)</button></div></div></div>
-
-        <!-- MODAL add/edit -->
-        <div id="modalBackdrop" class="modal-backdrop" onclick="if(event.target===this) closeModal()"><div class="modal-card"><h3 id="modalTitleSpan">Add Product</h3><div class="form-group"><label>Product Name *</label><input id="prodName" class="form-control"></div><div class="form-group"><label>Category *</label><select id="prodCategory" class="form-control"><option value="">Select</option><option value="almirah-home">Home Almirah</option><option value="almirah-office">Office Almirah</option><option value="almirah-dressing">Dressing Almirah</option><option value="locker">Locker</option><option value="bookshelf">BookShelf</option><option value="showcase">Glass Showcase</option></select></div><div class="form-group"><label>Description</label><textarea id="prodDesc" rows="2" class="form-control"></textarea></div><div class="form-group"><label>Price text</label><input id="prodPrice" class="form-control" placeholder="₹18,999 / MRP ₹24,999"></div><div class="form-group"><label>Badge</label><div class="badge-selector"><div data-badge="none" class="badge-option">None</div><div data-badge="Bestseller" class="badge-option">🔥 Bestseller</div><div data-badge="New" class="badge-option">✨ New</div><div data-badge="Hot" class="badge-option">⚡ Hot</div><div data-badge="Popular" class="badge-option">⭐ Popular</div><div data-badge="Premium" class="badge-option">💎 Premium</div></div></div><div class="form-group"><label>Features</label><div id="dynamicFeatures"></div><button type="button" onclick="addFeatureField()" class="btn-outline" style="margin-top:5px;">+ Add feature</button></div><div class="form-group"><label>📦 Closed Image *</label><div id="uploadClosedZone" class="img-upload-area" onclick="document.getElementById('imgInputClosed').click()">Click to upload</div><input type="file" id="imgInputClosed" style="display:none" accept="image/*" onchange="handleImageSelection(this.files[0],'closed')"><div id="closedPreviewWrap" style="display:none"><img id="previewClosedImg" class="preview-img-sm"><button onclick="removeImage('closed')" class="btn-outline">Remove</button></div></div><div class="form-group"><label>📖 Open Image (optional)</label><div id="uploadOpenZone" class="img-upload-area" onclick="document.getElementById('imgInputOpen').click()">Upload open box image</div><input type="file" id="imgInputOpen" style="display:none" accept="image/*" onchange="handleImageSelection(this.files[0],'open')"><div id="openPreviewWrap" style="display:none"><img id="previewOpenImg" class="preview-img-sm"><button onclick="removeImage('open')" class="btn-outline">Remove</button></div></div><div style="display:flex; gap:12px; justify-content:end;"><button class="btn-outline" onclick="closeModal()">Cancel</button><button class="btn-primary" onclick="saveProduct()">Save Product</button></div></div></div>
-        
-        <!-- confirm delete modal -->
-        <div id="confirmBackdrop" class="modal-backdrop" onclick="if(event.target===this) closeConfirmModal()"><div class="modal-card" style="max-width:400px;"><h3>⚠️ Confirm Delete</h3><p id="confirmMsgText"></p><div style="display:flex; gap:12px;"><button class="btn-outline" onclick="closeConfirmModal()">Cancel</button><button id="confirmDeleteBtn" class="btn-primary" style="background:#b63a2c;">Delete Permanently</button></div></div></div>
-        <div id="globalToast" class="toast"></div>
-    </main>
+<div class="topbar">
+  <div class="topbar-left"><div class="topbar-title" id="pageTitle">Dashboard</div><div class="topbar-breadcrumb"><span>Admin</span><span>›</span><span>Dashboard</span></div></div>
+  <div class="topbar-right"><span id="dbStatusBadge" class="topbar-btn" style="cursor:default;">🔌 Supabase</span><button class="topbar-btn" onclick="testSupabaseConnection()">🔄 Test DB</button><a href="./" target="_blank" class="topbar-btn green">🛍 View Site</a></div>
 </div>
+
+<div class="main">
+  <div class="page active" id="page-dashboard">
+    <div class="stats-row" id="statsRow"></div>
+    <div class="quick-actions" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;margin-bottom:24px;">
+      <div class="qa-btn" style="background:var(--white);border:1px solid var(--beige);border-radius:var(--r-lg);padding:18px;text-align:center;cursor:pointer;" onclick="openAddModal();goPage('products')"><div class="qa-icon">➕</div><div class="qa-lbl">Add Product</div><div class="qa-sub">New to catalog</div></div>
+      <div class="qa-btn" style="background:var(--white);border:1px solid var(--beige);border-radius:var(--r-lg);padding:18px;text-align:center;cursor:pointer;" onclick="goPage('products')"><div class="qa-icon">📋</div><div class="qa-lbl">Manage Products</div><div class="qa-sub">Edit / delete</div></div>
+      <div class="qa-btn" style="background:var(--white);border:1px solid var(--beige);border-radius:var(--r-lg);padding:18px;text-align:center;cursor:pointer;" onclick="exportJSON()"><div class="qa-icon">📤</div><div class="qa-lbl">Export Backup</div><div class="qa-sub">JSON format</div></div>
+    </div>
+    <div class="panel"><div class="panel-head"><h2>📋 Recent Activity</h2></div><div id="activityList" class="activity-list"></div></div>
+  </div>
+
+  <div class="page" id="page-products">
+    <div class="panel">
+      <div class="panel-head"><h2>📦 All Products <span id="prodCountBadge" style="font-size:0.75rem;background:var(--beige);padding:2px 10px;border-radius:20px;"></span></h2>
+        <div class="panel-head-actions"><input class="search-box" type="text" placeholder="🔍 Search..." id="searchInput" oninput="renderTable()"><select class="cat-filter" id="catFilter" onchange="renderTable()"><option value="">All Categories</option><option value="almirah-home">Home Almirah</option><option value="almirah-office">Office Almirah</option><option value="almirah-dressing">Dressing Almirah</option><option value="locker">Locker</option><option value="bookshelf">BookShelf</option><option value="showcase">Glass Showcase</option></select><button class="btn-add" onclick="openAddModal()">➕ Add New</button></div>
+      </div>
+      <div style="overflow-x:auto;"><table class="prod-table"><thead><tr><th>Images</th><th>Product Name</th><th>Category</th><th>Badge</th><th>Price</th><th>Actions</th></tr></thead><tbody id="prodTbody"></tbody></table></div>
+    </div>
+  </div>
+
+  <div class="page" id="page-settings">
+    <div class="panel" style="max-width:700px;"><div class="panel-head"><h2>⚙️ Supabase Status</h2></div>
+      <div style="padding:24px;"><div class="info-box"><strong>☁️ Products stored in Supabase</strong><br>Images uploaded to product-images bucket. Changes reflect instantly across all devices.</div>
+      <div style="background:#0d1117;color:#e6edf3;border-radius:var(--r-lg);padding:20px;margin-bottom:20px;"><h3 style="color:#58a6ff;">🗄 Database Connection</h3><p id="supaStatusMsg" style="font-size:0.8rem;margin:10px 0;">✅ Using preconfigured Supabase</p><button onclick="testSupabaseConnection()" style="background:#238636;border:none;color:#fff;padding:8px 16px;border-radius:8px;">Test Connection</button></div>
+      <div class="settings-card"><h3>📊 Storage Info</h3><div id="storageInfo" style="font-size:0.85rem;"></div></div>
+      <div class="settings-card"><h3>🗑 Danger Zone</h3><button onclick="clearAllProductsFromSupabase()" style="background:var(--red-light);border:1px solid var(--red);color:var(--red);padding:8px 18px;border-radius:7px;font-weight:600;cursor:pointer;">🗑 Delete ALL Products (Supabase)</button></div>
+    </div></div>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="modal-backdrop" id="modalBackdrop" onclick="closeModalOutside(event)"><div class="modal"><div class="modal-head"><h2 id="modalTitle">Add New Product</h2><button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-body">
+  <div class="form-group"><label class="form-label">Product Images <span class="req">*</span></label><div class="dual-img-row">
+    <div class="img-zone-wrap"><div class="img-zone-label">🚪 Closed Image <span class="tag">Required</span></div><div class="img-upload-zone" id="uploadZoneClosed"><input type="file" id="imgInputClosed" accept="image/*" onchange="handleImgFile(this.files[0],'closed')"><div class="up-icon">📷</div><div class="up-txt">Click or drag</div></div><div id="imgPreviewWrapClosed" style="display:none;" class="img-preview-wrap"><img id="previewImgClosed"><button class="rm-img" onclick="removeImg('closed')">✕</button></div></div>
+    <div class="img-zone-wrap"><div class="img-zone-label">🔓 Open Image <span class="tag">Optional</span></div><div class="img-upload-zone" id="uploadZoneOpen"><input type="file" id="imgInputOpen" accept="image/*" onchange="handleImgFile(this.files[0],'open')"><div class="up-icon">📸</div><div class="up-txt">Click or drag</div></div><div id="imgPreviewWrapOpen" style="display:none;" class="img-preview-wrap"><img id="previewImgOpen"><button class="rm-img" onclick="removeImg('open')">✕</button></div></div>
+  </div></div>
+  <div class="form-group"><label class="form-label">Product Name <span class="req">*</span></label><input type="text" class="form-control" id="prodName" placeholder="e.g. SECUREX 2-Door Steel Almirah"></div>
+  <div class="form-row"><div class="form-group"><label class="form-label">Category</label><select class="form-control" id="prodCat"><option value="">— Select —</option><option value="almirah-home">Home Almirah</option><option value="almirah-office">Office Almirah</option><option value="almirah-dressing">Dressing Almirah</option><option value="locker">Locker</option><option value="bookshelf">BookShelf</option><option value="showcase">Glass Showcase</option></select></div>
+  <div class="form-group"><label class="form-label">Badge</label><div class="badge-opts" id="badgeOpts"><div class="badge-opt sel" data-b="none">None</div><div class="badge-opt" data-b="Bestseller">⭐ Bestseller</div><div class="badge-opt" data-b="New">🟢 New</div><div class="badge-opt" data-b="Hot">🔴 Hot</div><div class="badge-opt" data-b="Popular">Popular</div><div class="badge-opt" data-b="Premium">Premium</div></div></div></div>
+  <div class="form-group"><label class="form-label">Price Text</label><input class="form-control" id="prodPrice" placeholder="e.g. ₹18,999 / MRP ₹24,999"></div>
+  <div class="form-group"><label class="form-label">Description</label><textarea class="form-control" id="prodDesc" placeholder="Short description..."></textarea></div>
+  <div class="form-group"><label class="form-label">Key Features</label><div class="features-list" id="featuresList"></div><button class="add-feat-btn" onclick="addFeature()">+ Add Feature</button></div>
+</div><div class="modal-footer"><button class="btn-cancel" onclick="closeModal()">Cancel</button><button class="btn-save" onclick="saveProduct()">✅ Save Product</button></div></div></div>
+
+<div class="confirm-backdrop" id="confirmBackdrop"><div class="confirm-box"><h3 id="confirmTitle">Delete Product?</h3><p id="confirmMsg"></p><div class="confirm-btns"><button class="btn-confirm-cancel" onclick="closeConfirm()">Cancel</button><button class="btn-confirm-ok" id="confirmOkBtn">Delete</button></div></div></div>
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// ---------- SINGLE SUPABASE INIT ----------
+const SUPABASE_URL = "https://ceeezhukizoobknroovq.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_3XHshryDBRniaiW5YEO03w_pUMH6gIG";
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const STORAGE_BUCKET = "product-images";
+
+let productsList = [];        // all products from DB
+let editingId = null;
+let selectedBadge = 'none';
+let imgClosedFile = null;
+let imgOpenFile = null;
+let modalFeatures = ['', '', ''];
+let pendingClosedURL = null;
+let pendingOpenURL = null;
+
+// Helper functions
+function escapeHtml(s) { return String(s || '').replace(/[&<>]/g, function(m) { if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m; }); }
+function toast(msg, isErr) { let t = document.getElementById('toast'); t.textContent = msg; t.className = 'toast' + (isErr ? ' err' : '') + ' show'; setTimeout(() => t.classList.remove('show'), 3500); }
+function addActivity(type, msg) { let acts = JSON.parse(localStorage.getItem('securex_activity') || '[]'); acts.unshift({ type: type, msg: msg, time: new Date().toLocaleString() }); if (acts.length > 30) acts.pop(); localStorage.setItem('securex_activity', JSON.stringify(acts)); renderActivity(); }
+function renderActivity() { let div = document.getElementById('activityList'); if (!div) return; let acts = JSON.parse(localStorage.getItem('securex_activity') || '[]'); if (!acts.length) { div.innerHTML = '<div class="empty"><div>📝</div><p>No activity</p></div>'; return; } div.innerHTML = acts.map(a => `<div class="activity-item"><div class="activity-dot ${a.type}"></div><div class="activity-text">${escapeHtml(a.msg)}</div><div class="activity-time">${escapeHtml(a.time)}</div></div>`).join(''); }
+
+// Load products from Supabase
+async function loadProducts() {
+  try {
+    let { data, error } = await supabaseClient.from('products').select('*').order('created_at', { ascending: false });
+    if (error) throw error;
+    productsList = data || [];
+    renderStats();
+    if (document.getElementById('page-products').classList.contains('active')) renderTable();
+    document.getElementById('storageInfo').innerHTML = `<strong>Total products:</strong> ${productsList.length}<br>🖼 Images stored in Supabase Storage (cross-device)`;
+    return productsList;
+  } catch (e) { toast('Failed to load products: ' + e.message, true); return []; }
+}
+
+function renderStats() {
+  let total = productsList.length;
+  document.getElementById('statsRow').innerHTML = `<div class="stat-card"><div class="num">${total}</div><div class="lbl">Products</div><div class="trend up">Supabase Cloud</div></div><div class="stat-card"><div class="num">6</div><div class="lbl">Categories</div></div><div class="stat-card"><div class="num">✓</div><div class="lbl">Real-time</div></div>`;
+  document.getElementById('prodCountBadge').innerText = total + ' products';
+}
+
+function renderTable() {
+  let search = document.getElementById('searchInput').value.toLowerCase();
+  let cat = document.getElementById('catFilter').value;
+  let filtered = productsList.filter(p => (!search || (p.title || '').toLowerCase().includes(search) || (p.description || '').toLowerCase().includes(search)) && (!cat || p.category === cat));
+  let tbody = document.getElementById('prodTbody');
+  if (!filtered.length) { tbody.innerHTML = '<tr><td colspan="6"><div class="empty">🔍 No products</div></td></tr>'; return; }
+  tbody.innerHTML = filtered.map(p => {
+    let badgeClass = p.badge === 'Bestseller' ? 'best' : p.badge === 'New' ? 'new' : p.badge === 'Hot' ? 'hot' : 'none';
+    let imgHtml = p.image_closed ? `<img class="prod-thumb" src="${escapeHtml(p.image_closed)}" onerror="this.style.display='none'">` : `<div class="prod-thumb-ph">📦</div>`;
+    return `<tr><td><div style="display:flex;gap:4px;">${imgHtml}</div></td><td class="prod-name">${escapeHtml(p.title)}</td><td><span class="prod-cat-badge">${escapeHtml(p.category || '')}</span></td><td>${p.badge ? `<span class="badge-chip ${badgeClass}">${escapeHtml(p.badge)}</span>` : '—'}</td><td>${escapeHtml(p.price_text || '')}</td><td><div class="tbl-actions"><button class="btn-edit" onclick="openEditModal(${p.id})">✏ Edit</button><button class="btn-del" onclick="confirmDelete(${p.id})">🗑</button></div></td></tr>`;
+  }).join('');
+}
+
+// Image upload to storage
+async function uploadImageToStorage(file, type) {
+  if (!file) return null;
+  const ext = file.name.split('.').pop().toLowerCase();
+  const fileName = `${Date.now()}_${Math.random().toString(36).substring(2, 8)}_${type}.${ext}`;
+  const filePath = `public/${fileName}`;
+  const { data, error } = await supabaseClient.storage.from(STORAGE_BUCKET).upload(filePath, file, { cacheControl: '3600', upsert: false });
+  if (error) throw new Error('Upload failed: ' + error.message);
+  const { data: publicUrlData } = supabaseClient.storage.from(STORAGE_BUCKET).getPublicUrl(filePath);
+  return publicUrlData.publicUrl;
+}
+
+async function deleteOldImageFromProduct(productId, imageType) {
+  try {
+    let { data: prod, error } = await supabaseClient.from('products').select(`image_${imageType}`).eq('id', productId).single();
+    if (error || !prod || !prod[`image_${imageType}`]) return;
+    let oldUrl = prod[`image_${imageType}`];
+    let pathMatch = oldUrl.match(/\/storage\/v1\/object\/public\/product-images\/(.+)$/);
+    if (pathMatch && pathMatch[1]) await supabaseClient.storage.from(STORAGE_BUCKET).remove([pathMatch[1]]);
+  } catch (e) { console.warn("Could not delete old image", e); }
+}
+
+async function deleteImageByUrl(url) {
+  let match = url.match(/\/storage\/v1\/object\/public\/product-images\/(.+)$/);
+  if (match) await supabaseClient.storage.from(STORAGE_BUCKET).remove([match[1]]);
+}
+
+// Save product
+async function saveProduct() {
+  let title = document.getElementById('prodName').value.trim();
+  let category = document.getElementById('prodCat').value;
+  let description = document.getElementById('prodDesc').value.trim();
+  let price_text = document.getElementById('prodPrice').value.trim();
+  let badge = selectedBadge === 'none' ? '' : selectedBadge;
+  let features = modalFeatures.filter(f => f.trim());
+  if (!title) { toast('Product name required', true); return; }
+  if (!category) { toast('Select category', true); return; }
+  if (!imgClosedFile && !pendingClosedURL && !editingId) { toast('Closed image required', true); return; }
+
+  let closedURL = pendingClosedURL;
+  let openURL = pendingOpenURL;
+  try {
+    if (imgClosedFile) {
+      closedURL = await uploadImageToStorage(imgClosedFile, 'closed');
+      if (editingId) await deleteOldImageFromProduct(editingId, 'closed');
+    }
+    if (imgOpenFile) {
+      openURL = await uploadImageToStorage(imgOpenFile, 'open');
+      if (editingId) await deleteOldImageFromProduct(editingId, 'open');
+    }
+    const productData = { title, category, description, price_text, badge, features, image_closed: closedURL, image_open: openURL };
+    if (editingId) {
+      const { error } = await supabaseClient.from('products').update(productData).eq('id', editingId);
+      if (error) throw error;
+      addActivity('edit', `Updated "${title}"`);
+      toast(`✅ "${title}" updated`);
+    } else {
+      const { error } = await supabaseClient.from('products').insert([productData]);
+      if (error) throw error;
+      addActivity('add', `Added "${title}"`);
+      toast(`✅ "${title}" added`);
+    }
+    closeModal();
+    await loadProducts();
+    if (document.getElementById('page-products').classList.contains('active')) renderTable();
+    renderStats();
+  } catch (e) { toast('Error saving: ' + e.message, true); }
+}
+
+async function confirmDelete(id) {
+  let prod = productsList.find(p => p.id === id);
+  document.getElementById('confirmTitle').innerText = 'Delete Product?';
+  document.getElementById('confirmMsg').innerText = `Delete "${prod?.title}"? Images will be removed.`;
+  document.getElementById('confirmOkBtn').onclick = async () => {
+    try {
+      if (prod?.image_closed) await deleteImageByUrl(prod.image_closed);
+      if (prod?.image_open) await deleteImageByUrl(prod.image_open);
+      const { error } = await supabaseClient.from('products').delete().eq('id', id);
+      if (error) throw error;
+      addActivity('del', `Deleted "${prod?.title}"`);
+      toast('Product deleted');
+      await loadProducts();
+      renderTable();
+      renderStats();
+      closeConfirm();
+    } catch (e) { toast('Delete failed: ' + e.message, true); }
+  };
+  document.getElementById('confirmBackdrop').classList.add('open');
+}
+
+async function clearAllProductsFromSupabase() {
+  if (!confirm("⚠️ DELETE ALL PRODUCTS? This action is permanent.")) return;
+  for (let p of productsList) {
+    if (p.image_closed) await deleteImageByUrl(p.image_closed);
+    if (p.image_open) await deleteImageByUrl(p.image_open);
+  }
+  let { error } = await supabaseClient.from('products').delete().neq('id', 0);
+  if (error) toast('Error: ' + error.message, true);
+  else { toast('All products cleared'); await loadProducts(); renderTable(); renderStats(); addActivity('del', 'Deleted all products'); }
+}
+
+function openAddModal() {
+  editingId = null; resetModalForm(); document.getElementById('modalTitle').innerText = 'Add New Product'; document.getElementById('modalBackdrop').classList.add('open');
+}
+async function openEditModal(id) {
+  let prod = productsList.find(p => p.id === id);
+  if (!prod) return;
+  editingId = id;
+  resetModalForm();
+  document.getElementById('prodName').value = prod.title || '';
+  document.getElementById('prodCat').value = prod.category || '';
+  document.getElementById('prodDesc').value = prod.description || '';
+  document.getElementById('prodPrice').value = prod.price_text || '';
+  selectedBadge = prod.badge || 'none';
+  document.querySelectorAll('.badge-opt').forEach(b => b.classList.toggle('sel', b.getAttribute('data-b') === selectedBadge));
+  modalFeatures = Array.isArray(prod.features) && prod.features.length ? prod.features : [''];
+  renderModalFeatures();
+  if (prod.image_closed) {
+    pendingClosedURL = prod.image_closed;
+    document.getElementById('previewImgClosed').src = prod.image_closed;
+    document.getElementById('imgPreviewWrapClosed').style.display = 'block';
+    document.getElementById('uploadZoneClosed').style.display = 'none';
+  }
+  if (prod.image_open) {
+    pendingOpenURL = prod.image_open;
+    document.getElementById('previewImgOpen').src = prod.image_open;
+    document.getElementById('imgPreviewWrapOpen').style.display = 'block';
+    document.getElementById('uploadZoneOpen').style.display = 'none';
+  }
+  document.getElementById('modalTitle').innerText = 'Edit Product';
+  document.getElementById('modalBackdrop').classList.add('open');
+}
+function resetModalForm() {
+  editingId = null; selectedBadge = 'none'; imgClosedFile = null; imgOpenFile = null; pendingClosedURL = null; pendingOpenURL = null;
+  document.getElementById('prodName').value = ''; document.getElementById('prodCat').value = ''; document.getElementById('prodDesc').value = ''; document.getElementById('prodPrice').value = '';
+  document.querySelectorAll('.badge-opt').forEach(b => b.classList.toggle('sel', b.getAttribute('data-b') === 'none'));
+  modalFeatures = ['', '', '']; renderModalFeatures();
+  document.getElementById('imgPreviewWrapClosed').style.display = 'none'; document.getElementById('uploadZoneClosed').style.display = 'flex';
+  document.getElementById('imgPreviewWrapOpen').style.display = 'none'; document.getElementById('uploadZoneOpen').style.display = 'flex';
+  document.getElementById('imgInputClosed').value = ''; document.getElementById('imgInputOpen').value = '';
+}
+function handleImgFile(file, type) {
+  if (!file || !file.type.startsWith('image/')) { toast('Only images allowed', true); return; }
+  if (type === 'closed') { imgClosedFile = file; pendingClosedURL = null; const reader = new FileReader(); reader.onload = e => { document.getElementById('previewImgClosed').src = e.target.result; document.getElementById('imgPreviewWrapClosed').style.display = 'block'; document.getElementById('uploadZoneClosed').style.display = 'none'; }; reader.readAsDataURL(file); }
+  else { imgOpenFile = file; pendingOpenURL = null; const reader = new FileReader(); reader.onload = e => { document.getElementById('previewImgOpen').src = e.target.result; document.getElementById('imgPreviewWrapOpen').style.display = 'block'; document.getElementById('uploadZoneOpen').style.display = 'none'; }; reader.readAsDataURL(file); }
+}
+function removeImg(type) { if (type === 'closed') { imgClosedFile = null; pendingClosedURL = null; document.getElementById('imgPreviewWrapClosed').style.display = 'none'; document.getElementById('uploadZoneClosed').style.display = 'flex'; } else { imgOpenFile = null; pendingOpenURL = null; document.getElementById('imgPreviewWrapOpen').style.display = 'none'; document.getElementById('uploadZoneOpen').style.display = 'flex'; } }
+function renderModalFeatures() { let list = document.getElementById('featuresList'); list.innerHTML = modalFeatures.map((v, i) => `<div class="feature-row"><input type="text" class="form-control" value="${escapeHtml(v)}" oninput="modalFeatures[${i}]=this.value"><button class="del-feat" onclick="removeFeature(${i})">✕</button></div>`).join(''); }
+function addFeature() { modalFeatures.push(''); renderModalFeatures(); }
+function removeFeature(i) { modalFeatures.splice(i, 1); renderModalFeatures(); }
+document.getElementById('badgeOpts').addEventListener('click', e => { let opt = e.target.closest('.badge-opt'); if (opt) { selectedBadge = opt.getAttribute('data-b'); document.querySelectorAll('.badge-opt').forEach(b => b.classList.toggle('sel', b === opt)); } });
+function closeModal() { document.getElementById('modalBackdrop').classList.remove('open'); resetModalForm(); }
+function closeModalOutside(e) { if (e.target === document.getElementById('modalBackdrop')) closeModal(); }
+function closeConfirm() { document.getElementById('confirmBackdrop').classList.remove('open'); }
+function exportJSON() { let blob = new Blob([JSON.stringify(productsList, null, 2)], { type: 'application/json' }); let a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'securex-supabase-backup.json'; a.click(); toast('Exported ' + productsList.length + ' products'); }
+function importJSON(input) { let file = input.files[0]; if (!file) return; let reader = new FileReader(); reader.onload = async function (e) { try { let data = JSON.parse(e.target.result); if (!Array.isArray(data)) throw new Error(); for (let p of data) { delete p.id; delete p.created_at; let { error } = await supabaseClient.from('products').insert([p]); if (error) console.warn(error); } toast('Imported ' + data.length + ' products'); await loadProducts(); renderTable(); } catch (err) { toast('Invalid JSON', true); } }; reader.readAsText(file); input.value = ''; }
+async function testSupabaseConnection() {
+  try {
+    let { data, error } = await supabaseClient.from('products').select('id', { count: 'exact', head: true });
+    if (error) throw error;
+    toast('✅ Supabase connected! Products table ready.', false);
+    document.getElementById('supaStatusMsg').innerHTML = '✅ Connected successfully';
+  } catch (e) { toast('Connection error: ' + e.message, true); }
+}
+function goPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(`page-${page}`).classList.add('active');
+  if (page === 'products') renderTable();
+  if (page === 'dashboard') { renderStats(); renderActivity(); }
+}
+document.getElementById('searchInput')?.addEventListener('input', () => renderTable());
+document.getElementById('catFilter')?.addEventListener('change', () => renderTable());
+
+loadProducts();
+renderActivity();
+testSupabaseConnection();
+</script>
 </body>
 </html>
