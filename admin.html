@@ -686,7 +686,13 @@ function clearActivity(){localStorage.removeItem(ACTIVITY_KEY);renderActivity();
 /* ================================================================
    PRODUCT TABLE
    ================================================================ */
-function getAllProducts(){return BUILTIN.concat(getCustom());}
+function getAllProducts(){
+  var custom=getCustom();
+  // Custom overrides take priority over built-ins with same id
+  var overrideIds=custom.reduce(function(acc,p){acc[p.id]=true;return acc;},{});
+  var builtins=BUILTIN.filter(function(p){return !overrideIds[p.id];});
+  return builtins.concat(custom);
+}
 
 function renderTable(){
   var search=(document.getElementById('searchInput').value||'').toLowerCase();
@@ -727,31 +733,44 @@ function openEditModal(id, isCustom){
   var all=getAllProducts();
   var prod=all.find(function(p){return p.id===id;});
   if(!prod){toast('Product not found',true);return;}
-  editingId=id;
+
+  // Reset form first (this clears editingId too), then set everything
   resetForm();
+
+  // Now set the editing state AFTER reset
+  editingId=id;
   document.getElementById('modalTitle').textContent=(isCustom?'Edit Custom':'Edit Built-in')+' Product';
 
   document.getElementById('prodName').value=prod.name||'';
   document.getElementById('prodCat').value=prod.category||'';
   document.getElementById('prodDesc').value=prod.desc||'';
 
-  // Badge
-  selectedBadge=prod.badge||'none';
+  // Badge — handle empty/undefined badge
+  var badgeVal=prod.badge||'none';
+  selectedBadge=badgeVal;
   document.querySelectorAll('.badge-opt').forEach(function(b){
-    b.classList.toggle('sel',b.getAttribute('data-b')===(prod.badge||'none'));
+    b.classList.toggle('sel',b.getAttribute('data-b')===badgeVal);
   });
 
-  // Image
+  // Image — support both base64, http URLs, and relative paths (built-ins)
   if(prod.img){
-    currentImgBase64=prod.img;
+    // For built-in products with relative paths, store as currentImgBase64
+    // but also keep track it's a path-based image via currentImgPath
+    currentImgBase64=prod.img;   // store whatever — path or base64
     currentImgUrl=null;
     document.getElementById('previewImg').src=prod.img;
     document.getElementById('imgPreviewWrap').style.display='block';
     document.getElementById('uploadZone').style.display='none';
   }
 
-  // Features
-  modalFeatures=Array.isArray(prod.features)?(prod.features.slice()):[...prod.features];
+  // Features — defensive copy, ensure it's always an array of strings
+  var rawFeats=prod.features;
+  if(Array.isArray(rawFeats)){
+    modalFeatures=rawFeats.map(function(f){return String(f);});
+  } else {
+    modalFeatures=[''];
+  }
+  if(modalFeatures.length===0) modalFeatures=[''];
   renderModalFeatures();
 
   document.getElementById('modalBackdrop').classList.add('open');
@@ -921,34 +940,53 @@ function saveProduct(){
   if(!name){toast('⚠ Product name required',true);return;}
   if(!cat){toast('⚠ Please select a category',true);return;}
   if(!desc){toast('⚠ Description required',true);return;}
-  if(!currentImgBase64&&!currentImgUrl){toast('⚠ Please upload a product image',true);return;}
 
+  // Accept base64 data URL, http/https URL, OR relative path (built-in images like ../img.png)
   var imgSrc=currentImgUrl||currentImgBase64;
+  if(!imgSrc){toast('⚠ Please upload a product image',true);return;}
+
   var badgeClass=badge==='Bestseller'?'badge-best':badge==='New'?'badge-new':badge==='Hot'?'badge-hot':'';
   var saved=getCustom();
+  // CRITICAL: capture editingId NOW before closeModal() resets it
+  var capturedEditId=editingId;
 
-  if(editingId){
-    // Check if it's a built-in product being edited
-    var isBuiltIn=BUILTIN.some(function(p){return p.id===editingId;});
+  if(capturedEditId){
+    var isBuiltIn=BUILTIN.some(function(p){return p.id===capturedEditId;});
     if(isBuiltIn){
-      // Add as new custom with same ID overriding in catalog
-      var idx=saved.findIndex(function(p){return p.id===editingId;});
-      var prod={id:editingId,category:cat,name:name,img:imgSrc,badge:badge,badgeClass:badgeClass,desc:desc,features:feats.length?feats:['Product'],_custom:true,_editedAt:new Date().toLocaleString('en-IN')};
-      if(idx>=0){saved[idx]=prod;}else{saved.push(prod);}
+      // Built-in override: save as custom entry with same id
+      var idx=saved.findIndex(function(p){return p.id===capturedEditId;});
+      var overrideProd={
+        id:capturedEditId,category:cat,name:name,img:imgSrc,
+        badge:badge,badgeClass:badgeClass,desc:desc,
+        features:feats.length?feats:['Product'],
+        _custom:true,_builtinOverride:true,
+        _editedAt:new Date().toLocaleString('en-IN')
+      };
+      if(idx>=0){saved[idx]=overrideProd;}else{saved.push(overrideProd);}
       toast('✅ "'+name+'" updated!');
       addActivity('edit','Edited built-in product: '+name);
     } else {
-      var idx2=saved.findIndex(function(p){return p.id===editingId;});
+      // Custom product update
+      var idx2=saved.findIndex(function(p){return p.id===capturedEditId;});
       if(idx2>=0){
-        saved[idx2]=Object.assign(saved[idx2],{category:cat,name:name,img:imgSrc,badge:badge,badgeClass:badgeClass,desc:desc,features:feats.length?feats:['Product'],_editedAt:new Date().toLocaleString('en-IN')});
+        saved[idx2]=Object.assign({},saved[idx2],{
+          category:cat,name:name,img:imgSrc,
+          badge:badge,badgeClass:badgeClass,desc:desc,
+          features:feats.length?feats:['Product'],
+          _editedAt:new Date().toLocaleString('en-IN')
+        });
         toast('✅ "'+name+'" updated!');
         addActivity('edit','Edited custom product: '+name);
+      } else {
+        toast('⚠ Could not find product to update',true);return;
       }
     }
   } else {
+    // New product
     var newProd={
-      id:Date.now(),category:cat,name:name,img:imgSrc,badge:badge,badgeClass:badgeClass,
-      desc:desc,features:feats.length?feats:['Custom product'],
+      id:Date.now(),category:cat,name:name,img:imgSrc,
+      badge:badge,badgeClass:badgeClass,desc:desc,
+      features:feats.length?feats:['Custom product'],
       _custom:true,_addedAt:new Date().toLocaleString('en-IN')
     };
     saved.push(newProd);
