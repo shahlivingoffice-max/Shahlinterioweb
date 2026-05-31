@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SECUREX Admin</title>
+    <title>SECUREX Admin Panel</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: system-ui, -apple-system, sans-serif;
+            font-family: 'Inter', system-ui, sans-serif;
         }
 
         body {
@@ -20,7 +20,6 @@
             justify-content: center;
         }
 
-        /* Login Screen */
         .login-container {
             background: white;
             border-radius: 32px;
@@ -91,7 +90,6 @@
             color: #166534;
         }
 
-        /* Admin Panel */
         .admin-panel {
             display: none;
             width: 100%;
@@ -114,7 +112,6 @@
 
         .logo-area h2 {
             font-size: 1.6rem;
-            margin-bottom: 4px;
         }
 
         .user-info {
@@ -348,12 +345,13 @@
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // Supabase Config
+        // ========== SUPABASE INIT ==========
         const SUPABASE_URL = "https://ceeezhukizoobknroovq.supabase.co";
         const SUPABASE_ANON_KEY = "sb_publishable_3XHshryDBRniaiW5YEO03w_pUMH6gIG";
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const _supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         const STORAGE_BUCKET = "product-images";
 
+        // Global variables
         let allProducts = [];
         let editingProductId = null;
         let currentBadge = "none";
@@ -364,9 +362,9 @@
         let existingOpenUrl = null;
         let currentUser = null;
 
-        // ========== SIMPLE LOGIN FUNCTIONS ==========
+        // ========== LOGIN FUNCTIONS ==========
         
-        async function login() {
+        window.login = async function() {
             const email = document.getElementById('loginEmail').value.trim();
             const password = document.getElementById('loginPassword').value;
             const errorDiv = document.getElementById('loginError');
@@ -386,7 +384,7 @@
             btn.disabled = true;
             
             try {
-                const { data, error } = await supabase.auth.signInWithPassword({
+                const { data, error } = await _supabase.auth.signInWithPassword({
                     email: email,
                     password: password
                 });
@@ -413,9 +411,9 @@
                 btn.innerHTML = 'Login';
                 btn.disabled = false;
             }
-        }
+        };
 
-        async function signup() {
+        window.signup = async function() {
             const email = document.getElementById('signupEmail').value.trim();
             const password = document.getElementById('signupPassword').value;
             const errorDiv = document.getElementById('signupError');
@@ -441,7 +439,7 @@
             btn.disabled = true;
             
             try {
-                const { data, error } = await supabase.auth.signUp({
+                const { data, error } = await _supabase.auth.signUp({
                     email: email,
                     password: password
                 });
@@ -466,30 +464,30 @@
                 btn.innerHTML = 'Create Account';
                 btn.disabled = false;
             }
-        }
+        };
 
-        async function logout() {
-            await supabase.auth.signOut();
+        window.logout = async function() {
+            await _supabase.auth.signOut();
             currentUser = null;
             document.getElementById('loginScreen').style.display = 'flex';
             document.querySelector('.admin-panel').style.display = 'none';
             document.getElementById('loginEmail').value = '';
             document.getElementById('loginPassword').value = '';
-        }
+        };
 
-        function showSignupForm() {
+        window.showSignupForm = function() {
             document.getElementById('loginForm').style.display = 'none';
             document.getElementById('signupForm').style.display = 'block';
-        }
+        };
 
-        function showLoginForm() {
+        window.showLoginForm = function() {
             document.getElementById('loginForm').style.display = 'block';
             document.getElementById('signupForm').style.display = 'none';
-        }
+        };
 
         // Check existing session
         async function checkSession() {
-            const { data: { session } } = await supabase.auth.getSession();
+            const { data: { session } } = await _supabase.auth.getSession();
             if (session) {
                 currentUser = session.user;
                 document.getElementById('loginScreen').style.display = 'none';
@@ -536,7 +534,7 @@
 
         async function loadProducts() {
             try {
-                const { data, error } = await supabase.from('products').select('*').order('created_at', { ascending: false });
+                const { data, error } = await _supabase.from('products').select('*').order('created_at', { ascending: false });
                 if (error) throw error;
                 allProducts = data || [];
                 
@@ -593,19 +591,19 @@
         async function uploadImage(file) {
             if (!file) return null;
             const fileName = `${Date.now()}_${Math.random().toString(36).substring(2, 8)}.${file.name.split('.').pop()}`;
-            const { error } = await supabase.storage.from(STORAGE_BUCKET).upload(`public/${fileName}`, file);
+            const { error } = await _supabase.storage.from(STORAGE_BUCKET).upload(`public/${fileName}`, file);
             if (error) throw error;
-            const { data } = supabase.storage.from(STORAGE_BUCKET).getPublicUrl(`public/${fileName}`);
+            const { data } = _supabase.storage.from(STORAGE_BUCKET).getPublicUrl(`public/${fileName}`);
             return data.publicUrl;
         }
 
         async function deleteImage(url) {
             if (!url) return;
             const match = url.match(/\/storage\/v1\/object\/public\/product-images\/(.+)$/);
-            if (match) await supabase.storage.from(STORAGE_BUCKET).remove([match[1]]);
+            if (match) await _supabase.storage.from(STORAGE_BUCKET).remove([match[1]]);
         }
 
-        async function saveProduct() {
+        window.saveProduct = async function() {
             const title = document.getElementById('prodName').value.trim();
             const category = document.getElementById('prodCategory').value;
             const description = document.getElementById('prodDesc').value;
@@ -636,11 +634,11 @@
                 const productData = { title, category, description, price_text, badge, features, image_closed: finalClosed, image_open: finalOpen };
                 
                 if (editingProductId) {
-                    await supabase.from('products').update(productData).eq('id', editingProductId);
+                    await _supabase.from('products').update(productData).eq('id', editingProductId);
                     addActivity('edit', `Updated "${title}"`);
                     showToast(`✅ "${title}" updated`);
                 } else {
-                    await supabase.from('products').insert([productData]);
+                    await _supabase.from('products').insert([productData]);
                     addActivity('add', `Added "${title}"`);
                     showToast(`✅ "${title}" added`);
                 }
@@ -650,34 +648,34 @@
             } catch (err) {
                 showToast('Error: ' + err.message, true);
             }
-        }
+        };
 
-        async function confirmDelete(id) {
+        window.confirmDelete = function(id) {
             const product = allProducts.find(p => p.id === id);
             window.deleteId = id;
             document.getElementById('confirmMsg').innerHTML = `Delete "${escapeHtml(product?.title)}"?`;
             document.getElementById('confirmModal').classList.add('open');
-        }
+        };
 
-        async function executeDelete() {
+        window.executeDelete = async function() {
             const id = window.deleteId;
             const product = allProducts.find(p => p.id === id);
             if (product?.image_closed) await deleteImage(product.image_closed);
             if (product?.image_open) await deleteImage(product.image_open);
-            await supabase.from('products').delete().eq('id', id);
+            await _supabase.from('products').delete().eq('id', id);
             addActivity('del', `Deleted "${product?.title}"`);
             await loadProducts();
             closeConfirm();
-        }
+        };
 
-        function openAddModal() {
+        window.openAddModal = function() {
             resetForm();
             editingProductId = null;
             document.getElementById('modalTitle').innerHTML = 'Add New Product';
             document.getElementById('productModal').classList.add('open');
-        }
+        };
 
-        async function openEditModal(id) {
+        window.openEditModal = async function(id) {
             const prod = allProducts.find(p => p.id === id);
             if (!prod) return;
             resetForm();
@@ -711,7 +709,7 @@
             
             document.getElementById('modalTitle').innerHTML = 'Edit Product';
             document.getElementById('productModal').classList.add('open');
-        }
+        };
 
         function resetForm() {
             editingProductId = null;
@@ -738,6 +736,7 @@
 
         function renderFeatures() {
             const container = document.getElementById('featuresList');
+            if (!container) return;
             container.innerHTML = featuresList.map((f, i) => `
                 <div style="display:flex; gap:8px; margin-bottom:8px;">
                     <input type="text" class="form-control" value="${escapeHtml(f)}" onchange="featuresList[${i}] = this.value" placeholder="Feature">
@@ -746,17 +745,18 @@
             `).join('');
         }
 
-        window.removeFeature = (i) => {
+        window.removeFeature = function(i) {
             featuresList.splice(i, 1);
             if (featuresList.length === 0) featuresList = [''];
             renderFeatures();
         };
-        window.addFeature = () => {
+        
+        window.addFeature = function() {
             featuresList.push('');
             renderFeatures();
         };
 
-        function handleImage(file, type) {
+        window.handleImage = function(file, type) {
             if (!file || !file.type.startsWith('image/')) {
                 showToast('Only images allowed', true);
                 return;
@@ -782,9 +782,9 @@
                 };
                 reader.readAsDataURL(file);
             }
-        }
+        };
 
-        function removeImage(type) {
+        window.removeImage = function(type) {
             if (type === 'closed') {
                 closedImageFile = null;
                 existingClosedUrl = null;
@@ -796,35 +796,35 @@
                 document.getElementById('openPreview').style.display = 'none';
                 document.getElementById('openUpload').style.display = 'block';
             }
-        }
+        };
 
-        function closeModal() {
+        window.closeModal = function() {
             document.getElementById('productModal').classList.remove('open');
             resetForm();
-        }
+        };
 
-        function closeConfirm() {
+        window.closeConfirm = function() {
             document.getElementById('confirmModal').classList.remove('open');
             window.deleteId = null;
-        }
+        };
 
-        function navigateTo(page) {
+        window.navigateTo = function(page) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(`page-${page}`).classList.add('active');
             if (page === 'products') renderProductsTable();
             if (page === 'dashboard') loadActivity();
-        }
+        };
 
-        function exportData() {
+        window.exportData = function() {
             const blob = new Blob([JSON.stringify(allProducts, null, 2)], { type: 'application/json' });
             const a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
             a.download = `securex-backup-${Date.now()}.json`;
             a.click();
             showToast(`Exported ${allProducts.length} products`);
-        }
+        };
 
-        function importData(input) {
+        window.importData = function(input) {
             const file = input.files[0];
             if (!file) return;
             const reader = new FileReader();
@@ -834,7 +834,7 @@
                     for (let p of data) {
                         delete p.id;
                         delete p.created_at;
-                        await supabase.from('products').insert([p]);
+                        await _supabase.from('products').insert([p]);
                     }
                     await loadProducts();
                     showToast(`Imported ${data.length} products`);
@@ -844,7 +844,19 @@
             };
             reader.readAsText(file);
             input.value = '';
-        }
+        };
+
+        window.deleteAllProducts = async function() {
+            if (!confirm('⚠️ Delete ALL products? This cannot be undone!')) return;
+            if (prompt('Type "DELETE ALL" to confirm') !== 'DELETE ALL') return;
+            for (let p of allProducts) {
+                if (p.image_closed) await deleteImage(p.image_closed);
+                if (p.image_open) await deleteImage(p.image_open);
+            }
+            await _supabase.from('products').delete().neq('id', 0);
+            await loadProducts();
+            showToast('All products deleted');
+        };
 
         function escapeHtml(str) {
             if (!str) return '';
@@ -852,24 +864,20 @@
         }
 
         // Event listeners
-        document.getElementById('searchInput')?.addEventListener('input', () => renderProductsTable());
-        document.getElementById('catFilter')?.addEventListener('change', () => renderProductsTable());
-        
-        document.querySelectorAll('.badge-opt').forEach(opt => {
-            opt.addEventListener('click', function() {
-                document.querySelectorAll('.badge-opt').forEach(b => b.classList.remove('selected'));
-                this.classList.add('selected');
-                currentBadge = this.dataset.badge;
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('searchInput')?.addEventListener('input', () => renderProductsTable());
+            document.getElementById('catFilter')?.addEventListener('change', () => renderProductsTable());
+            
+            document.querySelectorAll('.badge-opt').forEach(opt => {
+                opt.addEventListener('click', function() {
+                    document.querySelectorAll('.badge-opt').forEach(b => b.classList.remove('selected'));
+                    this.classList.add('selected');
+                    currentBadge = this.dataset.badge;
+                });
             });
         });
 
-        document.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter' && document.getElementById('loginScreen')?.style.display !== 'none') {
-                if (document.getElementById('loginForm')?.style.display !== 'none') login();
-                else signup();
-            }
-        });
-
+        // Start
         checkSession();
     </script>
 </head>
@@ -976,7 +984,7 @@
                         <hr style="margin: 20px 0;">
                         <div style="background:#fff5f0; padding:20px; border-radius:20px;">
                             <h4 style="color:#c2410c;">⚠️ Danger Zone</h4>
-                            <button class="btn-outline" style="border-color:#c2410c;" onclick="if(confirm('Delete ALL products?')) deleteAllProducts()">Delete All Products</button>
+                            <button class="btn-outline" style="border-color:#c2410c;" onclick="deleteAllProducts()">Delete All Products</button>
                         </div>
                     </div>
                 </div>
