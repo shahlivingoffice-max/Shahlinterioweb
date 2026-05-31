@@ -65,11 +65,8 @@
             margin-top: 8px;
         }
 
-        .login-btn.secondary {
-            background: transparent;
-            border: 2px solid #b87c4f;
-            color: #b87c4f;
-            margin-top: 12px;
+        .login-btn:hover {
+            background: #9a663f;
         }
 
         .message {
@@ -248,6 +245,8 @@
         .badge-chip.Bestseller { background: #fae6cf; color: #bd6b2a; }
         .badge-chip.New { background: #d9efd0; color: #3f6b2f; }
         .badge-chip.Hot { background: #ffe0db; color: #c23b1c; }
+        .badge-chip.Popular { background: #e0e7ff; color: #264a8a; }
+        .badge-chip.Premium { background: #eae0c5; color: #8b6946; }
 
         .btn-edit, .btn-del {
             border: none;
@@ -269,12 +268,45 @@
             cursor: pointer;
         }
 
+        .btn-primary:hover {
+            background: #9a663f;
+        }
+
         .btn-outline {
             background: transparent;
             border: 1px solid #c7b59e;
             padding: 6px 16px;
             border-radius: 40px;
             cursor: pointer;
+        }
+
+        .btn-outline:hover {
+            background: #fef5ea;
+        }
+
+        .badge-selector {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        .badge-option {
+            padding: 6px 16px;
+            background: #f1e9df;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .badge-option:hover {
+            background: #e0d5c5;
+        }
+
+        .badge-option.selected {
+            background: #b87c4f;
+            color: white;
         }
 
         .modal-backdrop {
@@ -298,11 +330,15 @@
         .modal-card {
             background: white;
             width: 90%;
-            max-width: 650px;
+            max-width: 500px;
             border-radius: 28px;
             max-height: 85vh;
             overflow-y: auto;
             padding: 24px;
+        }
+
+        .modal-card.large {
+            max-width: 650px;
         }
 
         .form-group {
@@ -313,13 +349,31 @@
             font-weight: 600;
             display: block;
             margin-bottom: 5px;
+            color: #3b2c1e;
         }
 
         .form-control {
             width: 100%;
-            padding: 8px 14px;
+            padding: 10px 14px;
             border-radius: 24px;
             border: 1px solid #dfcfbc;
+            background: white;
+            font-size: 0.95rem;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .feature-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .feature-row .form-control {
+            flex: 1;
         }
 
         .toast {
@@ -338,9 +392,51 @@
         .toast.show { opacity: 1; }
         .toast.error { background: #b63a2c; }
 
+        .img-upload-area {
+            border: 1px dashed #bc9a72;
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            background: #fefaf5;
+        }
+
+        .img-upload-area:hover {
+            background: #fef5ea;
+        }
+
+        .preview-img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-top: 8px;
+        }
+
+        .admin-list {
+            background: #f8f2ea;
+            border-radius: 16px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+
+        .admin-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #e0cfbc;
+        }
+
+        .admin-item:last-child {
+            border-bottom: none;
+        }
+
         @media (max-width: 700px) {
             .app-layout { flex-direction: column; }
             .sidebar { width: 100%; height: auto; position: relative; }
+            .badge-selector { gap: 6px; }
+            .badge-option { padding: 4px 12px; font-size: 0.75rem; }
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -353,6 +449,7 @@
 
         // Global variables
         let allProducts = [];
+        let allAdmins = [];
         let editingProductId = null;
         let currentBadge = "none";
         let featuresList = [""];
@@ -368,10 +465,8 @@
             const email = document.getElementById('loginEmail').value.trim();
             const password = document.getElementById('loginPassword').value;
             const errorDiv = document.getElementById('loginError');
-            const successDiv = document.getElementById('loginSuccess');
             
             errorDiv.style.display = 'none';
-            successDiv.style.display = 'none';
             
             if (!email || !password) {
                 errorDiv.textContent = 'Email and password required';
@@ -393,8 +488,6 @@
                 
                 if (data.user) {
                     currentUser = data.user;
-                    successDiv.textContent = '✅ Login successful! Loading dashboard...';
-                    successDiv.style.display = 'block';
                     
                     setTimeout(() => {
                         document.getElementById('loginScreen').style.display = 'none';
@@ -402,7 +495,8 @@
                         document.getElementById('userEmailDisplay').innerHTML = currentUser.email;
                         loadProducts();
                         loadActivity();
-                    }, 1000);
+                        loadAdmins();
+                    }, 500);
                 }
             } catch (err) {
                 errorDiv.textContent = '❌ ' + (err.message || 'Invalid email or password');
@@ -413,11 +507,78 @@
             }
         };
 
-        window.signup = async function() {
-            const email = document.getElementById('signupEmail').value.trim();
-            const password = document.getElementById('signupPassword').value;
-            const errorDiv = document.getElementById('signupError');
-            const successDiv = document.getElementById('signupSuccess');
+        window.logout = async function() {
+            await _supabase.auth.signOut();
+            currentUser = null;
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.querySelector('.admin-panel').style.display = 'none';
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('loginPassword').value = '';
+        };
+
+        async function checkSession() {
+            const { data: { session } } = await _supabase.auth.getSession();
+            if (session) {
+                currentUser = session.user;
+                document.getElementById('loginScreen').style.display = 'none';
+                document.querySelector('.admin-panel').style.display = 'block';
+                document.getElementById('userEmailDisplay').innerHTML = currentUser.email;
+                loadProducts();
+                loadActivity();
+                loadAdmins();
+            }
+        }
+
+        // ========== ADMIN MANAGEMENT ==========
+        
+        async function loadAdmins() {
+            try {
+                const { data, error } = await _supabase
+                    .from('admin_users')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+                
+                if (error) throw error;
+                allAdmins = data || [];
+                renderAdminList();
+            } catch (err) {
+                console.log('Admin table may not exist yet');
+            }
+        }
+
+        function renderAdminList() {
+            const container = document.getElementById('adminList');
+            if (!container) return;
+            
+            if (!allAdmins.length) {
+                container.innerHTML = '<div style="text-align:center; padding:20px; color:#8b7355;">No admin users found</div>';
+                return;
+            }
+            
+            container.innerHTML = allAdmins.map(admin => `
+                <div class="admin-item">
+                    <div>
+                        <strong>${escapeHtml(admin.email)}</strong>
+                        <div style="font-size:0.75rem; color:#8b7355;">${admin.role || 'admin'} • ${new Date(admin.created_at).toLocaleDateString()}</div>
+                    </div>
+                    ${admin.email !== currentUser?.email ? `<button class="btn-outline" style="padding:4px 12px; border-color:#c2410c; color:#c2410c;" onclick="removeAdmin('${admin.user_id}')">Remove</button>` : '<span style="font-size:0.7rem; color:#8b7355;">(You)</span>'}
+                </div>
+            `).join('');
+        }
+
+        window.openAddAdminModal = function() {
+            document.getElementById('addAdminModal').classList.add('open');
+            document.getElementById('newAdminEmail').value = '';
+            document.getElementById('newAdminPassword').value = '';
+            document.getElementById('adminError').style.display = 'none';
+            document.getElementById('adminSuccess').style.display = 'none';
+        };
+
+        window.addNewAdmin = async function() {
+            const email = document.getElementById('newAdminEmail').value.trim();
+            const password = document.getElementById('newAdminPassword').value;
+            const errorDiv = document.getElementById('adminError');
+            const successDiv = document.getElementById('adminSuccess');
             
             errorDiv.style.display = 'none';
             successDiv.style.display = 'none';
@@ -434,11 +595,12 @@
                 return;
             }
             
-            const btn = document.getElementById('signupBtn');
-            btn.innerHTML = '⏳ Creating account...';
+            const btn = document.getElementById('addAdminBtn');
+            btn.innerHTML = '⏳ Creating...';
             btn.disabled = true;
             
             try {
+                // Create user in Supabase Auth
                 const { data, error } = await _supabase.auth.signUp({
                     email: email,
                     password: password
@@ -447,56 +609,55 @@
                 if (error) throw error;
                 
                 if (data.user) {
-                    successDiv.textContent = '✅ Account created! You can now login.';
+                    // Add to admin_users table
+                    const { error: insertError } = await _supabase
+                        .from('admin_users')
+                        .insert([{ 
+                            user_id: data.user.id, 
+                            email: email, 
+                            role: 'admin' 
+                        }]);
+                    
+                    if (insertError) throw insertError;
+                    
+                    successDiv.textContent = '✅ Admin user created successfully!';
                     successDiv.style.display = 'block';
                     
-                    document.getElementById('signupEmail').value = '';
-                    document.getElementById('signupPassword').value = '';
+                    document.getElementById('newAdminEmail').value = '';
+                    document.getElementById('newAdminPassword').value = '';
+                    
+                    await loadAdmins();
                     
                     setTimeout(() => {
-                        showLoginForm();
+                        document.getElementById('addAdminModal').classList.remove('open');
                     }, 2000);
                 }
             } catch (err) {
                 errorDiv.textContent = '❌ ' + err.message;
                 errorDiv.style.display = 'block';
             } finally {
-                btn.innerHTML = 'Create Account';
+                btn.innerHTML = 'Create Admin';
                 btn.disabled = false;
             }
         };
 
-        window.logout = async function() {
-            await _supabase.auth.signOut();
-            currentUser = null;
-            document.getElementById('loginScreen').style.display = 'flex';
-            document.querySelector('.admin-panel').style.display = 'none';
-            document.getElementById('loginEmail').value = '';
-            document.getElementById('loginPassword').value = '';
-        };
-
-        window.showSignupForm = function() {
-            document.getElementById('loginForm').style.display = 'none';
-            document.getElementById('signupForm').style.display = 'block';
-        };
-
-        window.showLoginForm = function() {
-            document.getElementById('loginForm').style.display = 'block';
-            document.getElementById('signupForm').style.display = 'none';
-        };
-
-        // Check existing session
-        async function checkSession() {
-            const { data: { session } } = await _supabase.auth.getSession();
-            if (session) {
-                currentUser = session.user;
-                document.getElementById('loginScreen').style.display = 'none';
-                document.querySelector('.admin-panel').style.display = 'block';
-                document.getElementById('userEmailDisplay').innerHTML = currentUser.email;
-                loadProducts();
-                loadActivity();
+        window.removeAdmin = async function(userId) {
+            if (!confirm('Remove this admin? They will no longer be able to login.')) return;
+            
+            try {
+                const { error } = await _supabase
+                    .from('admin_users')
+                    .delete()
+                    .eq('user_id', userId);
+                
+                if (error) throw error;
+                
+                showToast('Admin removed successfully');
+                await loadAdmins();
+            } catch (err) {
+                showToast('Error: ' + err.message, true);
             }
-        }
+        };
 
         // ========== PRODUCT FUNCTIONS ==========
         
@@ -687,9 +848,7 @@
             document.getElementById('prodPrice').value = prod.price_text || '';
             
             currentBadge = prod.badge || 'none';
-            document.querySelectorAll('.badge-opt').forEach(opt => {
-                opt.classList.toggle('selected', opt.dataset.badge === currentBadge);
-            });
+            updateBadgeSelection(currentBadge);
             
             featuresList = prod.features?.length ? prod.features : [''];
             renderFeatures();
@@ -711,6 +870,16 @@
             document.getElementById('productModal').classList.add('open');
         };
 
+        function updateBadgeSelection(badgeValue) {
+            document.querySelectorAll('.badge-option').forEach(opt => {
+                if (opt.dataset.badge === badgeValue) {
+                    opt.classList.add('selected');
+                } else {
+                    opt.classList.remove('selected');
+                }
+            });
+        }
+
         function resetForm() {
             editingProductId = null;
             closedImageFile = openImageFile = null;
@@ -723,11 +892,9 @@
             document.getElementById('prodDesc').value = '';
             document.getElementById('prodPrice').value = '';
             
-            document.querySelectorAll('.badge-opt').forEach(opt => opt.classList.remove('selected'));
-            const noneOpt = document.querySelector('.badge-opt[data-badge="none"]');
-            if (noneOpt) noneOpt.classList.add('selected');
-            
+            updateBadgeSelection('none');
             renderFeatures();
+            
             document.getElementById('closedPreview').style.display = 'none';
             document.getElementById('openPreview').style.display = 'none';
             document.getElementById('closedUpload').style.display = 'block';
@@ -738,9 +905,10 @@
             const container = document.getElementById('featuresList');
             if (!container) return;
             container.innerHTML = featuresList.map((f, i) => `
-                <div style="display:flex; gap:8px; margin-bottom:8px;">
-                    <input type="text" class="form-control" value="${escapeHtml(f)}" onchange="featuresList[${i}] = this.value" placeholder="Feature">
-                    <button class="btn-outline" onclick="removeFeature(${i})" style="padding:4px 10px;">✕</button>
+                <div class="feature-row">
+                    <input type="text" class="form-control" value="${escapeHtml(f)}" 
+                           onchange="featuresList[${i}] = this.value" placeholder="Feature bullet point">
+                    <button class="btn-outline" onclick="removeFeature(${i})" style="padding:4px 12px;">✕</button>
                 </div>
             `).join('');
         }
@@ -754,6 +922,11 @@
         window.addFeature = function() {
             featuresList.push('');
             renderFeatures();
+        };
+
+        window.selectBadge = function(badgeValue) {
+            currentBadge = badgeValue;
+            updateBadgeSelection(badgeValue);
         };
 
         window.handleImage = function(file, type) {
@@ -808,11 +981,16 @@
             window.deleteId = null;
         };
 
+        window.closeAdminModal = function() {
+            document.getElementById('addAdminModal').classList.remove('open');
+        };
+
         window.navigateTo = function(page) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(`page-${page}`).classList.add('active');
             if (page === 'products') renderProductsTable();
             if (page === 'dashboard') loadActivity();
+            if (page === 'settings') loadAdmins();
         };
 
         window.exportData = function() {
@@ -867,22 +1045,13 @@
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('searchInput')?.addEventListener('input', () => renderProductsTable());
             document.getElementById('catFilter')?.addEventListener('change', () => renderProductsTable());
-            
-            document.querySelectorAll('.badge-opt').forEach(opt => {
-                opt.addEventListener('click', function() {
-                    document.querySelectorAll('.badge-opt').forEach(b => b.classList.remove('selected'));
-                    this.classList.add('selected');
-                    currentBadge = this.dataset.badge;
-                });
-            });
         });
 
-        // Start
         checkSession();
     </script>
 </head>
 <body>
-    <!-- Login Screen -->
+    <!-- Login Screen - NO CREATE ACCOUNT BUTTON -->
     <div id="loginScreen" class="login-container" style="display: flex;">
         <div class="login-logo">
             <h1>🔒 SECUREX Admin</h1>
@@ -893,18 +1062,7 @@
             <input type="email" id="loginEmail" class="login-input" placeholder="Email address">
             <input type="password" id="loginPassword" class="login-input" placeholder="Password">
             <button id="loginBtn" class="login-btn" onclick="login()">Login</button>
-            <button class="login-btn secondary" onclick="showSignupForm()">Create Account</button>
             <div id="loginError" class="message error-message"></div>
-            <div id="loginSuccess" class="message success-message"></div>
-        </div>
-        
-        <div id="signupForm" style="display: none;">
-            <input type="email" id="signupEmail" class="login-input" placeholder="Email address">
-            <input type="password" id="signupPassword" class="login-input" placeholder="Password (min 6 characters)">
-            <button id="signupBtn" class="login-btn" onclick="signup()">Create Account</button>
-            <button class="login-btn secondary" onclick="showLoginForm()">Back to Login</button>
-            <div id="signupError" class="message error-message"></div>
-            <div id="signupSuccess" class="message success-message"></div>
         </div>
     </div>
 
@@ -940,7 +1098,7 @@
                         <div class="stat-card"><div class="stat-number" id="statCategories">0</div><div>Categories</div></div>
                         <div class="stat-card"><div class="stat-number">✅</div><div>Connected</div></div>
                     </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
                         <h3>📋 Recent Activity</h3>
                         <div>
                             <button class="btn-outline" onclick="exportData()">Export JSON</button>
@@ -955,36 +1113,50 @@
 
                 <!-- Products -->
                 <div id="page-products" class="page">
-                    <div style="display: flex; gap: 16px; margin-bottom: 20px;">
-                        <input type="text" id="searchInput" class="form-control" placeholder="🔍 Search..." style="flex:1;">
-                        <select id="catFilter" class="form-control">
+                    <div style="display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap;">
+                        <input type="text" id="searchInput" class="form-control" placeholder="🔍 Search products..." style="flex:1;">
+                        <select id="catFilter" class="form-control" style="width: auto;">
                             <option value="">All Categories</option>
-                            <option value="almirah-home">Home Almirah</option>
-                            <option value="almirah-office">Office Almirah</option>
-                            <option value="almirah-dressing">Dressing Almirah</option>
-                            <option value="locker">Locker</option>
-                            <option value="bookshelf">BookShelf</option>
-                            <option value="showcase">Glass Showcase</option>
+                            <option value="almirah-home">🏠 Home Almirah</option>
+                            <option value="almirah-office">💼 Office Almirah</option>
+                            <option value="almirah-dressing">🪞 Dressing Almirah</option>
+                            <option value="locker">🔒 Locker</option>
+                            <option value="bookshelf">📚 BookShelf</option>
+                            <option value="showcase">✨ Glass Showcase</option>
                         </select>
                     </div>
                     <div class="table-wrapper">
                         <table>
-                            <thead><tr><th>Image</th><th>Name</th><th>Category</th><th>Badge</th><th>Price</th><th>Actions</th></tr></thead>
-                            <tbody id="prodTableBody"><tr><td colspan="6">Loading...</td></tr></tbody>
-                        </table>
-                    </div>
-                </div>
+                            <thead>
+                                <tr><th>Image</th><th>Name</th><th>Category</th><th>Badge</th><th>Price</th><th>Actions</th></tr>
+                            </thead>
+                            <tbody id="prodTableBody"><tr><td colspan="6">Loading...<\/td><\/tr><\/tbody>
+                        <\/table>
+                    <\/div>
+                <\/div>
 
-                <!-- Settings -->
+                <!-- Settings with Add Admin Option -->
                 <div id="page-settings" class="page">
                     <div style="background:white; border-radius:24px; padding:24px;">
-                        <h3>Settings</h3>
-                        <p>Supabase: Connected ✅</p>
+                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+                            <h3>👥 Admin Users</h3>
+                            <button class="btn-primary" onclick="openAddAdminModal()">+ Add New Admin</button>
+                        </div>
+                        <div id="adminList" class="admin-list"></div>
+                        
+                        <hr style="margin: 24px 0;">
+                        
+                        <h3>⚙️ System Settings</h3>
+                        <p style="margin: 12px 0;">Supabase: Connected ✅</p>
                         <p>Storage: product-images (public)</p>
-                        <hr style="margin: 20px 0;">
+                        <p>Authentication: Email/Password (Supabase Auth)</p>
+                        
+                        <hr style="margin: 24px 0;">
+                        
                         <div style="background:#fff5f0; padding:20px; border-radius:20px;">
                             <h4 style="color:#c2410c;">⚠️ Danger Zone</h4>
-                            <button class="btn-outline" style="border-color:#c2410c;" onclick="deleteAllProducts()">Delete All Products</button>
+                            <p style="margin: 10px 0;">Delete ALL products from database and storage. This cannot be undone.</p>
+                            <button class="btn-outline" style="border-color:#c2410c; color:#c2410c;" onclick="deleteAllProducts()">Delete All Products</button>
                         </div>
                     </div>
                 </div>
@@ -994,23 +1166,117 @@
 
     <!-- Product Modal -->
     <div id="productModal" class="modal-backdrop" onclick="if(event.target===this) closeModal()">
-        <div class="modal-card">
-            <h3 id="modalTitle">Add Product</h3>
-            <div class="form-group"><label>Product Name *</label><input id="prodName" class="form-control"></div>
-            <div class="form-group"><label>Category *</label><select id="prodCategory" class="form-control"><option value="">Select</option><option value="almirah-home">Home Almirah</option><option value="almirah-office">Office Almirah</option><option value="almirah-dressing">Dressing Almirah</option><option value="locker">Locker</option><option value="bookshelf">BookShelf</option><option value="showcase">Glass Showcase</option></select></div>
-            <div class="form-group"><label>Description</label><textarea id="prodDesc" rows="2" class="form-control"></textarea></div>
-            <div class="form-group"><label>Price</label><input id="prodPrice" class="form-control" placeholder="₹18,999"></div>
-            <div class="form-group"><label>Badge</label><div style="display:flex; gap:8px; flex-wrap:wrap;"><div data-badge="none" class="badge-opt selected" style="padding:5px 12px; background:#f1e9df; border-radius:30px; cursor:pointer;">None</div><div data-badge="Bestseller" class="badge-opt" style="padding:5px 12px; background:#f1e9df; border-radius:30px; cursor:pointer;">Bestseller</div><div data-badge="New" class="badge-opt" style="padding:5px 12px; background:#f1e9df; border-radius:30px; cursor:pointer;">New</div><div data-badge="Hot" class="badge-opt" style="padding:5px 12px; background:#f1e9df; border-radius:30px; cursor:pointer;">Hot</div></div></div>
-            <div class="form-group"><label>Features</label><div id="featuresList"></div><button type="button" class="btn-outline" onclick="addFeature()" style="margin-top:5px;">+ Add Feature</button></div>
-            <div class="form-group"><label>📦 Closed Image *</label><div id="closedUpload" class="form-control" style="text-align:center;cursor:pointer;" onclick="document.getElementById('closedFile').click()">Upload</div><input type="file" id="closedFile" style="display:none" accept="image/*" onchange="handleImage(this.files[0],'closed')"><div id="closedPreview" style="display:none;"><img id="previewClosed" style="width:70px;"><button class="btn-outline" onclick="removeImage('closed')">Remove</button></div></div>
-            <div class="form-group"><label>📖 Open Image (optional)</label><div id="openUpload" class="form-control" style="text-align:center;cursor:pointer;" onclick="document.getElementById('openFile').click()">Upload</div><input type="file" id="openFile" style="display:none" accept="image/*" onchange="handleImage(this.files[0],'open')"><div id="openPreview" style="display:none;"><img id="previewOpen" style="width:70px;"><button class="btn-outline" onclick="removeImage('open')">Remove</button></div></div>
-            <div style="display:flex; gap:12px; justify-content:flex-end;"><button class="btn-outline" onclick="closeModal()">Cancel</button><button class="btn-primary" onclick="saveProduct()">Save</button></div>
+        <div class="modal-card large">
+            <h3 id="modalTitle">Add New Product</h3>
+            
+            <div class="form-group">
+                <label>Product Name *</label>
+                <input id="prodName" class="form-control" placeholder="e.g., Royal Steel Almirah">
+            </div>
+            
+            <div class="form-group">
+                <label>Category *</label>
+                <select id="prodCategory" class="form-control">
+                    <option value="">Select Category</option>
+                    <option value="almirah-home">🏠 Home Almirah</option>
+                    <option value="almirah-office">💼 Office Almirah</option>
+                    <option value="almirah-dressing">🪞 Dressing Almirah</option>
+                    <option value="locker">🔒 Locker</option>
+                    <option value="bookshelf">📚 BookShelf</option>
+                    <option value="showcase">✨ Glass Showcase</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Description</label>
+                <textarea id="prodDesc" class="form-control" rows="3" placeholder="Product description..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>Price Text</label>
+                <input id="prodPrice" class="form-control" placeholder="e.g., ₹18,999 / MRP ₹24,999">
+            </div>
+            
+            <div class="form-group">
+                <label>Badge (Optional)</label>
+                <div class="badge-selector">
+                    <div class="badge-option selected" data-badge="none" onclick="selectBadge('none')">None</div>
+                    <div class="badge-option" data-badge="Bestseller" onclick="selectBadge('Bestseller')">🔥 Bestseller</div>
+                    <div class="badge-option" data-badge="New" onclick="selectBadge('New')">✨ New</div>
+                    <div class="badge-option" data-badge="Hot" onclick="selectBadge('Hot')">⚡ Hot</div>
+                    <div class="badge-option" data-badge="Popular" onclick="selectBadge('Popular')">⭐ Popular</div>
+                    <div class="badge-option" data-badge="Premium" onclick="selectBadge('Premium')">💎 Premium</div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Features (Bullet Points)</label>
+                <div id="featuresList"></div>
+                <button type="button" class="btn-outline" onclick="addFeature()" style="margin-top:8px;">+ Add Feature</button>
+            </div>
+            
+            <div class="form-group">
+                <label>📦 Closed Image *</label>
+                <div id="closedUpload" class="img-upload-area" onclick="document.getElementById('closedFile').click()">
+                    Click to upload closed product image
+                </div>
+                <input type="file" id="closedFile" style="display:none" accept="image/*" onchange="handleImage(this.files[0],'closed')">
+                <div id="closedPreview" style="display:none; margin-top:8px;">
+                    <img id="previewClosed" class="preview-img">
+                    <button class="btn-outline" onclick="removeImage('closed')" style="margin-left:8px;">Remove</button>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>📖 Open Image (Optional - Shows on Hover)</label>
+                <div id="openUpload" class="img-upload-area" onclick="document.getElementById('openFile').click()">
+                    Click to upload open box image
+                </div>
+                <input type="file" id="openFile" style="display:none" accept="image/*" onchange="handleImage(this.files[0],'open')">
+                <div id="openPreview" style="display:none; margin-top:8px;">
+                    <img id="previewOpen" class="preview-img">
+                    <button class="btn-outline" onclick="removeImage('open')" style="margin-left:8px;">Remove</button>
+                </div>
+            </div>
+            
+            <div style="display:flex; gap:12px; justify-content:flex-end; margin-top:20px;">
+                <button class="btn-outline" onclick="closeModal()">Cancel</button>
+                <button class="btn-primary" onclick="saveProduct()">Save Product</button>
+            </div>
         </div>
     </div>
 
-    <!-- Confirm Modal -->
+    <!-- Add Admin Modal -->
+    <div id="addAdminModal" class="modal-backdrop" onclick="if(event.target===this) closeAdminModal()">
+        <div class="modal-card">
+            <h3>➕ Add New Admin User</h3>
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" id="newAdminEmail" class="form-control" placeholder="admin@example.com">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="newAdminPassword" class="form-control" placeholder="Minimum 6 characters">
+            </div>
+            <div id="adminError" class="message error-message"></div>
+            <div id="adminSuccess" class="message success-message"></div>
+            <div style="display:flex; gap:12px; justify-content:flex-end; margin-top:20px;">
+                <button class="btn-outline" onclick="closeAdminModal()">Cancel</button>
+                <button id="addAdminBtn" class="btn-primary" onclick="addNewAdmin()">Create Admin</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirm Delete Modal -->
     <div id="confirmModal" class="modal-backdrop" onclick="if(event.target===this) closeConfirm()">
-        <div class="modal-card" style="max-width:350px;"><h3>Confirm Delete</h3><p id="confirmMsg"></p><div style="display:flex; gap:12px;"><button class="btn-outline" onclick="closeConfirm()">Cancel</button><button class="btn-primary" style="background:#b63a2c;" onclick="executeDelete()">Delete</button></div></div>
+        <div class="modal-card" style="max-width:350px;">
+            <h3>⚠️ Confirm Delete</h3>
+            <p id="confirmMsg" style="margin: 20px 0;"></p>
+            <div style="display:flex; gap:12px;">
+                <button class="btn-outline" onclick="closeConfirm()">Cancel</button>
+                <button class="btn-primary" style="background:#b63a2c;" onclick="executeDelete()">Delete Permanently</button>
+            </div>
+        </div>
     </div>
 
     <div id="toast" class="toast"></div>
