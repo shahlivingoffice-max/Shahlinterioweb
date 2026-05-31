@@ -127,6 +127,15 @@
         .back-to-home { display: inline-flex; align-items: center; gap: 8px; background: var(--beige-light); color: var(--brown); border: 1px solid var(--beige-dark); padding: 10px 20px; border-radius: 50px; font-weight: 600; font-size: 0.9rem; transition: all 0.2s; }
         .back-to-home:hover { background: var(--beige); transform: translateX(-4px); }
 
+        /* ---- Loading Indicator ---- */
+        .loading-bar {
+            position: fixed; top: 0; left: 0; width: 0; height: 3px;
+            background: linear-gradient(90deg, var(--brown), var(--gold-accent));
+            z-index: 9999; transition: width 0.4s ease; border-radius: 0 3px 3px 0;
+            box-shadow: 0 0 8px rgba(184,134,11,0.6);
+        }
+        .loading-bar.complete { width: 100%; opacity: 0; transition: width 0.3s ease, opacity 0.4s ease 0.3s; }
+
         /* ---- Product Grid ---- */
         .product-section { padding: 36px 0 80px; }
         .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 28px; }
@@ -239,6 +248,9 @@
     </style>
 </head>
 <body>
+    <!-- Top loading progress bar -->
+    <div class="loading-bar" id="loadingBar"></div>
+
     <a href="#main-content" class="skip-link">Skip to main content</a>
     <div class="nav-overlay" id="navOverlay" aria-hidden="true"></div>
 
@@ -365,9 +377,10 @@
 
     <script>
     /* =====================================================================
-       STORAGE KEY — must match admin.html
+       STORAGE KEYS — must match admin.html
        ===================================================================== */
-    var STORAGE_KEY = 'securex_custom_products';
+    var STORAGE_KEY  = 'securex_custom_products';
+    var GH_CONFIG_KEY = 'securex_gh_config';
 
     /* =====================================================================
        CATEGORY LABELS
@@ -407,22 +420,103 @@
     ];
 
     /* =====================================================================
-       LOAD CUSTOM PRODUCTS FROM ADMIN PANEL (localStorage)
+       LOADING BAR HELPER
        ===================================================================== */
-    (function loadCustomProducts() {
+    var loadingBar = document.getElementById('loadingBar');
+
+    function setLoadingProgress(pct) {
+        loadingBar.style.width = pct + '%';
+    }
+    function completeLoading() {
+        loadingBar.style.width = '100%';
+        setTimeout(function() { loadingBar.classList.add('complete'); }, 300);
+    }
+
+    /* =====================================================================
+       LOAD CUSTOM PRODUCTS FROM GITHUB
+       — Fetches from raw.githubusercontent.com (works for public repos, no auth needed)
+       — Falls back gracefully if GitHub is not configured or unreachable
+       ===================================================================== */
+    async function loadProductsFromGitHub() {
         try {
-            var custom = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-            if (Array.isArray(custom)) {
-                custom.forEach(function(p) { products.push(p); });
+            var ghCfg = JSON.parse(localStorage.getItem(GH_CONFIG_KEY) || '{}');
+            if (!ghCfg.user || !ghCfg.repo) return null; // GitHub not configured
+
+            var jsonPath = (ghCfg.json_path || 'data/custom-products.json').replace(/^\/|\/$/g, '');
+            var branch   = ghCfg.branch || 'main';
+
+            // raw.githubusercontent.com serves files directly — no auth required for public repos
+            var rawUrl = 'https://raw.githubusercontent.com/'
+                       + ghCfg.user + '/' + ghCfg.repo + '/'
+                       + branch + '/' + jsonPath
+                       + '?t=' + Date.now(); // cache-bust so we always get the latest version
+
+            var res = await fetch(rawUrl);
+            if (!res.ok) return null; // File not found or repo is private — fail silently
+
+            var data = await res.json();
+            return Array.isArray(data) ? data : null;
+        } catch (e) {
+            return null; // Network error or JSON parse error — fail silently
+        }
+    }
+
+    /* =====================================================================
+       MERGE CUSTOM PRODUCTS INTO THE MAIN PRODUCTS ARRAY
+       — Adds new products and overrides existing ones by ID
+       ===================================================================== */
+    function mergeCustomProducts(customList) {
+        if (!Array.isArray(customList) || !customList.length) return;
+
+        customList.forEach(function(p) {
+            var existIdx = products.findIndex(function(x) { return x.id === p.id; });
+            if (existIdx >= 0) {
+                products[existIdx] = p; // override existing entry (e.g. edited built-in)
+            } else {
+                products.push(p);       // add new custom product
             }
-        } catch(e) { /* localStorage unavailable */ }
-    })();
+        });
+    }
+
+    /* =====================================================================
+       INIT — Load products then render
+       Priority: localStorage (fast, instant) → GitHub (latest, cross-browser)
+       ===================================================================== */
+    async function initProducts() {
+        setLoadingProgress(20);
+
+        // Step 1: Load from localStorage immediately for a fast first render
+        try {
+            var localData = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            mergeCustomProducts(localData);
+        } catch (e) {
+            // localStorage unavailable or corrupt — skip silently
+        }
+
+        setLoadingProgress(50);
+
+        // Step 2: Render with localStorage data so the page isn't blank while GitHub loads
+        renderProducts(currentFilter);
+
+        // Step 3: Try fetching the latest data from GitHub (may override localStorage)
+        var ghData = await loadProductsFromGitHub();
+
+        setLoadingProgress(90);
+
+        if (ghData && ghData.length) {
+            // GitHub returned data — merge it in and re-render to reflect any updates
+            mergeCustomProducts(ghData);
+            renderProducts(currentFilter);
+        }
+
+        completeLoading();
+    }
 
     /* =====================================================================
        OPEN-IMAGE PATH HELPER
        ===================================================================== */
     function getOpenImagePath(closedSrc) {
-        // Base64 images (from admin panel) have no open variant
+        // Base64 images (from admin panel local uploads) have no open variant
         if (closedSrc && closedSrc.startsWith('data:')) return null;
         var extMatch = closedSrc.match(/(\.[a-zA-Z]+)$/);
         if (!extMatch) return null;
@@ -439,7 +533,7 @@
     var productCountSpan = document.getElementById('productCount');
 
     function renderProducts(filter) {
-        var filtered = filter === 'all'
+        var filtered = (filter === 'all')
             ? products
             : products.filter(function(p) { return p.category === filter; });
 
@@ -463,7 +557,7 @@
                         + ' loading="' + (i < 4 ? 'eager' : 'lazy') + '"'
                         + ' onerror="this.style.display=\'none\'">';
 
-            // Only add open image tag if we have a path
+            // Only add open-image tag if we have a path to try
             if (openSrc) {
                 imgHTML += '<img class="prod-img-open"'
                          + ' src="' + openSrc + '"'
@@ -476,7 +570,7 @@
                      + '<span class="ph-icon">📦</span>' + catLabel
                      + '</div>';
 
-            // Custom product tag
+            // Tag to identify custom products added via admin panel
             var customTag = product._custom
                 ? '<div class="custom-tag">✦ Custom Added</div>'
                 : '';
@@ -508,7 +602,7 @@
                  + '</article>';
         }).join('');
 
-        /* Mark cards that have a working open image */
+        // Mark cards that have a working open image so the CSS hover hint shows
         productGrid.querySelectorAll('.prod-img-open').forEach(function(openImg) {
             var card = openImg.closest('.product-card');
             function markHasOpen() {
@@ -517,12 +611,10 @@
                 }
             }
             if (openImg.complete) { markHasOpen(); }
-            else {
-                openImg.addEventListener('load', markHasOpen);
-            }
+            else { openImg.addEventListener('load', markHasOpen); }
         });
 
-        /* Enquiry buttons → WhatsApp */
+        // Enquiry buttons → open WhatsApp with pre-filled product message
         productGrid.querySelectorAll('.product-enquiry').forEach(function(btn) {
             btn.addEventListener('click', function() {
                 var name = this.getAttribute('data-product') || 'SECUREX product';
@@ -543,17 +635,23 @@
         btn.addEventListener('click', function() {
             var newFilter = this.getAttribute('data-filter');
             if (newFilter === currentFilter) return;
-            filterBtns.forEach(function(b) { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
+            filterBtns.forEach(function(b) {
+                b.classList.remove('active');
+                b.setAttribute('aria-pressed', 'false');
+            });
             this.classList.add('active');
             this.setAttribute('aria-pressed', 'true');
             currentFilter = newFilter;
             renderProducts(newFilter);
-            window.scrollTo({ top: document.querySelector('.product-section').offsetTop - 90, behavior: 'smooth' });
+            window.scrollTo({
+                top: document.querySelector('.product-section').offsetTop - 90,
+                behavior: 'smooth'
+            });
         });
     });
 
     /* =====================================================================
-       NAVBAR SCROLL
+       NAVBAR SCROLL EFFECT
        ===================================================================== */
     var navbar = document.getElementById('navbar');
     window.addEventListener('scroll', function() {
@@ -567,19 +665,33 @@
     var navLinks   = document.getElementById('navLinks');
     var navOverlay = document.getElementById('navOverlay');
 
-    function openMenu()  { hamburger.classList.add('active'); navLinks.classList.add('active'); navOverlay.classList.add('active'); hamburger.setAttribute('aria-expanded', 'true'); document.body.style.overflow = 'hidden'; }
-    function closeMenu() { hamburger.classList.remove('active'); navLinks.classList.remove('active'); navOverlay.classList.remove('active'); hamburger.setAttribute('aria-expanded', 'false'); document.body.style.overflow = ''; }
+    function openMenu()  {
+        hamburger.classList.add('active');
+        navLinks.classList.add('active');
+        navOverlay.classList.add('active');
+        hamburger.setAttribute('aria-expanded', 'true');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeMenu() {
+        hamburger.classList.remove('active');
+        navLinks.classList.remove('active');
+        navOverlay.classList.remove('active');
+        hamburger.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+    }
 
-    hamburger.addEventListener('click', function() { navLinks.classList.contains('active') ? closeMenu() : openMenu(); });
+    hamburger.addEventListener('click', function() {
+        navLinks.classList.contains('active') ? closeMenu() : openMenu();
+    });
     navOverlay.addEventListener('click', closeMenu);
     document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeMenu(); });
     navLinks.querySelectorAll('a').forEach(function(link) { link.addEventListener('click', closeMenu); });
     window.addEventListener('resize', function() { if (window.innerWidth > 768) closeMenu(); });
 
     /* =====================================================================
-       INITIAL RENDER
+       KICK OFF — replaces the old bare renderProducts('all') call
        ===================================================================== */
-    renderProducts('all');
+    initProducts();
     </script>
 </body>
 </html>
