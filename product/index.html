@@ -64,7 +64,7 @@
         img { max-width:100%; height:auto; display:block; }
         .container { width:100%; max-width:var(--container-max); margin:0 auto; padding:0 24px; }
 
-        /* ---- NAVBAR ---- */
+        /* ---- NAVBAR (unchanged) ---- */
         .navbar { position:fixed; top:0; left:0; width:100%; z-index:1000; background:rgba(254,250,224,0.85); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px); border-bottom:1px solid rgba(196,168,130,0.3); transition:all var(--ts); height:var(--navbar-height); }
         .navbar.scrolled { background:rgba(254,250,224,0.96); box-shadow:var(--shadow-md); }
         .navbar-inner { display:flex; align-items:center; justify-content:space-between; height:var(--navbar-height); max-width:var(--container-max); margin:0 auto; padding:0 24px; }
@@ -114,25 +114,30 @@
         .back-to-home { display:inline-flex; align-items:center; gap:8px; background:var(--beige-light); color:var(--brown); border:1px solid var(--beige-dark); padding:10px 20px; border-radius:50px; font-weight:600; font-size:.9rem; transition:all .2s; }
         .back-to-home:hover { background:var(--beige); transform:translateX(-4px); }
 
-        /* ---- LOADING BAR ---- */
+        /* ---- LOADING BAR & LOADING STATE ---- */
         .loading-bar { position:fixed; top:0; left:0; width:0; height:3px; background:linear-gradient(90deg,var(--brown),var(--gold-accent)); z-index:9999; transition:width .4s ease; border-radius:0 3px 3px 0; box-shadow:0 0 8px rgba(184,134,11,0.6); }
         .loading-bar.complete { width:100%; opacity:0; transition:width .3s ease,opacity .4s ease .3s; }
+        .loader-spinner { text-align:center; padding:60px 24px; background:var(--white); border-radius:var(--radius-lg); color:var(--brown); font-weight:500; }
+        .loader-spinner::before { content:''; display:inline-block; width:40px; height:40px; border:3px solid var(--beige-dark); border-top-color:var(--brown); border-radius:50%; animation:spin 0.8s linear infinite; margin-bottom:12px; }
+        @keyframes spin { to { transform:rotate(360deg); } }
 
         /* ---- PRODUCT GRID ---- */
         .product-section { padding:36px 0 80px; }
         .product-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:28px; }
         
-        /* DESKTOP animation (fade+slide in) - stays active for desktop */
-        .product-card { 
-            opacity:0; 
-            transform:translateY(20px); 
-            animation:cardIn .5s ease forwards; 
-        }
-        @keyframes cardIn { 
-            to { opacity:1; transform:translateY(0); } 
+        /* DESKTOP animation (fade+slide) - only for screens > 768px */
+        @media (min-width: 769px) {
+            .product-card { 
+                opacity:0; 
+                transform:translateY(20px); 
+                animation:cardIn .5s ease forwards; 
+            }
+            @keyframes cardIn { 
+                to { opacity:1; transform:translateY(0); } 
+            }
         }
         
-        /* ---- MOBILE OVERRIDE: remove scroll reveal animation on mobile only ---- */
+        /* MOBILE: no animation, no transitions, instant render */
         @media (max-width: 768px) {
             .product-card {
                 animation: none !important;
@@ -140,9 +145,16 @@
                 transform: translateY(0) !important;
                 transition: none !important;
             }
+            /* Also disable any hover transform or transition on mobile for smoother feel */
+            .product-card:hover {
+                transform: none !important;
+            }
+            .product-img::after {
+                display: none !important;
+            }
         }
         
-        .product-card { background:var(--white); border-radius:var(--radius-xl); overflow:hidden; box-shadow:var(--shadow-sm); transition:all var(--ts); border:1px solid rgba(196,168,130,0.2); display:flex; flex-direction:column; }
+        .product-card { background:var(--white); border-radius:var(--radius-xl); overflow:hidden; box-shadow:var(--shadow-sm); transition:box-shadow var(--ts), transform var(--ts); border:1px solid rgba(196,168,130,0.2); display:flex; flex-direction:column; }
         .product-card:hover { transform:translateY(-8px); box-shadow:var(--shadow-xl); border-color:var(--beige-dark); }
 
         /* ---- PRODUCT IMAGE AREA ---- */
@@ -161,7 +173,6 @@
             backface-visibility:hidden;
         }
 
-        /* ---- DESKTOP HOVER BEHAVIOUR (unchanged) ---- */
         .prod-img-closed {
             opacity:1; transform:scale(1) translateZ(0); z-index:1;
             transition:opacity .55s cubic-bezier(.4,0,.2,1),transform .65s cubic-bezier(.4,0,.2,1);
@@ -170,16 +181,12 @@
             opacity:0; transform:scale(1.04) translateZ(0); z-index:2;
             transition:opacity .55s cubic-bezier(.4,0,.2,1),transform .65s cubic-bezier(.4,0,.2,1);
         }
-        /* Desktop hover — only fires on non-touch */
         @media(hover:hover) and (pointer:fine) {
             .product-card:hover .prod-img-closed { opacity:0; transform:scale(1.04) translateZ(0); }
             .product-card:hover .prod-img-open   { opacity:1; transform:scale(1)    translateZ(0); }
         }
-
-        /* ---- MOBILE TOGGLE: .view-open class set by JS ---- */
         .product-card.view-open .prod-img-closed { opacity:0; transform:scale(1.04) translateZ(0); }
         .product-card.view-open .prod-img-open   { opacity:1; transform:scale(1)    translateZ(0); }
-
         .prod-img-open.load-error { display:none !important; }
 
         /* Shimmer on hover (desktop) */
@@ -197,10 +204,8 @@
         .product-badge.badge-new  { background:#2e7d32; }
         .product-badge.badge-hot  { background:#c62828; }
 
-        /* ---- VIEW TOGGLE BUTTON (mobile) ---- */
-        .view-toggle-btn {
-            display: none;
-        }
+        /* ---- VIEW TOGGLE BUTTON (mobile only) ---- */
+        .view-toggle-btn { display: none; }
         @media(hover:none),(pointer:coarse) {
             .view-toggle-btn {
                 display: flex;
@@ -212,7 +217,6 @@
                 z-index: 8;
                 background: rgba(255,255,255,0.92);
                 backdrop-filter: blur(8px);
-                -webkit-backdrop-filter: blur(8px);
                 border: 1.5px solid rgba(196,168,130,0.5);
                 border-radius: 30px;
                 padding: 6px 13px;
@@ -220,30 +224,20 @@
                 font-size: .7rem;
                 font-weight: 700;
                 color: var(--brown-dark);
-                letter-spacing: .04em;
                 text-transform: uppercase;
                 transition: background .2s, transform .15s;
                 -webkit-tap-highlight-color: transparent;
             }
-            .view-toggle-btn:active {
-                transform: scale(.94);
-                background: rgba(232,213,180,0.95);
-            }
+            .view-toggle-btn:active { transform: scale(.94); background: rgba(232,213,180,0.95); }
             .vtb-icon { font-size:.85rem; transition:transform .3s ease; }
             .product-card.view-open .vtb-icon { transform:rotate(180deg); }
-            .product-card.view-open {
-                border-color: var(--gold-accent);
-                box-shadow: var(--shadow-md), 0 0 0 2px rgba(184,134,11,0.15);
-            }
+            .product-card.view-open { border-color: var(--gold-accent); box-shadow: var(--shadow-md), 0 0 0 2px rgba(184,134,11,0.15); }
         }
-
         @media(hover:hover) and (pointer:fine) {
-            .open-hint { position:absolute; top:14px; left:14px; background:rgba(255,255,255,0.92); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); color:var(--brown-dark); font-size:.68rem; font-weight:700; letter-spacing:.05em; text-transform:uppercase; padding:5px 10px; border-radius:20px; z-index:5; opacity:0; transform:translateY(-6px); transition:opacity .3s ease,transform .3s ease; pointer-events:none; white-space:nowrap; display:flex; align-items:center; gap:4px; }
+            .open-hint { position:absolute; top:14px; left:14px; background:rgba(255,255,255,0.92); backdrop-filter:blur(6px); color:var(--brown-dark); font-size:.68rem; font-weight:700; letter-spacing:.05em; text-transform:uppercase; padding:5px 10px; border-radius:20px; z-index:5; opacity:0; transform:translateY(-6px); transition:opacity .3s ease,transform .3s ease; pointer-events:none; white-space:nowrap; display:flex; gap:4px; }
             .product-card.has-open-img:hover .open-hint { opacity:1; transform:translateY(0); }
         }
-        @media(hover:none),(pointer:coarse) {
-            .open-hint { display:none; }
-        }
+        @media(hover:none),(pointer:coarse) { .open-hint { display:none; } }
 
         /* ---- PRODUCT INFO ---- */
         .product-info { padding:22px; flex:1; display:flex; flex-direction:column; }
@@ -253,15 +247,14 @@
         .product-features { list-style:none; margin:0 0 16px; }
         .product-features li { font-size:.8rem; color:var(--text-medium); margin-bottom:5px; display:flex; align-items:flex-start; gap:7px; line-height:1.4; }
         .product-features li::before { content:"✓"; color:var(--gold-accent); font-weight:700; flex-shrink:0; margin-top:1px; }
-        .product-footer { display:flex; justify-content:space-between; align-items:center; padding-top:14px; border-top:1px solid rgba(196,168,130,0.2); margin-top:auto; gap:10px; }
+        .product-footer { display:flex; justify-content:space-between; align-items:center; padding-top:14px; border-top:1px solid rgba(196,168,130,0.2); margin-top:auto; gap:10px; flex-wrap:wrap; }
         .product-price { font-weight:700; font-size:.88rem; color:var(--brown); line-height:1.3; }
         .product-price small { display:block; font-size:.68rem; font-weight:400; color:var(--text-light); }
         .product-enquiry { background:var(--brown); color:white; border:none; padding:9px 18px; border-radius:40px; font-weight:600; font-size:.82rem; transition:all .2s; display:inline-flex; align-items:center; gap:6px; font-family:'Outfit',sans-serif; white-space:nowrap; flex-shrink:0; }
         .product-enquiry:hover { background:var(--brown-dark); transform:translateY(-2px); box-shadow:var(--shadow-md); }
         .no-results { grid-column:1/-1; text-align:center; padding:80px 24px; background:var(--white); border-radius:var(--radius-lg); border:1px solid rgba(196,168,130,0.2); }
-        .no-results p { color:var(--text-light); margin-top:8px; }
 
-        /* ---- FOOTER ---- */
+        /* ---- FOOTER & WHATSAPP (unchanged) ---- */
         .footer { background:var(--brown-deep); color:var(--beige); padding:56px 0 24px; }
         .footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr; gap:40px; margin-bottom:40px; }
         .footer-brand h4 { color:var(--cream); font-size:1.4rem; margin-bottom:8px; }
@@ -271,19 +264,14 @@
         .footer-links li { margin-bottom:10px; }
         .footer-links a { color:var(--beige-dark); font-size:.9rem; transition:color .2s; }
         .footer-links a:hover { color:var(--cream); }
-        .footer-links li span { color:var(--beige-dark); font-size:.9rem; }
         .footer-bottom { border-top:1px solid rgba(196,168,130,0.2); padding-top:20px; text-align:center; font-size:.8rem; color:var(--beige-dark); }
-
-        /* ---- WHATSAPP FLOAT ---- */
         .whatsapp-float { position:fixed; bottom:28px; right:28px; z-index:998; width:58px; height:58px; border-radius:50%; background:#25D366; color:#fff; display:flex; align-items:center; justify-content:center; box-shadow:0 6px 24px rgba(37,211,102,0.4); transition:transform .3s ease,box-shadow .3s; }
         .whatsapp-float:hover { transform:scale(1.12); box-shadow:0 10px 32px rgba(37,211,102,0.55); color:#fff; }
         .whatsapp-float-pulse { position:absolute; inset:-6px; border-radius:50%; border:2px solid #25D366; animation:pulse-ring 2s infinite; pointer-events:none; }
         @keyframes pulse-ring { 0%{transform:scale(1);opacity:.7;} 100%{transform:scale(1.6);opacity:0;} }
-
         .skip-link { position:absolute; top:-100%; left:16px; background:var(--brown); color:var(--cream); padding:8px 16px; border-radius:0 0 var(--radius-sm) var(--radius-sm); font-weight:600; z-index:99999; transition:top .2s; }
         .skip-link:focus { top:0; }
 
-        /* ---- RESPONSIVE ---- */
         @media(max-width:1024px) { .footer-grid { grid-template-columns:1fr 1fr; } }
         @media(max-width:768px) {
             .nav-links { position:fixed; top:0; right:-100%; width:min(280px,80vw); height:100vh; flex-direction:column; background:rgba(254,250,224,0.98); backdrop-filter:blur(20px); padding:100px 32px 40px; gap:24px; transition:right var(--ts); box-shadow:var(--shadow-xl); z-index:1000; overflow-y:auto; }
@@ -295,9 +283,7 @@
             .footer-grid { grid-template-columns:1fr; }
             .page-header { padding:120px 0 48px; }
         }
-        @media(max-width:480px) {
-            .whatsapp-float { bottom:18px; right:16px; width:50px; height:50px; }
-        }
+        @media(max-width:480px) { .whatsapp-float { bottom:18px; right:16px; width:50px; height:50px; } }
         @media(min-width:640px)  { .product-grid { grid-template-columns:repeat(2,1fr); } }
         @media(min-width:1024px) { .product-grid { grid-template-columns:repeat(3,1fr); } }
         @media(min-width:1280px) { .product-grid { grid-template-columns:repeat(4,1fr); } }
@@ -308,7 +294,6 @@
     <a href="#main-content" class="skip-link">Skip to main content</a>
     <div class="nav-overlay" id="navOverlay" aria-hidden="true"></div>
 
-    <!-- NAVBAR -->
     <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
         <div class="navbar-inner">
             <a href="../" class="nav-logo" aria-label="SECUREX – Back to Home">
@@ -333,7 +318,6 @@
         </div>
     </nav>
 
-    <!-- PAGE HEADER -->
     <header class="page-header" role="banner">
         <div class="container">
             <div class="page-header-badge">🏆 B2B Manufacturer Direct</div>
@@ -357,13 +341,13 @@
                 <div class="filter-bar">
                     <a href="../" class="back-to-home">← Back to Home</a>
                     <div class="filter-group" id="filterGroup" role="group" aria-label="Filter by category">
-                        <button class="filter-btn active" data-filter="all"           aria-pressed="true" >All Products</button>
-                        <button class="filter-btn" data-filter="almirah-home"         aria-pressed="false">Home Almirahs</button>
-                        <button class="filter-btn" data-filter="almirah-office"       aria-pressed="false">Office Almirahs</button>
-                        <button class="filter-btn" data-filter="almirah-dressing"     aria-pressed="false">Dressing Almirahs</button>
-                        <button class="filter-btn" data-filter="locker"               aria-pressed="false">Lockers</button>
-                        <button class="filter-btn" data-filter="bookshelf"            aria-pressed="false">BookShelves</button>
-                        <button class="filter-btn" data-filter="showcase"             aria-pressed="false">Glass Showcases</button>
+                        <button class="filter-btn active" data-filter="all" aria-pressed="true">All Products</button>
+                        <button class="filter-btn" data-filter="almirah-home" aria-pressed="false">Home Almirahs</button>
+                        <button class="filter-btn" data-filter="almirah-office" aria-pressed="false">Office Almirahs</button>
+                        <button class="filter-btn" data-filter="almirah-dressing" aria-pressed="false">Dressing Almirahs</button>
+                        <button class="filter-btn" data-filter="locker" aria-pressed="false">Lockers</button>
+                        <button class="filter-btn" data-filter="bookshelf" aria-pressed="false">BookShelves</button>
+                        <button class="filter-btn" data-filter="showcase" aria-pressed="false">Glass Showcases</button>
                     </div>
                     <div class="filter-stats" role="status" aria-live="polite">
                         Showing <span id="productCount">0</span> products
@@ -374,188 +358,187 @@
 
         <section class="product-section" aria-label="Product catalog">
             <div class="container">
-                <div class="product-grid" id="productGrid" aria-label="Products list"></div>
+                <div class="product-grid" id="productGrid">
+                    <div class="loader-spinner">Loading premium steel furniture...</div>
+                </div>
             </div>
         </section>
     </main>
 
-    <!-- FOOTER -->
     <footer class="footer" role="contentinfo">
         <div class="container">
             <div class="footer-grid">
-                <div class="footer-brand">
-                    <h4>SECUREX</h4>
-                    <p>by <strong>Shah Interio</strong> (<a href="https://shahinterio.com" style="color:var(--beige-dark);">shahinterio.com</a>)<br>
-                    Manufactured by <strong>Brajesh Steel</strong><br>Premium steel furniture for modern India.</p>
-                </div>
-                <div>
-                    <h5>Quick Links</h5>
-                    <ul class="footer-links">
-                        <li><a href="../">Home</a></li>
-                        <li><a href="../#about">About</a></li>
-                        <li><a href="./">Products</a></li>
-                        <li><a href="../#contact">Contact</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h5>Contact Info</h5>
-                    <ul class="footer-links">
-                        <li><a href="tel:+919179539610">📞 +91 9179539610</a></li>
-                        <li><a href="https://wa.me/919179539610" target="_blank" rel="noopener noreferrer">💬 WhatsApp Chat</a></li>
-                        <li><span>📍 Brajesh Steel, Kantabaji, Odisha</span></li>
-                        <li><a href="https://shahinterio.com" target="_blank" rel="noopener noreferrer">🌐 shahinterio.com</a></li>
-                    </ul>
-                </div>
+                <div class="footer-brand"><h4>SECUREX</h4><p>by <strong>Shah Interio</strong> (<a href="https://shahinterio.com" style="color:var(--beige-dark);">shahinterio.com</a>)<br>Manufactured by <strong>Brajesh Steel</strong><br>Premium steel furniture for modern India.</p></div>
+                <div><h5>Quick Links</h5><ul class="footer-links"><li><a href="../">Home</a></li><li><a href="../#about">About</a></li><li><a href="./">Products</a></li><li><a href="../#contact">Contact</a></li></ul></div>
+                <div><h5>Contact Info</h5><ul class="footer-links"><li><a href="tel:+919179539610">📞 +91 9179539610</a></li><li><a href="https://wa.me/919179539610" target="_blank" rel="noopener noreferrer">💬 WhatsApp Chat</a></li><li><span>📍 Brajesh Steel, Kantabaji, Odisha</span></li><li><a href="https://shahinterio.com" target="_blank" rel="noopener noreferrer">🌐 shahinterio.com</a></li></ul></div>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2026 <strong>SECUREX</strong> by Shah Interio. All rights reserved.</p>
-            </div>
+            <div class="footer-bottom"><p>&copy; 2026 <strong>SECUREX</strong> by Shah Interio. All rights reserved.</p></div>
         </div>
     </footer>
 
-    <!-- WHATSAPP FLOAT -->
-    <a href="https://wa.me/919179539610?text=Hello%20SECUREX%20Team!%20I%20want%20to%20enquire%20about%20your%20steel%20furniture%20catalog."
-       target="_blank" rel="noopener noreferrer" class="whatsapp-float" aria-label="Chat on WhatsApp">
+    <a href="https://wa.me/919179539610?text=Hello%20SECUREX%20Team!%20I%20want%20to%20enquire%20about%20your%20steel%20furniture%20catalog." target="_blank" rel="noopener noreferrer" class="whatsapp-float" aria-label="Chat on WhatsApp">
         <span class="whatsapp-float-pulse" aria-hidden="true"></span>
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-        </svg>
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
     </a>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-    /* ============================================================
-       SUPABASE + PRODUCT RENDER
-       ============================================================ */
-    const SUPABASE_URL  = "https://ceeezhukizoobknroovq.supabase.co";
-    const SUPABASE_ANON = "sb_publishable_3XHshryDBRniaiW5YEO03w_pUMH6gIG";
-    const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+    (function(){
+        const SUPABASE_URL = "https://ceeezhukizoobknroovq.supabase.co";
+        const SUPABASE_ANON = "sb_publishable_3XHshryDBRniaiW5YEO03w_pUMH6gIG";
+        const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
-    const CAT_LABELS = {
-        'almirah-home':     'Home Almirah',
-        'almirah-office':   'Office Almirah',
-        'almirah-dressing': 'Dressing Almirah',
-        'locker':           'Locker',
-        'bookshelf':        'BookShelf',
-        'showcase':         'Glass Showcase'
-    };
-
-    const builtinProducts = [
-        { id:1,  category:'almirah-home',     name:'SECUREX 2-Door Steel Almirah – Blue',                   img:'../Secure-X-Almirah-4001.png',            badge:'Bestseller', badgeClass:'badge-best', desc:'A solid 2-door home almirah in a bright blue finish – one of our most popular picks for bedrooms and living rooms. Multiple colour options available. Custom prints also available.',     features:['1.0 mm CRCA steel body','Scratch-resistant powder coat','3 adjustable internal shelves','Anti-rust inner coating','Multiple colour options available','Custom prints available'] },
-        { id:2,  category:'almirah-home',     name:'SECUREX 2-Door Steel Almirah – Rose',                   img:'../Secure-X-Almirah-4002.png',            badge:'Popular',    badgeClass:'',           desc:'Same reliable build as the blue variant, wrapped in a warm rose finish. Multiple colour options available. Custom prints also available.',              features:['1.0 mm CRCA steel body','Scratch-resistant powder coat','3 shelves + hanging rod','Double-key locking system','Multiple colour options available','Custom prints available'] },
-        { id:3,  category:'almirah-home',     name:'SECUREX 3-Door Steel Almirah – Bicolour Blue & White',  img:'../Secure-X-Almirah-4003.png',            badge:'New',        badgeClass:'badge-new',  desc:'Extra-wide 3-door almirah in a fresh two-tone blue and white finish. Multiple colour options available. Custom prints also available.',         features:['1.2 mm heavy-gauge steel','Two-tone powder-coat finish','5 shelves + centre hanging section','Central locking bar with 3 bolts','Multiple colour options available','Custom prints available'] },
-        { id:4,  category:'almirah-home',     name:'SECUREX 3-Door Steel Almirah – Pink',                   img:'../Secure-X-Almirah-4004.png',            badge:'Hot',        badgeClass:'badge-hot',  desc:'A bold pink 3-door almirah that makes a statement in any modern bedroom. Multiple colour options available. Custom prints also available.',                      features:['1.2 mm steel frame','Premium pink powder coat','Full-length hanging rod + 4 shelves','Recessed piano-type handle','Multiple colour options available','Custom prints available'] },
-        { id:5,  category:'almirah-home',     name:'SECUREX 3-Door Steel Almirah – Black',                  img:'../Secure-X-Almirah-4006.png',            badge:'Premium',    badgeClass:'',           desc:'A sleek matte-black 3-door almirah for anyone who wants a modern, no-nonsense look. Multiple colour options available. Custom prints also available.',       features:['1.2 mm CRCA steel','Matte-black electrostatic coat','5 shelves + hanging rod','Smooth concealed hinges','Multiple colour options available','Custom prints available'] },
-        { id:6,  category:'almirah-home',     name:'SECUREX 3-Door Steel Almirah – Maroon',                 img:'../Secure-X-Almirah-3007.png',            badge:'Classic',    badgeClass:'',           desc:'Rich maroon finish on a sturdy 3-door frame. Multiple colour options available. Custom prints also available.',               features:['1.2 mm steel with anti-rust treatment','Deep maroon powder coat','4 adjustable shelves','Heavy-duty chrome handles','Multiple colour options available','Custom prints available'] },
-        { id:7,  category:'almirah-office',   name:'SECUREX 2-Door Office Almirah – Grey',                  img:'../Secure-X-Almirah-3006.png',            badge:'Office',     badgeClass:'',           desc:'A professional grey almirah built for busy offices. Deep shelves store files, registers, and stationery neatly. Multiple colour options available.',                                 features:['1.2 mm CRCA steel body','Neutral grey powder coat','4 deep document shelves','Label-holder slots on each shelf','Double-locking mechanism','Multiple colour options available'] },
-        { id:8,  category:'almirah-office',   name:'SECUREX 2-Door Office Almirah – Pink',                  img:'../Secure-X-Almirah-2-Door-Office-1.png', badge:'Office',     badgeClass:'',           desc:'A compact 2-door office cupboard in a fresh pink shade. Multiple colour options available.',                        features:['1.0 mm CRCA steel','Vibrant pink powder coat','3 fixed shelves for files','Central key lock','Anti-tilt base design','Multiple colour options available'] },
-        { id:9,  category:'almirah-office',   name:'SECUREX 2-Door Office Almirah – Graphite',              img:'../Secure-X-Almirah-2-Door-Office-2.png', badge:'Office',     badgeClass:'',           desc:'Graphite-finish office almirah with an industrial no-nonsense look. Multiple colour options available.',                                    features:['1.2 mm heavy-gauge steel','Graphite powder-coat finish','4 adjustable shelves','Reinforced door hinges','Double-key security lock','Multiple colour options available'] },
-        { id:10, category:'almirah-dressing', name:'SECUREX Dressing Almirah with Full-Length Mirror',       img:'../Secure-X-Dressing-2003.png',           badge:'Bestseller', badgeClass:'badge-best', desc:'A full-height dressing almirah with an integrated full-length mirror on the left door. Multiple colour options available. Custom prints also available.', features:['1.0 mm CRCA steel frame','Full-length fixed mirror on door','Hanging section + 3 shelves + drawers','Soft-close door hinges','Multiple colour options available','Custom prints available'] },
-        { id:11, category:'locker',           name:'SECUREX 10-Door Steel Locker Bank',                      img:'../Secure-X-10-Locker.png',              badge:'Multi-Unit', badgeClass:'',           desc:'Ten individual lockable compartments in a single sturdy unit. Perfect for schools, gyms, offices, factories, and staff rooms.',                                                       features:['10 independent locking compartments','Master-key override access','Ventilated door panels','Numbered name-plate slots','Anti-rust powder-coat finish','Multiple colour options available'] },
-        { id:12, category:'bookshelf',        name:'SECUREX Heavy-Duty Steel BookShelf',                     img:'../Secure-X-BookShelf.png',              badge:'Storage',    badgeClass:'',           desc:'An open-frame steel bookshelf with multiple adjustable shelves. Multiple colour options available.',                   features:['1.2 mm steel frame','5 height-adjustable shelves','80 kg load capacity per shelf','Open-front for easy access','Anti-rust powder-coat finish','Multiple colour options available'] },
-        { id:13, category:'showcase',         name:'SECUREX Glass Door Showcase Cabinet',                    img:'../Secure-X-GlassDoor-Showcase.png',     badge:'Display',    badgeClass:'badge-best', desc:'A steel-framed display cabinet with toughened glass doors and interior glass shelves. Multiple colour options available.', features:['Toughened safety glass doors','Powder-coated steel frame','3 adjustable glass shelves','Key-locking glass door','LED strip-light ready interior','Multiple colour options available'] }
-    ];
-
-    let products = [];
-
-    function convertRow(row) {
-        return {
-            id:         row.id,
-            category:   row.category  || '',
-            name:       row.title     || 'Untitled',
-            img:        row.image_closed || '',
-            imgOpen:    row.image_open   || null,
-            badge:      row.badge || '',
-            badgeClass: row.badge === 'Bestseller' ? 'badge-best' : (row.badge === 'New' ? 'badge-new' : (row.badge === 'Hot' ? 'badge-hot' : '')),
-            desc:       row.description || '',
-            features:   Array.isArray(row.features) ? row.features : [],
-            price_text: row.price_text || ''
+        const CAT_LABELS = {
+            'almirah-home': 'Home Almirah', 'almirah-office': 'Office Almirah',
+            'almirah-dressing': 'Dressing Almirah', 'locker': 'Locker',
+            'bookshelf': 'BookShelf', 'showcase': 'Glass Showcase'
         };
-    }
 
-    async function fetchSupabaseProducts() {
-        try {
-            const { data, error } = await sbClient.from('products').select('*').order('created_at', { ascending: false });
-            if (error) throw error;
-            return (data || []).map(convertRow);
-        } catch(e) { console.warn(e); return []; }
-    }
+        const builtinProducts = [
+            { id:1, category:'almirah-home', name:'SECUREX 2-Door Steel Almirah – Blue', img:'../Secure-X-Almirah-4001.png', badge:'Bestseller', badgeClass:'badge-best', desc:'A solid 2-door home almirah in a bright blue finish – one of our most popular picks for bedrooms and living rooms. Multiple colour options available. Custom prints also available.', features:['1.0 mm CRCA steel body','Scratch-resistant powder coat','3 adjustable internal shelves','Anti-rust inner coating','Multiple colour options available','Custom prints available'] },
+            { id:2, category:'almirah-home', name:'SECUREX 2-Door Steel Almirah – Rose', img:'../Secure-X-Almirah-4002.png', badge:'Popular', badgeClass:'', desc:'Same reliable build as the blue variant, wrapped in a warm rose finish. Multiple colour options available. Custom prints also available.', features:['1.0 mm CRCA steel body','Scratch-resistant powder coat','3 shelves + hanging rod','Double-key locking system','Multiple colour options available','Custom prints available'] },
+            { id:3, category:'almirah-home', name:'SECUREX 3-Door Steel Almirah – Bicolour Blue & White', img:'../Secure-X-Almirah-4003.png', badge:'New', badgeClass:'badge-new', desc:'Extra-wide 3-door almirah in a fresh two-tone blue and white finish. Multiple colour options available. Custom prints also available.', features:['1.2 mm heavy-gauge steel','Two-tone powder-coat finish','5 shelves + centre hanging section','Central locking bar with 3 bolts','Multiple colour options available','Custom prints available'] },
+            { id:4, category:'almirah-home', name:'SECUREX 3-Door Steel Almirah – Pink', img:'../Secure-X-Almirah-4004.png', badge:'Hot', badgeClass:'badge-hot', desc:'A bold pink 3-door almirah that makes a statement in any modern bedroom. Multiple colour options available. Custom prints also available.', features:['1.2 mm steel frame','Premium pink powder coat','Full-length hanging rod + 4 shelves','Recessed piano-type handle','Multiple colour options available','Custom prints available'] },
+            { id:5, category:'almirah-home', name:'SECUREX 3-Door Steel Almirah – Black', img:'../Secure-X-Almirah-4006.png', badge:'Premium', badgeClass:'', desc:'A sleek matte-black 3-door almirah for anyone who wants a modern, no-nonsense look. Multiple colour options available. Custom prints also available.', features:['1.2 mm CRCA steel','Matte-black electrostatic coat','5 shelves + hanging rod','Smooth concealed hinges','Multiple colour options available','Custom prints available'] },
+            { id:6, category:'almirah-home', name:'SECUREX 3-Door Steel Almirah – Maroon', img:'../Secure-X-Almirah-3007.png', badge:'Classic', badgeClass:'', desc:'Rich maroon finish on a sturdy 3-door frame. Multiple colour options available. Custom prints also available.', features:['1.2 mm steel with anti-rust treatment','Deep maroon powder coat','4 adjustable shelves','Heavy-duty chrome handles','Multiple colour options available','Custom prints available'] },
+            { id:7, category:'almirah-office', name:'SECUREX 2-Door Office Almirah – Grey', img:'../Secure-X-Almirah-3006.png', badge:'Office', badgeClass:'', desc:'A professional grey almirah built for busy offices. Deep shelves store files, registers, and stationery neatly. Multiple colour options available.', features:['1.2 mm CRCA steel body','Neutral grey powder coat','4 deep document shelves','Label-holder slots on each shelf','Double-locking mechanism','Multiple colour options available'] },
+            { id:8, category:'almirah-office', name:'SECUREX 2-Door Office Almirah – Pink', img:'../Secure-X-Almirah-2-Door-Office-1.png', badge:'Office', badgeClass:'', desc:'A compact 2-door office cupboard in a fresh pink shade. Multiple colour options available.', features:['1.0 mm CRCA steel','Vibrant pink powder coat','3 fixed shelves for files','Central key lock','Anti-tilt base design','Multiple colour options available'] },
+            { id:9, category:'almirah-office', name:'SECUREX 2-Door Office Almirah – Graphite', img:'../Secure-X-Almirah-2-Door-Office-2.png', badge:'Office', badgeClass:'', desc:'Graphite-finish office almirah with an industrial no-nonsense look. Multiple colour options available.', features:['1.2 mm heavy-gauge steel','Graphite powder-coat finish','4 adjustable shelves','Reinforced door hinges','Double-key security lock','Multiple colour options available'] },
+            { id:10, category:'almirah-dressing', name:'SECUREX Dressing Almirah with Full-Length Mirror', img:'../Secure-X-Dressing-2003.png', badge:'Bestseller', badgeClass:'badge-best', desc:'A full-height dressing almirah with an integrated full-length mirror on the left door. Multiple colour options available. Custom prints also available.', features:['1.0 mm CRCA steel frame','Full-length fixed mirror on door','Hanging section + 3 shelves + drawers','Soft-close door hinges','Multiple colour options available','Custom prints available'] },
+            { id:11, category:'locker', name:'SECUREX 10-Door Steel Locker Bank', img:'../Secure-X-10-Locker.png', badge:'Multi-Unit', badgeClass:'', desc:'Ten individual lockable compartments in a single sturdy unit. Perfect for schools, gyms, offices, factories, and staff rooms.', features:['10 independent locking compartments','Master-key override access','Ventilated door panels','Numbered name-plate slots','Anti-rust powder-coat finish','Multiple colour options available'] },
+            { id:12, category:'bookshelf', name:'SECUREX Heavy-Duty Steel BookShelf', img:'../Secure-X-BookShelf.png', badge:'Storage', badgeClass:'', desc:'An open-frame steel bookshelf with multiple adjustable shelves. Multiple colour options available.', features:['1.2 mm steel frame','5 height-adjustable shelves','80 kg load capacity per shelf','Open-front for easy access','Anti-rust powder-coat finish','Multiple colour options available'] },
+            { id:13, category:'showcase', name:'SECUREX Glass Door Showcase Cabinet', img:'../Secure-X-GlassDoor-Showcase.png', badge:'Display', badgeClass:'badge-best', desc:'A steel-framed display cabinet with toughened glass doors and interior glass shelves. Multiple colour options available.', features:['Toughened safety glass doors','Powder-coated steel frame','3 adjustable glass shelves','Key-locking glass door','LED strip-light ready interior','Multiple colour options available'] }
+        ];
 
-    function mergeProducts(sbProds) {
-        const merged = builtinProducts.map(p => ({ ...p }));
-        sbProds.forEach(sp => {
-            const idx = merged.findIndex(p => p.id === sp.id);
-            idx >= 0 ? merged[idx] = sp : merged.push(sp);
-        });
-        return merged;
-    }
+        let currentFilter = 'all';
+        let products = [];
+        const productGrid = document.getElementById('productGrid');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const productCountSpan = document.getElementById('productCount');
+        const loadingBar = document.getElementById('loadingBar');
 
-    const loadingBar = document.getElementById('loadingBar');
-    const setLP = p => { loadingBar.style.width = p + '%'; };
-    const doneLP = () => { loadingBar.style.width = '100%'; setTimeout(() => loadingBar.classList.add('complete'), 300); };
+        function setLoadingProgress(p) { loadingBar.style.width = p + '%'; }
+        function finishLoading() { loadingBar.style.width = '100%'; setTimeout(() => loadingBar.classList.add('complete'), 300); }
 
-    const productGrid = document.getElementById('productGrid');
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    const productCountSpan = document.getElementById('productCount');
-    let currentFilter = 'all';
-
-    function buildCardHTML(product, i) {
-        const catLabel = CAT_LABELS[product.category] || product.category;
-        const badgeHTML = product.badge ? `<div class="product-badge ${product.badgeClass || ''}">${product.badge}</div>` : '';
-        const closedSrc = product.img || '';
-        let openSrc = product.imgOpen || null;
-        if (!openSrc && closedSrc && !closedSrc.startsWith('data:')) {
-            const m = closedSrc.match(/(\.[a-zA-Z]+)$/);
-            if (m) openSrc = closedSrc.slice(0, -m[1].length) + '-Open' + m[1];
+        function convertRow(row) {
+            let badgeClass = '';
+            if (row.badge === 'Bestseller') badgeClass = 'badge-best';
+            else if (row.badge === 'New') badgeClass = 'badge-new';
+            else if (row.badge === 'Hot') badgeClass = 'badge-hot';
+            return {
+                id: row.id, category: row.category || '', name: row.title || 'Untitled',
+                img: row.image_closed || '', imgOpen: row.image_open || null,
+                badge: row.badge || '', badgeClass: badgeClass,
+                desc: row.description || '', features: Array.isArray(row.features) ? row.features : [],
+                price_text: row.price_text || ''
+            };
         }
-        const hasOpen = !!(openSrc && openSrc.trim());
-        const toggleBtn = hasOpen ? `<button class="view-toggle-btn" aria-label="Toggle open/close view" aria-pressed="false" onclick="toggleView(event, this)"><span class="vtb-icon">📂</span><span class="vtb-label">Open View</span></button>` : '';
-        const openHint = hasOpen ? `<div class="open-hint" aria-hidden="true">👁 Hover to Open</div>` : '';
-        let imgHTML = `<img class="prod-img-closed" src="${closedSrc}" alt="${product.name}" loading="${i < 4 ? 'eager' : 'lazy'}" onerror="this.style.display='none'">`;
-        if (hasOpen) imgHTML += `<img class="prod-img-open" src="${openSrc}" alt="${product.name} – open view" aria-hidden="true" loading="lazy" onerror="this.classList.add('load-error')">`;
-        imgHTML += `<div class="product-img-placeholder" style="display:none;"><span class="ph-icon">📦</span>${catLabel}</div>`;
-        return `<article class="product-card${hasOpen ? ' has-open-img' : ''}" data-category="${product.category}" style="animation-delay:${(i % 12) * 0.05}s" aria-label="${product.name}">
-            <div class="product-img">${imgHTML}${openHint}${badgeHTML}${toggleBtn}</div>
-            <div class="product-info"><div class="product-category">${catLabel}</div><h3 class="product-title">${product.name}</h3><p class="product-desc">${product.desc}</p><ul class="product-features" aria-label="Key features">${(product.features || []).map(f => `<li>${f}</li>`).join('')}</ul><div class="product-footer"><div class="product-price">${product.price_text || 'Factory Price'}<small>B2B Direct &nbsp;·&nbsp; MOQ Flexible</small></div><button class="product-enquiry" data-product="${product.name.replace(/"/g,'&quot;')}" aria-label="Enquire about ${product.name}">📩 Enquire</button></div></div>
-        </article>`;
-    }
 
-    function renderProducts(filter) {
-        const filtered = filter === 'all' ? products : products.filter(p => p.category === filter);
-        productCountSpan.textContent = filtered.length;
-        if (!filtered.length) { productGrid.innerHTML = `<div class="no-results"><div style="font-size:3rem;margin-bottom:12px;">🔍</div><h3 style="color:var(--brown-dark);">No products found</h3><p>Try selecting a different category above.</p></div>`; return; }
-        productGrid.innerHTML = filtered.map(buildCardHTML).join('');
-        productGrid.querySelectorAll('.prod-img-open').forEach(img => { const card = img.closest('.product-card'); const mark = () => { if (!img.classList.contains('load-error') && img.naturalWidth > 0) card.classList.add('has-open-img'); }; img.complete ? mark() : img.addEventListener('load', mark); });
-        productGrid.querySelectorAll('.product-enquiry').forEach(btn => btn.addEventListener('click', () => { const name = btn.dataset.product || 'SECUREX product'; const msg = 'Hello%20SECUREX%20Team!%0A%0AI%20am%20interested%20in%20*' + encodeURIComponent(name) + '*.%0APlease%20share%20the%20price%20and%20bulk%20order%20details.%0AThank%20you.'; window.open('https://wa.me/919179539610?text=' + msg, '_blank', 'noopener,noreferrer'); }));
-    }
+        async function fetchSupabaseProducts() {
+            try {
+                const { data, error } = await sbClient.from('products').select('*').order('created_at', { ascending: false });
+                if (error) throw error;
+                return (data || []).map(convertRow);
+            } catch(e) { console.warn('Supabase fetch failed:', e); return []; }
+        }
 
-    window.toggleView = function(event, btn) {
-        event.stopPropagation(); event.preventDefault();
-        const card = btn.closest('.product-card');
-        const isOpen = card.classList.toggle('view-open');
-        const label = btn.querySelector('.vtb-label');
-        const icon = btn.querySelector('.vtb-icon');
-        btn.setAttribute('aria-pressed', isOpen ? 'true' : 'false');
-        if (isOpen) { icon.textContent = '📁'; label.textContent = 'Close View'; } else { icon.textContent = '📂'; label.textContent = 'Open View'; }
-    };
+        function mergeProducts(sbProds) {
+            const merged = builtinProducts.map(p => ({ ...p }));
+            sbProds.forEach(sp => {
+                const idx = merged.findIndex(p => p.id === sp.id);
+                if (idx >= 0) merged[idx] = sp;
+                else merged.push(sp);
+            });
+            return merged;
+        }
 
-    filterBtns.forEach(btn => btn.addEventListener('click', function() { const nf = this.dataset.filter; if (nf === currentFilter) return; filterBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed','false'); }); this.classList.add('active'); this.setAttribute('aria-pressed','true'); currentFilter = nf; renderProducts(currentFilter); window.scrollTo({ top: document.querySelector('.product-section').offsetTop - 90, behavior:'smooth' }); }));
+        function buildCardHTML(product, idx) {
+            const catLabel = CAT_LABELS[product.category] || product.category;
+            const badgeHTML = product.badge ? `<div class="product-badge ${product.badgeClass}">${product.badge}</div>` : '';
+            let closedSrc = product.img || '';
+            let openSrc = product.imgOpen || null;
+            if (!openSrc && closedSrc && !closedSrc.startsWith('data:')) {
+                const m = closedSrc.match(/(\.[a-zA-Z]+)$/);
+                if (m) openSrc = closedSrc.slice(0, -m[1].length) + '-Open' + m[1];
+            }
+            const hasOpen = !!(openSrc && openSrc.trim());
+            const toggleBtn = hasOpen ? `<button class="view-toggle-btn" aria-label="Toggle open/close view" aria-pressed="false" onclick="window.toggleView(event,this)"><span class="vtb-icon">📂</span><span class="vtb-label">Open View</span></button>` : '';
+            const openHint = hasOpen ? `<div class="open-hint" aria-hidden="true">👁 Hover to Open</div>` : '';
+            let imgHTML = `<img class="prod-img-closed" src="${closedSrc}" alt="${product.name}" loading="${idx < 4 ? 'eager' : 'lazy'}" onerror="this.style.display='none'">`;
+            if (hasOpen) imgHTML += `<img class="prod-img-open" src="${openSrc}" alt="${product.name} – open view" aria-hidden="true" loading="lazy" onerror="this.classList.add('load-error')">`;
+            imgHTML += `<div class="product-img-placeholder" style="display:none;"><span class="ph-icon">📦</span>${catLabel}</div>`;
+            return `<article class="product-card${hasOpen ? ' has-open-img' : ''}" data-category="${product.category}" style="animation-delay:${(idx % 12) * 0.05}s" aria-label="${product.name}">
+                <div class="product-img">${imgHTML}${openHint}${badgeHTML}${toggleBtn}</div>
+                <div class="product-info"><div class="product-category">${catLabel}</div><h3 class="product-title">${product.name}</h3><p class="product-desc">${product.desc}</p><ul class="product-features">${(product.features || []).map(f => `<li>${f}</li>`).join('')}</ul><div class="product-footer"><div class="product-price">${product.price_text || 'Factory Price'}<small>B2B Direct · MOQ Flexible</small></div><button class="product-enquiry" data-product="${product.name.replace(/"/g,'&quot;')}">📩 Enquire</button></div></div>
+            </article>`;
+        }
 
-    async function initProducts() { setLP(20); products = builtinProducts.map(p => ({ ...p })); renderProducts(currentFilter); setLP(50); const sbProds = await fetchSupabaseProducts(); setLP(90); products = mergeProducts(sbProds); renderProducts(currentFilter); doneLP(); }
+        function renderProducts() {
+            const filtered = currentFilter === 'all' ? products : products.filter(p => p.category === currentFilter);
+            productCountSpan.textContent = filtered.length;
+            if (!filtered.length) {
+                productGrid.innerHTML = `<div class="no-results"><div style="font-size:3rem;margin-bottom:12px;">🔍</div><h3 style="color:var(--brown-dark);">No products found</h3><p>Try selecting a different category above.</p></div>`;
+                return;
+            }
+            productGrid.innerHTML = filtered.map((p, i) => buildCardHTML(p, i)).join('');
+            productGrid.querySelectorAll('.prod-img-open').forEach(img => {
+                const card = img.closest('.product-card');
+                const mark = () => { if (!img.classList.contains('load-error') && img.naturalWidth > 0) card.classList.add('has-open-img'); };
+                img.complete ? mark() : img.addEventListener('load', mark);
+            });
+            productGrid.querySelectorAll('.product-enquiry').forEach(btn => btn.addEventListener('click', () => {
+                const name = btn.dataset.product || 'SECUREX product';
+                const msg = `Hello%20SECUREX%20Team!%0A%0AI%20am%20interested%20in%20*${encodeURIComponent(name)}*.%0APlease%20share%20the%20price%20and%20bulk%20order%20details.%0AThank%20you.`;
+                window.open('https://wa.me/919179539610?text=' + msg, '_blank', 'noopener,noreferrer');
+            }));
+        }
 
-    const navbar = document.getElementById('navbar');
-    const hamburger = document.getElementById('hamburger');
-    const navLinks = document.getElementById('navLinks');
-    const navOv = document.getElementById('navOverlay');
-    window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 60), { passive:true });
-    const openMenu = () => { hamburger.classList.add('active'); navLinks.classList.add('active'); navOv.classList.add('active'); hamburger.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden'; };
-    const closeMenu = () => { hamburger.classList.remove('active'); navLinks.classList.remove('active'); navOv.classList.remove('active'); hamburger.setAttribute('aria-expanded','false'); document.body.style.overflow=''; };
-    hamburger.addEventListener('click', () => navLinks.classList.contains('active') ? closeMenu() : openMenu());
-    navOv.addEventListener('click', closeMenu);
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
-    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
-    window.addEventListener('resize', () => { if (window.innerWidth > 768) closeMenu(); });
-    initProducts();
+        window.toggleView = function(event, btn) {
+            event.stopPropagation(); event.preventDefault();
+            const card = btn.closest('.product-card');
+            const isOpen = card.classList.toggle('view-open');
+            const label = btn.querySelector('.vtb-label');
+            const icon = btn.querySelector('.vtb-icon');
+            btn.setAttribute('aria-pressed', isOpen ? 'true' : 'false');
+            if (isOpen) { icon.textContent = '📁'; label.textContent = 'Close View'; } 
+            else { icon.textContent = '📂'; label.textContent = 'Open View'; }
+        };
+
+        filterBtns.forEach(btn => btn.addEventListener('click', function() {
+            const newFilter = this.dataset.filter;
+            if (newFilter === currentFilter) return;
+            filterBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed','false'); });
+            this.classList.add('active'); this.setAttribute('aria-pressed','true');
+            currentFilter = newFilter;
+            renderProducts();
+            window.scrollTo({ top: document.querySelector('.product-section').offsetTop - 90, behavior:'smooth' });
+        }));
+
+        async function init() {
+            setLoadingProgress(20);
+            const supabaseData = await fetchSupabaseProducts();
+            setLoadingProgress(70);
+            products = mergeProducts(supabaseData);
+            renderProducts();
+            setLoadingProgress(100);
+            finishLoading();
+        }
+        init();
+
+        // navbar & mobile menu
+        const navbar = document.getElementById('navbar');
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+        const navOv = document.getElementById('navOverlay');
+        window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 60), { passive:true });
+        const openMenu = () => { hamburger.classList.add('active'); navLinks.classList.add('active'); navOv.classList.add('active'); hamburger.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden'; };
+        const closeMenu = () => { hamburger.classList.remove('active'); navLinks.classList.remove('active'); navOv.classList.remove('active'); hamburger.setAttribute('aria-expanded','false'); document.body.style.overflow=''; };
+        hamburger.addEventListener('click', () => navLinks.classList.contains('active') ? closeMenu() : openMenu());
+        navOv.addEventListener('click', closeMenu);
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+        navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+        window.addEventListener('resize', () => { if (window.innerWidth > 768) closeMenu(); });
+    })();
     </script>
 </body>
 </html>
