@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="title" content="SECUREX Complete Product Range – Steel Almirahs, Lockers, BookShelves & Showcases | Shah Interio">
     <meta name="description" content="Explore SECUREX product catalog: heavy-duty steel almirahs, lockers, bookshelves, and glass showcases. B2B manufacturer direct pricing, custom orders available. Call +91 9179539610.">
     <meta name="keywords" content="steel almirah, locker, bookshelf, glass showcase, SECUREX product catalog, Shah Interio, B2B steel furniture, bulk order, Odisha">
@@ -121,8 +121,28 @@
         /* ---- PRODUCT GRID ---- */
         .product-section { padding:36px 0 80px; }
         .product-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:28px; }
-        .product-card { background:var(--white); border-radius:var(--radius-xl); overflow:hidden; box-shadow:var(--shadow-sm); transition:all var(--ts); border:1px solid rgba(196,168,130,0.2); display:flex; flex-direction:column; opacity:0; transform:translateY(20px); animation:cardIn .5s ease forwards; }
-        @keyframes cardIn { to { opacity:1; transform:translateY(0); } }
+        
+        /* DESKTOP animation (fade+slide in) - stays active for desktop */
+        .product-card { 
+            opacity:0; 
+            transform:translateY(20px); 
+            animation:cardIn .5s ease forwards; 
+        }
+        @keyframes cardIn { 
+            to { opacity:1; transform:translateY(0); } 
+        }
+        
+        /* ---- MOBILE OVERRIDE: remove scroll reveal animation on mobile only ---- */
+        @media (max-width: 768px) {
+            .product-card {
+                animation: none !important;
+                opacity: 1 !important;
+                transform: translateY(0) !important;
+                transition: none !important;
+            }
+        }
+        
+        .product-card { background:var(--white); border-radius:var(--radius-xl); overflow:hidden; box-shadow:var(--shadow-sm); transition:all var(--ts); border:1px solid rgba(196,168,130,0.2); display:flex; flex-direction:column; }
         .product-card:hover { transform:translateY(-8px); box-shadow:var(--shadow-xl); border-color:var(--beige-dark); }
 
         /* ---- PRODUCT IMAGE AREA ---- */
@@ -178,12 +198,8 @@
         .product-badge.badge-hot  { background:#c62828; }
 
         /* ---- VIEW TOGGLE BUTTON (mobile) ---- */
-        /*
-          Pill button pinned to the bottom-left of the image area.
-          Visible on touch devices; hidden on desktop (hover handles it there).
-        */
         .view-toggle-btn {
-            display: none; /* hidden by default, shown via media query */
+            display: none;
         }
         @media(hover:none),(pointer:coarse) {
             .view-toggle-btn {
@@ -207,31 +223,24 @@
                 letter-spacing: .04em;
                 text-transform: uppercase;
                 transition: background .2s, transform .15s;
-                /* Tap highlight off */
                 -webkit-tap-highlight-color: transparent;
             }
             .view-toggle-btn:active {
                 transform: scale(.94);
                 background: rgba(232,213,180,0.95);
             }
-            /* Icon inside the button */
             .vtb-icon { font-size:.85rem; transition:transform .3s ease; }
-            /* When open view is active, flip icon slightly */
             .product-card.view-open .vtb-icon { transform:rotate(180deg); }
-
-            /* Also show a subtle "open" glow border on the card */
             .product-card.view-open {
                 border-color: var(--gold-accent);
                 box-shadow: var(--shadow-md), 0 0 0 2px rgba(184,134,11,0.15);
             }
         }
 
-        /* Desktop: show the old "hover hint" text instead */
         @media(hover:hover) and (pointer:fine) {
             .open-hint { position:absolute; top:14px; left:14px; background:rgba(255,255,255,0.92); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); color:var(--brown-dark); font-size:.68rem; font-weight:700; letter-spacing:.05em; text-transform:uppercase; padding:5px 10px; border-radius:20px; z-index:5; opacity:0; transform:translateY(-6px); transition:opacity .3s ease,transform .3s ease; pointer-events:none; white-space:nowrap; display:flex; align-items:center; gap:4px; }
             .product-card.has-open-img:hover .open-hint { opacity:1; transform:translateY(0); }
         }
-        /* Hide open-hint on touch */
         @media(hover:none),(pointer:coarse) {
             .open-hint { display:none; }
         }
@@ -416,15 +425,12 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
     /* ============================================================
-       SUPABASE
+       SUPABASE + PRODUCT RENDER
        ============================================================ */
     const SUPABASE_URL  = "https://ceeezhukizoobknroovq.supabase.co";
     const SUPABASE_ANON = "sb_publishable_3XHshryDBRniaiW5YEO03w_pUMH6gIG";
     const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
-    /* ============================================================
-       CATEGORY LABELS
-       ============================================================ */
     const CAT_LABELS = {
         'almirah-home':     'Home Almirah',
         'almirah-office':   'Office Almirah',
@@ -434,9 +440,6 @@
         'showcase':         'Glass Showcase'
     };
 
-    /* ============================================================
-       BUILT-IN PRODUCTS
-       ============================================================ */
     const builtinProducts = [
         { id:1,  category:'almirah-home',     name:'SECUREX 2-Door Steel Almirah – Blue',                   img:'../Secure-X-Almirah-4001.png',            badge:'Bestseller', badgeClass:'badge-best', desc:'A solid 2-door home almirah in a bright blue finish – one of our most popular picks for bedrooms and living rooms. Multiple colour options available. Custom prints also available.',     features:['1.0 mm CRCA steel body','Scratch-resistant powder coat','3 adjustable internal shelves','Anti-rust inner coating','Multiple colour options available','Custom prints available'] },
         { id:2,  category:'almirah-home',     name:'SECUREX 2-Door Steel Almirah – Rose',                   img:'../Secure-X-Almirah-4002.png',            badge:'Popular',    badgeClass:'',           desc:'Same reliable build as the blue variant, wrapped in a warm rose finish. Multiple colour options available. Custom prints also available.',              features:['1.0 mm CRCA steel body','Scratch-resistant powder coat','3 shelves + hanging rod','Double-key locking system','Multiple colour options available','Custom prints available'] },
@@ -455,10 +458,6 @@
 
     let products = [];
 
-    /* ============================================================
-       CONVERT SUPABASE ROW → internal format
-       (_custom flag removed so no "Custom Added" tag shows)
-       ============================================================ */
     function convertRow(row) {
         return {
             id:         row.id,
@@ -467,13 +466,10 @@
             img:        row.image_closed || '',
             imgOpen:    row.image_open   || null,
             badge:      row.badge || '',
-            badgeClass: row.badge === 'Bestseller' ? 'badge-best'
-                      : row.badge === 'New'        ? 'badge-new'
-                      : row.badge === 'Hot'        ? 'badge-hot' : '',
+            badgeClass: row.badge === 'Bestseller' ? 'badge-best' : (row.badge === 'New' ? 'badge-new' : (row.badge === 'Hot' ? 'badge-hot' : '')),
             desc:       row.description || '',
             features:   Array.isArray(row.features) ? row.features : [],
             price_text: row.price_text || ''
-            /* _custom intentionally omitted */
         };
     }
 
@@ -482,234 +478,83 @@
             const { data, error } = await sbClient.from('products').select('*').order('created_at', { ascending: false });
             if (error) throw error;
             return (data || []).map(convertRow);
-        } catch(e) {
-            console.warn('Supabase fetch failed:', e);
-            return [];
-        }
+        } catch(e) { console.warn(e); return []; }
     }
 
     function mergeProducts(sbProds) {
         const merged = builtinProducts.map(p => ({ ...p }));
         sbProds.forEach(sp => {
             const idx = merged.findIndex(p => p.id === sp.id);
-            if (idx >= 0) merged[idx] = sp;
-            else merged.push(sp);
+            idx >= 0 ? merged[idx] = sp : merged.push(sp);
         });
         return merged;
     }
 
-    /* ============================================================
-       LOADING BAR
-       ============================================================ */
     const loadingBar = document.getElementById('loadingBar');
     const setLP = p => { loadingBar.style.width = p + '%'; };
     const doneLP = () => { loadingBar.style.width = '100%'; setTimeout(() => loadingBar.classList.add('complete'), 300); };
 
-    /* ============================================================
-       RENDER
-       ============================================================ */
-    const productGrid      = document.getElementById('productGrid');
-    const filterBtns       = document.querySelectorAll('.filter-btn');
+    const productGrid = document.getElementById('productGrid');
+    const filterBtns = document.querySelectorAll('.filter-btn');
     const productCountSpan = document.getElementById('productCount');
-    let   currentFilter    = 'all';
+    let currentFilter = 'all';
 
     function buildCardHTML(product, i) {
-        const catLabel  = CAT_LABELS[product.category] || product.category;
-        const badgeHTML = product.badge
-            ? `<div class="product-badge ${product.badgeClass || ''}">${product.badge}</div>` : '';
-
-        // Resolve image sources
+        const catLabel = CAT_LABELS[product.category] || product.category;
+        const badgeHTML = product.badge ? `<div class="product-badge ${product.badgeClass || ''}">${product.badge}</div>` : '';
         const closedSrc = product.img || '';
         let openSrc = product.imgOpen || null;
-        // Fallback: derive "-Open" path for built-in products
         if (!openSrc && closedSrc && !closedSrc.startsWith('data:')) {
             const m = closedSrc.match(/(\.[a-zA-Z]+)$/);
             if (m) openSrc = closedSrc.slice(0, -m[1].length) + '-Open' + m[1];
         }
-
         const hasOpen = !!(openSrc && openSrc.trim());
-
-        // Toggle button (only rendered for cards that have an open image)
-        // The button is visually shown only on touch devices via CSS,
-        // but we always render it so toggling works if media query changes.
-        const toggleBtn = hasOpen ? `
-            <button class="view-toggle-btn"
-                    aria-label="Toggle open/close view"
-                    aria-pressed="false"
-                    onclick="toggleView(event, this)">
-                <span class="vtb-icon">📂</span>
-                <span class="vtb-label">Open View</span>
-            </button>` : '';
-
-        // Desktop hover hint
-        const openHint = hasOpen
-            ? `<div class="open-hint" aria-hidden="true">👁 Hover to Open</div>` : '';
-
-        let imgHTML = `<img class="prod-img-closed"
-            src="${closedSrc}"
-            alt="${product.name}"
-            loading="${i < 4 ? 'eager' : 'lazy'}"
-            onerror="this.style.display='none'">`;
-
-        if (hasOpen) {
-            imgHTML += `<img class="prod-img-open"
-                src="${openSrc}"
-                alt="${product.name} – open view"
-                aria-hidden="true"
-                loading="lazy"
-                onerror="this.classList.add('load-error')">`;
-        }
-
-        imgHTML += `<div class="product-img-placeholder" style="display:none;">
-            <span class="ph-icon">📦</span>${catLabel}
-        </div>`;
-
-        return `<article class="product-card${hasOpen ? ' has-open-img' : ''}"
-            data-category="${product.category}"
-            style="animation-delay:${(i % 12) * 0.05}s"
-            aria-label="${product.name}">
-            <div class="product-img">
-                ${imgHTML}
-                ${openHint}
-                ${badgeHTML}
-                ${toggleBtn}
-            </div>
-            <div class="product-info">
-                <div class="product-category">${catLabel}</div>
-                <h3 class="product-title">${product.name}</h3>
-                <p class="product-desc">${product.desc}</p>
-                <ul class="product-features" aria-label="Key features">
-                    ${(product.features || []).map(f => `<li>${f}</li>`).join('')}
-                </ul>
-                <div class="product-footer">
-                    <div class="product-price">
-                        ${product.price_text || 'Factory Price'}
-                        <small>B2B Direct &nbsp;·&nbsp; MOQ Flexible</small>
-                    </div>
-                    <button class="product-enquiry"
-                            data-product="${product.name.replace(/"/g,'&quot;')}"
-                            aria-label="Enquire about ${product.name}">
-                        📩 Enquire
-                    </button>
-                </div>
-            </div>
+        const toggleBtn = hasOpen ? `<button class="view-toggle-btn" aria-label="Toggle open/close view" aria-pressed="false" onclick="toggleView(event, this)"><span class="vtb-icon">📂</span><span class="vtb-label">Open View</span></button>` : '';
+        const openHint = hasOpen ? `<div class="open-hint" aria-hidden="true">👁 Hover to Open</div>` : '';
+        let imgHTML = `<img class="prod-img-closed" src="${closedSrc}" alt="${product.name}" loading="${i < 4 ? 'eager' : 'lazy'}" onerror="this.style.display='none'">`;
+        if (hasOpen) imgHTML += `<img class="prod-img-open" src="${openSrc}" alt="${product.name} – open view" aria-hidden="true" loading="lazy" onerror="this.classList.add('load-error')">`;
+        imgHTML += `<div class="product-img-placeholder" style="display:none;"><span class="ph-icon">📦</span>${catLabel}</div>`;
+        return `<article class="product-card${hasOpen ? ' has-open-img' : ''}" data-category="${product.category}" style="animation-delay:${(i % 12) * 0.05}s" aria-label="${product.name}">
+            <div class="product-img">${imgHTML}${openHint}${badgeHTML}${toggleBtn}</div>
+            <div class="product-info"><div class="product-category">${catLabel}</div><h3 class="product-title">${product.name}</h3><p class="product-desc">${product.desc}</p><ul class="product-features" aria-label="Key features">${(product.features || []).map(f => `<li>${f}</li>`).join('')}</ul><div class="product-footer"><div class="product-price">${product.price_text || 'Factory Price'}<small>B2B Direct &nbsp;·&nbsp; MOQ Flexible</small></div><button class="product-enquiry" data-product="${product.name.replace(/"/g,'&quot;')}" aria-label="Enquire about ${product.name}">📩 Enquire</button></div></div>
         </article>`;
     }
 
     function renderProducts(filter) {
-        const filtered = filter === 'all'
-            ? products
-            : products.filter(p => p.category === filter);
-
+        const filtered = filter === 'all' ? products : products.filter(p => p.category === filter);
         productCountSpan.textContent = filtered.length;
-
-        if (!filtered.length) {
-            productGrid.innerHTML = `<div class="no-results">
-                <div style="font-size:3rem;margin-bottom:12px;">🔍</div>
-                <h3 style="color:var(--brown-dark);">No products found</h3>
-                <p>Try selecting a different category above.</p>
-            </div>`;
-            return;
-        }
-
+        if (!filtered.length) { productGrid.innerHTML = `<div class="no-results"><div style="font-size:3rem;margin-bottom:12px;">🔍</div><h3 style="color:var(--brown-dark);">No products found</h3><p>Try selecting a different category above.</p></div>`; return; }
         productGrid.innerHTML = filtered.map(buildCardHTML).join('');
-
-        // Mark cards whose open image actually loaded (desktop hint)
-        productGrid.querySelectorAll('.prod-img-open').forEach(img => {
-            const card = img.closest('.product-card');
-            const mark = () => {
-                if (!img.classList.contains('load-error') && img.naturalWidth > 0)
-                    card.classList.add('has-open-img');
-            };
-            img.complete ? mark() : img.addEventListener('load', mark);
-        });
-
-        // Enquiry buttons
-        productGrid.querySelectorAll('.product-enquiry').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const name = btn.dataset.product || 'SECUREX product';
-                const msg  = 'Hello%20SECUREX%20Team!%0A%0AI%20am%20interested%20in%20*'
-                    + encodeURIComponent(name)
-                    + '*.%0APlease%20share%20the%20price%20and%20bulk%20order%20details.%0AThank%20you.';
-                window.open('https://wa.me/919179539610?text=' + msg, '_blank', 'noopener,noreferrer');
-            });
-        });
+        productGrid.querySelectorAll('.prod-img-open').forEach(img => { const card = img.closest('.product-card'); const mark = () => { if (!img.classList.contains('load-error') && img.naturalWidth > 0) card.classList.add('has-open-img'); }; img.complete ? mark() : img.addEventListener('load', mark); });
+        productGrid.querySelectorAll('.product-enquiry').forEach(btn => btn.addEventListener('click', () => { const name = btn.dataset.product || 'SECUREX product'; const msg = 'Hello%20SECUREX%20Team!%0A%0AI%20am%20interested%20in%20*' + encodeURIComponent(name) + '*.%0APlease%20share%20the%20price%20and%20bulk%20order%20details.%0AThank%20you.'; window.open('https://wa.me/919179539610?text=' + msg, '_blank', 'noopener,noreferrer'); }));
     }
 
-    /* ============================================================
-       TOGGLE VIEW (mobile open/close button handler)
-       ============================================================ */
-    function toggleView(event, btn) {
-        // Stop tap from bubbling to card hover (iOS)
-        event.stopPropagation();
-        event.preventDefault();
-
-        const card   = btn.closest('.product-card');
+    window.toggleView = function(event, btn) {
+        event.stopPropagation(); event.preventDefault();
+        const card = btn.closest('.product-card');
         const isOpen = card.classList.toggle('view-open');
-        const label  = btn.querySelector('.vtb-label');
-        const icon   = btn.querySelector('.vtb-icon');
-
+        const label = btn.querySelector('.vtb-label');
+        const icon = btn.querySelector('.vtb-icon');
         btn.setAttribute('aria-pressed', isOpen ? 'true' : 'false');
+        if (isOpen) { icon.textContent = '📁'; label.textContent = 'Close View'; } else { icon.textContent = '📂'; label.textContent = 'Open View'; }
+    };
 
-        if (isOpen) {
-            icon.textContent  = '📁';
-            label.textContent = 'Close View';
-        } else {
-            icon.textContent  = '📂';
-            label.textContent = 'Open View';
-        }
-    }
+    filterBtns.forEach(btn => btn.addEventListener('click', function() { const nf = this.dataset.filter; if (nf === currentFilter) return; filterBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed','false'); }); this.classList.add('active'); this.setAttribute('aria-pressed','true'); currentFilter = nf; renderProducts(currentFilter); window.scrollTo({ top: document.querySelector('.product-section').offsetTop - 90, behavior:'smooth' }); }));
 
-    /* ============================================================
-       FILTER BUTTONS
-       ============================================================ */
-    filterBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            const nf = this.dataset.filter;
-            if (nf === currentFilter) return;
-            filterBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed','false'); });
-            this.classList.add('active');
-            this.setAttribute('aria-pressed','true');
-            currentFilter = nf;
-            renderProducts(currentFilter);
-            window.scrollTo({ top: document.querySelector('.product-section').offsetTop - 90, behavior:'smooth' });
-        });
-    });
+    async function initProducts() { setLP(20); products = builtinProducts.map(p => ({ ...p })); renderProducts(currentFilter); setLP(50); const sbProds = await fetchSupabaseProducts(); setLP(90); products = mergeProducts(sbProds); renderProducts(currentFilter); doneLP(); }
 
-    /* ============================================================
-       INIT
-       ============================================================ */
-    async function initProducts() {
-        setLP(20);
-        products = builtinProducts.map(p => ({ ...p }));
-        renderProducts(currentFilter);
-        setLP(50);
-        const sbProds = await fetchSupabaseProducts();
-        setLP(90);
-        products = mergeProducts(sbProds);
-        renderProducts(currentFilter);
-        doneLP();
-    }
-
-    /* ============================================================
-       NAVBAR & MOBILE MENU
-       ============================================================ */
-    const navbar   = document.getElementById('navbar');
-    const hamburger= document.getElementById('hamburger');
+    const navbar = document.getElementById('navbar');
+    const hamburger = document.getElementById('hamburger');
     const navLinks = document.getElementById('navLinks');
-    const navOv    = document.getElementById('navOverlay');
-
+    const navOv = document.getElementById('navOverlay');
     window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 60), { passive:true });
-
-    const openMenu  = () => { hamburger.classList.add('active'); navLinks.classList.add('active'); navOv.classList.add('active'); hamburger.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden'; };
+    const openMenu = () => { hamburger.classList.add('active'); navLinks.classList.add('active'); navOv.classList.add('active'); hamburger.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden'; };
     const closeMenu = () => { hamburger.classList.remove('active'); navLinks.classList.remove('active'); navOv.classList.remove('active'); hamburger.setAttribute('aria-expanded','false'); document.body.style.overflow=''; };
-
     hamburger.addEventListener('click', () => navLinks.classList.contains('active') ? closeMenu() : openMenu());
     navOv.addEventListener('click', closeMenu);
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
     navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
     window.addEventListener('resize', () => { if (window.innerWidth > 768) closeMenu(); });
-
     initProducts();
     </script>
 </body>
