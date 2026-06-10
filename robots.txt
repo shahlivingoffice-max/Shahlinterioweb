@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Admin panel ko crawl mat karo
+Disallow: /admin/
+
+Sitemap: https://shahinterio.com/sitemap.xml
