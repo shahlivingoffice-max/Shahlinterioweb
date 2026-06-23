@@ -58,11 +58,22 @@
 
         *,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
         html { scroll-behavior:smooth; scroll-padding-top:var(--navbar-height); -webkit-font-smoothing:antialiased; }
-        body { font-family:'Outfit',sans-serif; background:var(--cream); color:var(--text-dark); line-height:1.6; overflow-x:hidden; }
+        body { font-family:'Outfit',sans-serif; background:transparent; color:var(--text-dark); line-height:1.6; overflow-x:hidden; min-height:100vh; }
         h1,h2,h3,h4 { font-family:'Rajdhani','Outfit',sans-serif; font-weight:700; letter-spacing:-0.01em; }
         a { text-decoration:none; color:inherit; }
         img { max-width:100%; height:auto; display:block; }
         .container { width:100%; max-width:var(--container-max); margin:0 auto; padding:0 24px; }
+
+        /* ---- GLOBAL SHADER MESH-GRADIENT BACKGROUND ---- */
+        #shader-bg-canvas {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            display: block;
+            pointer-events: none;
+        }
 
         /* ---- NAVBAR (unchanged) ---- */
         .navbar { position:fixed; top:0; left:0; width:100%; z-index:1000; background:rgba(254,250,224,0.85); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px); border-bottom:1px solid rgba(196,168,130,0.3); transition:all var(--ts); height:var(--navbar-height); }
@@ -89,14 +100,14 @@
         .nav-overlay.active { display:block; opacity:1; }
 
         /* ---- PAGE HEADER ---- */
-        .page-header { padding:140px 0 60px; background:linear-gradient(135deg,var(--brown-dark) 0%,var(--brown) 100%); color:var(--cream); text-align:center; position:relative; overflow:hidden; }
+        .page-header { padding:140px 0 60px; background:linear-gradient(135deg,rgba(62,36,21,0.92) 0%,rgba(92,61,46,0.92) 100%); color:var(--cream); text-align:center; position:relative; overflow:hidden; }
         .page-header::before { content:''; position:absolute; inset:0; background:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0 50 Q25 30 50 50 Q75 70 100 50" stroke="rgba(255,255,255,0.04)" stroke-width="1" fill="none"/></svg>'); background-size:200px; pointer-events:none; }
         .page-header h1 { font-size:clamp(2rem,4vw,3.5rem); margin-bottom:16px; position:relative; }
         .page-header p { font-size:1.05rem; opacity:.88; max-width:700px; margin:0 auto; position:relative; }
         .page-header-badge { display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.2); padding:8px 20px; border-radius:50px; font-size:.8rem; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:#FFD700; margin-bottom:20px; }
 
         /* ---- BREADCRUMB ---- */
-        .breadcrumb { padding:14px 0; background:var(--beige-light); border-bottom:1px solid rgba(196,168,130,0.2); }
+        .breadcrumb { padding:14px 0; background:rgba(245,236,215,0.86); border-bottom:1px solid rgba(196,168,130,0.2); }
         .breadcrumb-inner { display:flex; align-items:center; gap:8px; font-size:.85rem; color:var(--text-light); }
         .breadcrumb a { color:var(--brown); font-weight:500; transition:color .2s; }
         .breadcrumb a:hover { color:var(--brown-dark); }
@@ -254,8 +265,8 @@
         .product-enquiry:hover { background:var(--brown-dark); transform:translateY(-2px); box-shadow:var(--shadow-md); }
         .no-results { grid-column:1/-1; text-align:center; padding:80px 24px; background:var(--white); border-radius:var(--radius-lg); border:1px solid rgba(196,168,130,0.2); }
 
-        /* ---- FOOTER & WHATSAPP (unchanged) ---- */
-        .footer { background:var(--brown-deep); color:var(--beige); padding:56px 0 24px; }
+        /* ---- FOOTER & WHATSAPP ---- */
+        .footer { background:rgba(42,24,13,0.92); color:var(--beige); padding:56px 0 24px; }
         .footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr; gap:40px; margin-bottom:40px; }
         .footer-brand h4 { color:var(--cream); font-size:1.4rem; margin-bottom:8px; }
         .footer-brand p  { color:var(--beige-dark); font-size:.85rem; line-height:1.5; }
@@ -290,6 +301,8 @@
     </style>
 </head>
 <body>
+    <canvas id="shader-bg-canvas" aria-hidden="true"></canvas>
+
     <div class="loading-bar" id="loadingBar"></div>
     <a href="#main-content" class="skip-link">Skip to main content</a>
     <div class="nav-overlay" id="navOverlay" aria-hidden="true"></div>
@@ -380,6 +393,152 @@
         <span class="whatsapp-float-pulse" aria-hidden="true"></span>
         <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
     </a>
+
+    <!-- ============================================================
+         GLOBAL SHADER MESH-GRADIENT BACKGROUND (Three.js, vanilla JS)
+         Same shader as the homepage — runs behind this entire page
+         ============================================================ -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+    <script>
+    (function () {
+        'use strict';
+        if (typeof THREE === 'undefined') return;
+
+        var canvas = document.getElementById('shader-bg-canvas');
+        if (!canvas) return;
+
+        var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: false });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+
+        var scene = new THREE.Scene();
+        var camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+
+        // Site palette, converted to vec3 (0-1) for the shader — matches :root CSS variables, kept light/airy
+        var uniforms = {
+            time:   { value: 0 },
+            res:    { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+            cCream: { value: new THREE.Vector3(0xFE / 255, 0xFA / 255, 0xE0 / 255) }, // --cream
+            cBeigeL:{ value: new THREE.Vector3(0xF5 / 255, 0xEC / 255, 0xD7 / 255) }, // --beige-light
+            cBeige: { value: new THREE.Vector3(0xE8 / 255, 0xD5 / 255, 0xB4 / 255) }, // --beige
+            cBeigeD:{ value: new THREE.Vector3(0xC4 / 255, 0xA8 / 255, 0x82 / 255) }, // --beige-dark
+            cBrownL:{ value: new THREE.Vector3(0x8B / 255, 0x6F / 255, 0x4E / 255) }, // --brown-light
+            cGold:  { value: new THREE.Vector3(0xD4 / 255, 0xAF / 255, 0x37 / 255) }  // --gold-bright
+        };
+
+        var vertexShader = [
+            'void main() {',
+            '  gl_Position = vec4(position, 1.0);',
+            '}'
+        ].join('\n');
+
+        var fragmentShader = [
+            'precision highp float;',
+            'uniform float time;',
+            'uniform vec2 res;',
+            'uniform vec3 cCream;',
+            'uniform vec3 cBeigeL;',
+            'uniform vec3 cBeige;',
+            'uniform vec3 cBeigeD;',
+            'uniform vec3 cBrownL;',
+            'uniform vec3 cGold;',
+            '',
+            'float smoothNoise(vec2 p) {',
+            '  vec2 i = floor(p);',
+            '  vec2 f = fract(p);',
+            '  vec2 u = f * f * (3.0 - 2.0 * f);',
+            '  float a = sin(dot(i, vec2(127.1, 311.7))) * 43758.5453;',
+            '  float b = sin(dot(i + vec2(1.0,0.0), vec2(127.1, 311.7))) * 43758.5453;',
+            '  float c = sin(dot(i + vec2(0.0,1.0), vec2(127.1, 311.7))) * 43758.5453;',
+            '  float d = sin(dot(i + vec2(1.0,1.0), vec2(127.1, 311.7))) * 43758.5453;',
+            '  a = fract(a); b = fract(b); c = fract(c); d = fract(d);',
+            '  return mix(mix(a, b, u.x), mix(c, d, u.x), u.y);',
+            '}',
+            '',
+            'float fbm(vec2 p) {',
+            '  float v = 0.0;',
+            '  float amp = 0.55;',
+            '  for (int i = 0; i < 4; i++) {',
+            '    v += smoothNoise(p) * amp;',
+            '    p *= 2.05;',
+            '    amp *= 0.55;',
+            '  }',
+            '  return v;',
+            '}',
+            '',
+            'void main() {',
+            '  vec2 uv = gl_FragCoord.xy / res.xy;',
+            '  float aspect = res.x / res.y;',
+            '  vec2 p = uv;',
+            '  p.x *= aspect;',
+            '',
+            '  float t = time * 0.05;',
+            '',
+            '  float n1 = fbm(p * 1.5 + vec2(t * 1.2, t * 0.6));',
+            '  float n2 = fbm(p * 2.0 - vec2(t * 0.8, t * 1.0) + 4.0);',
+            '  float n3 = fbm(p * 1.0 + vec2(-t * 0.5, t * 1.3) + 9.0);',
+            '',
+            '  float mixA = smoothstep(0.2, 0.85, n1);',
+            '  float mixB = smoothstep(0.25, 0.8, n2);',
+            '  float mixC = smoothstep(0.2, 0.75, n3);',
+            '',
+            '  vec3 col = mix(cCream, cBeigeL, mixA);',
+            '  col = mix(col, cBeige, mixB * 0.6);',
+            '  col = mix(col, cBeigeD, mixC * 0.3);',
+            '  col = mix(col, cBrownL, pow(n1 * n3, 3.0) * 0.18);',
+            '  col = mix(col, cGold, pow(n2 * n3, 4.0) * 0.12);',
+            '',
+            '  float vign = 1.0 - length(uv - 0.5) * 0.35;',
+            '  col *= clamp(vign, 0.88, 1.0);',
+            '',
+            '  gl_FragColor = vec4(col, 1.0);',
+            '}'
+        ].join('\n');
+
+        var geometry = new THREE.BufferGeometry();
+        geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array([
+            -1, -1, 0,  3, -1, 0,  -1, 3, 0
+        ]), 3));
+
+        var material = new THREE.ShaderMaterial({
+            uniforms: uniforms,
+            vertexShader: vertexShader,
+            fragmentShader: fragmentShader,
+            depthWrite: false,
+            depthTest: false
+        });
+
+        var mesh = new THREE.Mesh(geometry, material);
+        scene.add(mesh);
+
+        function resize() {
+            var w = window.innerWidth, h = window.innerHeight;
+            renderer.setSize(w, h, false);
+            uniforms.res.value.set(w, h);
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        var clock = new THREE.Clock();
+        var rafId = null;
+
+        function tick() {
+            uniforms.time.value = clock.getElapsedTime();
+            renderer.render(scene, camera);
+            rafId = requestAnimationFrame(tick);
+        }
+        tick();
+
+        // Pause rendering when tab is hidden to save battery/CPU
+        document.addEventListener('visibilitychange', function () {
+            if (document.hidden) {
+                if (rafId) cancelAnimationFrame(rafId);
+                rafId = null;
+            } else if (!rafId) {
+                tick();
+            }
+        });
+    })();
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
