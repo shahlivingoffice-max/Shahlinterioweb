@@ -1377,38 +1377,56 @@
 
                             var mediaEl;
                             if (ytMatch) {
+                                // autoplay=1&mute=1 required — browsers only allow autoplay when muted
                                 mediaEl = document.createElement('iframe');
-                                mediaEl.src = 'https://www.youtube.com/embed/' + ytMatch[1] + '?rel=0';
+                                mediaEl.src = 'https://www.youtube.com/embed/' + ytMatch[1] + '?rel=0&autoplay=1&mute=1&loop=1&playlist=' + ytMatch[1] + '&controls=1&playsinline=1';
                                 mediaEl.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
                                 mediaEl.setAttribute('allowfullscreen', '');
-                                mediaEl.setAttribute('loading', 'lazy');
                                 mediaEl.setAttribute('title', 'SECUREX about video');
                             } else if (vimeoMatch) {
                                 mediaEl = document.createElement('iframe');
-                                mediaEl.src = 'https://player.vimeo.com/video/' + vimeoMatch[1];
+                                mediaEl.src = 'https://player.vimeo.com/video/' + vimeoMatch[1] + '?autoplay=1&muted=1&loop=1&playsinline=1';
                                 mediaEl.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture');
                                 mediaEl.setAttribute('allowfullscreen', '');
-                                mediaEl.setAttribute('loading', 'lazy');
                                 mediaEl.setAttribute('title', 'SECUREX about video');
                             } else if (isDirectFile) {
+                                // muted is required for autoplay to be allowed by browsers
                                 mediaEl = document.createElement('video');
                                 mediaEl.src = videoUrl;
-                                mediaEl.controls = true;
+                                mediaEl.autoplay = true;
+                                mediaEl.muted = true;
+                                mediaEl.loop = true;
                                 mediaEl.playsInline = true;
-                                mediaEl.preload = 'metadata';
+                                mediaEl.controls = false;
+                                mediaEl.preload = 'auto';
+                                mediaEl.setAttribute('webkit-playsinline', '');
                             } else {
                                 // Unknown video host format — still try as an iframe embed (e.g. other platforms)
                                 mediaEl = document.createElement('iframe');
-                                mediaEl.src = videoUrl;
+                                mediaEl.src = videoUrl + (videoUrl.indexOf('?') > -1 ? '&' : '?') + 'autoplay=1&mute=1';
+                                mediaEl.setAttribute('allow', 'autoplay; fullscreen');
                                 mediaEl.setAttribute('allowfullscreen', '');
-                                mediaEl.setAttribute('loading', 'lazy');
                                 mediaEl.setAttribute('title', 'SECUREX about video');
                             }
 
                             aboutImageEl.innerHTML = '';
                             aboutImageEl.appendChild(mediaEl);
+
+                            // Some browsers still need an explicit .play() call after the element is in the DOM
+                            if (mediaEl.tagName === 'VIDEO') {
+                                var playPromise = mediaEl.play();
+                                if (playPromise && playPromise.catch) {
+                                    playPromise.catch(function () {
+                                        // Autoplay blocked (rare even when muted) — retry on first user interaction
+                                        var retryPlay = function () { mediaEl.play(); document.removeEventListener('click', retryPlay); document.removeEventListener('scroll', retryPlay); };
+                                        document.addEventListener('click', retryPlay, { once: true });
+                                        document.addEventListener('scroll', retryPlay, { once: true });
+                                    });
+                                }
+                            }
                         }
                     }
+
 
                     if(ab.abTags&&ab.abTags.length){ var tc=document.querySelector('.about-highlights'); if(tc) tc.innerHTML=ab.abTags.map(function(t){ return '<span class="about-highlight-tag">'+t+'</span>'; }).join(''); }
                     if(ab.whyUs&&ab.whyUs.length){ var wg=document.querySelector('.why-grid'); if(wg){ wg.innerHTML=ab.whyUs.map(function(w){ return '<div class="why-card reveal"><div class="why-icon" aria-hidden="true">'+(w.icon||'⭐')+'</div><div><h4>'+(w.title||'')+'</h4><p>'+(w.desc||'')+'</p></div></div>'; }).join(''); wg.querySelectorAll('.reveal').forEach(function(el){ revealObs2.observe(el); }); } }
