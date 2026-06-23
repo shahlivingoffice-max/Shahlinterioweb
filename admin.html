@@ -668,6 +668,19 @@ select.form-ctrl option { background:var(--bg2); }
 
 <div class="toast" id="toast"><div class="toast-dot"></div><span id="toastMsg"></span></div>
 
+<!-- UPLOAD PROGRESS OVERLAY -->
+<div id="uploadOverlay" class="modal-backdrop" style="z-index:9500;">
+  <div class="modal" style="max-width:340px;text-align:center;padding:32px 28px;">
+    <div style="font-size:1.8rem;margin-bottom:10px;" id="uploadIcon">📤</div>
+    <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1.05rem;color:var(--text-1);margin-bottom:6px;" id="uploadTitle">Uploading file…</div>
+    <div style="font-size:.78rem;color:var(--text-3);margin-bottom:18px;" id="uploadSub">Please wait, this may take a moment</div>
+    <div style="height:8px;background:var(--bg3);border-radius:99px;overflow:hidden;border:1px solid var(--border-2);">
+      <div id="uploadBarFill" style="height:100%;width:0%;background:linear-gradient(90deg,var(--gold),#FFD700);border-radius:99px;transition:width .3s ease;"></div>
+    </div>
+    <div style="font-size:.72rem;color:var(--text-3);margin-top:10px;" id="uploadPct">0%</div>
+  </div>
+</div>
+
 <script>
 const SB_URL = "https://ceeezhukizoobknroovq.supabase.co";
 const SB_KEY = "sb_publishable_3XHshryDBRniaiW5YEO03w_pUMH6gIG";
@@ -815,6 +828,38 @@ function toast(msg,err=false){
   setTimeout(()=>t.classList.remove('show'),3200);
 }
 
+// ===== UPLOAD PROGRESS OVERLAY =====
+let _uploadFakeInterval=null;
+function showUploadOverlay(label){
+  document.getElementById('uploadTitle').textContent=label||'Uploading file…';
+  document.getElementById('uploadSub').textContent='Please wait, this may take a moment';
+  document.getElementById('uploadIcon').textContent='📤';
+  document.getElementById('uploadBarFill').style.width='0%';
+  document.getElementById('uploadPct').textContent='0%';
+  document.getElementById('uploadOverlay').classList.add('open');
+  // Supabase JS SDK doesn't expose real upload progress, so we animate a believable
+  // progress bar that creeps up while the request is in-flight, and snaps to 100% on completion.
+  let pct=0;
+  clearInterval(_uploadFakeInterval);
+  _uploadFakeInterval=setInterval(()=>{
+    if(pct<90){
+      pct+=Math.random()*7;
+      if(pct>90)pct=90;
+      document.getElementById('uploadBarFill').style.width=pct+'%';
+      document.getElementById('uploadPct').textContent=Math.round(pct)+'%';
+    }
+  },220);
+}
+function completeUploadOverlay(success){
+  clearInterval(_uploadFakeInterval);
+  document.getElementById('uploadBarFill').style.width='100%';
+  document.getElementById('uploadPct').textContent='100%';
+  document.getElementById('uploadIcon').textContent=success?'✅':'❌';
+  document.getElementById('uploadTitle').textContent=success?'Upload complete!':'Upload failed';
+  document.getElementById('uploadSub').textContent=success?'Your file is ready':'Please try again';
+  setTimeout(()=>{document.getElementById('uploadOverlay').classList.remove('open');},success?500:1400);
+}
+
 function addAct(type,msg){
   let acts=JSON.parse(localStorage.getItem('sx_act')||'[]');
   acts.unshift({type,msg,time:new Date().toLocaleString(),user:curUser?.email});
@@ -949,8 +994,10 @@ async function saveProduct(){
   if(!editId&&!closedFile&&!exClosed){toast('Closed image required',true);return;}
   try{
     let fc=exClosed,fo=exOpen;
+    if(closedFile||openFile){showUploadOverlay('Uploading product images…');}
     if(closedFile){if(editId&&exClosed)await delImg(exClosed);fc=await uploadImg(closedFile);}
     if(openFile){if(editId&&exOpen)await delImg(exOpen);fo=await uploadImg(openFile);}
+    if(closedFile||openFile){completeUploadOverlay(true);}
     const d={title,category,description:document.getElementById('pDesc').value,
       price_text:document.getElementById('pPrice').value,
       badge:curBadge==='none'?'':curBadge,
@@ -964,7 +1011,7 @@ async function saveProduct(){
       addAct('add',`Added "${title}"`);toast(`✅ "${title}" added`);
     }
     closeModal();await loadProducts();
-  }catch(e){toast('Error: '+e.message,true);}
+  }catch(e){completeUploadOverlay(false);toast('Error: '+e.message,true);}
 }
 
 function askDel(id){
@@ -1122,13 +1169,15 @@ function renderGalleryItems(){
 async function uploadGalImg(input,i){
   const file=input.files[0];
   if(!file||!file.type.startsWith('image/')){toast('Images only',true);return;}
-  toast('⏳ Uploading...');
+  showUploadOverlay('Uploading gallery image…');
   try{
     const url=await uploadImg(file);
     galItems[i].img=url;
     if(!galItems[i].alt)galItems[i].alt=file.name.replace(/\.[^.]+$/,'');
-    renderGalleryItems();toast('✅ Gallery image uploaded!');
-  }catch(e){toast('Upload failed: '+e.message,true);}
+    renderGalleryItems();
+    completeUploadOverlay(true);
+    toast('✅ Gallery image uploaded!');
+  }catch(e){completeUploadOverlay(false);toast('Upload failed: '+e.message,true);}
 }
 function addGalleryItem(){galItems.push({img:'',alt:'',overlay:''});renderGalleryItems();}
 function removeGalItem(i){galItems.splice(i,1);renderGalleryItems();}
@@ -1186,11 +1235,15 @@ async function saveAbout(){
   }));
   let imgUrl=document.getElementById('abImgUrl').value.trim()||abImgExisting||'';
   if(abImgFile){
-    try{const url=await uploadImg(abImgFile);imgUrl=url;}catch(e){toast('Image upload failed',true);return;}
+    showUploadOverlay('Uploading about image…');
+    try{const url=await uploadImg(abImgFile);imgUrl=url;completeUploadOverlay(true);}
+    catch(e){completeUploadOverlay(false);toast('Image upload failed',true);return;}
   }
   let videoUrl=document.getElementById('abVideoUrl').value.trim()||abVideoExisting||'';
   if(abVideoFile){
-    try{const url=await uploadImg(abVideoFile);videoUrl=url;}catch(e){toast('Video upload failed',true);return;}
+    showUploadOverlay('Uploading about video…');
+    try{const url=await uploadImg(abVideoFile);videoUrl=url;completeUploadOverlay(true);}
+    catch(e){completeUploadOverlay(false);toast('Video upload failed',true);return;}
   }
   const ab={
     abLabel:document.getElementById('abLabel').value,
