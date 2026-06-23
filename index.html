@@ -107,7 +107,7 @@
 
         body {
             font-family: 'Outfit', sans-serif;
-            background-color: var(--cream);
+            background-color: transparent; /* shader-bg-canvas shows through site-wide */
             color: var(--text-dark);
             line-height: 1.6;
             overflow-x: hidden;
@@ -115,7 +115,21 @@
         }
 
         /* =====================================================
-           STEEL DOOR SPLASH SCREEN — SECUREX Factory Gate Open
+           GLOBAL SHADER MESH-GRADIENT BACKGROUND
+           Runs continuously behind splash screen AND the website
+           ===================================================== */
+        #shader-bg-canvas {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            display: block;
+            pointer-events: none;
+        }
+
+        /* =====================================================
+           VAPOUR TEXT SPLASH SCREEN
            ===================================================== */
 
         #splash-screen {
@@ -124,367 +138,14 @@
             z-index: 100000;
             overflow: hidden;
             pointer-events: all;
-        }
-
-        #splash-screen.hide {
-            pointer-events: none;
-        }
-
-        /* Brand content revealed behind doors */
-        .splash-brand-bg {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, var(--brown-dark) 0%, var(--brown) 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 14px;
-        }
-
-        .splash-logo-box {
-            width: 90px;
-            height: 90px;
-            border-radius: 14px;
-            background: var(--cream);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        .splash-logo-box img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        .splash-logo-fallback {
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 900;
-            font-size: 26px;
-            color: var(--brown-dark);
-            display: none;
-        }
-
-        .splash-brand-name {
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 800;
-            font-size: clamp(2.2rem, 6vw, 3.2rem);
-            color: var(--cream);
-            letter-spacing: 0.06em;
-        }
-
-        .splash-brand-sub {
-            font-size: 0.75rem;
-            color: var(--beige-dark);
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
-        }
-
-        .splash-brand-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(255,255,255,0.09);
-            border: 1px solid rgba(255,255,255,0.18);
-            padding: 7px 20px;
-            border-radius: 50px;
-            font-size: 0.72rem;
-            color: #FFD700;
-            font-weight: 700;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            margin-top: 4px;
-        }
-
-        .splash-badge-dot {
-            width: 6px;
-            height: 6px;
-            background: #FFD700;
-            border-radius: 50%;
-        }
-
-        /* ---- THE TWO DOORS ---- */
-        .splash-door {
-            position: absolute;
-            top: 0;
-            width: 50%;
-            height: 100%;
-            background: var(--brown-deep);
-            z-index: 10;
-            overflow: hidden;
-            will-change: transform;
-        }
-
-        .splash-door-left  { left: 0; }
-        .splash-door-right { right: 0; }
-
-        /* Doors animate open when .opening class added */
-        .splash-door-left.opening {
-            animation: doorSlideLeft 1.6s cubic-bezier(0.65, 0, 0.35, 1) forwards;
-        }
-        .splash-door-right.opening {
-            animation: doorSlideRight 1.6s cubic-bezier(0.65, 0, 0.35, 1) forwards;
-        }
-
-        @keyframes doorSlideLeft {
-            0%   { transform: translateX(0); }
-            100% { transform: translateX(-102%); }
-        }
-        @keyframes doorSlideRight {
-            0%   { transform: translateX(0); }
-            100% { transform: translateX(102%); }
-        }
-
-        /* Steel texture: vertical grain lines */
-        .door-lines {
-            position: absolute;
-            inset: 0;
-            background: repeating-linear-gradient(
-                90deg,
-                rgba(255,255,255,0.018) 0px,
-                rgba(255,255,255,0.018) 1px,
-                transparent 1px,
-                transparent 32px
-            );
-        }
-
-        /* Horizontal panel seams */
-        .door-seam {
-            position: absolute;
-            left: 0; right: 0;
-            height: 1px;
-            background: rgba(255,255,255,0.055);
-        }
-
-        /* Diagonal sheen */
-        .door-sheen {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(
-                108deg,
-                rgba(255,255,255,0) 25%,
-                rgba(255,255,255,0.05) 50%,
-                rgba(255,255,255,0) 75%
-            );
-        }
-
-        /* Gold edge strip — inner edge of each door */
-        .door-edge-inner {
-            position: absolute;
-            top: 0;
-            width: 4px;
-            height: 100%;
-            background: linear-gradient(
-                180deg,
-                var(--beige-dark) 0%,
-                var(--gold-bright) 50%,
-                var(--beige-dark) 100%
-            );
-            z-index: 4;
-        }
-        .splash-door-left  .door-edge-inner { right: 0; }
-        .splash-door-right .door-edge-inner { left: 0; }
-
-        /* Rivet columns */
-        .door-rivets {
-            position: absolute;
-            top: 0; bottom: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-evenly;
-            padding: 28px 0;
-            z-index: 3;
-        }
-
-        .door-rivets.left-col  { left: 16px; }
-        .door-rivets.right-col { right: 16px; }
-
-        .rivet {
-            width: 9px;
-            height: 9px;
-            border-radius: 50%;
-            background: radial-gradient(
-                circle at 35% 35%,
-                var(--beige) 0%,
-                var(--beige-dark) 55%,
-                #6b4c30 100%
-            );
-            box-shadow: inset 0 1px 2px rgba(0,0,0,0.6);
-        }
-
-        /* ---- DOOR HANDLE ---- */
-        .door-handle-wrap {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 5;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .splash-door-left  .door-handle-wrap { right: 20px; }
-        .splash-door-right .door-handle-wrap { left: 20px; }
-
-        /* Backplate */
-        .handle-plate {
-            width: 22px;
-            height: 76px;
-            border-radius: 11px;
-            background: linear-gradient(
-                160deg,
-                #8a7050 0%,
-                var(--gold-bright) 30%,
-                #a07830 60%,
-                #5a3d1a 100%
-            );
-            border: 1px solid rgba(255,255,255,0.13);
-            box-shadow: 2px 3px 8px rgba(0,0,0,0.55),
-                        inset 0 1px 0 rgba(255,255,255,0.18);
-            position: relative;
+            background: rgba(20, 16, 14, 0.5); /* neutral dark overlay so steel/gold shader bg shows through clearly */
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        /* Pull bar */
-        .handle-bar {
-            width: 9px;
-            height: 46px;
-            border-radius: 5px;
-            background: linear-gradient(
-                90deg,
-                #c8a55a 0%,
-                #f0d080 35%,
-                #b89040 65%,
-                #8a6820 100%
-            );
-            box-shadow: 1px 1px 4px rgba(0,0,0,0.6),
-                        inset 0 1px 0 rgba(255,255,255,0.35);
-        }
-
-        /* Screws on plate */
-        .handle-screw {
-            position: absolute;
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 35% 35%, #c8a55a, #6b4c20);
-            box-shadow: inset 0 1px 1px rgba(0,0,0,0.55);
-            left: 50%;
-            transform: translateX(-50%);
-        }
-        .handle-screw.top { top: 7px; }
-        .handle-screw.bot { bottom: 7px; }
-
-        /* ---- CENTER LOGO (on the closed doors) ---- */
-        .splash-center-logo {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 20;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-            pointer-events: none;
-            transition: opacity 0.25s ease;
-        }
-
-        .splash-center-logo.fade-out {
-            opacity: 0;
-        }
-
-        .cl-brand {
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 800;
-            font-size: clamp(2rem, 5vw, 2.8rem);
-            color: var(--cream);
-            letter-spacing: 0.1em;
-        }
-
-        .cl-line {
-            width: 60px;
-            height: 2px;
-            background: var(--gold-bright);
-            border-radius: 2px;
-        }
-
-        .cl-sub {
-            font-size: 0.6rem;
-            color: var(--beige-dark);
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-        }
-
-        /* ---- LIGHT GAP when doors split ---- */
-        .splash-gap-glow {
-            position: absolute;
-            left: 50%;
-            top: 0; bottom: 0;
-            width: 0;
-            transform: translateX(-50%);
-            background: rgba(255, 230, 150, 0.15);
-            z-index: 9;
-            pointer-events: none;
-            opacity: 0;
-        }
-
-        .splash-gap-glow.glowing {
-            animation: gapGlow 1.6s cubic-bezier(0.65, 0, 0.35, 1) forwards;
-        }
-
-        @keyframes gapGlow {
-            0%   { width: 0; opacity: 0; }
-            15%  { opacity: 1; }
-            100% { width: 140px; opacity: 0; }
-        }
-
-        /* ---- BURST FLASH ---- */
-        .splash-burst {
-            position: absolute;
-            left: 50%; top: 50%;
-            transform: translate(-50%, -50%);
-            width: 0; height: 0;
-            border-radius: 50%;
-            background: rgba(255, 240, 180, 0.20);
-            z-index: 8;
-            pointer-events: none;
-        }
-
-        .splash-burst.burst {
-            animation: burstFlash 0.55s ease forwards;
-        }
-
-        @keyframes burstFlash {
-            0%   { width: 0; height: 0; opacity: 0; }
-            35%  { opacity: 1; }
-            100% { width: 120vw; height: 120vw; opacity: 0; }
-        }
-
-        /* ---- PROGRESS BAR ---- */
-        .splash-progress {
-            position: absolute;
-            bottom: 0; left: 0; right: 0;
-            height: 3px;
-            background: rgba(255,255,255,0.07);
-            z-index: 30;
-        }
-
-        .splash-progress-fill {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, var(--gold-accent), #FFD700);
-            border-radius: 0 2px 2px 0;
-            transition: width 0.4s ease;
-        }
-
-        /* Final fade-out of entire splash */
         #splash-screen.fade-out {
-            animation: splashFadeOut 0.5s ease forwards;
+            animation: splashFadeOut 0.6s ease forwards;
         }
 
         @keyframes splashFadeOut {
@@ -492,17 +153,36 @@
             to   { opacity: 0; visibility: hidden; }
         }
 
+        #vapour-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        #vapour-canvas {
+            min-width: 30px;
+            min-height: 20px;
+            pointer-events: none;
+        }
+
+        .splash-skip-hint {
+            position: absolute;
+            bottom: 28px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(254, 250, 224, 0.4);
+            z-index: 5;
+        }
+
         /* =====================================================
            REST OF SITE STYLES (unchanged from original)
            ===================================================== */
-
-        /* ========== CUSTOM CURSOR ========== */
-        * { cursor: url('logo-cursor.png') 16 16, auto; }
-        a, button, [role="button"], select,
-        .btn, .btn-nav, .btn-submit,
-        .gallery-item, .hamburger, .whatsapp-float {
-            cursor: url('logo-cursor.png') 16 16, pointer;
-        }
 
         h1, h2, h3, h4, h5, h6 {
             font-family: 'Rajdhani', 'Outfit', sans-serif;
@@ -581,7 +261,7 @@
             padding-top: var(--navbar-height);
             position: relative;
             overflow: hidden;
-            background-color: var(--brown-dark);
+            background-color: transparent; /* let shader-bg canvas show through behind hero */
         }
         .hero-ambient-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
         .hero-ambient-bg::before {
@@ -666,7 +346,7 @@
 
         /* ============ SECTIONS ============ */
         .section { padding:90px 0;position:relative; }
-        .section-alt { background:var(--beige-light); }
+        .section-alt { background: rgba(245, 236, 215, 0.86); }
         .section-header { text-align:center;margin-bottom:56px; }
         .section-label { display:inline-block;font-weight:600;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--gold-accent);margin-bottom:10px; }
         .section-title { font-size:clamp(2rem,3.5vw,2.8rem);color:var(--brown-dark);margin-bottom:12px;font-weight:800; }
@@ -674,7 +354,9 @@
 
         .about-grid { display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center; }
         .about-image { border-radius:var(--radius-xl);overflow:hidden;aspect-ratio:4/3;box-shadow:var(--shadow-lg);background:linear-gradient(150deg,var(--beige),var(--beige-dark));position:relative; }
-        .about-image img { width:100%;height:100%;object-fit:cover;display:block; }
+        .about-image img,
+        .about-image video,
+        .about-image iframe { width:100%;height:100%;object-fit:cover;display:block;border:0; }
         .about-content h2 { font-size:2rem;color:var(--brown-dark);margin-bottom:16px; }
         .about-content p { color:var(--text-medium);margin-bottom:16px;line-height:1.7; }
         .about-highlights { display:flex;flex-wrap:wrap;gap:12px;margin-top:20px; }
@@ -708,10 +390,48 @@
         .gallery-overlay { position:absolute;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(transparent,rgba(62,36,21,0.75));color:var(--cream);font-weight:600;font-size:0.9rem;z-index:2;text-align:center;transform:translateY(100%);transition:transform var(--transition-smooth); }
         .gallery-item:hover .gallery-overlay { transform:translateY(0); }
 
-        .stats-bar { background:var(--brown-dark);padding:32px 0; }
-        .stats-grid { display:grid;grid-template-columns:repeat(4,1fr);gap:24px;text-align:center; }
-        .stat-item { color:var(--cream); }
-        .stat-number { font-family:'Rajdhani',sans-serif;font-size:2.5rem;font-weight:800;color:#FFD700;line-height:1;margin-bottom:4px; }
+        .stats-bar { background:var(--brown-dark);padding:32px 0;position:relative;overflow:hidden; }
+        .stats-bar::before {
+            content:'';
+            position:absolute;
+            inset:0;
+            background:linear-gradient(
+                115deg,
+                transparent 0%,
+                rgba(255,215,0,0.05) 25%,
+                rgba(255,215,0,0.13) 45%,
+                rgba(255,215,0,0.05) 65%,
+                transparent 90%
+            );
+            background-size:220% 100%;
+            animation:statsShimmer 7s ease-in-out infinite;
+            pointer-events:none;
+        }
+        .stats-bar::after {
+            content:'';
+            position:absolute;
+            inset:0;
+            background:radial-gradient(ellipse 60% 100% at 20% 50%, rgba(212,175,55,0.10) 0%, transparent 60%),
+                       radial-gradient(ellipse 60% 100% at 80% 50%, rgba(212,175,55,0.10) 0%, transparent 60%);
+            animation:statsGlowDrift 9s ease-in-out infinite alternate;
+            pointer-events:none;
+        }
+        @keyframes statsShimmer {
+            0%   { background-position:0% 50%; }
+            50%  { background-position:100% 50%; }
+            100% { background-position:0% 50%; }
+        }
+        @keyframes statsGlowDrift {
+            0%   { opacity:0.6; transform:translateX(0); }
+            100% { opacity:1;   transform:translateX(2%); }
+        }
+        .stats-grid { display:grid;grid-template-columns:repeat(4,1fr);gap:24px;text-align:center;position:relative;z-index:1; }
+        .stat-item { color:var(--cream);position:relative;padding:12px 8px;border-radius:var(--radius-md);transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1),background 0.35s ease; }
+        .stat-item:hover { transform:translateY(-4px); background:rgba(255,215,0,0.06); }
+        .stat-number { font-family:'Rajdhani',sans-serif;font-size:2.5rem;font-weight:800;color:#FFD700;line-height:1;margin-bottom:4px;display:inline-block;text-shadow:0 0 0 rgba(255,215,0,0); transition:text-shadow 0.4s ease; }
+        .stat-item:hover .stat-number { text-shadow:0 0 18px rgba(255,215,0,0.55); }
+        .stat-item::after { content:'';position:absolute;bottom:0;left:50%;width:0;height:2px;background:#FFD700;border-radius:2px;transform:translateX(-50%);transition:width 0.4s ease; }
+        .stat-item:hover::after { width:48px; }
         .stat-label { font-size:0.85rem;opacity:0.8; }
 
         .contact-grid { display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start; }
@@ -740,7 +460,7 @@
         .form-status.success { display:block;background:#d4edda;color:#155724;border:1px solid #c3e6cb; }
         .form-status.error   { display:block;background:#f8d7da;color:#721c24;border:1px solid #f5c6cb; }
 
-        .footer { background:var(--brown-deep);color:var(--beige);padding:56px 0 24px; }
+        .footer { background: rgba(42, 24, 13, 0.92); color:var(--beige);padding:56px 0 24px; }
         .footer-grid { display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px;margin-bottom:40px; }
         .footer-brand h4 { color:var(--cream);font-size:1.4rem;letter-spacing:0.03em;margin-bottom:8px; }
         .footer-brand p  { color:var(--beige-dark);font-size:0.85rem;margin-top:8px;line-height:1.5; }
@@ -789,9 +509,6 @@
             .features-grid { grid-template-columns:1fr 1fr;gap:16px; }
             .why-grid { grid-template-columns:1fr;gap:16px; }
             .stats-grid { grid-template-columns:repeat(2,1fr); }
-            /* Handles smaller on mobile */
-            .handle-plate { width:16px;height:56px; }
-            .handle-bar { width:7px;height:34px; }
         }
         @media (max-width:480px) {
             .hero h1 { font-size:2.2rem; }
@@ -804,107 +521,168 @@
             .whatsapp-float { bottom:18px;right:16px;width:50px;height:50px; }
             .whatsapp-float svg { width:24px;height:24px; }
             .stats-grid { grid-template-columns:1fr 1fr; }
-            .splash-center-logo .cl-brand { font-size:1.8rem; }
         }
     </style>
 </head>
 <body>
+    <canvas id="shader-bg-canvas" aria-hidden="true"></canvas>
+
+    <!-- ============================================================
+         GLOBAL SHADER MESH-GRADIENT BACKGROUND (Three.js, vanilla JS)
+         Runs behind the splash screen AND the entire website
+         ============================================================ -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+    <script>
+    (function () {
+        'use strict';
+        if (typeof THREE === 'undefined') return;
+
+        var canvas = document.getElementById('shader-bg-canvas');
+        if (!canvas) return;
+
+        var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: false });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+
+        var scene = new THREE.Scene();
+        var camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+
+        // Site palette, converted to vec3 (0-1) for the shader — matches :root CSS variables, kept light/airy
+        var uniforms = {
+            time:   { value: 0 },
+            res:    { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+            cCream: { value: new THREE.Vector3(0xFE / 255, 0xFA / 255, 0xE0 / 255) }, // --cream
+            cBeigeL:{ value: new THREE.Vector3(0xF5 / 255, 0xEC / 255, 0xD7 / 255) }, // --beige-light
+            cBeige: { value: new THREE.Vector3(0xE8 / 255, 0xD5 / 255, 0xB4 / 255) }, // --beige
+            cBeigeD:{ value: new THREE.Vector3(0xC4 / 255, 0xA8 / 255, 0x82 / 255) }, // --beige-dark
+            cBrownL:{ value: new THREE.Vector3(0x8B / 255, 0x6F / 255, 0x4E / 255) }, // --brown-light
+            cGold:  { value: new THREE.Vector3(0xD4 / 255, 0xAF / 255, 0x37 / 255) }  // --gold-bright
+        };
+
+        var vertexShader = [
+            'void main() {',
+            '  gl_Position = vec4(position, 1.0);',
+            '}'
+        ].join('\n');
+
+        var fragmentShader = [
+            'precision highp float;',
+            'uniform float time;',
+            'uniform vec2 res;',
+            'uniform vec3 cCream;',
+            'uniform vec3 cBeigeL;',
+            'uniform vec3 cBeige;',
+            'uniform vec3 cBeigeD;',
+            'uniform vec3 cBrownL;',
+            'uniform vec3 cGold;',
+            '',
+            'float smoothNoise(vec2 p) {',
+            '  vec2 i = floor(p);',
+            '  vec2 f = fract(p);',
+            '  vec2 u = f * f * (3.0 - 2.0 * f);',
+            '  float a = sin(dot(i, vec2(127.1, 311.7))) * 43758.5453;',
+            '  float b = sin(dot(i + vec2(1.0,0.0), vec2(127.1, 311.7))) * 43758.5453;',
+            '  float c = sin(dot(i + vec2(0.0,1.0), vec2(127.1, 311.7))) * 43758.5453;',
+            '  float d = sin(dot(i + vec2(1.0,1.0), vec2(127.1, 311.7))) * 43758.5453;',
+            '  a = fract(a); b = fract(b); c = fract(c); d = fract(d);',
+            '  return mix(mix(a, b, u.x), mix(c, d, u.x), u.y);',
+            '}',
+            '',
+            'float fbm(vec2 p) {',
+            '  float v = 0.0;',
+            '  float amp = 0.55;',
+            '  for (int i = 0; i < 4; i++) {',
+            '    v += smoothNoise(p) * amp;',
+            '    p *= 2.05;',
+            '    amp *= 0.55;',
+            '  }',
+            '  return v;',
+            '}',
+            '',
+            'void main() {',
+            '  vec2 uv = gl_FragCoord.xy / res.xy;',
+            '  float aspect = res.x / res.y;',
+            '  vec2 p = uv;',
+            '  p.x *= aspect;',
+            '',
+            '  float t = time * 0.05;',
+            '',
+            '  float n1 = fbm(p * 1.5 + vec2(t * 1.2, t * 0.6));',
+            '  float n2 = fbm(p * 2.0 - vec2(t * 0.8, t * 1.0) + 4.0);',
+            '  float n3 = fbm(p * 1.0 + vec2(-t * 0.5, t * 1.3) + 9.0);',
+            '',
+            '  float mixA = smoothstep(0.2, 0.85, n1);',
+            '  float mixB = smoothstep(0.25, 0.8, n2);',
+            '  float mixC = smoothstep(0.2, 0.75, n3);',
+            '',
+            '  vec3 col = mix(cCream, cBeigeL, mixA);',
+            '  col = mix(col, cBeige, mixB * 0.6);',
+            '  col = mix(col, cBeigeD, mixC * 0.3);',
+            '  col = mix(col, cBrownL, pow(n1 * n3, 3.0) * 0.18);',
+            '  col = mix(col, cGold, pow(n2 * n3, 4.0) * 0.12);',
+            '',
+            '  float vign = 1.0 - length(uv - 0.5) * 0.35;',
+            '  col *= clamp(vign, 0.88, 1.0);',
+            '',
+            '  gl_FragColor = vec4(col, 1.0);',
+            '}'
+        ].join('\n');
+
+        var geometry = new THREE.BufferGeometry();
+        geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array([
+            -1, -1, 0,  3, -1, 0,  -1, 3, 0
+        ]), 3));
+
+        var material = new THREE.ShaderMaterial({
+            uniforms: uniforms,
+            vertexShader: vertexShader,
+            fragmentShader: fragmentShader,
+            depthWrite: false,
+            depthTest: false
+        });
+
+        var mesh = new THREE.Mesh(geometry, material);
+        scene.add(mesh);
+
+        function resize() {
+            var w = window.innerWidth, h = window.innerHeight;
+            renderer.setSize(w, h, false);
+            uniforms.res.value.set(w, h);
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        var clock = new THREE.Clock();
+        var rafId = null;
+
+        function tick() {
+            uniforms.time.value = clock.getElapsedTime();
+            renderer.render(scene, camera);
+            rafId = requestAnimationFrame(tick);
+        }
+        tick();
+
+        // Pause rendering when tab is hidden to save battery/CPU
+        document.addEventListener('visibilitychange', function () {
+            if (document.hidden) {
+                if (rafId) cancelAnimationFrame(rafId);
+                rafId = null;
+            } else if (!rafId) {
+                tick();
+            }
+        });
+    })();
+    </script>
+
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
     <!-- ============================================================
-         STEEL DOOR SPLASH SCREEN
+         VAPOUR TEXT SPLASH SCREEN
          ============================================================ -->
     <div id="splash-screen" role="status" aria-label="Loading SECUREX">
-
-        <!-- Brand content behind the doors -->
-        <div class="splash-brand-bg" aria-hidden="true">
-            <div class="splash-logo-box">
-                <img src="securex-logo.png" alt="SECUREX"
-                     onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-                <span class="splash-logo-fallback">SX</span>
-            </div>
-            <div class="splash-brand-name">SECUREX</div>
-            <div class="splash-brand-sub">by Shah Interio</div>
-            <div class="splash-brand-badge">
-                <span class="splash-badge-dot"></span>
-                Odisha's Trusted B2B Steel Manufacturer
-            </div>
+        <div id="vapour-wrapper">
+            <canvas id="vapour-canvas"></canvas>
         </div>
-
-        <!-- LEFT DOOR -->
-        <div class="splash-door splash-door-left" id="splashDoorLeft" aria-hidden="true">
-            <div class="door-lines"></div>
-            <div class="door-sheen"></div>
-            <div class="door-seam" style="top:25%"></div>
-            <div class="door-seam" style="top:50%"></div>
-            <div class="door-seam" style="top:75%"></div>
-            <!-- Rivets left column -->
-            <div class="door-rivets left-col">
-                <div class="rivet"></div><div class="rivet"></div>
-                <div class="rivet"></div><div class="rivet"></div>
-                <div class="rivet"></div><div class="rivet"></div>
-            </div>
-            <!-- Rivets right column -->
-            <div class="door-rivets right-col">
-                <div class="rivet"></div><div class="rivet"></div>
-                <div class="rivet"></div><div class="rivet"></div>
-                <div class="rivet"></div><div class="rivet"></div>
-            </div>
-            <!-- Handle -->
-            <div class="door-handle-wrap">
-                <div class="handle-plate">
-                    <div class="handle-screw top"></div>
-                    <div class="handle-bar"></div>
-                    <div class="handle-screw bot"></div>
-                </div>
-            </div>
-            <div class="door-edge-inner"></div>
-        </div>
-
-        <!-- RIGHT DOOR -->
-        <div class="splash-door splash-door-right" id="splashDoorRight" aria-hidden="true">
-            <div class="door-lines"></div>
-            <div class="door-sheen"></div>
-            <div class="door-seam" style="top:25%"></div>
-            <div class="door-seam" style="top:50%"></div>
-            <div class="door-seam" style="top:75%"></div>
-            <div class="door-rivets left-col">
-                <div class="rivet"></div><div class="rivet"></div>
-                <div class="rivet"></div><div class="rivet"></div>
-                <div class="rivet"></div><div class="rivet"></div>
-            </div>
-            <div class="door-rivets right-col">
-                <div class="rivet"></div><div class="rivet"></div>
-                <div class="rivet"></div><div class="rivet"></div>
-                <div class="rivet"></div><div class="rivet"></div>
-            </div>
-            <!-- Handle -->
-            <div class="door-handle-wrap">
-                <div class="handle-plate">
-                    <div class="handle-screw top"></div>
-                    <div class="handle-bar"></div>
-                    <div class="handle-screw bot"></div>
-                </div>
-            </div>
-            <div class="door-edge-inner"></div>
-        </div>
-
-        <!-- Center logo shown on closed doors -->
-        <div class="splash-center-logo" id="splashCenterLogo" aria-hidden="true">
-            <div class="cl-brand">SECUREX</div>
-            <div class="cl-line"></div>
-            <div class="cl-sub">by Shah Interio</div>
-        </div>
-
-        <!-- Gap glow & burst -->
-        <div class="splash-gap-glow"  id="splashGapGlow"  aria-hidden="true"></div>
-        <div class="splash-burst"     id="splashBurst"    aria-hidden="true"></div>
-
-        <!-- Progress bar -->
-        <div class="splash-progress" aria-hidden="true">
-            <div class="splash-progress-fill" id="splashProgress"></div>
-        </div>
-
+        <div class="splash-skip-hint">SECUREX · Steel Almirahs</div>
     </div>
     <!-- end #splash-screen -->
 
@@ -1008,10 +786,10 @@
         <div class="stats-bar" aria-label="Company statistics">
             <div class="container">
                 <div class="stats-grid">
-                    <div class="stat-item reveal"><div class="stat-number">10+</div><div class="stat-label">Years of Experience</div></div>
+                    <div class="stat-item reveal"><div class="stat-number" data-count="10" data-suffix="+">0</div><div class="stat-label">Years of Experience</div></div>
                     <div class="stat-item reveal"><div class="stat-number">UL</div><div class="stat-label">Product Variants</div></div>
-                    <div class="stat-item reveal"><div class="stat-number">500+</div><div class="stat-label">B2B Clients</div></div>
-                    <div class="stat-item reveal"><div class="stat-number">100%</div><div class="stat-label">Factory Direct</div></div>
+                    <div class="stat-item reveal"><div class="stat-number" data-count="500" data-suffix="+">0</div><div class="stat-label">B2B Clients</div></div>
+                    <div class="stat-item reveal"><div class="stat-number" data-count="100" data-suffix="%">0</div><div class="stat-label">Factory Direct</div></div>
                 </div>
             </div>
         </div>
@@ -1184,74 +962,195 @@
     </a>
 
     <!-- ============================================================
-         STEEL DOOR SPLASH ANIMATION SCRIPT
+         VAPOUR TEXT SPLASH ANIMATION SCRIPT (vanilla JS + Canvas)
          ============================================================ -->
     <script>
     (function () {
         'use strict';
 
-        var splash    = document.getElementById('splash-screen');
-        var doorL     = document.getElementById('splashDoorLeft');
-        var doorR     = document.getElementById('splashDoorRight');
-        var centerLogo= document.getElementById('splashCenterLogo');
-        var gapGlow   = document.getElementById('splashGapGlow');
-        var burst     = document.getElementById('splashBurst');
-        var progFill  = document.getElementById('splashProgress');
+        var splash = document.getElementById('splash-screen');
+        var canvas = document.getElementById('vapour-canvas');
+        var wrapper = document.getElementById('vapour-wrapper');
+        if (!splash || !canvas || !wrapper) return;
 
-        /* Lock scroll while splash is open */
-        document.body.style.overflow = 'hidden';
+        var ctx = canvas.getContext('2d');
 
-        /* Progress bar helper */
-        function setProgress(pct) {
-            if (progFill) progFill.style.width = pct + '%';
+        /* ---------- CONFIG ---------- */
+        var TEXT = 'SECUREX';
+        var COLOR = 'rgb(254, 250, 224)'; // cream — matches site's --cream background, high contrast on brown
+        var FONT_FAMILY = "Arial, Helvetica, sans-serif";
+        var FONT_WEIGHT = 900;
+        var ASSEMBLE_DURATION = 900;  // ms — particles fly in from scatter to form the word
+        var HOLD_DURATION = 550;      // ms — word stays static once assembled
+        var SCATTER_RADIUS = 1.6;     // how far outside canvas particles start scattered (multiplier of canvas size)
+
+        // Cap DPR so particle count stays render-friendly on high-density screens
+        var dpr = Math.min(window.devicePixelRatio || 1, 2);
+        // Fixed sample step in CSS pixels — independent of DPR, keeps particle count stable
+        var SAMPLE_STEP_CSS = 2;
+        // Particle draw size in CSS pixels — overlaps slightly with sample step so letters render solid, no gaps
+        var PARTICLE_SIZE = SAMPLE_STEP_CSS + 0.6;
+
+        var particles = [];
+        var state = 'assembling'; // assembling -> holding
+        var assembleStart = null;
+        var holdTimeoutId = null;
+        var rafId = null;
+        var splashEnded = false;
+
+        function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+
+        function resizeCanvas() {
+            var width = wrapper.clientWidth;
+            var height = wrapper.clientHeight;
+            canvas.style.width = width + 'px';
+            canvas.style.height = height + 'px';
+            canvas.width = Math.floor(width * dpr);
+            canvas.height = Math.floor(height * dpr);
         }
 
-        /* --- TIMELINE ---
-           0.0s  progress 0→30
-           0.7s  fade center logo + start doors + gapGlow
-           2.3s  doors fully open → burst flash
-           2.85s progress 100
-           3.0s  splash fade-out starts
-           3.5s  splash removed, body scroll unlocked
-        */
+        function getFontSize() {
+            var w = wrapper.clientWidth;
+            return Math.min(Math.max(w * 0.11, 36), 110);
+        }
 
-        setProgress(0);
+        function createParticlesForText(text) {
+            resizeCanvas();
+            var fontSize = getFontSize();
+            var font = FONT_WEIGHT + ' ' + (fontSize * dpr) + 'px ' + FONT_FAMILY;
 
-        /* Animate progress to 30% while doors are "loading" */
-        setTimeout(function () { setProgress(30); }, 50);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = COLOR;
+            ctx.font = font;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.imageSmoothingEnabled = true;
 
-        /* At 0.7s — fade logo, open doors, gap glow */
-        setTimeout(function () {
-            setProgress(55);
-            if (centerLogo) centerLogo.classList.add('fade-out');
-            if (doorL) doorL.classList.add('opening');
-            if (doorR) doorR.classList.add('opening');
-            if (gapGlow) gapGlow.classList.add('glowing');
-        }, 700);
+            var textX = canvas.width / 2;
+            var textY = canvas.height / 2;
+            ctx.fillText(text, textX, textY);
 
-        /* Mid-open progress bump */
-        setTimeout(function () { setProgress(80); }, 1500);
+            var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            var data = imageData.data;
+            var sampleRate = Math.max(1, Math.round(SAMPLE_STEP_CSS * dpr));
 
-        /* At 2.3s — doors fully open, burst flash */
-        setTimeout(function () {
-            setProgress(95);
-            if (burst) burst.classList.add('burst');
-        }, 2300);
+            var newParticles = [];
+            for (var y = 0; y < canvas.height; y += sampleRate) {
+                for (var x = 0; x < canvas.width; x += sampleRate) {
+                    var idx = (y * canvas.width + x) * 4;
+                    var alpha = data[idx + 3];
+                    if (alpha > 0) {
+                        var originalAlpha = (alpha / 255) * (sampleRate / dpr);
 
-        /* At 2.85s — progress 100 */
-        setTimeout(function () { setProgress(100); }, 2850);
+                        // Scattered random start position — outside/around the canvas bounds
+                        var angle = Math.random() * Math.PI * 2;
+                        var dist = (0.5 + Math.random() * 0.5) * SCATTER_RADIUS * Math.max(canvas.width, canvas.height);
+                        var startX = (canvas.width / 2) + Math.cos(angle) * dist;
+                        var startY = (canvas.height / 2) + Math.sin(angle) * dist;
 
-        /* At 3.0s — start fade out */
-        setTimeout(function () {
-            if (splash) splash.classList.add('fade-out');
-        }, 3000);
+                        newParticles.push({
+                            x: startX, y: startY,
+                            targetX: x, targetY: y,
+                            startX: startX, startY: startY,
+                            r: data[idx], g: data[idx + 1], b: data[idx + 2],
+                            opacity: originalAlpha,
+                            originalAlpha: originalAlpha,
+                            delay: Math.random() * 0.25 // 0-25% of duration, staggers the flight start slightly
+                        });
+                    }
+                }
+            }
 
-        /* At 3.5s — remove splash entirely, restore scroll */
-        setTimeout(function () {
-            if (splash && splash.parentNode) splash.parentNode.removeChild(splash);
-            document.body.style.overflow = '';
-        }, 3500);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles = newParticles;
+        }
 
+        function renderParticles() {
+            ctx.save();
+            ctx.scale(dpr, dpr);
+            for (var i = 0; i < particles.length; i++) {
+                var p = particles[i];
+                if (p.opacity > 0) {
+                    ctx.fillStyle = 'rgba(' + p.r + ',' + p.g + ',' + p.b + ',' + p.opacity + ')';
+                    ctx.fillRect(p.x / dpr, p.y / dpr, PARTICLE_SIZE, PARTICLE_SIZE);
+                }
+            }
+            ctx.restore();
+        }
+
+        function updateAssemble(progressMs) {
+            var allArrived = true;
+            for (var i = 0; i < particles.length; i++) {
+                var p = particles[i];
+                var localProgress = (progressMs - p.delay * ASSEMBLE_DURATION) / (ASSEMBLE_DURATION * (1 - p.delay));
+                localProgress = Math.min(Math.max(localProgress, 0), 1);
+                var eased = easeOutCubic(localProgress);
+
+                p.x = p.startX + (p.targetX - p.startX) * eased;
+                p.y = p.startY + (p.targetY - p.startY) * eased;
+                p.opacity = p.originalAlpha * Math.min(1, localProgress * 2.2);
+
+                if (localProgress < 1) allArrived = false;
+            }
+            return allArrived;
+        }
+
+        function endSplash() {
+            if (splashEnded) return;
+            splashEnded = true;
+            if (rafId) cancelAnimationFrame(rafId);
+            if (holdTimeoutId) clearTimeout(holdTimeoutId);
+            splash.classList.add('fade-out');
+            setTimeout(function () {
+                if (splash.parentNode) splash.parentNode.removeChild(splash);
+                document.body.style.overflow = '';
+            }, 650);
+        }
+
+        function animate(currentTime) {
+            if (splashEnded) return;
+            if (assembleStart === null) assembleStart = currentTime;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            if (state === 'assembling') {
+                var elapsed = currentTime - assembleStart;
+                var allArrived = updateAssemble(elapsed);
+                renderParticles();
+
+                if (elapsed >= ASSEMBLE_DURATION && allArrived) {
+                    state = 'holding';
+                    holdTimeoutId = setTimeout(endSplash, HOLD_DURATION);
+                }
+            } else if (state === 'holding') {
+                renderParticles();
+            }
+
+            rafId = requestAnimationFrame(animate);
+        }
+
+        function startSplash() {
+            document.body.style.overflow = 'hidden';
+            createParticlesForText(TEXT);
+            rafId = requestAnimationFrame(animate);
+        }
+
+        // Allow click/tap to skip splash early
+        splash.addEventListener('click', endSplash);
+
+        // Handle resize: rebuild particles for current text at new size (only while still assembling/holding)
+        var resizeTimeout = null;
+        window.addEventListener('resize', function () {
+            if (splashEnded) return;
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(function () {
+                createParticlesForText(TEXT);
+                state = 'assembling';
+                assembleStart = null;
+            }, 200);
+        });
+
+        startSplash();
     })();
     </script>
 
@@ -1336,6 +1235,46 @@
 
     var revealObs = new IntersectionObserver(function(entries){ entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('visible'); revealObs.unobserve(e.target); } }); }, { rootMargin:'0px 0px -40px 0px', threshold:0.1 });
     document.querySelectorAll('.reveal').forEach(function(el){ revealObs.observe(el); });
+
+    /* ---- Stats count-up animation ---- */
+    (function () {
+        var statNumbers = document.querySelectorAll('.stat-number[data-count]');
+        if (!statNumbers.length) return;
+
+        function easeOutQuad(t) { return t * (2 - t); }
+
+        function animateCount(el) {
+            var target = parseFloat(el.getAttribute('data-count'), 10);
+            var suffix = el.getAttribute('data-suffix') || '';
+            var duration = 1400;
+            var startTime = null;
+
+            function step(timestamp) {
+                if (!startTime) startTime = timestamp;
+                var progress = Math.min((timestamp - startTime) / duration, 1);
+                var eased = easeOutQuad(progress);
+                var current = Math.floor(eased * target);
+                el.textContent = current + suffix;
+                if (progress < 1) {
+                    requestAnimationFrame(step);
+                } else {
+                    el.textContent = target + suffix;
+                }
+            }
+            requestAnimationFrame(step);
+        }
+
+        var statsObs = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    animateCount(entry.target);
+                    statsObs.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.4 });
+
+        statNumbers.forEach(function (el) { statsObs.observe(el); });
+    })();
 
     var contactForm = document.getElementById('contactForm');
     var submitBtn   = document.getElementById('submitBtn');
@@ -1423,6 +1362,54 @@
                     if(ab.abP2&&paras[1]) paras[1].textContent=ab.abP2;
                     if(ab.abP3&&paras[2]) paras[2].textContent=ab.abP3;
                     if(ab.abImgUrl){ var ai=document.querySelector('.about-image img'); if(ai) ai.src=ab.abImgUrl; }
+
+                    // ---- Smart video support: tries common field-name variants, handles
+                    // YouTube/Vimeo links (embeds as iframe) and direct video file URLs (.mp4 etc, as <video>)
+                    var videoUrl = ab.abVideoUrl || ab.videoUrl || ab.abVideo || ab.video_url ||
+                                   ab.aboutVideoUrl || ab.video || ab.abVideoURL || null;
+
+                    if (videoUrl) {
+                        var aboutImageEl = document.querySelector('.about-image');
+                        if (aboutImageEl) {
+                            var ytMatch = videoUrl.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{6,})/);
+                            var vimeoMatch = videoUrl.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+                            var isDirectFile = /\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(videoUrl);
+
+                            var mediaEl;
+                            if (ytMatch) {
+                                mediaEl = document.createElement('iframe');
+                                mediaEl.src = 'https://www.youtube.com/embed/' + ytMatch[1] + '?rel=0';
+                                mediaEl.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+                                mediaEl.setAttribute('allowfullscreen', '');
+                                mediaEl.setAttribute('loading', 'lazy');
+                                mediaEl.setAttribute('title', 'SECUREX about video');
+                            } else if (vimeoMatch) {
+                                mediaEl = document.createElement('iframe');
+                                mediaEl.src = 'https://player.vimeo.com/video/' + vimeoMatch[1];
+                                mediaEl.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture');
+                                mediaEl.setAttribute('allowfullscreen', '');
+                                mediaEl.setAttribute('loading', 'lazy');
+                                mediaEl.setAttribute('title', 'SECUREX about video');
+                            } else if (isDirectFile) {
+                                mediaEl = document.createElement('video');
+                                mediaEl.src = videoUrl;
+                                mediaEl.controls = true;
+                                mediaEl.playsInline = true;
+                                mediaEl.preload = 'metadata';
+                            } else {
+                                // Unknown video host format — still try as an iframe embed (e.g. other platforms)
+                                mediaEl = document.createElement('iframe');
+                                mediaEl.src = videoUrl;
+                                mediaEl.setAttribute('allowfullscreen', '');
+                                mediaEl.setAttribute('loading', 'lazy');
+                                mediaEl.setAttribute('title', 'SECUREX about video');
+                            }
+
+                            aboutImageEl.innerHTML = '';
+                            aboutImageEl.appendChild(mediaEl);
+                        }
+                    }
+
                     if(ab.abTags&&ab.abTags.length){ var tc=document.querySelector('.about-highlights'); if(tc) tc.innerHTML=ab.abTags.map(function(t){ return '<span class="about-highlight-tag">'+t+'</span>'; }).join(''); }
                     if(ab.whyUs&&ab.whyUs.length){ var wg=document.querySelector('.why-grid'); if(wg){ wg.innerHTML=ab.whyUs.map(function(w){ return '<div class="why-card reveal"><div class="why-icon" aria-hidden="true">'+(w.icon||'⭐')+'</div><div><h4>'+(w.title||'')+'</h4><p>'+(w.desc||'')+'</p></div></div>'; }).join(''); wg.querySelectorAll('.reveal').forEach(function(el){ revealObs2.observe(el); }); } }
                 }
