@@ -355,8 +355,12 @@
         .about-grid { display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center; }
         .about-image { border-radius:var(--radius-xl);overflow:hidden;aspect-ratio:4/3;box-shadow:var(--shadow-lg);background:linear-gradient(150deg,var(--beige),var(--beige-dark));position:relative; }
         .about-image img,
-        .about-image video,
         .about-image iframe { width:100%;height:100%;object-fit:cover;display:block;border:0; }
+        .about-image video {
+            width:100%;height:100%;display:block;border:0;
+            object-fit:contain; /* shows full video frame so on-screen text/captions never get cropped */
+            background:#000;
+        }
         .about-content h2 { font-size:2rem;color:var(--brown-dark);margin-bottom:16px; }
         .about-content p { color:var(--text-medium);margin-bottom:16px;line-height:1.7; }
         .about-highlights { display:flex;flex-wrap:wrap;gap:12px;margin-top:20px; }
