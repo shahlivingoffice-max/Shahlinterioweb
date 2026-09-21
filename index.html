@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <script>document.documentElement.classList.add('js-on');</script>
     <script src="icons.js" defer></script>
     <script src="motion.js" defer></script>
@@ -32,6 +32,7 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
     <link rel="manifest" href="/site.webmanifest">
 
+    <link rel="preload" as="image" href="webp/hero-aerial.webp" type="image/webp" fetchpriority="high">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -252,17 +253,28 @@
             line-height: 1.6;
             overflow-x: hidden;
             min-height: 100vh;
+            min-height: 100dvh;
         }
 
         /* =====================================================
            GLOBAL SHADER MESH-GRADIENT BACKGROUND
            Runs continuously behind splash screen AND the website
            ===================================================== */
+        html.static-bg body::before {
+            content:''; position:fixed; inset:0; z-index:-1; pointer-events:none;
+            background:
+                radial-gradient(ellipse 85% 55% at 18% 12%, #FEFAE0 0%, rgba(254,250,224,0) 62%),
+                radial-gradient(ellipse 70% 50% at 88% 22%, #F7EEDB 0%, rgba(247,238,219,0) 66%),
+                radial-gradient(ellipse 95% 65% at 72% 78%, #E8D5B4 0%, rgba(232,213,180,0) 70%),
+                radial-gradient(ellipse 65% 45% at 8% 88%, #D9C39C 0%, rgba(217,195,156,0) 68%),
+                linear-gradient(158deg, #FEFAE0 0%, #F5ECD7 46%, #E4D0AC 100%);
+        }
         #shader-bg-canvas {
             position: fixed;
             inset: 0;
             width: 100vw;
             height: 100vh;
+            height: 100dvh;
             z-index: -1;
             display: block;
             pointer-events: none;
@@ -554,6 +566,7 @@
            ============================================================ */
         .hero {
             min-height: 100vh;
+            min-height: 100svh;
             display: flex;
             align-items: center;
             padding-top: var(--navbar-height);
@@ -759,18 +772,11 @@
         .stats-bar::before {
             content:'';
             position:absolute;
-            inset:0;
-            background:linear-gradient(
-                115deg,
-                transparent 0%,
-                rgba(255,215,0,0.05) 25%,
-                rgba(255,215,0,0.13) 45%,
-                rgba(255,215,0,0.05) 65%,
-                transparent 90%
-            );
-            background-size:220% 100%;
+            top:0; bottom:0; left:-55%; width:55%;
+            background:linear-gradient(115deg, transparent 0%, rgba(255,215,0,0.06) 30%, rgba(255,215,0,0.15) 50%, rgba(255,215,0,0.06) 70%, transparent 100%);
             animation:statsShimmer 7s ease-in-out infinite;
             pointer-events:none;
+            will-change:transform;
         }
         .stats-bar::after {
             content:'';
@@ -782,9 +788,8 @@
             pointer-events:none;
         }
         @keyframes statsShimmer {
-            0%   { background-position:0% 50%; }
-            50%  { background-position:100% 50%; }
-            100% { background-position:0% 50%; }
+            0%   { transform:translate3d(0,0,0); }
+            100% { transform:translate3d(300%,0,0); }
         }
         @keyframes statsGlowDrift {
             0%   { opacity:0.6; transform:translateX(0); }
@@ -1001,7 +1006,9 @@
             0%        { background-position:-160% 0, 0 0; }
             45%, 100% { background-position: 160% 0, 0 0; }
         }
-        .stat-item.visible .stat-number { animation:statSheen 2.4s ease-in-out 1.2s infinite; }
+        @media (hover:hover) and (pointer:fine) {
+            .stat-item.visible .stat-number { animation:statSheen 2.4s ease-in-out 1.2s infinite; }
+        }
 
         /* ---- Gallery image mask wipe ---- */
         .js-on .gallery-item.reveal img { clip-path:inset(0 0 100% 0); transition:clip-path .9s var(--ease-out-expo) .1s, transform .5s ease; }
@@ -1085,6 +1092,48 @@
         .form-group:focus-within { transform:translateY(-2px); }
         .contact-detail { will-change:transform; }
 
+        @media (hover: none), (pointer: coarse) {
+            .hero-ambient-bg::before,
+            .hero-ambient-bg::after,
+            .stats-bar::before,
+            .stats-bar::after,
+            .stat-number,
+            .ph-fx::before,
+            .ph-fx::after,
+            .page-header::after,
+            .ph-orb,
+            .cc-panel::before,
+            .am-play::after { animation: none !important; }
+
+            .ph-orb { filter: blur(30px); opacity: .75; }
+
+            .hero-slide-bg,
+            .hero-content,
+            .marquee-track,
+            .tilt,
+            .stats-bar::before,
+            .ph-fx::before { will-change: auto; }
+
+            .navbar,
+            .nav-links,
+            .to-top,
+            .hero-pause-btn,
+            .cc-form,
+            .view-toggle-btn { backdrop-filter: none; -webkit-backdrop-filter: none; }
+
+            .navbar { background: rgba(254,250,224,0.97); }
+            .nav-links { background: rgba(254,250,224,1); }
+            .to-top { background: rgba(254,250,224,0.98); }
+            .cc-form { background: rgba(0,0,0,0.22); }
+        }
+
+        .whatsapp-float { bottom: calc(28px + env(safe-area-inset-bottom, 0px)); right: calc(28px + env(safe-area-inset-right, 0px)); }
+        .to-top { bottom: calc(96px + env(safe-area-inset-bottom, 0px)); right: calc(30px + env(safe-area-inset-right, 0px)); }
+        @media (max-width:480px) {
+            .whatsapp-float { bottom: calc(18px + env(safe-area-inset-bottom, 0px)); right: calc(16px + env(safe-area-inset-right, 0px)); }
+            .to-top { bottom: calc(78px + env(safe-area-inset-bottom, 0px)); right: calc(16px + env(safe-area-inset-right, 0px)); }
+        }
+
         /* ---- Respect reduced motion ---- */
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after {
@@ -1114,7 +1163,7 @@
             .stats-grid { grid-template-columns:repeat(2,1fr); }
         }
         @media (max-width:768px) {
-            .nav-links { position:fixed;top:0;right:-100%;width:min(280px,80vw);height:100vh;flex-direction:column;background:rgba(254,250,224,0.98);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:100px 32px 40px;gap:24px;transition:right var(--transition-smooth);box-shadow:var(--shadow-xl);z-index:1000;overflow-y:auto; }
+            .nav-links { position:fixed;top:0;right:-100%;width:min(280px,80vw);height:100vh;height:100dvh;flex-direction:column;background:rgba(254,250,224,0.98);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:100px 32px 40px;gap:24px;transition:right var(--transition-smooth);box-shadow:var(--shadow-xl);z-index:1000;overflow-y:auto; }
             .nav-links.active { right:0; }
             .nav-cta { display:none; }
             .hamburger { display:flex; }
@@ -1157,8 +1206,31 @@
         var canvas = document.getElementById('shader-bg-canvas');
         if (!canvas) return;
 
-        var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: false });
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+        var prefersStill = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var coarse = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+        var lowEnd = (navigator.hardwareConcurrency || 8) <= 4 || (navigator.deviceMemory || 8) <= 4;
+
+        function softwareRenderer() {
+            try {
+                var probe = document.createElement('canvas');
+                var gl = probe.getContext('webgl') || probe.getContext('experimental-webgl');
+                if (!gl) return true;
+                var dbg = gl.getExtension('WEBGL_debug_renderer_info');
+                var name = dbg ? String(gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL)) : '';
+                var lose = gl.getExtension('WEBGL_lose_context');
+                if (lose) lose.loseContext();
+                return /swiftshader|software|llvmpipe|basic render|microsoft basic/i.test(name);
+            } catch (e) { return true; }
+        }
+
+        if (prefersStill || coarse || lowEnd || window.innerWidth < 900 || softwareRenderer()) {
+            document.documentElement.classList.add('static-bg');
+            if (canvas.parentNode) canvas.parentNode.removeChild(canvas);
+            return;
+        }
+
+        var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: false, alpha: false, powerPreference: 'low-power' });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
 
         var scene = new THREE.Scene();
         var camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
@@ -1207,7 +1279,7 @@
             'float fbm(vec2 p) {',
             '  float v = 0.0;',
             '  float amp = 0.55;',
-            '  for (int i = 0; i < 4; i++) {',
+            '  for (int i = 0; i < 3; i++) {',
             '    v += smoothNoise(p) * amp;',
             '    p *= 2.05;',
             '    amp *= 0.55;',
@@ -1270,13 +1342,17 @@
 
         var clock = new THREE.Clock();
         var rafId = null;
+        var lastDraw = 0;
+        var MIN_FRAME_MS = 33;
 
-        function tick() {
+        function tick(now) {
+            rafId = requestAnimationFrame(tick);
+            if (now - lastDraw < MIN_FRAME_MS) return;
+            lastDraw = now;
             uniforms.time.value = clock.getElapsedTime();
             renderer.render(scene, camera);
-            rafId = requestAnimationFrame(tick);
         }
-        tick();
+        rafId = requestAnimationFrame(tick);
 
         // Pause rendering when tab is hidden to save battery/CPU
         document.addEventListener('visibilitychange', function () {
@@ -1284,7 +1360,8 @@
                 if (rafId) cancelAnimationFrame(rafId);
                 rafId = null;
             } else if (!rafId) {
-                tick();
+                lastDraw = 0;
+                rafId = requestAnimationFrame(tick);
             }
         });
     })();
@@ -1339,7 +1416,7 @@
     <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
         <div class="navbar-inner">
             <a href="index.html" class="nav-logo" aria-label="SECUREX Home">
-                <img src="securex-logo.png" alt="SECUREX" class="nav-logo-icon" onerror="this.style.display='none'">
+                <img src="webp/securex-logo.webp" alt="SECUREX" class="nav-logo-icon" width="44" height="44" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='securex-logo.png';}else{this.style.display='none';}">
                 <div class="nav-logo-text">SECUREX<span>by Shah Interio</span></div>
             </a>
             <ul class="nav-links" id="navLinks" aria-label="Site sections">
@@ -1368,19 +1445,19 @@
             <div class="hero-ambient-bg" aria-hidden="true"></div>
             <div class="hero-slides" aria-hidden="true">
                 <div class="hero-slide" data-index="0">
-                    <div class="hero-slide-bg" style="background-image:url('shah-interio-factory-aerial-view.jpg.png');" role="img" aria-label="Shah Interio factory aerial view"></div>
+                    <div class="hero-slide-bg" style="background-image:url('shah-interio-factory-aerial-view.jpg.png');background-image:image-set(url('webp/hero-aerial.webp') type('image/webp'), url('shah-interio-factory-aerial-view.jpg.png') type('image/png'));" role="img" aria-label="Shah Interio factory aerial view"></div>
                     <div class="hero-slide-overlay"></div>
                 </div>
                 <div class="hero-slide" data-index="1">
-                    <div class="hero-slide-bg" style="background-image:url('shah-interio-factory-machines.jpg.png.png');" role="img" aria-label="Shah Interio factory machines"></div>
+                    <div class="hero-slide-bg" style="background-image:url('shah-interio-factory-machines.jpg.png.png');background-image:image-set(url('webp/hero-machines.webp') type('image/webp'), url('shah-interio-factory-machines.jpg.png.png') type('image/png'));" role="img" aria-label="Shah Interio factory machines"></div>
                     <div class="hero-slide-overlay"></div>
                 </div>
                 <div class="hero-slide" data-index="2">
-                    <div class="hero-slide-bg" style="background-image:url('shah-interio-goadown.png');" role="img" aria-label="Shah Interio warehouse"></div>
+                    <div class="hero-slide-bg" style="background-image:url('shah-interio-goadown.png');background-image:image-set(url('webp/hero-godown.webp') type('image/webp'), url('shah-interio-goadown.png') type('image/png'));" role="img" aria-label="Shah Interio warehouse"></div>
                     <div class="hero-slide-overlay"></div>
                 </div>
                 <div class="hero-slide" data-index="3">
-                    <div class="hero-slide-bg" style="background-image:url('shah-interio-wordrobes.png');" role="img" aria-label="SECUREX wardrobe collection"></div>
+                    <div class="hero-slide-bg" style="background-image:url('shah-interio-wordrobes.png');background-image:image-set(url('webp/hero-wardrobes.webp') type('image/webp'), url('shah-interio-wordrobes.png') type('image/png'));" role="img" aria-label="SECUREX wardrobe collection"></div>
                     <div class="hero-slide-overlay"></div>
                 </div>
             </div>
@@ -1459,7 +1536,7 @@
                     <figure class="about-media">
                         <div class="about-media-frame">
                             <div class="about-image">
-                                <img src="about-video-poster.jpg" alt="CNC fiber laser cutting machine at the Shah Living LLP plant" loading="lazy" onerror="this.style.display='none'">
+                                <img src="webp/about-video-poster.webp" alt="CNC fiber laser cutting machine at the Shah Living LLP plant" loading="lazy" width="1280" height="720" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='about-video-poster.jpg';}else{this.style.display='none';}">
                             </div>
                             <button class="am-play" id="amPlay" type="button" aria-label="Play the factory video with sound">
                                 <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="6 3 20 12 6 21"/></svg>
@@ -1566,27 +1643,27 @@
                 </div>
                 <div class="gallery-grid">
                     <a href="product/" class="gallery-item reveal tilt" aria-label="View Heavy-Duty Storage Cabinet">
-                        <img src="Secure-X-Almirah-2-Door-Office-1.png" alt="SECUREX Heavy-Duty Storage Cabinet" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                        <img src="webp/gal-storage.webp" width="800" height="800" alt="SECUREX Heavy-Duty Storage Cabinet" loading="lazy" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='Secure-X-Almirah-2-Door-Office-1.png';}else{this.style.display='none';this.nextElementSibling.style.display='flex';}">
                         <div class="gallery-placeholder" style="display:none;"><span class="gp-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg></span>Storage Cabinet</div>
                         <div class="gallery-overlay">Heavy-Duty Storage Cabinet</div>
                     </a>
                     <a href="product/" class="gallery-item reveal tilt" aria-label="View Locker Almirah">
-                        <img src="Secure-X-10-Locker.png" alt="SECUREX Locker Almirah" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                        <img src="webp/gal-locker.webp" width="800" height="800" alt="SECUREX Locker Almirah" loading="lazy" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='Secure-X-10-Locker.png';}else{this.style.display='none';this.nextElementSibling.style.display='flex';}">
                         <div class="gallery-placeholder" style="display:none;"><span class="gp-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>Locker Almirah</div>
                         <div class="gallery-overlay">Secure Locker Almirah</div>
                     </a>
                     <a href="product/" class="gallery-item reveal tilt" aria-label="View Office Cabinet">
-                        <img src="Secure-X-Almirah-2-Door-Office-2.png" alt="SECUREX Modular Office Cabinet" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                        <img src="webp/gal-office.webp" width="800" height="800" alt="SECUREX Modular Office Cabinet" loading="lazy" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='Secure-X-Almirah-2-Door-Office-2.png';}else{this.style.display='none';this.nextElementSibling.style.display='flex';}">
                         <div class="gallery-placeholder" style="display:none;"><span class="gp-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01M12 6h.01M16 6h.01M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M16 14h.01"/></svg></span>Office Cabinet</div>
                         <div class="gallery-overlay">Modular Office Cabinet</div>
                     </a>
                     <a href="product/" class="gallery-item reveal tilt" aria-label="View Dressing Almirah">
-                        <img src="Secure-X-Dressing-2003.png" alt="SECUREX Designer Dressing Almirah" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                        <img src="webp/gal-dressing.webp" width="800" height="800" alt="SECUREX Designer Dressing Almirah" loading="lazy" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='Secure-X-Dressing-2003.png';}else{this.style.display='none';this.nextElementSibling.style.display='flex';}">
                         <div class="gallery-placeholder" style="display:none;"><span class="gp-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.29 1.29L3 12l5.81 1.9a2 2 0 0 1 1.29 1.29L12 21l1.9-5.81a2 2 0 0 1 1.29-1.29L21 12l-5.81-1.9a2 2 0 0 1-1.29-1.29Z"/><path d="M5 3v4"/><path d="M3 5h4"/><path d="M19 17v4"/><path d="M17 19h4"/></svg></span>Dressing Almirah</div>
                         <div class="gallery-overlay">Designer Dressing Almirah</div>
                     </a>
                     <a href="product/" class="gallery-item reveal tilt" aria-label="View full product catalog">
-                        <img src="Secure-X-Almirah-3006.png" alt="SECUREX Premium 3006 Almirah" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                        <img src="webp/gal-3006.webp" width="800" height="800" alt="SECUREX Premium 3006 Almirah" loading="lazy" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='Secure-X-Almirah-3006.png';}else{this.style.display='none';this.nextElementSibling.style.display='flex';}">
                         <div class="gallery-placeholder" style="display:none;"><span class="gp-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/><path d="m7.5 4.3 9 5.1"/></svg></span>View All</div>
                         <div class="gallery-overlay">View Full Catalog →</div>
                     </a>
@@ -1814,17 +1891,31 @@
          ============================================================ -->
     <script>
     var navbar = document.getElementById('navbar');
-    function updateNavbar() { navbar.classList.toggle('scrolled', window.scrollY > 60); }
+    var navIsScrolled = null;
+    function updateNavbar() {
+        var next = window.scrollY > 60;
+        if (next === navIsScrolled) return;
+        navIsScrolled = next;
+        navbar.classList.toggle('scrolled', next);
+    }
     window.addEventListener('scroll', updateNavbar, { passive: true }); updateNavbar();
 
     var hashNavLinks = document.querySelectorAll('.nav-links a[href^="#"]');
     var sections     = document.querySelectorAll('section[id]');
-    function updateActiveLink() {
-        var currentId = 'home';
-        sections.forEach(function(s){ if(window.scrollY >= s.offsetTop - 120) currentId = s.getAttribute('id'); });
-        hashNavLinks.forEach(function(link){ var isActive = link.getAttribute('href') === '#' + currentId; link.classList.toggle('active', isActive); if(isActive) link.setAttribute('aria-current','page'); else link.removeAttribute('aria-current'); });
+    function setActiveLink(id) {
+        hashNavLinks.forEach(function(link){
+            var isActive = link.getAttribute('href') === '#' + id;
+            link.classList.toggle('active', isActive);
+            if (isActive) link.setAttribute('aria-current','page'); else link.removeAttribute('aria-current');
+        });
     }
-    window.addEventListener('scroll', updateActiveLink, { passive: true }); updateActiveLink();
+    if ('IntersectionObserver' in window) {
+        var spy = new IntersectionObserver(function(entries){
+            entries.forEach(function(e){ if (e.isIntersecting) setActiveLink(e.target.id); });
+        }, { rootMargin: '-50% 0px -50% 0px', threshold: 0 });
+        sections.forEach(function(sec){ spy.observe(sec); });
+    }
+    setActiveLink('home');
 
     var hamburger  = document.getElementById('hamburger');
     var navLinks   = document.getElementById('navLinks');
@@ -2074,13 +2165,13 @@
                                 // so the clip's own captions aren't competing with anything.
                                 mediaEl = document.createElement('video');
                                 mediaEl.src = videoUrl;
-                                mediaEl.poster = 'about-video-poster.jpg';
+                                mediaEl.poster = 'webp/about-video-poster.webp';
                                 mediaEl.autoplay = false;
                                 mediaEl.muted = true;
                                 mediaEl.loop = false;
                                 mediaEl.playsInline = true;
                                 mediaEl.controls = false;
-                                mediaEl.preload = 'metadata';
+                                mediaEl.preload = 'none';
                                 mediaEl.setAttribute('webkit-playsinline', '');
                             } else {
                                 // Unknown video host format — still try as an iframe embed (e.g. other platforms)

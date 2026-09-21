@@ -77,10 +77,11 @@ def card_html(p, idx):
 
     imgs = ""
     if closed:
-        loading = "eager" if idx < 4 else "lazy"
-        imgs += f'<img class="prod-img-closed" src="{e(closed)}" alt="{e(title)}" loading="{loading}">'
+        loading = "eager" if idx < 2 else "lazy"
+        prio = "high" if idx < 2 else "low"
+        imgs += f'<img class="prod-img-closed" src="{e(closed)}" alt="{e(title)}" loading="{loading}" decoding="async" fetchpriority="{prio}">'
     if opened:
-        imgs += f'<img class="prod-img-open" src="{e(opened)}" alt="{e(title)} – open view" aria-hidden="true" loading="lazy">'
+        imgs += f'<img class="prod-img-open" src="{e(opened)}" alt="{e(title)} – open view" aria-hidden="true" loading="lazy" decoding="async" fetchpriority="low">'
 
     badge_html = (
         f'<div class="product-badge {BADGE_CLASS.get(badge, "")}">{e(badge)}</div>' if badge else ""
