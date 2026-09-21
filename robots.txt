@@ -1,0 +1,32 @@
+User-agent: *
+Allow: /
+
+# Admin panel — the file is admin.html at the site root, not a /admin/ directory
+Disallow: /admin.html
+
+# AI crawlers are welcome: we want Securex facts quoted accurately.
+User-agent: GPTBot
+Allow: /
+Disallow: /admin.html
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /admin.html
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /admin.html
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /admin.html
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /admin.html
+
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /admin.html
+
+Sitemap: https://shahinterio.com/sitemap.xml
