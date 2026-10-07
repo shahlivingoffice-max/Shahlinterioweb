@@ -1,0 +1,1598 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Customer Support | SECUREX by Shah Interio</title>
+  <meta name="description"
+    content="Raise an enquiry or register a complaint for your SECUREX steel furniture. Share photos, videos or a voice note and get a ticket number instantly.">
+  <link rel="canonical" href="https://shahinterio.com/support/">
+  <meta property="og:title" content="Customer Support | SECUREX by Shah Interio">
+  <meta property="og:description" content="Raise an enquiry or register a complaint for your SECUREX steel furniture.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://shahinterio.com/support/">
+  <meta property="og:image" content="https://shahinterio.com/securex-logo.png">
+
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap"
+    rel="stylesheet">
+
+  <style>
+    :root {
+      --cream: #FEFAE0;
+      --beige-light: #F5ECD7;
+      --beige: #E8D5B4;
+      --beige-dark: #C4A882;
+      --brown-light: #8B6F4E;
+      --brown: #5C3D2E;
+      --brown-dark: #3E2415;
+      --white: #FFFFFF;
+      --off-white: #FDF8F0;
+      --gold-accent: #B8860B;
+      --gold-bright: #D4AF37;
+      --maroon: #9c2c37;
+      --maroon-deep: #6b1a24;
+      --text-dark: #3E2415;
+      --text-medium: #5C3D2E;
+      --text-light: #8B6F4E;
+      --ok: #1d7a43;
+      --err: #b3261e;
+      --shadow-sm: 0 2px 8px rgba(62, 36, 21, .06);
+      --shadow-md: 0 4px 20px rgba(62, 36, 21, .10);
+      --shadow-lg: 0 8px 40px rgba(62, 36, 21, .14);
+      --radius-md: 14px;
+      --radius-lg: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--cream);
+      color: var(--text-dark);
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 16px;
+      line-height: 1.55;
+      padding: 20px 16px 48px;
+    }
+
+    .shell {
+      max-width: 580px;
+      margin: 0 auto;
+    }
+
+    /* ---------- header ---------- */
+    .site-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .site-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .site-logo img {
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+    }
+
+    .site-logo-text {
+      font-weight: 800;
+      font-size: 19px;
+      letter-spacing: .5px;
+      line-height: 1.05;
+      color: var(--brown-dark);
+    }
+
+    .site-logo-text span {
+      display: block;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-light);
+    }
+
+    .home-link {
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--brown);
+      text-decoration: none;
+      border: 1.5px solid var(--beige-dark);
+      border-radius: 999px;
+      padding: 7px 15px;
+      white-space: nowrap;
+      transition: .2s;
+    }
+
+    .home-link:hover {
+      background: var(--beige-light);
+      border-color: var(--brown-light);
+    }
+
+    /* ---------- card ---------- */
+    .card {
+      background: var(--white);
+      border: 1px solid var(--beige);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .eyebrow {
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold-accent);
+      margin: 0 0 6px;
+    }
+
+    .step-title {
+      margin: 0 0 6px;
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -.3px;
+      color: var(--brown-dark);
+    }
+
+    .step-note {
+      margin: 0 0 18px;
+      color: var(--text-light);
+      font-size: 14.5px;
+    }
+
+    .support-line {
+      margin: 18px 0 0;
+      font-size: 14px;
+      color: var(--text-light);
+      text-align: center;
+    }
+
+    .support-line a {
+      color: var(--maroon);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    /* ---------- query type ---------- */
+    .type-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .type-card {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      width: 100%;
+      text-align: left;
+      padding: 18px;
+      border: 2px solid var(--beige);
+      border-radius: var(--radius-md);
+      background: var(--off-white);
+      cursor: pointer;
+      font: inherit;
+      transition: border-color .2s, background .2s, transform .12s, box-shadow .2s;
+    }
+
+    .type-card:active {
+      transform: scale(.99);
+    }
+
+    .type-card:hover,
+    .type-card:focus-visible {
+      border-color: var(--gold-accent);
+      background: var(--beige-light);
+      box-shadow: var(--shadow-sm);
+      outline: none;
+    }
+
+    .type-card[data-kind="complaint"]:hover,
+    .type-card[data-kind="complaint"]:focus-visible {
+      border-color: var(--maroon);
+    }
+
+    .type-icon {
+      flex: 0 0 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: var(--beige-light);
+      color: var(--brown);
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--beige);
+    }
+
+    .type-card[data-kind="complaint"] .type-icon {
+      background: #fbeced;
+      border-color: #f0cdd1;
+      color: var(--maroon);
+    }
+
+    .type-icon svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .type-text strong {
+      display: block;
+      font-size: 16.5px;
+      font-weight: 700;
+      color: var(--brown-dark);
+    }
+
+    .type-text span {
+      font-size: 13.5px;
+      color: var(--text-light);
+    }
+
+    /* ---------- form ---------- */
+    .back-link {
+      display: block;
+      background: none;
+      border: 0;
+      padding: 0 0 12px;
+      color: var(--text-light);
+      font: inherit;
+      font-size: 13.5px;
+      cursor: pointer;
+    }
+
+    .back-link:hover {
+      color: var(--brown);
+    }
+
+    .chip {
+      display: inline-block;
+      padding: 5px 14px;
+      border-radius: 999px;
+      background: var(--brown);
+      color: var(--cream);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 12.5px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .chip.complaint {
+      background: var(--maroon-deep);
+    }
+
+    .field {
+      display: block;
+      margin-bottom: 18px;
+    }
+
+    .label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .3px;
+      color: var(--brown-dark);
+      margin-bottom: 7px;
+      text-transform: uppercase;
+    }
+
+    .label i {
+      color: var(--maroon);
+      font-style: normal;
+    }
+
+    .opt {
+      font-weight: 500;
+      color: var(--text-light);
+      text-transform: none;
+      letter-spacing: 0;
+    }
+
+    input[type=text],
+    input[type=tel],
+    textarea {
+      width: 100%;
+      padding: 13px 15px;
+      border: 1.5px solid var(--beige);
+      border-radius: 12px;
+      font: inherit;
+      background: var(--off-white);
+      color: var(--text-dark);
+      transition: border-color .2s, box-shadow .2s;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #b9a68e;
+    }
+
+    input:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--gold-accent);
+      background: var(--white);
+      box-shadow: 0 0 0 3px rgba(184, 134, 11, .14);
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    .hint {
+      display: block;
+      margin: 7px 0 0;
+      font-size: 12.5px;
+      color: var(--text-light);
+    }
+
+    .hp {
+      position: absolute;
+      left: -9999px;
+      opacity: 0;
+      height: 0;
+      width: 0;
+    }
+
+    /* ---------- attachments ---------- */
+    .block {
+      border: 1.5px dashed var(--beige-dark);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-bottom: 18px;
+      background: var(--off-white);
+    }
+
+    .block.required {
+      border-style: solid;
+      border-color: var(--maroon);
+      background: #fdf5f5;
+    }
+
+    .block-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .block-head .label {
+      margin-bottom: 0;
+    }
+
+    .count {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-light);
+      background: var(--white);
+      border: 1px solid var(--beige);
+      border-radius: 999px;
+      padding: 2px 10px;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .thumbs {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(86px, 1fr));
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .thumb {
+      position: relative;
+      padding-top: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--beige);
+      background: var(--beige-light);
+    }
+
+    .thumb img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .thumb.pending::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(254, 250, 224, .6) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 50 50'><circle cx='25' cy='25' r='20' fill='none' stroke='%239c2c37' stroke-width='5' stroke-linecap='round' stroke-dasharray='80 40'><animateTransform attributeName='transform' type='rotate' from='0 25 25' to='360 25 25' dur='.9s' repeatCount='indefinite'/></circle></svg>") center / 28px no-repeat;
+    }
+
+    .kill {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      border: 0;
+      background: rgba(62, 36, 21, .8);
+      color: var(--cream);
+      font-size: 15px;
+      line-height: 1;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      padding: 0;
+    }
+
+    .file-list {
+      margin-top: 12px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .file-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 13px;
+      border: 1px solid var(--beige);
+      border-radius: 12px;
+      background: var(--white);
+      font-size: 13.5px;
+    }
+
+    .file-row .fname {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .file-row .fsize {
+      color: var(--text-light);
+      font-size: 12.5px;
+      white-space: nowrap;
+    }
+
+    .file-row .kill {
+      position: static;
+      background: var(--beige-light);
+      color: var(--brown);
+      flex: 0 0 25px;
+    }
+
+    .file-row.audio {
+      display: block;
+    }
+
+    .file-row.audio .audio-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 9px;
+    }
+
+    .file-row audio {
+      width: 100%;
+    }
+
+    /* ---------- buttons ---------- */
+    .btn {
+      font: inherit;
+      font-weight: 700;
+      border-radius: 12px;
+      padding: 12px 18px;
+      cursor: pointer;
+      border: 1.5px solid transparent;
+      transition: .2s;
+    }
+
+    .btn:disabled {
+      opacity: .6;
+      cursor: default;
+    }
+
+    .btn.primary {
+      width: 100%;
+      background: linear-gradient(135deg, var(--brown) 0%, var(--brown-dark) 100%);
+      color: var(--cream);
+      font-size: 16.5px;
+      letter-spacing: .3px;
+      padding: 15px 18px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn.primary:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .btn.ghost {
+      background: var(--white);
+      border-color: var(--beige-dark);
+      color: var(--brown);
+      font-size: 14px;
+    }
+
+    .btn.ghost:hover:not(:disabled) {
+      background: var(--beige-light);
+      border-color: var(--brown-light);
+    }
+
+    .btn.rec {
+      background: var(--white);
+      border-color: var(--maroon);
+      color: var(--maroon);
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .btn.rec .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--maroon);
+    }
+
+    .btn.rec.on {
+      background: var(--maroon);
+      color: var(--white);
+    }
+
+    .btn.rec.on .dot {
+      background: var(--white);
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: .2;
+      }
+    }
+
+    .voice-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    .timer {
+      font-variant-numeric: tabular-nums;
+      font-weight: 700;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 18px;
+      color: var(--maroon);
+    }
+
+    .error {
+      margin: 0 0 14px;
+      padding: 11px 14px;
+      border-radius: 12px;
+      background: #fdecea;
+      border: 1px solid #f3c2bd;
+      color: var(--err);
+      font-size: 14px;
+    }
+
+    .legal {
+      margin: 14px 0 0;
+      font-size: 11.5px;
+      color: var(--text-light);
+      text-align: center;
+    }
+
+    /* ---------- done ---------- */
+    .done {
+      text-align: center;
+    }
+
+    .tick {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 14px;
+      border-radius: 50%;
+      background: #e8f6ee;
+      color: var(--ok);
+      display: grid;
+      place-items: center;
+    }
+
+    .tick svg {
+      width: 30px;
+      height: 30px;
+    }
+
+    .ticket-box {
+      background: var(--beige-light);
+      border: 1px solid var(--beige);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin: 18px 0;
+    }
+
+    .ticket-box span {
+      display: block;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 12px;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: 700;
+    }
+
+    .ticket-box strong {
+      font-size: 25px;
+      font-weight: 800;
+      color: var(--brown-dark);
+      letter-spacing: .5px;
+    }
+
+    .done-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+    /* ---------- overlay ---------- */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(62, 36, 21, .55);
+      backdrop-filter: blur(3px);
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      z-index: 50;
+    }
+
+    .overlay-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 26px;
+      width: 100%;
+      max-width: 330px;
+      text-align: center;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .spinner {
+      width: 36px;
+      height: 36px;
+      margin: 0 auto 14px;
+      border: 3px solid var(--beige);
+      border-top-color: var(--brown);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .overlay-text {
+      margin: 0 0 12px;
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--brown-dark);
+    }
+
+    .overlay-sub {
+      margin: 9px 0 0;
+      font-size: 12.5px;
+      color: var(--text-light);
+    }
+
+    .bar {
+      height: 8px;
+      border-radius: 99px;
+      background: var(--beige-light);
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--brown) 0%, var(--gold-accent) 100%);
+      transition: width .25s;
+    }
+
+    /* ---------- footer ---------- */
+    .foot {
+      text-align: center;
+      margin-top: 22px;
+      font-size: 13px;
+      color: var(--text-light);
+    }
+
+    .foot a {
+      color: var(--brown);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    @media (max-width: 430px) {
+      body {
+        padding: 16px 12px 36px;
+      }
+
+      .card {
+        padding: 18px;
+      }
+
+      .step-title {
+        font-size: 21px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="shell">
+
+    <header class="site-head">
+      <a class="site-logo" href="/">
+        <img src="/webp/securex-logo.webp" alt="SECUREX by Shah Interio" width="42" height="42"
+          onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='/securex-logo.png';}else{this.style.display='none';}">
+        <span class="site-logo-text">SECUREX<span>by Shah Interio</span></span>
+      </a>
+      <a class="home-link" href="/">&#8592; Website</a>
+    </header>
+
+    <!-- ===== Step 1: query type ===== -->
+    <section class="card" id="stepType">
+      <p class="eyebrow">Customer Support</p>
+      <h1 class="step-title">What can we help you with?</h1>
+      <p class="step-note">Choose one to continue.</p>
+      <div class="type-grid" id="typeGrid"></div>
+      <p class="support-line" id="supportLine" hidden></p>
+    </section>
+
+    <!-- ===== Step 2: details ===== -->
+    <section class="card" id="stepForm" hidden>
+      <button type="button" class="back-link" id="backBtn">&#8592; Change query type</button>
+      <div class="chip" id="typeChip"></div>
+      <h1 class="step-title" id="formTitle">Your details</h1>
+
+      <form id="ticketForm" autocomplete="on" novalidate>
+        <input type="text" id="website" name="website" class="hp" tabindex="-1" aria-hidden="true" autocomplete="off">
+
+        <label class="field">
+          <span class="label">Unique Code <i>*</i></span>
+          <input type="text" id="uniqueCode" maxlength="60" placeholder="Code on the product sticker / invoice"
+            required>
+          <small class="hint">Printed on the sticker inside the almirah or on your invoice.</small>
+        </label>
+
+        <label class="field">
+          <span class="label">Store Name <i>*</i></span>
+          <input type="text" id="storeName" maxlength="120" placeholder="Where you purchased from" required>
+        </label>
+
+        <label class="field">
+          <span class="label">City <i>*</i></span>
+          <input type="text" id="city" maxlength="80" placeholder="Your city" required>
+        </label>
+
+        <label class="field" id="phoneField" hidden>
+          <span class="label">Mobile Number</span>
+          <input type="tel" id="phone" maxlength="10" inputmode="numeric" placeholder="10-digit mobile number">
+        </label>
+
+        <label class="field">
+          <span class="label">Your Query <i>*</i></span>
+          <textarea id="message" rows="5" maxlength="3000"
+            placeholder="Tell us what you need help with"></textarea>
+          <small class="hint"><span id="msgCount">0</span>/3000</small>
+        </label>
+
+        <div class="block" id="photoBlock">
+          <div class="block-head">
+            <span class="label" id="photoLabel">Photos</span>
+            <span class="count" id="photoCount">0</span>
+          </div>
+          <p class="hint" id="photoHint"></p>
+          <div class="thumbs" id="photoThumbs"></div>
+          <div class="btn-row">
+            <button type="button" class="btn ghost" id="takePhotoBtn">Take Photo</button>
+            <button type="button" class="btn ghost" id="pickPhotoBtn">Choose Photos</button>
+          </div>
+          <input type="file" id="cameraInput" accept="image/*" capture="environment" hidden>
+          <input type="file" id="photoInput" accept="image/*" multiple hidden>
+        </div>
+
+        <div class="block" id="videoBlock">
+          <div class="block-head">
+            <span class="label">Videos <span class="opt">optional</span></span>
+            <span class="count" id="videoCount">0</span>
+          </div>
+          <p class="hint" id="videoHint"></p>
+          <div class="file-list" id="videoList"></div>
+          <div class="btn-row">
+            <button type="button" class="btn ghost" id="pickVideoBtn">Add Video</button>
+          </div>
+          <input type="file" id="videoInput" accept="video/*" multiple hidden>
+        </div>
+
+        <div class="block" id="voiceBlock">
+          <div class="block-head">
+            <span class="label">Voice Note <span class="opt">optional</span></span>
+          </div>
+          <p class="hint" id="voiceHint">Prefer speaking? Record your query in your own language.</p>
+          <div class="voice-row">
+            <button type="button" class="btn rec" id="recordBtn">
+              <span class="dot"></span><span id="recordBtnText">Record Voice Note</span>
+            </button>
+            <span class="timer" id="recordTimer" hidden>0:00</span>
+          </div>
+          <div class="file-list" id="voiceList"></div>
+          <input type="file" id="audioInput" accept="audio/*" capture hidden>
+        </div>
+
+        <p class="error" id="formError" hidden></p>
+
+        <button type="submit" class="btn primary" id="submitBtn">Submit</button>
+        <p class="legal">Your attachments are stored securely in our support drive and used only to resolve this
+          ticket.</p>
+      </form>
+    </section>
+
+    <!-- ===== Step 3: done ===== -->
+    <section class="card done" id="stepDone" hidden>
+      <div class="tick">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+          stroke-linejoin="round" aria-hidden="true">
+          <path d="M20 6 9 17l-5-5" />
+        </svg>
+      </div>
+      <h1 class="step-title">Thank you!</h1>
+      <p class="step-note">We have received your query. Our team will get back to you shortly.</p>
+      <div class="ticket-box">
+        <span>Your Ticket ID</span>
+        <strong id="ticketId"></strong>
+      </div>
+      <p class="step-note" id="doneSummary"></p>
+      <div class="done-actions">
+        <button type="button" class="btn ghost" id="againBtn">Submit another query</button>
+        <a class="btn ghost" href="/" style="text-decoration:none;display:inline-block;">Back to website</a>
+      </div>
+      <p class="support-line" id="donePhone" hidden></p>
+    </section>
+
+    <p class="foot">SECUREX by Shah Interio &middot; <a href="/">shahinterio.com</a></p>
+  </div>
+
+  <div class="overlay" id="overlay" hidden>
+    <div class="overlay-card">
+      <div class="spinner"></div>
+      <p class="overlay-text" id="overlayText">Uploading...</p>
+      <div class="bar">
+        <div class="bar-fill" id="barFill"></div>
+      </div>
+      <p class="overlay-sub" id="overlaySub"></p>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      'use strict';
+
+      /* ------------------------------------------------------------------
+         PASTE YOUR APPS SCRIPT WEB APP URL HERE (ends with /exec)
+         Apps Script editor -> Deploy -> New deployment -> Web app
+         Execute as: Me   |   Who has access: Anyone
+      ------------------------------------------------------------------ */
+      const API_URL = 'https://script.google.com/macros/s/AKfycbwY_4yuB35ohesKHyUx1xoyQjsDHd22bJ5n47j22RxBjOXZNuFS9mOG8SbvGkJyEXoXXw/exec';
+
+      const $ = function (id) { return document.getElementById(id); };
+
+      /**
+       * Apps Script cannot answer a CORS preflight, so this must stay a
+       * "simple" request: text/plain body, no custom headers.
+       */
+      async function api(action, data) {
+        const body = Object.assign({ action: action }, data || {});
+        let res;
+        try {
+          res = await fetch(API_URL, {
+            method: 'POST',
+            redirect: 'follow',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify(body)
+          });
+        } catch (e) {
+          throw new Error('No internet connection. Please check your network and try again.');
+        }
+        if (!res.ok) throw new Error('Server error (' + res.status + '). Please try again.');
+        let out;
+        try {
+          out = await res.json();
+        } catch (e) {
+          throw new Error('Unexpected server response. Please try again.');
+        }
+        if (!out || out.success !== true) {
+          throw new Error((out && out.message) || 'Request failed. Please try again.');
+        }
+        return out;
+      }
+
+      function fmtSize(kb) {
+        return kb < 1024 ? kb + ' KB' : (kb / 1024).toFixed(1) + ' MB';
+      }
+
+      function fmtTime(sec) {
+        const m = Math.floor(sec / 60), s = sec % 60;
+        return m + ':' + (s < 10 ? '0' : '') + s;
+      }
+
+      function uid() {
+        return Math.random().toString(36).substring(2, 10) + Date.now().toString(36);
+      }
+
+      // ---------- state ----------
+      const CHUNK_BYTES = 1800000; // multiple of 3 so base64 pieces concatenate cleanly
+      let cfg = null;
+      let selectedType = null;
+      let draftId = null;
+      let draftPromise = null;
+      const items = { image: [], video: [], audio: [] };
+      const queue = [];
+      let working = false;
+      let submitting = false;
+
+      function ensureDraft() {
+        if (draftId) return Promise.resolve(draftId);
+        if (!draftPromise) {
+          draftPromise = api('draft').then(function (res) {
+            draftId = res.draftId;
+            return draftId;
+          }).catch(function (err) {
+            draftPromise = null;
+            throw err;
+          });
+        }
+        return draftPromise;
+      }
+
+      // ---------- boot ----------
+      function boot() {
+        if (API_URL.indexOf('PASTE_YOUR') === 0) {
+          $('typeGrid').innerHTML = '<p class="error">This form is not connected yet. ' +
+            'Paste the Apps Script web app URL into API_URL in this page.</p>';
+          return;
+        }
+        api('config').then(function (res) {
+          cfg = res.config;
+          renderConfig();
+        }).catch(function (err) {
+          $('typeGrid').innerHTML = '<p class="error">' + err.message + '</p>';
+        });
+      }
+
+      const ICONS = {
+        enquiry: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>',
+        complaint: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>'
+      };
+
+      function renderConfig() {
+        const grid = $('typeGrid');
+        grid.innerHTML = '';
+        cfg.queryTypes.forEach(function (t) {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'type-card';
+          btn.setAttribute('data-kind', t.id);
+          btn.innerHTML = '<span class="type-icon">' + (ICONS[t.id] || ICONS.enquiry) + '</span>' +
+            '<span class="type-text"><strong></strong><span></span></span>';
+          btn.querySelector('strong').textContent = t.label;
+          btn.querySelector('.type-text span').textContent = t.hint || '';
+          btn.addEventListener('click', function () { chooseType(t); });
+          grid.appendChild(btn);
+        });
+
+        if (cfg.supportPhone) {
+          const line = 'For urgent help, call <a href="tel:' + cfg.supportPhone + '">' + cfg.supportPhone + '</a>';
+          $('supportLine').innerHTML = line;
+          $('supportLine').hidden = false;
+          $('donePhone').innerHTML = line;
+          $('donePhone').hidden = false;
+        }
+        if (cfg.askPhone) $('phoneField').hidden = false;
+
+        $('videoHint').textContent = 'Up to ' + cfg.limits.maxVideos + ' videos, max ' +
+          cfg.limits.maxVideoMb + ' MB each.';
+      }
+
+      function chooseType(type) {
+        selectedType = type;
+        $('typeChip').textContent = type.label;
+        $('typeChip').className = 'chip' + (type.photoRequired ? ' complaint' : '');
+        $('formTitle').textContent = type.photoRequired ? 'Complaint details' : 'Your details';
+
+        const block = $('photoBlock');
+        if (type.photoRequired) {
+          block.classList.add('required');
+          $('photoLabel').innerHTML = 'Photos <i>*</i>';
+          $('photoHint').textContent = 'At least 1 photo of the issue is required. Up to ' +
+            cfg.limits.maxImages + ' photos allowed.';
+        } else {
+          block.classList.remove('required');
+          $('photoLabel').innerHTML = 'Photos <span class="opt">optional</span>';
+          $('photoHint').textContent = 'Add a photo if it helps us understand your query. Up to ' +
+            cfg.limits.maxImages + ' photos allowed.';
+        }
+
+        $('stepType').hidden = true;
+        $('stepForm').hidden = false;
+        window.scrollTo(0, 0);
+        $('uniqueCode').focus();
+      }
+
+      // ---------- file intake ----------
+      function countOf(kind) {
+        return items[kind].filter(function (i) { return !i.removed; }).length;
+      }
+
+      async function addFiles(fileList, kind) {
+        const files = Array.prototype.slice.call(fileList || []);
+        if (!files.length) return;
+        clearError();
+
+        const max = kind === 'image' ? cfg.limits.maxImages
+          : kind === 'video' ? cfg.limits.maxVideos : 1;
+        const sizeCap = (kind === 'image' ? cfg.limits.maxImageMb
+          : kind === 'video' ? cfg.limits.maxVideoMb : cfg.limits.maxAudioMb) * 1024 * 1024;
+
+        for (const file of files) {
+          // a new voice note replaces the previous one
+          if (kind === 'audio') {
+            items.audio.filter(function (i) { return !i.removed; }).forEach(removeItem);
+          }
+          if (countOf(kind) >= max) {
+            showError('You can attach up to ' + max + ' ' +
+              (kind === 'image' ? 'photos' : kind === 'video' ? 'videos' : 'voice note') + '.');
+            break;
+          }
+
+          let blob = file;
+          let name = file.name || (kind + '-' + Date.now());
+
+          if (kind === 'image') {
+            try {
+              blob = await compressImage(file);
+              if (blob !== file) name = name.replace(/\.[^.]+$/, '') + '.jpg';
+            } catch (e) {
+              blob = file; // HEIC and friends: send the original
+            }
+          }
+
+          if (blob.size > sizeCap) {
+            showError('"' + name + '" is ' + (blob.size / 1048576).toFixed(1) +
+              ' MB. Limit is ' + Math.round(sizeCap / 1048576) + ' MB.');
+            continue;
+          }
+
+          const item = {
+            localId: uid(),
+            kind: kind,
+            name: name,
+            blob: blob,
+            sizeKb: Math.round(blob.size / 1024),
+            mimeType: blob.type || (kind === 'image' ? 'image/jpeg' : kind === 'video' ? 'video/mp4' : 'audio/webm'),
+            progress: 0,
+            status: 'queued',
+            fileId: null,
+            removed: false,
+            previewUrl: (kind === 'image' || kind === 'audio') ? URL.createObjectURL(blob) : null
+          };
+
+          items[kind].push(item);
+          queue.push(item);
+        }
+
+        render();
+        pump();
+      }
+
+      function compressImage(file) {
+        return new Promise(function (resolve, reject) {
+          if (!/^image\//.test(file.type)) return resolve(file);
+          const url = URL.createObjectURL(file);
+          const img = new Image();
+          img.onload = function () {
+            try {
+              const maxDim = 1600;
+              const scale = Math.min(1, maxDim / Math.max(img.width, img.height));
+              const w = Math.max(1, Math.round(img.width * scale));
+              const h = Math.max(1, Math.round(img.height * scale));
+              const canvas = document.createElement('canvas');
+              canvas.width = w;
+              canvas.height = h;
+              canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+              canvas.toBlob(function (out) {
+                URL.revokeObjectURL(url);
+                if (!out || out.size >= file.size) return resolve(file);
+                resolve(out);
+              }, 'image/jpeg', 0.82);
+            } catch (e) {
+              URL.revokeObjectURL(url);
+              reject(e);
+            }
+          };
+          img.onerror = function () {
+            URL.revokeObjectURL(url);
+            reject(new Error('Could not read image'));
+          };
+          img.src = url;
+        });
+      }
+
+      // ---------- upload queue ----------
+      function pump() {
+        if (working) return;
+        const next = queue.shift();
+        if (!next) return updateSubmitState();
+        if (next.removed) return pump();
+        working = true;
+        uploadItem(next)
+          .catch(function (err) {
+            next.status = 'error';
+            next.error = err.message;
+            showError(err.message);
+          })
+          .then(function () {
+            working = false;
+            render();
+            pump();
+          });
+      }
+
+      async function uploadItem(item) {
+        item.status = 'uploading';
+        render();
+        await ensureDraft();
+
+        const total = Math.max(1, Math.ceil(item.blob.size / CHUNK_BYTES));
+        let result = null;
+
+        for (let i = 0; i < total; i++) {
+          if (item.removed) {
+            item.status = 'cancelled';
+            return;
+          }
+          const slice = item.blob.slice(i * CHUNK_BYTES, Math.min((i + 1) * CHUNK_BYTES, item.blob.size));
+          const data = await sliceToBase64(slice);
+          const res = await api('chunk', {
+            draftId: draftId,
+            chunk: {
+              uploadId: item.localId,
+              name: item.name,
+              mimeType: item.mimeType,
+              kind: item.kind,
+              index: i,
+              total: total,
+              data: data
+            }
+          });
+          result = res.result;
+          item.progress = (i + 1) / total;
+          render();
+        }
+
+        item.status = 'done';
+        item.fileId = result && result.fileId;
+        item.url = result && result.url;
+        if (item.removed && item.fileId) {
+          api('discard', { draftId: draftId, fileId: item.fileId }).catch(function () { });
+        }
+      }
+
+      function sliceToBase64(blob) {
+        return new Promise(function (resolve, reject) {
+          const reader = new FileReader();
+          reader.onload = function () {
+            const s = String(reader.result);
+            const comma = s.indexOf(',');
+            resolve(comma === -1 ? s : s.substring(comma + 1));
+          };
+          reader.onerror = function () { reject(new Error('Could not read the file.')); };
+          reader.readAsDataURL(blob);
+        });
+      }
+
+      function removeItem(item) {
+        item.removed = true;
+        if (item.previewUrl) {
+          try { URL.revokeObjectURL(item.previewUrl); } catch (e) { }
+        }
+        if (item.status === 'done' && item.fileId && draftId) {
+          api('discard', { draftId: draftId, fileId: item.fileId }).catch(function () { });
+        }
+        render();
+      }
+
+      // ---------- rendering ----------
+      function render() {
+        const thumbs = $('photoThumbs');
+        thumbs.innerHTML = '';
+        const photos = items.image.filter(function (i) { return !i.removed; });
+        photos.forEach(function (item) {
+          const div = document.createElement('div');
+          div.className = 'thumb' + (item.status === 'done' ? '' : ' pending');
+          const img = document.createElement('img');
+          img.src = item.previewUrl;
+          img.alt = item.name;
+          div.appendChild(img);
+          div.appendChild(killButton(item));
+          thumbs.appendChild(div);
+        });
+        $('photoCount').textContent = photos.length;
+
+        renderFileList($('videoList'), items.video, 'video');
+        $('videoCount').textContent = countOf('video');
+        renderFileList($('voiceList'), items.audio, 'audio');
+
+        if (!(recorder && recorder.state === 'recording')) {
+          $('recordBtnText').textContent = countOf('audio') ? 'Record Again' : 'Record Voice Note';
+        }
+        updateSubmitState();
+      }
+
+      function killButton(item) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'kill';
+        btn.innerHTML = '&times;';
+        btn.title = 'Remove';
+        btn.setAttribute('aria-label', 'Remove ' + item.name);
+        btn.addEventListener('click', function () { removeItem(item); });
+        return btn;
+      }
+
+      function statusText(item) {
+        if (item.status === 'error') return 'failed';
+        if (item.status === 'done') return fmtSize(item.sizeKb);
+        if (item.status === 'uploading') return Math.round(item.progress * 100) + '%';
+        return 'waiting';
+      }
+
+      function renderFileList(container, list, kind) {
+        container.innerHTML = '';
+        list.filter(function (i) { return !i.removed; }).forEach(function (item) {
+          const row = document.createElement('div');
+          row.className = 'file-row' + (kind === 'audio' ? ' audio' : '');
+
+          if (kind === 'audio') {
+            const head = document.createElement('div');
+            head.className = 'audio-head';
+            const nm = document.createElement('span');
+            nm.className = 'fname';
+            nm.textContent = 'Voice note';
+            const sz = document.createElement('span');
+            sz.className = 'fsize';
+            sz.textContent = statusText(item);
+            head.appendChild(nm);
+            head.appendChild(sz);
+            head.appendChild(killButton(item));
+            row.appendChild(head);
+            if (item.previewUrl) {
+              const audio = document.createElement('audio');
+              audio.controls = true;
+              audio.src = item.previewUrl;
+              row.appendChild(audio);
+            }
+          } else {
+            const nm = document.createElement('span');
+            nm.className = 'fname';
+            nm.textContent = item.name;
+            const sz = document.createElement('span');
+            sz.className = 'fsize';
+            sz.textContent = statusText(item);
+            row.appendChild(nm);
+            row.appendChild(sz);
+            row.appendChild(killButton(item));
+          }
+          container.appendChild(row);
+        });
+      }
+
+      function updateSubmitState() {
+        const pending = items.image.concat(items.video, items.audio)
+          .filter(function (i) { return !i.removed && i.status !== 'done' && i.status !== 'error'; }).length;
+        const btn = $('submitBtn');
+        if (submitting) {
+          btn.disabled = true;
+          btn.textContent = 'Submitting...';
+        } else {
+          btn.disabled = false;
+          btn.textContent = pending
+            ? 'Submit (' + pending + ' file' + (pending > 1 ? 's' : '') + ' uploading)'
+            : 'Submit';
+        }
+      }
+
+      function showError(msg) {
+        const el = $('formError');
+        el.textContent = msg;
+        el.hidden = false;
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+
+      function clearError() {
+        $('formError').hidden = true;
+      }
+
+      // ---------- voice note ----------
+      let recorder = null;
+      let recChunks = [];
+      let recTimer = null;
+      let recSeconds = 0;
+
+      function micSupported() {
+        return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder);
+      }
+
+      function pickRecorderMime() {
+        const opts = ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4', 'audio/ogg;codecs=opus'];
+        for (let i = 0; i < opts.length; i++) {
+          if (window.MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(opts[i])) return opts[i];
+        }
+        return '';
+      }
+
+      async function startRecording() {
+        if (!micSupported()) return nativeRecorder();
+        let stream;
+        try {
+          stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        } catch (e) {
+          return nativeRecorder();
+        }
+
+        const mime = pickRecorderMime();
+        try {
+          recorder = mime ? new MediaRecorder(stream, { mimeType: mime }) : new MediaRecorder(stream);
+        } catch (e) {
+          stream.getTracks().forEach(function (t) { t.stop(); });
+          return nativeRecorder();
+        }
+
+        recChunks = [];
+        recSeconds = 0;
+        recorder.ondataavailable = function (e) {
+          if (e.data && e.data.size) recChunks.push(e.data);
+        };
+        recorder.onstop = function () {
+          stream.getTracks().forEach(function (t) { t.stop(); });
+          const type = (recorder && recorder.mimeType) || mime || 'audio/webm';
+          recorder = null;
+          stopTicker();
+          const blob = new Blob(recChunks, { type: type });
+          if (blob.size > 0) {
+            const ext = type.indexOf('mp4') > -1 ? 'm4a' : type.indexOf('ogg') > -1 ? 'ogg' : 'webm';
+            addFiles([new File([blob], 'voice-note.' + ext, { type: type })], 'audio');
+          }
+        };
+        recorder.start();
+
+        $('recordBtn').classList.add('on');
+        $('recordBtnText').textContent = 'Stop Recording';
+        $('recordTimer').hidden = false;
+        $('recordTimer').textContent = '0:00';
+        recTimer = setInterval(function () {
+          recSeconds++;
+          $('recordTimer').textContent = fmtTime(recSeconds);
+          if (recSeconds >= cfg.limits.voiceSeconds) stopRecording();
+        }, 1000);
+      }
+
+      function stopTicker() {
+        if (recTimer) clearInterval(recTimer);
+        recTimer = null;
+        $('recordBtn').classList.remove('on');
+        $('recordTimer').hidden = true;
+        $('recordBtnText').textContent = countOf('audio') ? 'Record Again' : 'Record Voice Note';
+      }
+
+      function stopRecording() {
+        if (recorder && recorder.state !== 'inactive') recorder.stop();
+        else stopTicker();
+      }
+
+      /** Mic blocked or unsupported: use the phone's own recorder app. */
+      function nativeRecorder() {
+        $('voiceHint').textContent = 'Your browser blocked in-page recording, so your phone’s own ' +
+          'recorder will open instead. Record, then choose the file.';
+        $('audioInput').click();
+      }
+
+      // ---------- submit ----------
+      function waitForUploads() {
+        return new Promise(function (resolve) {
+          const tick = function () {
+            const pending = items.image.concat(items.video, items.audio)
+              .filter(function (i) { return !i.removed && (i.status === 'queued' || i.status === 'uploading'); });
+            if (!pending.length) return resolve();
+            const pct = Math.round(pending.reduce(function (a, i) { return a + i.progress; }, 0) / pending.length * 100);
+            $('overlayText').textContent = 'Uploading attachments...';
+            $('overlaySub').textContent = pending.length + ' file' + (pending.length > 1 ? 's' : '') + ' remaining';
+            $('barFill').style.width = Math.max(5, pct) + '%';
+            setTimeout(tick, 400);
+          };
+          tick();
+        });
+      }
+
+      async function onSubmit(e) {
+        e.preventDefault();
+        if (submitting) return;
+        clearError();
+
+        const payload = {
+          website: $('website').value,
+          queryType: selectedType ? selectedType.id : '',
+          uniqueCode: $('uniqueCode').value.trim(),
+          storeName: $('storeName').value.trim(),
+          city: $('city').value.trim(),
+          phone: cfg.askPhone ? $('phone').value.trim() : '',
+          message: $('message').value.trim(),
+          draftId: draftId || ''
+        };
+
+        if (payload.uniqueCode.length < 3) return showError('Please enter the unique code.');
+        if (payload.storeName.length < 2) return showError('Please enter the store name.');
+        if (payload.city.length < 2) return showError('Please enter your city.');
+        if (payload.message.length < 5) return showError('Please describe your query.');
+        if (cfg.askPhone && payload.phone && !/^[6-9]\d{9}$/.test(payload.phone)) {
+          return showError('Please enter a valid 10-digit mobile number.');
+        }
+        if (selectedType.photoRequired && countOf('image') === 0) {
+          return showError('Please attach at least 1 photo of the issue.');
+        }
+        const failed = items.image.concat(items.video, items.audio)
+          .filter(function (i) { return !i.removed && i.status === 'error'; });
+        if (failed.length) return showError('Some files did not upload. Remove them and try again.');
+
+        submitting = true;
+        updateSubmitState();
+        $('overlay').hidden = false;
+        $('barFill').style.width = '5%';
+        $('overlayText').textContent = 'Uploading attachments...';
+        $('overlaySub').textContent = '';
+
+        try {
+          await waitForUploads();
+          payload.draftId = draftId || '';
+          $('overlayText').textContent = 'Submitting your query...';
+          $('overlaySub').textContent = '';
+          $('barFill').style.width = '85%';
+
+          const res = await api('submit', { payload: payload });
+
+          $('barFill').style.width = '100%';
+          $('ticketId').textContent = res.ticketId;
+          const a = res.attachments || {};
+          const bits = [];
+          if (a.images) bits.push(a.images + ' photo' + (a.images > 1 ? 's' : ''));
+          if (a.videos) bits.push(a.videos + ' video' + (a.videos > 1 ? 's' : ''));
+          if (a.voiceNotes) bits.push('1 voice note');
+          $('doneSummary').textContent = bits.length ? 'Attached: ' + bits.join(', ') : '';
+
+          $('overlay').hidden = true;
+          $('stepForm').hidden = true;
+          $('stepDone').hidden = false;
+          window.scrollTo(0, 0);
+        } catch (err) {
+          $('overlay').hidden = true;
+          showError(err.message);
+        } finally {
+          submitting = false;
+          updateSubmitState();
+        }
+      }
+
+      function resetAll() {
+        items.image.concat(items.video, items.audio).forEach(function (i) {
+          if (i.previewUrl) {
+            try { URL.revokeObjectURL(i.previewUrl); } catch (e) { }
+          }
+        });
+        items.image.length = 0;
+        items.video.length = 0;
+        items.audio.length = 0;
+        queue.length = 0;
+        draftId = null;
+        draftPromise = null;
+        selectedType = null;
+        $('ticketForm').reset();
+        $('msgCount').textContent = '0';
+        clearError();
+        render();
+        $('stepDone').hidden = true;
+        $('stepForm').hidden = true;
+        $('stepType').hidden = false;
+        window.scrollTo(0, 0);
+      }
+
+      // ---------- wiring ----------
+      document.addEventListener('DOMContentLoaded', function () {
+        boot();
+
+        $('backBtn').addEventListener('click', function () {
+          $('stepForm').hidden = true;
+          $('stepType').hidden = false;
+          window.scrollTo(0, 0);
+        });
+
+        $('takePhotoBtn').addEventListener('click', function () { $('cameraInput').click(); });
+        $('pickPhotoBtn').addEventListener('click', function () { $('photoInput').click(); });
+        $('pickVideoBtn').addEventListener('click', function () { $('videoInput').click(); });
+
+        $('cameraInput').addEventListener('change', function (e) { addFiles(e.target.files, 'image'); e.target.value = ''; });
+        $('photoInput').addEventListener('change', function (e) { addFiles(e.target.files, 'image'); e.target.value = ''; });
+        $('videoInput').addEventListener('change', function (e) { addFiles(e.target.files, 'video'); e.target.value = ''; });
+        $('audioInput').addEventListener('change', function (e) { addFiles(e.target.files, 'audio'); e.target.value = ''; });
+
+        $('recordBtn').addEventListener('click', function () {
+          if (recorder && recorder.state === 'recording') stopRecording();
+          else startRecording();
+        });
+
+        $('message').addEventListener('input', function (e) {
+          $('msgCount').textContent = e.target.value.length;
+        });
+
+        $('ticketForm').addEventListener('submit', onSubmit);
+        $('againBtn').addEventListener('click', resetAll);
+      });
+    })();
+  </script>
+</body>
+
+</html>
