@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <base target="_top">
+  <meta charset="utf-8">
+  <?!= include('CSS'); ?>
+</head>
+
+<body>
+  <div class="shell">
+
+    <header class="brand">
+      <svg class="brand-logo" viewBox="0 0 1600 480" aria-label="SECUREX by Shah Interio" role="img">
+        <defs>
+          <!-- userSpaceOnUse: an objectBoundingBox gradient cannot paint zero-width lines -->
+          <linearGradient id="maroonGrad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1600" y2="480">
+            <stop offset="0%" stop-color="#5c141e" />
+            <stop offset="50%" stop-color="#8f2431" />
+            <stop offset="100%" stop-color="#6b1620" />
+          </linearGradient>
+          <linearGradient id="navyGrad" gradientUnits="userSpaceOnUse" x1="1280" y1="140" x2="1540" y2="340">
+            <stop offset="0%" stop-color="#274a82" />
+            <stop offset="100%" stop-color="#152a52" />
+          </linearGradient>
+        </defs>
+        <g fill="none" stroke="url(#maroonGrad)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="45" y="45" width="300" height="390" rx="18" />
+          <line x1="195" y1="45" x2="195" y2="435" />
+          <line x1="150" y1="185" x2="150" y2="225" />
+          <line x1="240" y1="185" x2="240" y2="225" />
+          <line x1="70" y1="435" x2="60" y2="458" />
+          <line x1="320" y1="435" x2="330" y2="458" />
+        </g>
+        <text x="430" y="330" font-family="Arial, 'Arial Black', sans-serif" font-weight="900" font-size="190">
+          <tspan fill="url(#maroonGrad)" x="430" textLength="850" lengthAdjust="spacingAndGlyphs">SECURE</tspan>
+          <tspan fill="url(#navyGrad)" x="1290" textLength="230" lengthAdjust="spacingAndGlyphs">X</tspan>
+        </text>
+        <g>
+          <path d="M1365,268 L1365,233 A25,25 0 0 1 1415,233 L1415,268" fill="none" stroke="#ffffff" stroke-width="14"
+            stroke-linecap="round" />
+          <rect x="1350" y="268" width="80" height="65" rx="10" fill="#ffffff" />
+          <circle cx="1390" cy="293" r="8" fill="#152a52" />
+          <rect x="1385" y="296" width="10" height="18" fill="#152a52" />
+        </g>
+        <text x="960" y="415" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="46"
+          letter-spacing="10" fill="url(#maroonGrad)">DECOR YOUR DREAMS</text>
+      </svg>
+      <p class="brand-sub" id="brandSub">Customer Support</p>
+    </header>
+
+    <!-- ===== Step 1: query type ===== -->
+    <section class="card" id="stepType">
+      <h1 class="step-title">What can we help you with?</h1>
+      <p class="step-note">Choose one to continue.</p>
+      <div class="type-grid" id="typeGrid"></div>
+      <p class="support-line" id="supportLine" hidden></p>
+    </section>
+
+    <!-- ===== Step 2: details ===== -->
+    <section class="card" id="stepForm" hidden>
+      <button type="button" class="back-link" id="backBtn">&#8592; Change query type</button>
+
+      <div class="chip" id="typeChip"></div>
+      <h1 class="step-title" id="formTitle">Your details</h1>
+
+      <form id="ticketForm" autocomplete="on" novalidate>
+        <input type="text" id="website" name="website" class="hp" tabindex="-1" aria-hidden="true">
+
+        <label class="field">
+          <span class="label">Unique Code <i>*</i></span>
+          <input type="text" id="uniqueCode" maxlength="60" placeholder="Code on the product sticker / invoice"
+            required>
+          <small class="hint">Printed on the warranty sticker inside the wardrobe or on your invoice.</small>
+        </label>
+
+        <label class="field">
+          <span class="label">Store Name <i>*</i></span>
+          <input type="text" id="storeName" maxlength="120" placeholder="Where you purchased from" required>
+        </label>
+
+        <label class="field">
+          <span class="label">City <i>*</i></span>
+          <input type="text" id="city" maxlength="80" placeholder="Your city" required>
+        </label>
+
+        <label class="field" id="phoneField" hidden>
+          <span class="label">Mobile Number</span>
+          <input type="tel" id="phone" maxlength="10" inputmode="numeric" placeholder="10-digit mobile number">
+        </label>
+
+        <label class="field">
+          <span class="label">Your Query <i>*</i></span>
+          <textarea id="message" rows="5" maxlength="3000" placeholder="Tell us what you need help with" required></textarea>
+          <small class="hint"><span id="msgCount">0</span>/3000</small>
+        </label>
+
+        <!-- Photos -->
+        <div class="block" id="photoBlock">
+          <div class="block-head">
+            <span class="label" id="photoLabel">Photos</span>
+            <span class="count" id="photoCount">0</span>
+          </div>
+          <p class="hint" id="photoHint"></p>
+          <div class="thumbs" id="photoThumbs"></div>
+          <div class="btn-row">
+            <button type="button" class="btn ghost" id="takePhotoBtn">Take Photo</button>
+            <button type="button" class="btn ghost" id="pickPhotoBtn">Choose Photos</button>
+          </div>
+          <input type="file" id="cameraInput" accept="image/*" capture="environment" hidden>
+          <input type="file" id="photoInput" accept="image/*" multiple hidden>
+        </div>
+
+        <!-- Videos -->
+        <div class="block" id="videoBlock">
+          <div class="block-head">
+            <span class="label">Videos <span class="opt">optional</span></span>
+            <span class="count" id="videoCount">0</span>
+          </div>
+          <p class="hint" id="videoHint"></p>
+          <div class="file-list" id="videoList"></div>
+          <div class="btn-row">
+            <button type="button" class="btn ghost" id="pickVideoBtn">Add Video</button>
+          </div>
+          <input type="file" id="videoInput" accept="video/*" multiple hidden>
+        </div>
+
+        <!-- Voice note -->
+        <div class="block" id="voiceBlock">
+          <div class="block-head">
+            <span class="label">Voice Note <span class="opt">optional</span></span>
+          </div>
+          <p class="hint" id="voiceHint">Prefer speaking? Record your query in your own language.</p>
+          <div class="voice-row">
+            <button type="button" class="btn rec" id="recordBtn">
+              <span class="dot"></span><span id="recordBtnText">Record Voice Note</span>
+            </button>
+            <span class="timer" id="recordTimer" hidden>0:00</span>
+          </div>
+          <div class="file-list" id="voiceList"></div>
+          <input type="file" id="audioInput" accept="audio/*" capture hidden>
+        </div>
+
+        <p class="error" id="formError" hidden></p>
+
+        <button type="submit" class="btn primary" id="submitBtn">Submit</button>
+        <p class="legal">Your attachments are stored securely in our support drive and used only to resolve this
+          ticket.</p>
+      </form>
+    </section>
+
+    <!-- ===== Step 3: done ===== -->
+    <section class="card done" id="stepDone" hidden>
+      <div class="tick">&#10003;</div>
+      <h1 class="step-title">Thank you!</h1>
+      <p class="step-note">We have received your query. Our team will get back to you shortly.</p>
+      <div class="ticket-box">
+        <span>Your Ticket ID</span>
+        <strong id="ticketId"></strong>
+      </div>
+      <p class="step-note" id="doneSummary"></p>
+      <p class="support-line" id="donePhone" hidden></p>
+      <button type="button" class="btn ghost" id="againBtn">Submit another query</button>
+    </section>
+
+  </div>
+
+  <!-- Upload / submit overlay -->
+  <div class="overlay" id="overlay" hidden>
+    <div class="overlay-card">
+      <div class="spinner"></div>
+      <p class="overlay-text" id="overlayText">Uploading...</p>
+      <div class="bar"><div class="bar-fill" id="barFill"></div></div>
+      <p class="overlay-sub" id="overlaySub"></p>
+    </div>
+  </div>
+
+  <?!= include('JS'); ?>
+</body>
+
+</html>

@@ -1,0 +1,668 @@
+<script>
+  (function () {
+    'use strict';
+
+    // ---------- small helpers ----------
+    const $ = function (id) { return document.getElementById(id); };
+
+    /** Promisified google.script.run */
+    function call(name) {
+      const args = Array.prototype.slice.call(arguments, 1);
+      return new Promise(function (resolve, reject) {
+        google.script.run
+          .withSuccessHandler(resolve)
+          .withFailureHandler(function (err) {
+            reject(new Error((err && err.message) || 'Network error. Please try again.'));
+          })[name].apply(null, args);
+      });
+    }
+
+    function fmtSize(kb) {
+      if (kb < 1024) return kb + ' KB';
+      return (kb / 1024).toFixed(1) + ' MB';
+    }
+
+    function fmtTime(sec) {
+      const m = Math.floor(sec / 60);
+      const s = sec % 60;
+      return m + ':' + (s < 10 ? '0' : '') + s;
+    }
+
+    function uid() {
+      return Math.random().toString(36).substring(2, 10) + Date.now().toString(36);
+    }
+
+    // ---------- state ----------
+    const CHUNK_BYTES = 1800000; // multiple of 3 so base64 pieces concatenate cleanly
+    let cfg = null;
+    let selectedType = null;
+    let draftId = null;
+    let draftPromise = null;
+    const items = { image: [], video: [], audio: [] };
+    const queue = [];
+    let working = false;
+    let submitting = false;
+
+    // ---------- draft folder ----------
+    function ensureDraft() {
+      if (draftId) return Promise.resolve(draftId);
+      if (!draftPromise) {
+        draftPromise = call('createDraft').then(function (res) {
+          draftId = res.draftId;
+          return draftId;
+        }).catch(function (err) {
+          draftPromise = null;
+          throw err;
+        });
+      }
+      return draftPromise;
+    }
+
+    // ---------- boot ----------
+    function boot() {
+      call('getFormConfig').then(function (res) {
+        cfg = res;
+        renderConfig();
+      }).catch(function (err) {
+        showError(err.message);
+      });
+    }
+
+    function renderConfig() {
+      $('brandSub').textContent = cfg.tagline || 'Customer Support';
+
+      const grid = $('typeGrid');
+      grid.innerHTML = '';
+      cfg.queryTypes.forEach(function (t) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'type-card';
+        btn.innerHTML =
+          '<span class="type-icon">' + (t.photoRequired ? '&#9888;' : '&#63;') + '</span>' +
+          '<span class="type-text"><strong></strong><span></span></span>';
+        btn.querySelector('strong').textContent = t.label;
+        btn.querySelector('.type-text span').textContent = t.hint || '';
+        btn.addEventListener('click', function () { chooseType(t); });
+        grid.appendChild(btn);
+      });
+
+      if (cfg.supportPhone) {
+        const line = 'For urgent help, call <a href="tel:' + cfg.supportPhone + '">' + cfg.supportPhone + '</a>';
+        $('supportLine').innerHTML = line;
+        $('supportLine').hidden = false;
+        $('donePhone').innerHTML = line;
+        $('donePhone').hidden = false;
+      }
+
+      if (cfg.askPhone) $('phoneField').hidden = false;
+
+      $('videoHint').textContent = 'Up to ' + cfg.limits.maxVideos + ' videos, max ' +
+        cfg.limits.maxVideoMb + ' MB each.';
+    }
+
+    function chooseType(type) {
+      selectedType = type;
+      $('typeChip').textContent = type.label;
+      $('formTitle').textContent = type.photoRequired ? 'Complaint details' : 'Your details';
+
+      const block = $('photoBlock');
+      if (type.photoRequired) {
+        block.classList.add('required');
+        $('photoLabel').innerHTML = 'Photos <i style="color:#b3261e;font-style:normal">*</i>';
+        $('photoHint').textContent = 'At least 1 photo of the issue is required. Up to ' +
+          cfg.limits.maxImages + ' photos allowed.';
+      } else {
+        block.classList.remove('required');
+        $('photoLabel').innerHTML = 'Photos <span class="opt">optional</span>';
+        $('photoHint').textContent = 'Add a photo if it helps us understand your query. Up to ' +
+          cfg.limits.maxImages + ' photos allowed.';
+      }
+
+      $('stepType').hidden = true;
+      $('stepForm').hidden = false;
+      window.scrollTo(0, 0);
+      $('uniqueCode').focus();
+    }
+
+    // ---------- file intake ----------
+    function countOf(kind) {
+      return items[kind].filter(function (i) { return !i.removed; }).length;
+    }
+
+    async function addFiles(fileList, kind) {
+      const files = Array.prototype.slice.call(fileList || []);
+      if (!files.length) return;
+      clearError();
+
+      const max = kind === 'image' ? cfg.limits.maxImages
+        : kind === 'video' ? cfg.limits.maxVideos : 1;
+      const sizeCap = (kind === 'image' ? cfg.limits.maxImageMb
+        : kind === 'video' ? cfg.limits.maxVideoMb : cfg.limits.maxAudioMb) * 1024 * 1024;
+
+      for (const file of files) {
+        // A new voice note replaces the previous one.
+        if (kind === 'audio') {
+          items.audio.filter(function (i) { return !i.removed; }).forEach(removeItem);
+        }
+        if (countOf(kind) >= max) {
+          showError('You can attach up to ' + max + ' ' +
+            (kind === 'image' ? 'photos' : kind === 'video' ? 'videos' : 'voice note') + '.');
+          break;
+        }
+
+        let blob = file;
+        let name = file.name || (kind + '-' + Date.now());
+
+        if (kind === 'image') {
+          try {
+            blob = await compressImage(file);
+            if (blob !== file) name = name.replace(/\.[^.]+$/, '') + '.jpg';
+          } catch (e) {
+            blob = file; // HEIC and friends: send the original
+          }
+        }
+
+        if (blob.size > sizeCap) {
+          showError('"' + name + '" is ' + (blob.size / 1048576).toFixed(1) +
+            ' MB. Limit is ' + Math.round(sizeCap / 1048576) + ' MB.');
+          continue;
+        }
+
+        const item = {
+          localId: uid(),
+          kind: kind,
+          name: name,
+          blob: blob,
+          sizeKb: Math.round(blob.size / 1024),
+          mimeType: blob.type || (kind === 'image' ? 'image/jpeg' : kind === 'video' ? 'video/mp4' : 'audio/webm'),
+          progress: 0,
+          status: 'queued',
+          fileId: null,
+          removed: false,
+          previewUrl: (kind === 'image' || kind === 'audio') ? URL.createObjectURL(blob) : null
+        };
+
+        items[kind].push(item);
+        queue.push(item);
+      }
+
+      render();
+      pump();
+    }
+
+    function compressImage(file) {
+      return new Promise(function (resolve, reject) {
+        if (!/^image\//.test(file.type)) return resolve(file);
+        const url = URL.createObjectURL(file);
+        const img = new Image();
+        img.onload = function () {
+          try {
+            const maxDim = 1600;
+            const scale = Math.min(1, maxDim / Math.max(img.width, img.height));
+            const w = Math.max(1, Math.round(img.width * scale));
+            const h = Math.max(1, Math.round(img.height * scale));
+            const canvas = document.createElement('canvas');
+            canvas.width = w;
+            canvas.height = h;
+            canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+            canvas.toBlob(function (out) {
+              URL.revokeObjectURL(url);
+              if (!out || out.size >= file.size) return resolve(file);
+              resolve(out);
+            }, 'image/jpeg', 0.82);
+          } catch (e) {
+            URL.revokeObjectURL(url);
+            reject(e);
+          }
+        };
+        img.onerror = function () {
+          URL.revokeObjectURL(url);
+          reject(new Error('Could not read image'));
+        };
+        img.src = url;
+      });
+    }
+
+    // ---------- upload queue ----------
+    function pump() {
+      if (working) return;
+      const next = queue.shift();
+      if (!next) {
+        updateSubmitState();
+        return;
+      }
+      if (next.removed) return pump();
+      working = true;
+      uploadItem(next)
+        .catch(function (err) {
+          next.status = 'error';
+          next.error = err.message;
+          showError(err.message);
+        })
+        .then(function () {
+          working = false;
+          render();
+          pump();
+        });
+    }
+
+    async function uploadItem(item) {
+      item.status = 'uploading';
+      render();
+      await ensureDraft();
+
+      const total = Math.max(1, Math.ceil(item.blob.size / CHUNK_BYTES));
+      const uploadId = item.localId;
+      let result = null;
+
+      for (let i = 0; i < total; i++) {
+        if (item.removed) {
+          item.status = 'cancelled';
+          return;
+        }
+        const slice = item.blob.slice(i * CHUNK_BYTES, Math.min((i + 1) * CHUNK_BYTES, item.blob.size));
+        const data = await sliceToBase64(slice);
+        result = await call('uploadChunk', draftId, {
+          uploadId: uploadId,
+          name: item.name,
+          mimeType: item.mimeType,
+          kind: item.kind,
+          index: i,
+          total: total,
+          data: data
+        });
+        item.progress = (i + 1) / total;
+        render();
+      }
+
+      item.status = 'done';
+      item.fileId = result && result.fileId;
+      item.url = result && result.url;
+      if (item.removed && item.fileId) {
+        call('discardAttachment', draftId, item.fileId);
+      }
+    }
+
+    function sliceToBase64(blob) {
+      return new Promise(function (resolve, reject) {
+        const reader = new FileReader();
+        reader.onload = function () {
+          const s = String(reader.result);
+          const comma = s.indexOf(',');
+          resolve(comma === -1 ? s : s.substring(comma + 1));
+        };
+        reader.onerror = function () { reject(new Error('Could not read the file.')); };
+        reader.readAsDataURL(blob);
+      });
+    }
+
+    function removeItem(item) {
+      item.removed = true;
+      if (item.previewUrl) {
+        try { URL.revokeObjectURL(item.previewUrl); } catch (e) { /* ignore */ }
+      }
+      if (item.status === 'done' && item.fileId && draftId) {
+        call('discardAttachment', draftId, item.fileId);
+      }
+      render();
+      updateSubmitState();
+    }
+
+    // ---------- rendering ----------
+    function render() {
+      // photos
+      const thumbs = $('photoThumbs');
+      thumbs.innerHTML = '';
+      const photos = items.image.filter(function (i) { return !i.removed; });
+      photos.forEach(function (item) {
+        const div = document.createElement('div');
+        div.className = 'thumb' + (item.status === 'done' ? '' : ' pending');
+        const img = document.createElement('img');
+        img.src = item.previewUrl;
+        img.alt = item.name;
+        div.appendChild(img);
+        div.appendChild(killButton(item));
+        thumbs.appendChild(div);
+      });
+      $('photoCount').textContent = photos.length;
+
+      renderFileList($('videoList'), items.video, 'video');
+      $('videoCount').textContent = countOf('video');
+      renderFileList($('voiceList'), items.audio, 'audio');
+
+      const rec = items.audio.filter(function (i) { return !i.removed; }).length > 0;
+      $('recordBtnText').textContent = rec ? 'Record Again' : 'Record Voice Note';
+
+      updateSubmitState();
+    }
+
+    function killButton(item) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'kill';
+      btn.innerHTML = '&times;';
+      btn.title = 'Remove';
+      btn.setAttribute('aria-label', 'Remove ' + item.name);
+      btn.addEventListener('click', function () { removeItem(item); });
+      return btn;
+    }
+
+    function statusText(item) {
+      if (item.status === 'error') return 'failed';
+      if (item.status === 'done') return fmtSize(item.sizeKb);
+      if (item.status === 'uploading') return Math.round(item.progress * 100) + '%';
+      return 'waiting';
+    }
+
+    function renderFileList(container, list, kind) {
+      container.innerHTML = '';
+      list.filter(function (i) { return !i.removed; }).forEach(function (item) {
+        const row = document.createElement('div');
+        row.className = 'file-row' + (kind === 'audio' ? ' audio' : '');
+
+        if (kind === 'audio') {
+          const head = document.createElement('div');
+          head.className = 'audio-head';
+          const nm = document.createElement('span');
+          nm.className = 'fname';
+          nm.textContent = 'Voice note';
+          const sz = document.createElement('span');
+          sz.className = 'fsize';
+          sz.textContent = statusText(item);
+          head.appendChild(nm);
+          head.appendChild(sz);
+          head.appendChild(killButton(item));
+          row.appendChild(head);
+          if (item.previewUrl) {
+            const audio = document.createElement('audio');
+            audio.controls = true;
+            audio.src = item.previewUrl;
+            row.appendChild(audio);
+          }
+        } else {
+          const nm = document.createElement('span');
+          nm.className = 'fname';
+          nm.textContent = item.name;
+          const sz = document.createElement('span');
+          sz.className = 'fsize';
+          sz.textContent = statusText(item);
+          row.appendChild(nm);
+          row.appendChild(sz);
+          row.appendChild(killButton(item));
+        }
+        container.appendChild(row);
+      });
+    }
+
+    function updateSubmitState() {
+      const pending = items.image.concat(items.video, items.audio)
+        .filter(function (i) { return !i.removed && i.status !== 'done' && i.status !== 'error'; }).length;
+      const btn = $('submitBtn');
+      if (submitting) {
+        btn.disabled = true;
+        btn.textContent = 'Submitting...';
+      } else if (pending) {
+        btn.disabled = false;
+        btn.textContent = 'Submit (' + pending + ' file' + (pending > 1 ? 's' : '') + ' uploading)';
+      } else {
+        btn.disabled = false;
+        btn.textContent = 'Submit';
+      }
+    }
+
+    function showError(msg) {
+      const el = $('formError');
+      el.textContent = msg;
+      el.hidden = false;
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function clearError() {
+      $('formError').hidden = true;
+    }
+
+    // ---------- voice note ----------
+    let recorder = null;
+    let recChunks = [];
+    let recTimer = null;
+    let recSeconds = 0;
+
+    function micSupported() {
+      return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder);
+    }
+
+    function pickRecorderMime() {
+      const options = ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4', 'audio/ogg;codecs=opus'];
+      for (let i = 0; i < options.length; i++) {
+        if (window.MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(options[i])) return options[i];
+      }
+      return '';
+    }
+
+    async function startRecording() {
+      if (!micSupported()) return nativeRecorder();
+      let stream;
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      } catch (e) {
+        return nativeRecorder();
+      }
+
+      const mime = pickRecorderMime();
+      try {
+        recorder = mime ? new MediaRecorder(stream, { mimeType: mime }) : new MediaRecorder(stream);
+      } catch (e) {
+        stream.getTracks().forEach(function (t) { t.stop(); });
+        return nativeRecorder();
+      }
+
+      recChunks = [];
+      recSeconds = 0;
+      recorder.ondataavailable = function (e) {
+        if (e.data && e.data.size) recChunks.push(e.data);
+      };
+      recorder.onstop = function () {
+        stream.getTracks().forEach(function (t) { t.stop(); });
+        stopTicker();
+        const type = recorder.mimeType || mime || 'audio/webm';
+        const blob = new Blob(recChunks, { type: type });
+        recorder = null;
+        if (blob.size > 0) {
+          const ext = type.indexOf('mp4') > -1 ? 'm4a' : type.indexOf('ogg') > -1 ? 'ogg' : 'webm';
+          const file = new File([blob], 'voice-note.' + ext, { type: type });
+          addFiles([file], 'audio');
+        }
+      };
+      recorder.start();
+
+      $('recordBtn').classList.add('on');
+      $('recordBtnText').textContent = 'Stop Recording';
+      $('recordTimer').hidden = false;
+      $('recordTimer').textContent = '0:00';
+      recTimer = setInterval(function () {
+        recSeconds++;
+        $('recordTimer').textContent = fmtTime(recSeconds);
+        if (recSeconds >= cfg.limits.voiceSeconds) stopRecording();
+      }, 1000);
+    }
+
+    function stopTicker() {
+      if (recTimer) clearInterval(recTimer);
+      recTimer = null;
+      $('recordBtn').classList.remove('on');
+      $('recordTimer').hidden = true;
+      $('recordBtnText').textContent = 'Record Voice Note';
+    }
+
+    function stopRecording() {
+      if (recorder && recorder.state !== 'inactive') {
+        recorder.stop();
+      } else {
+        stopTicker();
+      }
+    }
+
+    /** Browser mic is blocked (common inside the Apps Script frame): use the phone recorder app. */
+    function nativeRecorder() {
+      $('voiceHint').textContent = 'Your browser blocked in-page recording, so your phone’s own ' +
+        'recorder will open instead. Record, then choose the file.';
+      $('audioInput').click();
+    }
+
+    // ---------- submit ----------
+    function waitForUploads() {
+      return new Promise(function (resolve) {
+        const tick = function () {
+          const pending = items.image.concat(items.video, items.audio)
+            .filter(function (i) { return !i.removed && (i.status === 'queued' || i.status === 'uploading'); });
+          if (!pending.length) return resolve();
+          const done = Math.round(pending.reduce(function (a, i) { return a + i.progress; }, 0) / pending.length * 100);
+          $('overlayText').textContent = 'Uploading attachments...';
+          $('overlaySub').textContent = pending.length + ' file' + (pending.length > 1 ? 's' : '') + ' remaining';
+          $('barFill').style.width = Math.max(5, done) + '%';
+          setTimeout(tick, 400);
+        };
+        tick();
+      });
+    }
+
+    async function onSubmit(e) {
+      e.preventDefault();
+      if (submitting) return;
+      clearError();
+
+      const payload = {
+        website: $('website').value,
+        queryType: selectedType ? selectedType.id : '',
+        uniqueCode: $('uniqueCode').value.trim(),
+        storeName: $('storeName').value.trim(),
+        city: $('city').value.trim(),
+        phone: cfg.askPhone ? $('phone').value.trim() : '',
+        message: $('message').value.trim(),
+        draftId: draftId || ''
+      };
+
+      if (payload.uniqueCode.length < 3) return showError('Please enter the unique code.');
+      if (payload.storeName.length < 2) return showError('Please enter the store name.');
+      if (payload.city.length < 2) return showError('Please enter your city.');
+      if (payload.message.length < 5) return showError('Please describe your query.');
+      if (cfg.askPhone && payload.phone && !/^[6-9]\d{9}$/.test(payload.phone)) {
+        return showError('Please enter a valid 10-digit mobile number.');
+      }
+      if (selectedType.photoRequired && countOf('image') === 0) {
+        return showError('Please attach at least 1 photo of the issue.');
+      }
+
+      const failed = items.image.concat(items.video, items.audio)
+        .filter(function (i) { return !i.removed && i.status === 'error'; });
+      if (failed.length) {
+        return showError('Some files did not upload. Remove them and try again.');
+      }
+
+      submitting = true;
+      updateSubmitState();
+      $('overlay').hidden = false;
+      $('barFill').style.width = '5%';
+      $('overlayText').textContent = 'Uploading attachments...';
+      $('overlaySub').textContent = '';
+
+      try {
+        await waitForUploads();
+        payload.draftId = draftId || '';
+        $('overlayText').textContent = 'Submitting your query...';
+        $('overlaySub').textContent = '';
+        $('barFill').style.width = '85%';
+
+        const res = await call('submitTicket', payload);
+        if (!res || !res.success) throw new Error((res && res.message) || 'Submission failed.');
+
+        $('barFill').style.width = '100%';
+        $('ticketId').textContent = res.ticketId;
+        const a = res.attachments || {};
+        const bits = [];
+        if (a.images) bits.push(a.images + ' photo' + (a.images > 1 ? 's' : ''));
+        if (a.videos) bits.push(a.videos + ' video' + (a.videos > 1 ? 's' : ''));
+        if (a.voiceNotes) bits.push('1 voice note');
+        $('doneSummary').textContent = bits.length ? 'Attached: ' + bits.join(', ') : '';
+
+        $('overlay').hidden = true;
+        $('stepForm').hidden = true;
+        $('stepDone').hidden = false;
+        window.scrollTo(0, 0);
+      } catch (err) {
+        $('overlay').hidden = true;
+        showError(err.message);
+      } finally {
+        submitting = false;
+        updateSubmitState();
+      }
+    }
+
+    function resetAll() {
+      items.image.concat(items.video, items.audio).forEach(function (i) {
+        if (i.previewUrl) {
+          try { URL.revokeObjectURL(i.previewUrl); } catch (e) { /* ignore */ }
+        }
+      });
+      items.image.length = 0;
+      items.video.length = 0;
+      items.audio.length = 0;
+      queue.length = 0;
+      draftId = null;
+      draftPromise = null;
+      selectedType = null;
+      $('ticketForm').reset();
+      $('msgCount').textContent = '0';
+      clearError();
+      render();
+      $('stepDone').hidden = true;
+      $('stepForm').hidden = true;
+      $('stepType').hidden = false;
+      window.scrollTo(0, 0);
+    }
+
+    // ---------- wiring ----------
+    document.addEventListener('DOMContentLoaded', function () {
+      boot();
+
+      $('backBtn').addEventListener('click', function () {
+        $('stepForm').hidden = true;
+        $('stepType').hidden = false;
+        window.scrollTo(0, 0);
+      });
+
+      $('takePhotoBtn').addEventListener('click', function () { $('cameraInput').click(); });
+      $('pickPhotoBtn').addEventListener('click', function () { $('photoInput').click(); });
+      $('pickVideoBtn').addEventListener('click', function () { $('videoInput').click(); });
+
+      $('cameraInput').addEventListener('change', function (e) {
+        addFiles(e.target.files, 'image');
+        e.target.value = '';
+      });
+      $('photoInput').addEventListener('change', function (e) {
+        addFiles(e.target.files, 'image');
+        e.target.value = '';
+      });
+      $('videoInput').addEventListener('change', function (e) {
+        addFiles(e.target.files, 'video');
+        e.target.value = '';
+      });
+      $('audioInput').addEventListener('change', function (e) {
+        addFiles(e.target.files, 'audio');
+        e.target.value = '';
+      });
+
+      $('recordBtn').addEventListener('click', function () {
+        if (recorder && recorder.state === 'recording') stopRecording();
+        else startRecording();
+      });
+
+      $('message').addEventListener('input', function (e) {
+        $('msgCount').textContent = e.target.value.length;
+      });
+
+      $('ticketForm').addEventListener('submit', onSubmit);
+      $('againBtn').addEventListener('click', resetAll);
+    });
+  })();
+</script>
