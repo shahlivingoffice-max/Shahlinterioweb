@@ -804,10 +804,15 @@
         <input type="text" id="website" name="website" class="hp" tabindex="-1" aria-hidden="true" autocomplete="off">
 
         <label class="field">
+          <span class="label">Model No. <i>*</i></span>
+          <input type="text" id="modelNo" maxlength="60" placeholder="e.g. 4006, 3007, 2-Door Office">
+          <small class="hint">Printed on the product label, the carton or your invoice.</small>
+        </label>
+
+        <label class="field" id="codeField" hidden>
           <span class="label">Unique Code <i>*</i></span>
-          <input type="text" id="uniqueCode" maxlength="60" placeholder="Code on the product sticker / invoice"
-            required>
-          <small class="hint">Printed on the sticker inside the almirah or on your invoice.</small>
+          <input type="text" id="uniqueCode" maxlength="60" placeholder="Code on the product sticker / invoice">
+          <small class="hint">The serial sticker inside the almirah. Needed so we can trace the piece.</small>
         </label>
 
         <label class="field">
@@ -1068,10 +1073,13 @@
             cfg.limits.maxImages + ' photos allowed.';
         }
 
+        $('codeField').hidden = !type.codeRequired;
+        if (!type.codeRequired) $('uniqueCode').value = '';
+
         $('stepType').hidden = true;
         $('stepForm').hidden = false;
         window.scrollTo(0, 0);
-        $('uniqueCode').focus();
+        $('modelNo').focus();
       }
 
       // ---------- file intake ----------
@@ -1477,7 +1485,8 @@
         const payload = {
           website: $('website').value,
           queryType: selectedType ? selectedType.id : '',
-          uniqueCode: $('uniqueCode').value.trim(),
+          modelNo: $('modelNo').value.trim(),
+          uniqueCode: selectedType && selectedType.codeRequired ? $('uniqueCode').value.trim() : '',
           storeName: $('storeName').value.trim(),
           city: $('city').value.trim(),
           phone: cfg.askPhone ? $('phone').value.trim() : '',
@@ -1485,7 +1494,10 @@
           draftId: draftId || ''
         };
 
-        if (payload.uniqueCode.length < 3) return showError('Please enter the unique code.');
+        if (!payload.modelNo) return showError('Please enter the model number.');
+        if (selectedType.codeRequired && payload.uniqueCode.length < 3) {
+          return showError('Please enter the unique code from the sticker.');
+        }
         if (payload.storeName.length < 2) return showError('Please enter the store name.');
         if (payload.city.length < 2) return showError('Please enter your city.');
         if (payload.message.length < 5) return showError('Please describe your query.');
